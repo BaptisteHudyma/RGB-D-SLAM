@@ -7,9 +7,11 @@
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719}{vec}} () const
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_a14fda6771d72c62e5cd4dd4327945867}{Spherical}} (const double radius, const double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_a8850394650bc0117b5344beeb0bf1ca8}{theta}}, const double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_aeaa2f71165cfb88931d2f0d3a2973ee8}{phi}})
 \item 
-void \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_aa2368da2d292a84249743568208dedd0}{from\+\_\+vec}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719}{vec}})
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_af9da992245bd550c59a283ece6b47d13}{Spherical}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719}{vec}})
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719}{vec}} () const
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -27,6 +29,21 @@ double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_a8850394650bc011
 \item 
 double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical_aeaa2f71165cfb88931d2f0d3a2973ee8}{phi}}
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_a14fda6771d72c62e5cd4dd4327945867}\label{structrgbd__slam_1_1utils_1_1_spherical_a14fda6771d72c62e5cd4dd4327945867} 
+\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!Spherical@{Spherical}}
+\index{Spherical@{Spherical}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+\doxysubsubsection{\texorpdfstring{Spherical()}{Spherical()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Spherical\+::\+Spherical (\begin{DoxyParamCaption}\item[{const double}]{radius,  }\item[{const double}]{theta,  }\item[{const double}]{phi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_af9da992245bd550c59a283ece6b47d13}\label{structrgbd__slam_1_1utils_1_1_spherical_af9da992245bd550c59a283ece6b47d13} 
+\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!Spherical@{Spherical}}
+\index{Spherical@{Spherical}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
+\doxysubsubsection{\texorpdfstring{Spherical()}{Spherical()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Spherical\+::\+Spherical (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 
 
 \doxysubsection{Member Function Documentation}
@@ -57,12 +74,6 @@ Transform a given coordinate from cartesian to spherical space.
 \mbox{\texttt{ out}}  & {\em jacobian} & the jacobian of this transformation \\
 \hline
 \end{DoxyParams}
-\Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_aa2368da2d292a84249743568208dedd0}\label{structrgbd__slam_1_1utils_1_1_spherical_aa2368da2d292a84249743568208dedd0} 
-\index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!from\_vec@{from\_vec}}
-\index{from\_vec@{from\_vec}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}
-\doxysubsubsection{\texorpdfstring{from\_vec()}{from\_vec()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Spherical\+::from\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
 \Hypertarget{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719}\label{structrgbd__slam_1_1utils_1_1_spherical_acbacad91971b635e7ac0602f2efeb719} 
 \index{rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}!vec@{vec}}
 \index{vec@{vec}!rgbd\_slam::utils::Spherical@{rgbd\_slam::utils::Spherical}}

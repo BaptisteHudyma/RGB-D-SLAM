@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam::outputs::OBJ_Map_Writer Class Reference</div></div>
 </div><!--header-->
@@ -98,16 +99,22 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adcb5507527d869d82549afe013684c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19477d8f7c0c1a182c7afba399177008" id="r_a19477d8f7c0c1a182c7afba399177008"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer.html#a19477d8f7c0c1a182c7afba399177008">add_point</a> (const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;pointCoordinates) noexcept override</td></tr>
 <tr class="separator:a19477d8f7c0c1a182c7afba399177008"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f7a65f31eff4f003844c34c40ff17b5" id="r_a2f7a65f31eff4f003844c34c40ff17b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer.html#a2f7a65f31eff4f003844c34c40ff17b5">add_polygon</a> (const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;coordinates) noexcept override</td></tr>
-<tr class="separator:a2f7a65f31eff4f003844c34c40ff17b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a374ad4dfc98791ae9f89d163764f1783" id="r_a374ad4dfc98791ae9f89d163764f1783"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer.html#a374ad4dfc98791ae9f89d163764f1783">add_line</a> (const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;coordinates) noexcept override</td></tr>
+<tr class="separator:a374ad4dfc98791ae9f89d163764f1783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8bc925c0c44eb4d741cde391e1fe41c" id="r_ab8bc925c0c44eb4d741cde391e1fe41c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer.html#ab8bc925c0c44eb4d741cde391e1fe41c">add_polygon</a> (const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;coordinates, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;normal) noexcept override</td></tr>
+<tr class="separator:ab8bc925c0c44eb4d741cde391e1fe41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrgbd__slam_1_1outputs_1_1_i_map___writer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrgbd__slam_1_1outputs_1_1_i_map___writer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">rgbd_slam::outputs::IMap_Writer</a></td></tr>
 <tr class="memitem:a5991f574cd767f4e1c1276b365bc63ea inherit pub_methods_classrgbd__slam_1_1outputs_1_1_i_map___writer" id="r_a5991f574cd767f4e1c1276b365bc63ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#a5991f574cd767f4e1c1276b365bc63ea">IMap_Writer</a> (const std::string &amp;filename)</td></tr>
 <tr class="separator:a5991f574cd767f4e1c1276b365bc63ea inherit pub_methods_classrgbd__slam_1_1outputs_1_1_i_map___writer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f091381128f79f0999f8a2c5367c449 inherit pub_methods_classrgbd__slam_1_1outputs_1_1_i_map___writer" id="r_a3f091381128f79f0999f8a2c5367c449"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#a3f091381128f79f0999f8a2c5367c449">~IMap_Writer</a> ()</td></tr>
 <tr class="separator:a3f091381128f79f0999f8a2c5367c449 inherit pub_methods_classrgbd__slam_1_1outputs_1_1_i_map___writer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a177fd973a000574e5c05804c4848611f" id="r_a177fd973a000574e5c05804c4848611f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer.html#a177fd973a000574e5c05804c4848611f">_vertexIndex</a> = 1</td></tr>
+<tr class="separator:a177fd973a000574e5c05804c4848611f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a795439cf39568b0573e59ffe61aed7" id="r_a9a795439cf39568b0573e59ffe61aed7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer.html#a9a795439cf39568b0573e59ffe61aed7">_vectorIndex</a> = 1</td></tr>
+<tr class="separator:a9a795439cf39568b0573e59ffe61aed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrgbd__slam_1_1outputs_1_1_i_map___writer"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrgbd__slam_1_1outputs_1_1_i_map___writer')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html">rgbd_slam::outputs::IMap_Writer</a></td></tr>
 <tr class="memitem:a324d33f96a95b4d833dbb1cdf5bcd931 inherit pro_attribs_classrgbd__slam_1_1outputs_1_1_i_map___writer" id="r_a324d33f96a95b4d833dbb1cdf5bcd931"><td class="memItemLeft" align="right" valign="top">std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#a324d33f96a95b4d833dbb1cdf5bcd931">_file</a></td></tr>
 <tr class="separator:a324d33f96a95b4d833dbb1cdf5bcd931 inherit pro_attribs_classrgbd__slam_1_1outputs_1_1_i_map___writer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,6 +142,34 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a374ad4dfc98791ae9f89d163764f1783" name="a374ad4dfc98791ae9f89d163764f1783"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a374ad4dfc98791ae9f89d163764f1783">&#9670;&#160;</a></span>add_line()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgbd_slam::outputs::OBJ_Map_Writer::add_line </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>coordinates</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#af7d3b6b9769acdd1f13b774fab5709b0">rgbd_slam::outputs::IMap_Writer</a>.</p>
+
+</div>
+</div>
 <a id="a19477d8f7c0c1a182c7afba399177008" name="a19477d8f7c0c1a182c7afba399177008"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a19477d8f7c0c1a182c7afba399177008">&#9670;&#160;</a></span>add_point()</h2>
 
@@ -163,8 +198,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f7a65f31eff4f003844c34c40ff17b5" name="a2f7a65f31eff4f003844c34c40ff17b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f7a65f31eff4f003844c34c40ff17b5">&#9670;&#160;</a></span>add_polygon()</h2>
+<a id="ab8bc925c0c44eb4d741cde391e1fe41c" name="ab8bc925c0c44eb4d741cde391e1fe41c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8bc925c0c44eb4d741cde391e1fe41c">&#9670;&#160;</a></span>add_polygon()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,8 +211,18 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">void rgbd_slam::outputs::OBJ_Map_Writer::add_polygon </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>coordinates</em></td><td>)</td>
+          <td class="paramname"><em>coordinates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>normal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -187,7 +232,52 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#a97bfab2605ab08a084c276adfeffa4a7">rgbd_slam::outputs::IMap_Writer</a>.</p>
+<p>Implements <a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#ae633d2ef19d7539e700222048c7536b8">rgbd_slam::outputs::IMap_Writer</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a9a795439cf39568b0573e59ffe61aed7" name="a9a795439cf39568b0573e59ffe61aed7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a795439cf39568b0573e59ffe61aed7">&#9670;&#160;</a></span>_vectorIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t rgbd_slam::outputs::OBJ_Map_Writer::_vectorIndex = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a177fd973a000574e5c05804c4848611f" name="a177fd973a000574e5c05804c4848611f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a177fd973a000574e5c05804c4848611f">&#9670;&#160;</a></span>_vertexIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t rgbd_slam::outputs::OBJ_Map_Writer::_vertexIndex = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

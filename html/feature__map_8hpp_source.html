@@ -510,292 +510,290 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>        {</div>
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [<span class="keywordtype">id</span>, mapFeature]: _stagedMap)</div>
 <div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>            {</div>
-<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>                <span class="keyword">const</span> cv::Scalar stagedColor =</div>
-<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>                        (mapFeature.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 255, 0);</div>
-<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>                mapFeature.draw(worldToCamMatrix, debugImage, stagedColor);</div>
-<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>            }</div>
-<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>        }</div>
-<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span> </div>
-<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [<span class="keywordtype">id</span>, mapFeature]: _localMap)</div>
-<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>        {</div>
-<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>            <span class="keywordflow">if</span> (mapFeature.is_matched())</div>
-<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>            {</div>
-<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>                mapFeature.draw(worldToCamMatrix, debugImage, mapFeature._color);</div>
-<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>            }</div>
-<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>        }</div>
-<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>    }</div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>                <span class="comment">// macthed staged points are orange, unmacthed are red</span></div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>                <span class="keyword">const</span> cv::Scalar stagedColor =</div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>                        (mapFeature.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 0, 255);</div>
+<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>                mapFeature.draw(worldToCamMatrix, debugImage, stagedColor);</div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>            }</div>
+<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>        }</div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span> </div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [<span class="keywordtype">id</span>, mapFeature]: _localMap)</div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>        {</div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>            mapFeature.draw(worldToCamMatrix, debugImage, mapFeature._color);</div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>        }</div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>    }</div>
 </div>
-<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span> </div>
-<div class="line"><a id="l00521" name="l00521"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a02a516784fa7dcff68f166d920bc5626">  521</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a02a516784fa7dcff68f166d920bc5626">deactivate</a>() noexcept { _isActivated = <span class="keyword">false</span>; }</div>
-<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span> </div>
-<div class="line"><a id="l00523" name="l00523"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a60876198bf37320052f4bc2c3e53db2e">  523</a></span>    [[nodiscard]] <span class="keywordtype">size_t</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a60876198bf37320052f4bc2c3e53db2e">get_local_map_size</a>() const noexcept { <span class="keywordflow">return</span> _localMap.size(); };</div>
-<div class="line"><a id="l00524" name="l00524"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a743d2e11cad5b9b57b41f612bf4af30b">  524</a></span>    [[nodiscard]] <span class="keywordtype">size_t</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a743d2e11cad5b9b57b41f612bf4af30b">get_staged_map_size</a>() const noexcept { <span class="keywordflow">return</span> _stagedMap.size(); };</div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a0f3a331a583d26f2f5d04a9f74cf3cdd">  525</a></span>    [[nodiscard]] <span class="keywordtype">size_t</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a0f3a331a583d26f2f5d04a9f74cf3cdd">size</a>() const noexcept { <span class="keywordflow">return</span> get_local_map_size() + get_staged_map_size(); };</div>
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span> </div>
-<div class="foldopen" id="foldopen00530" data-start="{" data-end="}">
-<div class="line"><a id="l00530" name="l00530"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a40722cda41dcf90a37f3ea91c84fdde0">  530</a></span>    [[nodiscard]] std::vector&lt;UpgradedFeatureType&gt; <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a40722cda41dcf90a37f3ea91c84fdde0">get_upgraded_features</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld)</div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>    {</div>
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>        <span class="keyword">auto</span> upgradedMapFeatures = get_upgraded_map_features(cameraToWorld);</div>
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>        <span class="keyword">auto</span> upgradedStagedFeatures = get_upgraded_staged_features(cameraToWorld);</div>
-<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>        upgradedMapFeatures.insert(</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>                upgradedMapFeatures.end(), upgradedStagedFeatures.begin(), upgradedStagedFeatures.end());</div>
-<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>        <span class="keywordflow">return</span> upgradedMapFeatures;</div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>    }</div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span> </div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a02a516784fa7dcff68f166d920bc5626">  519</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a02a516784fa7dcff68f166d920bc5626">deactivate</a>() noexcept { _isActivated = <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span> </div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a60876198bf37320052f4bc2c3e53db2e">  521</a></span>    [[nodiscard]] <span class="keywordtype">size_t</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a60876198bf37320052f4bc2c3e53db2e">get_local_map_size</a>() const noexcept { <span class="keywordflow">return</span> _localMap.size(); };</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a743d2e11cad5b9b57b41f612bf4af30b">  522</a></span>    [[nodiscard]] <span class="keywordtype">size_t</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a743d2e11cad5b9b57b41f612bf4af30b">get_staged_map_size</a>() const noexcept { <span class="keywordflow">return</span> _stagedMap.size(); };</div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a0f3a331a583d26f2f5d04a9f74cf3cdd">  523</a></span>    [[nodiscard]] <span class="keywordtype">size_t</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a0f3a331a583d26f2f5d04a9f74cf3cdd">size</a>() const noexcept { <span class="keywordflow">return</span> get_local_map_size() + get_staged_map_size(); };</div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span> </div>
+<div class="foldopen" id="foldopen00528" data-start="{" data-end="}">
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a40722cda41dcf90a37f3ea91c84fdde0">  528</a></span>    [[nodiscard]] std::vector&lt;UpgradedFeatureType&gt; <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a40722cda41dcf90a37f3ea91c84fdde0">get_upgraded_features</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld)</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>    {</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>        <span class="keyword">auto</span> upgradedMapFeatures = get_upgraded_map_features(cameraToWorld);</div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>        <span class="keyword">auto</span> upgradedStagedFeatures = get_upgraded_staged_features(cameraToWorld);</div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>        upgradedMapFeatures.insert(</div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>                upgradedMapFeatures.end(), upgradedStagedFeatures.begin(), upgradedStagedFeatures.end());</div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>        <span class="keywordflow">return</span> upgradedMapFeatures;</div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>    }</div>
 </div>
-<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span> </div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>    <span class="comment">// shortcut to add map points</span></div>
-<div class="line"><a id="l00540" name="l00540"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#af6d5cdb64de4eefc3af29ce3db600e1d">  540</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#af6d5cdb64de4eefc3af29ce3db600e1d">add_local_map_point</a>(<span class="keyword">const</span> MapFeatureType&amp; mapFeature) { _localMap.emplace(mapFeature._id, mapFeature); }</div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span> </div>
-<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>  <span class="keyword">protected</span>:</div>
-<div class="foldopen" id="foldopen00543" data-start="{" data-end="}">
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a859f3ff330c1ce69f920275f5c71c95a">  543</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a859f3ff330c1ce69f920275f5c71c95a">update_local_map</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld,</div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>                          <span class="keyword">const</span> <a class="code hl_typedef" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a>&amp; poseCovariance,</div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>                          <span class="keyword">const</span> DetectedFeaturesObject&amp; detectedFeatureObject,</div>
-<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>                          std::shared_ptr&lt;outputs::IMap_Writer&gt; mapWriter)</div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>    {</div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>        <span class="keywordflow">if</span> (not utils::is_covariance_valid(poseCovariance))</div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;update_local_map: The given pose covariance is invalid, map wont be update&quot;</span>);</div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span> </div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>        <span class="keyword">typename</span> localMapType::iterator featureMapIterator = _localMap.begin();</div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>        <span class="keywordflow">while</span> (featureMapIterator != _localMap.end())</div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>        {</div>
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>            <span class="comment">// Update the matched/unmatched status</span></div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>            MapFeatureType&amp; mapFeature = featureMapIterator-&gt;second;</div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>            assert(featureMapIterator-&gt;first == mapFeature._id);</div>
-<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span> </div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>            <span class="comment">// if matched, update the features parameters</span></div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>            <span class="keywordflow">if</span> (mapFeature.is_matched())</div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>            {</div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>                assert(mapFeature._matchIndex &gt;= 0);</div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>                <span class="keyword">const</span> <span class="keywordtype">size_t</span> matchedFeatureIndex = mapFeature._matchIndex;</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>                assert(matchedFeatureIndex &lt; detectedFeatureObject.size());</div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span> </div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>                <span class="keyword">const</span> DetectedFeatureType&amp; detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);</div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>                mapFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);</div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>            }</div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>            {</div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>                mapFeature.update_unmatched();</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>            }</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span> </div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>            <span class="keywordflow">if</span> (mapFeature.is_lost())</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>            {</div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>                <span class="comment">// write to file</span></div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>                mapFeature.write_to_file(mapWriter);</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span> </div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>                <span class="comment">// Remove useless point</span></div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>                featureMapIterator = _localMap.erase(featureMapIterator);</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>            }</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>            {</div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>                ++featureMapIterator;</div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>            }</div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>        }</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    }</div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span> </div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>    <span class="comment">// shortcut to add map points</span></div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#af6d5cdb64de4eefc3af29ce3db600e1d">  538</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#af6d5cdb64de4eefc3af29ce3db600e1d">add_local_map_point</a>(<span class="keyword">const</span> MapFeatureType&amp; mapFeature) { _localMap.emplace(mapFeature._id, mapFeature); }</div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span> </div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>  <span class="keyword">protected</span>:</div>
+<div class="foldopen" id="foldopen00541" data-start="{" data-end="}">
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a859f3ff330c1ce69f920275f5c71c95a">  541</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a859f3ff330c1ce69f920275f5c71c95a">update_local_map</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld,</div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>                          <span class="keyword">const</span> <a class="code hl_typedef" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a>&amp; poseCovariance,</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>                          <span class="keyword">const</span> DetectedFeaturesObject&amp; detectedFeatureObject,</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>                          std::shared_ptr&lt;outputs::IMap_Writer&gt; mapWriter)</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>    {</div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>        <span class="keywordflow">if</span> (not utils::is_covariance_valid(poseCovariance))</div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;update_local_map: The given pose covariance is invalid, map wont be update&quot;</span>);</div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span> </div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>        <span class="keyword">typename</span> localMapType::iterator featureMapIterator = _localMap.begin();</div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>        <span class="keywordflow">while</span> (featureMapIterator != _localMap.end())</div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>        {</div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>            <span class="comment">// Update the matched/unmatched status</span></div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>            MapFeatureType&amp; mapFeature = featureMapIterator-&gt;second;</div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>            assert(featureMapIterator-&gt;first == mapFeature._id);</div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span> </div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>            <span class="comment">// if matched, update the features parameters</span></div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>            <span class="keywordflow">if</span> (mapFeature.is_matched())</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>            {</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>                assert(mapFeature._matchIndex &gt;= 0);</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>                <span class="keyword">const</span> <span class="keywordtype">size_t</span> matchedFeatureIndex = mapFeature._matchIndex;</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>                assert(matchedFeatureIndex &lt; detectedFeatureObject.size());</div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span> </div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>                <span class="keyword">const</span> DetectedFeatureType&amp; detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>                mapFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>            }</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>            {</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>                mapFeature.update_unmatched();</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>            }</div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span> </div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>            <span class="keywordflow">if</span> (mapFeature.is_lost())</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>            {</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>                <span class="comment">// write to file</span></div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>                mapFeature.write_to_file(mapWriter);</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span> </div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>                <span class="comment">// Remove useless point</span></div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>                featureMapIterator = _localMap.erase(featureMapIterator);</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>            }</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>            {</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>                ++featureMapIterator;</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>            }</div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>        }</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    }</div>
 </div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span> </div>
-<div class="foldopen" id="foldopen00588" data-start="{" data-end="}">
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a5786a636d4c71b8ed2fd80771a693dcc">  588</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a5786a636d4c71b8ed2fd80771a693dcc">update_staged_map</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld,</div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>                           <span class="keyword">const</span> <a class="code hl_typedef" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a>&amp; poseCovariance,</div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>                           <span class="keyword">const</span> DetectedFeaturesObject&amp; detectedFeatureObject)</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>    {</div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>        <span class="keywordflow">if</span> (not utils::is_covariance_valid(poseCovariance))</div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;update_staged_map: The given pose covariance is invalid, map wont be update&quot;</span>);</div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span> </div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>        <span class="comment">// Add correct staged points to local map</span></div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>        <span class="keyword">typename</span> stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();</div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>        <span class="keywordflow">while</span> (stagedFeatureIterator != _stagedMap.end())</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>        {</div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>            StagedFeatureType&amp; stagedFeature = stagedFeatureIterator-&gt;second;</div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>            assert(stagedFeatureIterator-&gt;first == stagedFeature._id);</div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span> </div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>            <span class="comment">// if matched, update the features parameters</span></div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>            <span class="keywordflow">if</span> (stagedFeature.is_matched())</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>            {</div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>                assert(stagedFeature._matchIndex &gt;= 0);</div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>                <span class="keyword">const</span> <span class="keywordtype">size_t</span> matchedFeatureIndex = stagedFeature._matchIndex;</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>                assert(matchedFeatureIndex &lt; detectedFeatureObject.size());</div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span> </div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>                <span class="keyword">const</span> DetectedFeatureType&amp; detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);</div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>                stagedFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);</div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>            }</div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>            {</div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>                stagedFeature.update_unmatched();</div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>            }</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span> </div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>            <span class="keywordflow">if</span> (stagedFeature.should_add_to_local_map())</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>            {</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>                <span class="keywordflow">try</span></div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>                {</div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>                    <span class="comment">// Add to local map, remove from staged points, with a copy of the id affected to the local map</span></div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>                    _localMap.emplace(stagedFeature._id, MapFeatureType(stagedFeature));</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>                    assert(_localMap.at(stagedFeature._id)._id == stagedFeature._id);</div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>                    stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);</div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>                }</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>                <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex)</div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>                {</div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>                    outputs::log_error(<span class="stringliteral">&quot;Caught exeption while creating a map feature from a staged feature: &quot;</span> +</div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>                                       std::string(ex.what()));</div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>                }</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>            }</div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (stagedFeature.should_remove_from_staged())</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>            {</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>                <span class="comment">// Remove from staged points</span></div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>                stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);</div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>            }</div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>            {</div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>                <span class="comment">// Increment</span></div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>                ++stagedFeatureIterator;</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>            }</div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>        }</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>    }</div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span> </div>
+<div class="foldopen" id="foldopen00586" data-start="{" data-end="}">
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a5786a636d4c71b8ed2fd80771a693dcc">  586</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a5786a636d4c71b8ed2fd80771a693dcc">update_staged_map</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld,</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>                           <span class="keyword">const</span> <a class="code hl_typedef" href="namespacergbd__slam.html#a668ec4e90f57f06678a0b85a12c38db3">matrix33</a>&amp; poseCovariance,</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>                           <span class="keyword">const</span> DetectedFeaturesObject&amp; detectedFeatureObject)</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    {</div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>        <span class="keywordflow">if</span> (not utils::is_covariance_valid(poseCovariance))</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;update_staged_map: The given pose covariance is invalid, map wont be update&quot;</span>);</div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span> </div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>        <span class="comment">// Add correct staged points to local map</span></div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>        <span class="keyword">typename</span> stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();</div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>        <span class="keywordflow">while</span> (stagedFeatureIterator != _stagedMap.end())</div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>        {</div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>            StagedFeatureType&amp; stagedFeature = stagedFeatureIterator-&gt;second;</div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>            assert(stagedFeatureIterator-&gt;first == stagedFeature._id);</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span> </div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>            <span class="comment">// if matched, update the features parameters</span></div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>            <span class="keywordflow">if</span> (stagedFeature.is_matched())</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>            {</div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>                assert(stagedFeature._matchIndex &gt;= 0);</div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>                <span class="keyword">const</span> <span class="keywordtype">size_t</span> matchedFeatureIndex = stagedFeature._matchIndex;</div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>                assert(matchedFeatureIndex &lt; detectedFeatureObject.size());</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span> </div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>                <span class="keyword">const</span> DetectedFeatureType&amp; detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>                stagedFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>            }</div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>            {</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>                stagedFeature.update_unmatched();</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>            }</div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span> </div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>            <span class="keywordflow">if</span> (stagedFeature.should_add_to_local_map())</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>            {</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>                <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>                {</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>                    <span class="comment">// Add to local map, remove from staged points, with a copy of the id affected to the local map</span></div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>                    _localMap.emplace(stagedFeature._id, MapFeatureType(stagedFeature));</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>                    assert(_localMap.at(stagedFeature._id)._id == stagedFeature._id);</div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>                    stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>                }</div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>                <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; ex)</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>                {</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>                    outputs::log_error(<span class="stringliteral">&quot;Caught exeption while creating a map feature from a staged feature: &quot;</span> +</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>                                       std::string(ex.what()));</div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>                }</div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>            }</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (stagedFeature.should_remove_from_staged())</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>            {</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>                <span class="comment">// Remove from staged points</span></div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>                stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>            }</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>            {</div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>                <span class="comment">// Increment</span></div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>                ++stagedFeatureIterator;</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>            }</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>        }</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>    }</div>
 </div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span> </div>
-<div class="foldopen" id="foldopen00645" data-start="{" data-end="}">
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ae5e5526fac61428f5aa953c8f5d6a1aa">  645</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ae5e5526fac61428f5aa953c8f5d6a1aa">update_local_map_with_no_tracking</a>(std::shared_ptr&lt;outputs::IMap_Writer&gt; mapWriter) <span class="keyword">noexcept</span></div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>    {</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>        <span class="comment">// update the local map with no matchs</span></div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>        <span class="keyword">typename</span> localMapType::iterator featureMapIterator = _localMap.begin();</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>        <span class="keywordflow">while</span> (featureMapIterator != _localMap.end())</div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>        {</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>            <span class="comment">// Update the matched/unmatched status</span></div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>            MapFeatureType&amp; mapFeature = featureMapIterator-&gt;second;</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>            assert(featureMapIterator-&gt;first == mapFeature._id);</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span> </div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>            mapFeature.update_unmatched();</div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>            <span class="keywordflow">if</span> (mapFeature.is_lost())</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>            {</div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>                <span class="comment">// write to file</span></div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>                mapFeature.write_to_file(mapWriter);</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span> </div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>                <span class="comment">// Remove useless point</span></div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>                featureMapIterator = _localMap.erase(featureMapIterator);</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>            }</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>            {</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>                ++featureMapIterator;</div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>            }</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>        }</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>    }</div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span> </div>
+<div class="foldopen" id="foldopen00643" data-start="{" data-end="}">
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ae5e5526fac61428f5aa953c8f5d6a1aa">  643</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ae5e5526fac61428f5aa953c8f5d6a1aa">update_local_map_with_no_tracking</a>(std::shared_ptr&lt;outputs::IMap_Writer&gt; mapWriter) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    {</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>        <span class="comment">// update the local map with no matchs</span></div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>        <span class="keyword">typename</span> localMapType::iterator featureMapIterator = _localMap.begin();</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>        <span class="keywordflow">while</span> (featureMapIterator != _localMap.end())</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>        {</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>            <span class="comment">// Update the matched/unmatched status</span></div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>            MapFeatureType&amp; mapFeature = featureMapIterator-&gt;second;</div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>            assert(featureMapIterator-&gt;first == mapFeature._id);</div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>            mapFeature.update_unmatched();</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>            <span class="keywordflow">if</span> (mapFeature.is_lost())</div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>            {</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>                <span class="comment">// write to file</span></div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>                mapFeature.write_to_file(mapWriter);</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span> </div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>                <span class="comment">// Remove useless point</span></div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>                featureMapIterator = _localMap.erase(featureMapIterator);</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>            }</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>            {</div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>                ++featureMapIterator;</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>            }</div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>        }</div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>    }</div>
 </div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span> </div>
-<div class="foldopen" id="foldopen00671" data-start="{" data-end="}">
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ad03909157c05ed07693ab5c16a07e248">  671</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ad03909157c05ed07693ab5c16a07e248">update_staged_map_with_no_tracking</a>() noexcept</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>    {</div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>        <span class="comment">// update the staged map with no matchs</span></div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>        <span class="keyword">typename</span> stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();</div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>        <span class="keywordflow">while</span> (stagedFeatureIterator != _stagedMap.end())</div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>        {</div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>            StagedFeatureType&amp; stagedFeature = stagedFeatureIterator-&gt;second;</div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>            assert(stagedFeatureIterator-&gt;first == stagedFeature._id);</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span> </div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>            stagedFeature.update_unmatched();</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>            <span class="keywordflow">if</span> (stagedFeature.should_remove_from_staged())</div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>            {</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>                <span class="comment">// Remove useless point</span></div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>                stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);</div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>            }</div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>            {</div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>                ++stagedFeatureIterator;</div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>            }</div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>        }</div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>    }</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span> </div>
+<div class="foldopen" id="foldopen00669" data-start="{" data-end="}">
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ad03909157c05ed07693ab5c16a07e248">  669</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ad03909157c05ed07693ab5c16a07e248">update_staged_map_with_no_tracking</a>() noexcept</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>    {</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>        <span class="comment">// update the staged map with no matchs</span></div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>        <span class="keyword">typename</span> stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>        <span class="keywordflow">while</span> (stagedFeatureIterator != _stagedMap.end())</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>        {</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>            StagedFeatureType&amp; stagedFeature = stagedFeatureIterator-&gt;second;</div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>            assert(stagedFeatureIterator-&gt;first == stagedFeature._id);</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span> </div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>            stagedFeature.update_unmatched();</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>            <span class="keywordflow">if</span> (stagedFeature.should_remove_from_staged())</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>            {</div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>                <span class="comment">// Remove useless point</span></div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>                stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>            }</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>            {</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>                ++stagedFeatureIterator;</div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>            }</div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>        }</div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>    }</div>
 </div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span> </div>
-<div class="foldopen" id="foldopen00693" data-start="{" data-end="}">
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aae00b9b9caf80776f5707f66808c3b73">  693</a></span>    [[nodiscard]] std::vector&lt;UpgradedFeatureType&gt; <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aae00b9b9caf80776f5707f66808c3b73">get_upgraded_map_features</a>(</div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>            <span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld) <span class="keyword">noexcept</span></div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>    {</div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>        std::vector&lt;UpgradedFeatureType&gt; upgradedFeatures;</div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>        <span class="comment">// update the staged map with no matchs</span></div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>        <span class="keyword">typename</span> localMapType::iterator mapFeatureIterator = _localMap.begin();</div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>        <span class="keywordflow">while</span> (mapFeatureIterator != _localMap.end())</div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>        {</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>            MapFeatureType&amp; mapFeature = mapFeatureIterator-&gt;second;</div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>            assert(mapFeatureIterator-&gt;first == mapFeature._id);</div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span> </div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>            UpgradedFeatureType upgraded;</div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>            <span class="keywordflow">if</span> (mapFeature.compute_upgraded(cameraToWorld, upgraded))</div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>            {</div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>                upgradedFeatures.emplace_back(upgraded);</div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>                <span class="comment">// Remove useless point</span></div>
-<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>                mapFeatureIterator = _localMap.erase(mapFeatureIterator);</div>
-<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>            }</div>
-<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>            {</div>
-<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>                ++mapFeatureIterator;</div>
-<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>            }</div>
-<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>        }</div>
-<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>        <span class="keywordflow">return</span> upgradedFeatures;</div>
-<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>    }</div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> </div>
+<div class="foldopen" id="foldopen00691" data-start="{" data-end="}">
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aae00b9b9caf80776f5707f66808c3b73">  691</a></span>    [[nodiscard]] std::vector&lt;UpgradedFeatureType&gt; <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aae00b9b9caf80776f5707f66808c3b73">get_upgraded_map_features</a>(</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>            <span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>    {</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>        std::vector&lt;UpgradedFeatureType&gt; upgradedFeatures;</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>        <span class="comment">// update the staged map with no matchs</span></div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>        <span class="keyword">typename</span> localMapType::iterator mapFeatureIterator = _localMap.begin();</div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>        <span class="keywordflow">while</span> (mapFeatureIterator != _localMap.end())</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>        {</div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>            MapFeatureType&amp; mapFeature = mapFeatureIterator-&gt;second;</div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>            assert(mapFeatureIterator-&gt;first == mapFeature._id);</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span> </div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>            UpgradedFeatureType upgraded;</div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>            <span class="keywordflow">if</span> (mapFeature.compute_upgraded(cameraToWorld, upgraded))</div>
+<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>            {</div>
+<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>                upgradedFeatures.emplace_back(upgraded);</div>
+<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>                <span class="comment">// Remove useless point</span></div>
+<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>                mapFeatureIterator = _localMap.erase(mapFeatureIterator);</div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>            }</div>
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>            {</div>
+<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>                ++mapFeatureIterator;</div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>            }</div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>        }</div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>        <span class="keywordflow">return</span> upgradedFeatures;</div>
+<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>    }</div>
 </div>
-<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span> </div>
-<div class="foldopen" id="foldopen00719" data-start="{" data-end="}">
-<div class="line"><a id="l00719" name="l00719"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7fc3bdbc68dff40bcd7078f4ca548c4d">  719</a></span>    [[nodiscard]] std::vector&lt;UpgradedFeatureType&gt; <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7fc3bdbc68dff40bcd7078f4ca548c4d">get_upgraded_staged_features</a>(</div>
-<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>            <span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld) <span class="keyword">noexcept</span></div>
-<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>    {</div>
-<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>        std::vector&lt;UpgradedFeatureType&gt; upgradedFeatures;</div>
-<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>        <span class="comment">// update the staged map with no matchs</span></div>
-<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>        <span class="keyword">typename</span> stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();</div>
-<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>        <span class="keywordflow">while</span> (stagedFeatureIterator != _stagedMap.end())</div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>        {</div>
-<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>            StagedFeatureType&amp; stagedFeature = stagedFeatureIterator-&gt;second;</div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>            assert(stagedFeatureIterator-&gt;first == stagedFeature._id);</div>
-<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span> </div>
-<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>            UpgradedFeatureType upgraded;</div>
-<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>            <span class="keywordflow">if</span> (stagedFeature.compute_upgraded(cameraToWorld, upgraded))</div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>            {</div>
-<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>                upgradedFeatures.emplace_back(upgraded);</div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>                <span class="comment">// Remove useless point</span></div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>                stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);</div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>            }</div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>            {</div>
-<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>                ++stagedFeatureIterator;</div>
-<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>            }</div>
-<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>        }</div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>        <span class="keywordflow">return</span> upgradedFeatures;</div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>    }</div>
+<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span> </div>
+<div class="foldopen" id="foldopen00717" data-start="{" data-end="}">
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno"><a class="line" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7fc3bdbc68dff40bcd7078f4ca548c4d">  717</a></span>    [[nodiscard]] std::vector&lt;UpgradedFeatureType&gt; <a class="code hl_function" href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7fc3bdbc68dff40bcd7078f4ca548c4d">get_upgraded_staged_features</a>(</div>
+<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>            <span class="keyword">const</span> <a class="code hl_struct" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a>&amp; cameraToWorld) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span>    {</div>
+<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>        std::vector&lt;UpgradedFeatureType&gt; upgradedFeatures;</div>
+<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>        <span class="comment">// update the staged map with no matchs</span></div>
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>        <span class="keyword">typename</span> stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();</div>
+<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>        <span class="keywordflow">while</span> (stagedFeatureIterator != _stagedMap.end())</div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>        {</div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>            StagedFeatureType&amp; stagedFeature = stagedFeatureIterator-&gt;second;</div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>            assert(stagedFeatureIterator-&gt;first == stagedFeature._id);</div>
+<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span> </div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>            UpgradedFeatureType upgraded;</div>
+<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>            <span class="keywordflow">if</span> (stagedFeature.compute_upgraded(cameraToWorld, upgraded))</div>
+<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>            {</div>
+<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>                upgradedFeatures.emplace_back(upgraded);</div>
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>                <span class="comment">// Remove useless point</span></div>
+<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>                stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);</div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>            }</div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>            {</div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>                ++stagedFeatureIterator;</div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>            }</div>
+<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>        }</div>
+<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>        <span class="keywordflow">return</span> upgradedFeatures;</div>
+<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>    }</div>
 </div>
-<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span> </div>
-<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>    <span class="keywordtype">bool</span> _isActivated; <span class="comment">// if false, no updates will occur on this map object (no matches, no tracking, ...)</span></div>
-<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>    localMapType _localMap;</div>
-<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>    stagedMapType _stagedMap;</div>
-<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>    <a class="code hl_typedef" href="namespacergbd__slam.html#ad649f82d2e43d86f0f04317e62a6b25d">vectorb</a> _isDetectedFeatureMatched; <span class="comment">// indicates if a detected feature is macthed to a local map feature</span></div>
-<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>};</div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span> </div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>    <span class="keywordtype">bool</span> _isActivated; <span class="comment">// if false, no updates will occur on this map object (no matches, no tracking, ...)</span></div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>    localMapType _localMap;</div>
+<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>    stagedMapType _stagedMap;</div>
+<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>    <a class="code hl_typedef" href="namespacergbd__slam.html#ad649f82d2e43d86f0f04317e62a6b25d">vectorb</a> _isDetectedFeatureMatched; <span class="comment">// indicates if a detected feature is macthed to a local map feature</span></div>
+<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>};</div>
+</div>
+<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span> </div>
+<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>} <span class="comment">// namespace rgbd_slam::map_management</span></div>
 </div>
 <div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span> </div>
-<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>} <span class="comment">// namespace rgbd_slam::map_management</span></div>
-</div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span> </div>
-<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html">rgbd_slam::map_management::Feature_Map</a></div><div class="ttdef"><b>Definition</b> feature_map.hpp:218</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a02a516784fa7dcff68f166d920bc5626"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a02a516784fa7dcff68f166d920bc5626">rgbd_slam::map_management::Feature_Map::deactivate</a></div><div class="ttdeci">void deactivate() noexcept</div><div class="ttdoc">Dectivate this local map.</div><div class="ttdef"><b>Definition</b> feature_map.hpp:521</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a0f3a331a583d26f2f5d04a9f74cf3cdd"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a0f3a331a583d26f2f5d04a9f74cf3cdd">rgbd_slam::map_management::Feature_Map::size</a></div><div class="ttdeci">size_t size() const noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:525</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a02a516784fa7dcff68f166d920bc5626"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a02a516784fa7dcff68f166d920bc5626">rgbd_slam::map_management::Feature_Map::deactivate</a></div><div class="ttdeci">void deactivate() noexcept</div><div class="ttdoc">Dectivate this local map.</div><div class="ttdef"><b>Definition</b> feature_map.hpp:519</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a0f3a331a583d26f2f5d04a9f74cf3cdd"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a0f3a331a583d26f2f5d04a9f74cf3cdd">rgbd_slam::map_management::Feature_Map::size</a></div><div class="ttdeci">size_t size() const noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:523</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a10c45ca8085359f457200d8924e84c6d"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a10c45ca8085359f457200d8924e84c6d">rgbd_slam::map_management::Feature_Map::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdoc">Reset the content of this map, empty all local maps.</div><div class="ttdef"><b>Definition</b> feature_map.hpp:229</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a346a9de5bc05bad3d1b1e50c5f164249"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a346a9de5bc05bad3d1b1e50c5f164249">rgbd_slam::map_management::Feature_Map::Feature_Map</a></div><div class="ttdeci">Feature_Map()</div><div class="ttdef"><b>Definition</b> feature_map.hpp:224</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a3a526cd8aa8540a1a453fa1d6cab5ad2"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a3a526cd8aa8540a1a453fa1d6cab5ad2">rgbd_slam::map_management::Feature_Map::add_features_to_staged_map</a></div><div class="ttdeci">void add_features_to_staged_map(const matrix33 &amp;poseCovariance, const CameraToWorldMatrix &amp;cameraToWorld, const DetectedFeaturesObject &amp;detectedFeatures, const bool addAllFeatures)</div><div class="ttdoc">Add a set of detected features to the staged features.</div><div class="ttdef"><b>Definition</b> feature_map.hpp:391</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a40722cda41dcf90a37f3ea91c84fdde0"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a40722cda41dcf90a37f3ea91c84fdde0">rgbd_slam::map_management::Feature_Map::get_upgraded_features</a></div><div class="ttdeci">std::vector&lt; UpgradedFeatureType &gt; get_upgraded_features(const CameraToWorldMatrix &amp;cameraToWorld)</div><div class="ttdoc">compute the upgraded features and remove them from the map</div><div class="ttdef"><b>Definition</b> feature_map.hpp:530</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a40722cda41dcf90a37f3ea91c84fdde0"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a40722cda41dcf90a37f3ea91c84fdde0">rgbd_slam::map_management::Feature_Map::get_upgraded_features</a></div><div class="ttdeci">std::vector&lt; UpgradedFeatureType &gt; get_upgraded_features(const CameraToWorldMatrix &amp;cameraToWorld)</div><div class="ttdoc">compute the upgraded features and remove them from the map</div><div class="ttdef"><b>Definition</b> feature_map.hpp:528</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a458187fb4a3014205004fbaa310ba671"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a458187fb4a3014205004fbaa310ba671">rgbd_slam::map_management::Feature_Map::mark_feature_with_id_as_unmatched</a></div><div class="ttdeci">bool mark_feature_with_id_as_unmatched(const size_t featureId) noexcept</div><div class="ttdoc">Mark the map feature with the given id as unmatched.</div><div class="ttdef"><b>Definition</b> feature_map.hpp:438</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a4e89ba7cab6c27786d4de01fa9a1b6ff"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a4e89ba7cab6c27786d4de01fa9a1b6ff">rgbd_slam::map_management::Feature_Map::update_with_no_tracking</a></div><div class="ttdeci">void update_with_no_tracking(std::shared_ptr&lt; outputs::IMap_Writer &gt; mapWriter) noexcept</div><div class="ttdoc">Update this local map with a failed tracking.</div><div class="ttdef"><b>Definition</b> feature_map.hpp:373</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a5786a636d4c71b8ed2fd80771a693dcc"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a5786a636d4c71b8ed2fd80771a693dcc">rgbd_slam::map_management::Feature_Map::update_staged_map</a></div><div class="ttdeci">void update_staged_map(const CameraToWorldMatrix &amp;cameraToWorld, const matrix33 &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject)</div><div class="ttdef"><b>Definition</b> feature_map.hpp:588</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a60876198bf37320052f4bc2c3e53db2e"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a60876198bf37320052f4bc2c3e53db2e">rgbd_slam::map_management::Feature_Map::get_local_map_size</a></div><div class="ttdeci">size_t get_local_map_size() const noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:523</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a5786a636d4c71b8ed2fd80771a693dcc"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a5786a636d4c71b8ed2fd80771a693dcc">rgbd_slam::map_management::Feature_Map::update_staged_map</a></div><div class="ttdeci">void update_staged_map(const CameraToWorldMatrix &amp;cameraToWorld, const matrix33 &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject)</div><div class="ttdef"><b>Definition</b> feature_map.hpp:586</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a60876198bf37320052f4bc2c3e53db2e"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a60876198bf37320052f4bc2c3e53db2e">rgbd_slam::map_management::Feature_Map::get_local_map_size</a></div><div class="ttdeci">size_t get_local_map_size() const noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:521</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a641ff2b68092ec2c8940e08c86af316d"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a641ff2b68092ec2c8940e08c86af316d">rgbd_slam::map_management::Feature_Map::get_matches</a></div><div class="ttdeci">void get_matches(const DetectedFeaturesObject &amp;detectedFeatures, const WorldToCameraMatrix &amp;worldToCamera, const bool useAdvancedMatch, const uint minimumFeaturesForOptimization, std::list&lt; FeatureMatchType &gt; &amp;matches) noexcept</div><div class="ttdoc">return the object thta contains the matches between detected and map feature. Set the _isDetectedFeat...</div><div class="ttdef"><b>Definition</b> feature_map.hpp:259</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a743d2e11cad5b9b57b41f612bf4af30b"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a743d2e11cad5b9b57b41f612bf4af30b">rgbd_slam::map_management::Feature_Map::get_staged_map_size</a></div><div class="ttdeci">size_t get_staged_map_size() const noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:524</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a743d2e11cad5b9b57b41f612bf4af30b"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a743d2e11cad5b9b57b41f612bf4af30b">rgbd_slam::map_management::Feature_Map::get_staged_map_size</a></div><div class="ttdeci">size_t get_staged_map_size() const noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:522</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a7b505e44c5294586fec4711790d26453"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7b505e44c5294586fec4711790d26453">rgbd_slam::map_management::Feature_Map::destroy</a></div><div class="ttdeci">void destroy(std::shared_ptr&lt; outputs::IMap_Writer &gt; mapWriter) const noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:238</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a7ea913d86db9f5f30e45a96833125119"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7ea913d86db9f5f30e45a96833125119">rgbd_slam::map_management::Feature_Map::draw_on_image</a></div><div class="ttdeci">void draw_on_image(const WorldToCameraMatrix &amp;worldToCamMatrix, cv::Mat &amp;debugImage, const bool shouldDisplayStaged=false) const noexcept</div><div class="ttdoc">Draw the content of this local map on the given image (draw only matched features)</div><div class="ttdef"><b>Definition</b> feature_map.hpp:492</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a7fc3bdbc68dff40bcd7078f4ca548c4d"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7fc3bdbc68dff40bcd7078f4ca548c4d">rgbd_slam::map_management::Feature_Map::get_upgraded_staged_features</a></div><div class="ttdeci">std::vector&lt; UpgradedFeatureType &gt; get_upgraded_staged_features(const CameraToWorldMatrix &amp;cameraToWorld) noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:719</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a859f3ff330c1ce69f920275f5c71c95a"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a859f3ff330c1ce69f920275f5c71c95a">rgbd_slam::map_management::Feature_Map::update_local_map</a></div><div class="ttdeci">void update_local_map(const CameraToWorldMatrix &amp;cameraToWorld, const matrix33 &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject, std::shared_ptr&lt; outputs::IMap_Writer &gt; mapWriter)</div><div class="ttdef"><b>Definition</b> feature_map.hpp:543</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_aae00b9b9caf80776f5707f66808c3b73"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aae00b9b9caf80776f5707f66808c3b73">rgbd_slam::map_management::Feature_Map::get_upgraded_map_features</a></div><div class="ttdeci">std::vector&lt; UpgradedFeatureType &gt; get_upgraded_map_features(const CameraToWorldMatrix &amp;cameraToWorld) noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:693</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a7fc3bdbc68dff40bcd7078f4ca548c4d"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a7fc3bdbc68dff40bcd7078f4ca548c4d">rgbd_slam::map_management::Feature_Map::get_upgraded_staged_features</a></div><div class="ttdeci">std::vector&lt; UpgradedFeatureType &gt; get_upgraded_staged_features(const CameraToWorldMatrix &amp;cameraToWorld) noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:717</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_a859f3ff330c1ce69f920275f5c71c95a"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#a859f3ff330c1ce69f920275f5c71c95a">rgbd_slam::map_management::Feature_Map::update_local_map</a></div><div class="ttdeci">void update_local_map(const CameraToWorldMatrix &amp;cameraToWorld, const matrix33 &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject, std::shared_ptr&lt; outputs::IMap_Writer &gt; mapWriter)</div><div class="ttdef"><b>Definition</b> feature_map.hpp:541</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_aae00b9b9caf80776f5707f66808c3b73"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aae00b9b9caf80776f5707f66808c3b73">rgbd_slam::map_management::Feature_Map::get_upgraded_map_features</a></div><div class="ttdeci">std::vector&lt; UpgradedFeatureType &gt; get_upgraded_map_features(const CameraToWorldMatrix &amp;cameraToWorld) noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:691</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_ab88bdcd84df9c5a87ac0fc15544eb86d"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ab88bdcd84df9c5a87ac0fc15544eb86d">rgbd_slam::map_management::Feature_Map::get_tracked_features</a></div><div class="ttdeci">void get_tracked_features(const WorldToCameraMatrix &amp;worldToCamera, TrackedFeaturesObject &amp;trackedFeatures, const uint localMapDropChance=1000) const noexcept</div><div class="ttdoc">Get the feature that were tracked for the last tracking step.</div><div class="ttdef"><b>Definition</b> feature_map.hpp:326</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_ad03909157c05ed07693ab5c16a07e248"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ad03909157c05ed07693ab5c16a07e248">rgbd_slam::map_management::Feature_Map::update_staged_map_with_no_tracking</a></div><div class="ttdeci">void update_staged_map_with_no_tracking() noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:671</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_ae5e5526fac61428f5aa953c8f5d6a1aa"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ae5e5526fac61428f5aa953c8f5d6a1aa">rgbd_slam::map_management::Feature_Map::update_local_map_with_no_tracking</a></div><div class="ttdeci">void update_local_map_with_no_tracking(std::shared_ptr&lt; outputs::IMap_Writer &gt; mapWriter) noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:645</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_ad03909157c05ed07693ab5c16a07e248"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ad03909157c05ed07693ab5c16a07e248">rgbd_slam::map_management::Feature_Map::update_staged_map_with_no_tracking</a></div><div class="ttdeci">void update_staged_map_with_no_tracking() noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:669</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_ae5e5526fac61428f5aa953c8f5d6a1aa"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#ae5e5526fac61428f5aa953c8f5d6a1aa">rgbd_slam::map_management::Feature_Map::update_local_map_with_no_tracking</a></div><div class="ttdeci">void update_local_map_with_no_tracking(std::shared_ptr&lt; outputs::IMap_Writer &gt; mapWriter) noexcept</div><div class="ttdef"><b>Definition</b> feature_map.hpp:643</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_aee68dfe8484e43c4534fca09cf0caace"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#aee68dfe8484e43c4534fca09cf0caace">rgbd_slam::map_management::Feature_Map::update_map</a></div><div class="ttdeci">void update_map(const CameraToWorldMatrix &amp;cameraToWorld, const matrix33 &amp;poseCovariance, const DetectedFeaturesObject &amp;detectedFeatureObject, std::shared_ptr&lt; outputs::IMap_Writer &gt; mapWriter)</div><div class="ttdoc">Update this local map with a succesful tracking.</div><div class="ttdef"><b>Definition</b> feature_map.hpp:353</div></div>
-<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_af6d5cdb64de4eefc3af29ce3db600e1d"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#af6d5cdb64de4eefc3af29ce3db600e1d">rgbd_slam::map_management::Feature_Map::add_local_map_point</a></div><div class="ttdeci">void add_local_map_point(const MapFeatureType &amp;mapFeature)</div><div class="ttdef"><b>Definition</b> feature_map.hpp:540</div></div>
+<div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_feature___map_html_af6d5cdb64de4eefc3af29ce3db600e1d"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_feature___map.html#af6d5cdb64de4eefc3af29ce3db600e1d">rgbd_slam::map_management::Feature_Map::add_local_map_point</a></div><div class="ttdeci">void add_local_map_point(const MapFeatureType &amp;mapFeature)</div><div class="ttdef"><b>Definition</b> feature_map.hpp:538</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_i_local_map_feature_html"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_i_local_map_feature.html">rgbd_slam::map_management::ILocalMapFeature</a></div><div class="ttdef"><b>Definition</b> feature_map.hpp:188</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_i_local_map_feature_html_a2c25d8df4e87e1ac33e73b30038460f0"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_i_local_map_feature.html#a2c25d8df4e87e1ac33e73b30038460f0">rgbd_slam::map_management::ILocalMapFeature::is_lost</a></div><div class="ttdeci">virtual bool is_lost() const noexcept=0</div></div>
 <div class="ttc" id="aclassrgbd__slam_1_1map__management_1_1_i_map_feature_html"><div class="ttname"><a href="classrgbd__slam_1_1map__management_1_1_i_map_feature.html">rgbd_slam::map_management::IMapFeature</a></div><div class="ttdef"><b>Definition</b> feature_map.hpp:27</div></div>

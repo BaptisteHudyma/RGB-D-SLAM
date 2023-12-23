@@ -1,0 +1,146 @@
+\doxysection{rgbd\+\_\+slam\+::utils\+::Segment\texorpdfstring{$<$}{<} Dim \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classrgbd__slam_1_1utils_1_1_segment}{}\label{classrgbd__slam_1_1utils_1_1_segment}\index{rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}}
+
+
+\doxylink{classrgbd__slam_1_1utils_1_1_segment}{Segment} class\+: a line defined by two points.  
+
+
+
+
+{\ttfamily \#include $<$line.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::utils\+::Segment\texorpdfstring{$<$}{<} Dim \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classrgbd__slam_1_1utils_1_1_segment}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a435b512699306498854118fe5c17461d}{Segment}} ()
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a811244a216a052d2c2d4be1621b5ef31}{Segment}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&start\+Point, const Eigen\+::\+Vector$<$ double, Dim $>$ \&end\+Point)
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a50600d6dfdd6f7f7e74b83a586537ce5}{Segment}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{Segment}}$<$ Dim $>$ \&other)
+\item 
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_ad12cad5448cdab1b26779c3cc6309c1a}{compute\+\_\+normal}} () const noexcept override
+\begin{DoxyCompactList}\small\item\em compute the normal of this line \end{DoxyCompactList}\item 
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a8b331ad782e9154015af883914374959}{get\+\_\+end\+\_\+point}} () const noexcept
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a06b0eccbcf90f0a3829079aa6710545a}{set\+\_\+end\+\_\+point}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&end\+Point) noexcept
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a7be42ed548a3f801091ffac95514f94b}{set\+\_\+points}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&start\+Point, const Eigen\+::\+Vector$<$ double, Dim $>$ \&end\+Point) noexcept
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine$<$ Dim $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a597c68e946081753a595b285e9b5f8bd}{ILine}} ()
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a9e4873cecf295e529c2a797b82b83410}{ILine}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&start\+Point)
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ae2d978b56d17d4d6c67a85d5e4019a36}{ILine}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}$<$ Dim $>$ \&other)
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ad813599fd47e5f08c4615094c08b72ff}{distance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}$<$ Dim $>$ \&other) const
+\begin{DoxyCompactList}\small\item\em Compute the distance between the two lines. \end{DoxyCompactList}\item 
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_adf292560a189d8e3f5000d2228ff8f68}{get\+\_\+closest\+\_\+point\+\_\+on\+\_\+line}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&point) const noexcept
+\begin{DoxyCompactList}\small\item\em Find the closest point to a given point, that will be on the current line. \end{DoxyCompactList}\item 
+virtual Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ab3602ee99bc47d161e7a3df5c44e89d2}{distance}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&point) const noexcept
+\begin{DoxyCompactList}\small\item\em Compute the signed distance between this line and a point. \end{DoxyCompactList}\item 
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac994fd816a051a5d81108d66ed235e6c}{get\+\_\+start\+\_\+point}} () const noexcept
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a027ed8ca301449320d7da4ca08987d39}{set\+\_\+start\+\_\+point}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&start\+Point) noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}{\+\_\+end\+Point}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine$<$ Dim $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\+\_\+start\+Point}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$int Dim$>$\newline
+class rgbd\+\_\+slam\+::utils\+::\+Segment$<$ Dim $>$}
+\doxylink{classrgbd__slam_1_1utils_1_1_segment}{Segment} class\+: a line defined by two points. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_segment_a435b512699306498854118fe5c17461d}\label{classrgbd__slam_1_1utils_1_1_segment_a435b512699306498854118fe5c17461d} 
+\index{rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}!Segment@{Segment}}
+\index{Segment@{Segment}!rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{Segment()}{Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{rgbd\+\_\+slam\+::utils\+::\+Segment}}$<$ Dim $>$\+::\+Segment (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_segment_a811244a216a052d2c2d4be1621b5ef31}\label{classrgbd__slam_1_1utils_1_1_segment_a811244a216a052d2c2d4be1621b5ef31} 
+\index{rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}!Segment@{Segment}}
+\index{Segment@{Segment}!rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{Segment()}{Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{rgbd\+\_\+slam\+::utils\+::\+Segment}}$<$ Dim $>$\+::\+Segment (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{start\+Point,  }\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{end\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_segment_a50600d6dfdd6f7f7e74b83a586537ce5}\label{classrgbd__slam_1_1utils_1_1_segment_a50600d6dfdd6f7f7e74b83a586537ce5} 
+\index{rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}!Segment@{Segment}}
+\index{Segment@{Segment}!rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{Segment()}{Segment()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{rgbd\+\_\+slam\+::utils\+::\+Segment}}$<$ Dim $>$\+::\+Segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{Segment}}$<$ Dim $>$ \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_segment_ad12cad5448cdab1b26779c3cc6309c1a}\label{classrgbd__slam_1_1utils_1_1_segment_ad12cad5448cdab1b26779c3cc6309c1a} 
+\index{rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}!compute\_normal@{compute\_normal}}
+\index{compute\_normal@{compute\_normal}!rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{compute\_normal()}{compute\_normal()}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{rgbd\+\_\+slam\+::utils\+::\+Segment}}$<$ Dim $>$\+::compute\+\_\+normal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+compute the normal of this line 
+
+
+
+Implements \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a555006e1a66c7f58e9270b3abed017d8}{rgbd\+\_\+slam\+::utils\+::\+ILine$<$ Dim $>$}}.
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_segment_a8b331ad782e9154015af883914374959}\label{classrgbd__slam_1_1utils_1_1_segment_a8b331ad782e9154015af883914374959} 
+\index{rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}!get\_end\_point@{get\_end\_point}}
+\index{get\_end\_point@{get\_end\_point}!rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{get\_end\_point()}{get\_end\_point()}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{rgbd\+\_\+slam\+::utils\+::\+Segment}}$<$ Dim $>$\+::get\+\_\+end\+\_\+point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_segment_a06b0eccbcf90f0a3829079aa6710545a}\label{classrgbd__slam_1_1utils_1_1_segment_a06b0eccbcf90f0a3829079aa6710545a} 
+\index{rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}!set\_end\_point@{set\_end\_point}}
+\index{set\_end\_point@{set\_end\_point}!rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{set\_end\_point()}{set\_end\_point()}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{rgbd\+\_\+slam\+::utils\+::\+Segment}}$<$ Dim $>$\+::set\+\_\+end\+\_\+point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{end\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_segment_a7be42ed548a3f801091ffac95514f94b}\label{classrgbd__slam_1_1utils_1_1_segment_a7be42ed548a3f801091ffac95514f94b} 
+\index{rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}!set\_points@{set\_points}}
+\index{set\_points@{set\_points}!rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{set\_points()}{set\_points()}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{rgbd\+\_\+slam\+::utils\+::\+Segment}}$<$ Dim $>$\+::set\+\_\+points (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{start\+Point,  }\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{end\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}\label{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7} 
+\index{rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}!\_endPoint@{\_endPoint}}
+\index{\_endPoint@{\_endPoint}!rgbd\_slam::utils::Segment$<$ Dim $>$@{rgbd\_slam::utils::Segment$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{\_endPoint}{\_endPoint}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+Eigen\+::\+Vector$<$double, Dim$>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{rgbd\+\_\+slam\+::utils\+::\+Segment}}$<$ Dim $>$\+::\+\_\+end\+Point\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{line_8hpp}{line.\+hpp}}\end{DoxyCompactItemize}

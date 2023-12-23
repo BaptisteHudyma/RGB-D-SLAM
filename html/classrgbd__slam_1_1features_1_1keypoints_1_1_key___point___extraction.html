@@ -102,14 +102,15 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a3dd17b8809f72dfccf19c7a683ba0a97" id="r_a3dd17b8809f72dfccf19c7a683ba0a97"><td class="memItemLeft" align="right" valign="top">std::vector&lt; cv::Point2f &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a3dd17b8809f72dfccf19c7a683ba0a97">detect_keypoints</a> (const cv::Mat &amp;grayImage, const cv::Mat_&lt; uchar &gt; &amp;mask) const noexcept</td></tr>
-<tr class="memdesc:a3dd17b8809f72dfccf19c7a683ba0a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute new key point, with an optional mask to exclude detection zones.  <br /></td></tr>
-<tr class="separator:a3dd17b8809f72dfccf19c7a683ba0a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a773c6a3f5cf7d3d9072921d5379ba452" id="r_a773c6a3f5cf7d3d9072921d5379ba452"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a773c6a3f5cf7d3d9072921d5379ba452">perform_keypoint_detection</a> (const cv::Mat &amp;grayImage, const cv::Mat_&lt; uchar &gt; &amp;mask, std::vector&lt; cv::KeyPoint &gt; &amp;frameKeypoints) const noexcept</td></tr>
-<tr class="memdesc:a773c6a3f5cf7d3d9072921d5379ba452"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform keypoint detection on the image, divided in smaller patches.  <br /></td></tr>
-<tr class="separator:a773c6a3f5cf7d3d9072921d5379ba452"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a221ade8e21ddd75719aedbc886f12661" id="r_a221ade8e21ddd75719aedbc886f12661"><td class="memItemLeft" align="right" valign="top">cv::Mat_&lt; uchar &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a221ade8e21ddd75719aedbc886f12661">compute_key_point_mask</a> (const cv::Size imageSize, const std::vector&lt; cv::Point2f &gt; &amp;keypointContainer) const noexcept</td></tr>
-<tr class="separator:a221ade8e21ddd75719aedbc886f12661"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adca3ec24bd2446716381907f6d77b401" id="r_adca3ec24bd2446716381907f6d77b401"><td class="memItemLeft" align="right" valign="top">std::vector&lt; cv::Point2f &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#adca3ec24bd2446716381907f6d77b401">detect_keypoints</a> (const cv::Mat &amp;grayImage, const std::vector&lt; cv::Point2f &gt; &amp;alreadyDetectedPoints) const noexcept</td></tr>
+<tr class="memdesc:adca3ec24bd2446716381907f6d77b401"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute new key point, with an optional mask to exclude detection zones.  <br /></td></tr>
+<tr class="separator:adca3ec24bd2446716381907f6d77b401"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e893c646a35d86a5da04f98b7008d25" id="r_a3e893c646a35d86a5da04f98b7008d25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a3e893c646a35d86a5da04f98b7008d25">perform_keypoint_detection</a> (const cv::Mat &amp;grayImage, const std::vector&lt; cv::Point2f &gt; &amp;alreadyDetectedPoints, std::vector&lt; cv::KeyPoint &gt; &amp;frameKeypoints) const noexcept</td></tr>
+<tr class="memdesc:a3e893c646a35d86a5da04f98b7008d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform keypoint detection on the image, divided in smaller patches.  <br /></td></tr>
+<tr class="separator:a3e893c646a35d86a5da04f98b7008d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7f9da8b5febfed7c03d26e2477770bd" id="r_aa7f9da8b5febfed7c03d26e2477770bd"><td class="memItemLeft" align="right" valign="top">cv::Mat_&lt; uchar &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#aa7f9da8b5febfed7c03d26e2477770bd">compute_key_point_mask</a> (const cv::Size imageSize, const std::vector&lt; cv::Point2f &gt; &amp;keypointContainer, const double pointMaskRadius_px, std::array&lt; uint16_t, <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a1d525f0abd1cc1403d08f52b59a7a86b">numberOfDetectionCells</a> &gt; &amp;detectionWindowDetectionCount) const noexcept</td></tr>
+<tr class="memdesc:aa7f9da8b5febfed7c03d26e2477770bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a mask image of size imageSize. A masked area will be put around each points in keypointContainer.  <br /></td></tr>
+<tr class="separator:aa7f9da8b5febfed7c03d26e2477770bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
@@ -143,8 +144,8 @@ Static Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a221ade8e21ddd75719aedbc886f12661" name="a221ade8e21ddd75719aedbc886f12661"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a221ade8e21ddd75719aedbc886f12661">&#9670;&#160;</a></span>compute_key_point_mask()</h2>
+<a id="aa7f9da8b5febfed7c03d26e2477770bd" name="aa7f9da8b5febfed7c03d26e2477770bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7f9da8b5febfed7c03d26e2477770bd">&#9670;&#160;</a></span>compute_key_point_mask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,7 +163,19 @@ Static Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::vector&lt; cv::Point2f &gt; &amp;&#160;</td>
-          <td class="paramname"><em>keypointContainer</em>&#160;</td>
+          <td class="paramname"><em>keypointContainer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>pointMaskRadius_px</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::array&lt; uint16_t, <a class="el" href="classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction.html#a1d525f0abd1cc1403d08f52b59a7a86b">numberOfDetectionCells</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>detectionWindowDetectionCount</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -176,6 +189,18 @@ Static Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Compute a mask image of size imageSize. A masked area will be put around each points in keypointContainer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">imageSize</td><td>The size of the mask image to output </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">keypointContainer</td><td>The container of points we need to compute a mask for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pointMaskRadius_px</td><td>radius of the mask for each points </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">detectionWindowDetectionCount</td><td>a container that associates the detection window index to the number of points already in keypointContainer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A mask for all points </dd></dl>
 
 </div>
 </div>
@@ -240,8 +265,8 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3dd17b8809f72dfccf19c7a683ba0a97" name="a3dd17b8809f72dfccf19c7a683ba0a97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3dd17b8809f72dfccf19c7a683ba0a97">&#9670;&#160;</a></span>detect_keypoints()</h2>
+<a id="adca3ec24bd2446716381907f6d77b401" name="adca3ec24bd2446716381907f6d77b401"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adca3ec24bd2446716381907f6d77b401">&#9670;&#160;</a></span>detect_keypoints()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,8 +283,8 @@ Static Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const cv::Mat_&lt; uchar &gt; &amp;&#160;</td>
-          <td class="paramname"><em>mask</em>&#160;</td>
+          <td class="paramtype">const std::vector&lt; cv::Point2f &gt; &amp;&#160;</td>
+          <td class="paramname"><em>alreadyDetectedPoints</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -278,7 +303,7 @@ Static Protected Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">grayImage</td><td>The image in which we want to detect waypoints </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mask</td><td>The mask which we do not want to detect waypoints detector </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alreadyDetectedPoints</td><td>A container for the pointd already detected in this image (wont detect again) </td></tr>
   </table>
   </dd>
 </dl>
@@ -366,8 +391,8 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a773c6a3f5cf7d3d9072921d5379ba452" name="a773c6a3f5cf7d3d9072921d5379ba452"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a773c6a3f5cf7d3d9072921d5379ba452">&#9670;&#160;</a></span>perform_keypoint_detection()</h2>
+<a id="a3e893c646a35d86a5da04f98b7008d25" name="a3e893c646a35d86a5da04f98b7008d25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e893c646a35d86a5da04f98b7008d25">&#9670;&#160;</a></span>perform_keypoint_detection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -384,8 +409,8 @@ Static Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const cv::Mat_&lt; uchar &gt; &amp;&#160;</td>
-          <td class="paramname"><em>mask</em>, </td>
+          <td class="paramtype">const std::vector&lt; cv::Point2f &gt; &amp;&#160;</td>
+          <td class="paramname"><em>alreadyDetectedPoints</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -410,7 +435,7 @@ Static Protected Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">grayImage</td><td>Image in which to detect keypoints </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mask</td><td>Mask of the image in which to detect keypoints. No keypoints will be detected in this </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alreadyDetectedPoints</td><td>A container for the pointd already detected in this image (wont detect again) </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">frameKeypoints</td><td>The keypoint detected in this process keypoints in the image </td></tr>
   </table>
   </dd>
@@ -492,8 +517,8 @@ Static Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code hl_variable" href="namespacergbd__slam_1_1parameters_1_1detection.html#a58a53527a5861893bc07b540f2ebc3ff">parameters::detection::keypointCellDetectionHeightCount</a> *</div>
 <div class="line">                                                   <a class="code hl_variable" href="namespacergbd__slam_1_1parameters_1_1detection.html#a1ca69fcc3691ed6b94b96fa8a1bee75e">parameters::detection::keypointCellDetectionWidthCount</a></div>
-<div class="ttc" id="anamespacergbd__slam_1_1parameters_1_1detection_html_a1ca69fcc3691ed6b94b96fa8a1bee75e"><div class="ttname"><a href="namespacergbd__slam_1_1parameters_1_1detection.html#a1ca69fcc3691ed6b94b96fa8a1bee75e">rgbd_slam::parameters::detection::keypointCellDetectionWidthCount</a></div><div class="ttdeci">constexpr uint keypointCellDetectionWidthCount</div><div class="ttdef"><b>Definition</b> parameters.hpp:56</div></div>
-<div class="ttc" id="anamespacergbd__slam_1_1parameters_1_1detection_html_a58a53527a5861893bc07b540f2ebc3ff"><div class="ttname"><a href="namespacergbd__slam_1_1parameters_1_1detection.html#a58a53527a5861893bc07b540f2ebc3ff">rgbd_slam::parameters::detection::keypointCellDetectionHeightCount</a></div><div class="ttdeci">constexpr uint keypointCellDetectionHeightCount</div><div class="ttdef"><b>Definition</b> parameters.hpp:55</div></div>
+<div class="ttc" id="anamespacergbd__slam_1_1parameters_1_1detection_html_a1ca69fcc3691ed6b94b96fa8a1bee75e"><div class="ttname"><a href="namespacergbd__slam_1_1parameters_1_1detection.html#a1ca69fcc3691ed6b94b96fa8a1bee75e">rgbd_slam::parameters::detection::keypointCellDetectionWidthCount</a></div><div class="ttdeci">constexpr uint keypointCellDetectionWidthCount</div><div class="ttdef"><b>Definition</b> parameters.hpp:58</div></div>
+<div class="ttc" id="anamespacergbd__slam_1_1parameters_1_1detection_html_a58a53527a5861893bc07b540f2ebc3ff"><div class="ttname"><a href="namespacergbd__slam_1_1parameters_1_1detection.html#a58a53527a5861893bc07b540f2ebc3ff">rgbd_slam::parameters::detection::keypointCellDetectionHeightCount</a></div><div class="ttdeci">constexpr uint keypointCellDetectionHeightCount</div><div class="ttdef"><b>Definition</b> parameters.hpp:57</div></div>
 </div><!-- fragment -->
 </div>
 </div>

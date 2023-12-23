@@ -7,9 +7,11 @@
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66}{vec}} () const
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a5648830cf9d3f1a0fe92d42fbaf098bc}{Cartesian}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66}{vec}})
 \item 
-void \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_aae61c33a31e5afe74242e656a3614c35}{from\+\_\+vec}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66}{vec}})
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a308bc3745fb720bd943b187977922c41}{Cartesian}} (const double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_aca0b5ad61c3edcacdd679bbeb6e5f916}{x}}, const double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a25279a92f7244d1d894e06b5779953a8}{y}}, const double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a730ec2bd9ad7e104e2c3dda182f7c1fb}{z}})
+\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66}{vec}} () const
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -27,6 +29,21 @@ double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a25279a92f7244d1
 \item 
 double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian_a730ec2bd9ad7e104e2c3dda182f7c1fb}{z}}
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_a5648830cf9d3f1a0fe92d42fbaf098bc}\label{structrgbd__slam_1_1utils_1_1_cartesian_a5648830cf9d3f1a0fe92d42fbaf098bc} 
+\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!Cartesian@{Cartesian}}
+\index{Cartesian@{Cartesian}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+\doxysubsubsection{\texorpdfstring{Cartesian()}{Cartesian()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::\+Cartesian (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_a308bc3745fb720bd943b187977922c41}\label{structrgbd__slam_1_1utils_1_1_cartesian_a308bc3745fb720bd943b187977922c41} 
+\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!Cartesian@{Cartesian}}
+\index{Cartesian@{Cartesian}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
+\doxysubsubsection{\texorpdfstring{Cartesian()}{Cartesian()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::\+Cartesian (\begin{DoxyParamCaption}\item[{const double}]{x,  }\item[{const double}]{y,  }\item[{const double}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
 
 
 \doxysubsection{Member Function Documentation}
@@ -62,12 +79,6 @@ Transform a given coordinate from shperical to cartesian space.
 \mbox{\texttt{ out}}  & {\em jacobian} & the jacobian of this transformation \\
 \hline
 \end{DoxyParams}
-\Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_aae61c33a31e5afe74242e656a3614c35}\label{structrgbd__slam_1_1utils_1_1_cartesian_aae61c33a31e5afe74242e656a3614c35} 
-\index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!from\_vec@{from\_vec}}
-\index{from\_vec@{from\_vec}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}
-\doxysubsubsection{\texorpdfstring{from\_vec()}{from\_vec()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Cartesian\+::from\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
 \Hypertarget{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66}\label{structrgbd__slam_1_1utils_1_1_cartesian_a2b88b9b88f15cb145883ad2676cb6c66} 
 \index{rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}!vec@{vec}}
 \index{vec@{vec}!rgbd\_slam::utils::Cartesian@{rgbd\_slam::utils::Cartesian}}

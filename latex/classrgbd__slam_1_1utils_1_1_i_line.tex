@@ -1,0 +1,160 @@
+\doxysection{rgbd\+\_\+slam\+::utils\+::ILine\texorpdfstring{$<$}{<} Dim \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classrgbd__slam_1_1utils_1_1_i_line}{}\label{classrgbd__slam_1_1utils_1_1_i_line}\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+
+
+Base class for all line related stuff.  
+
+
+
+
+{\ttfamily \#include $<$line.\+hpp$>$}
+
+Inheritance diagram for rgbd\+\_\+slam\+::utils\+::ILine\texorpdfstring{$<$}{<} Dim \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classrgbd__slam_1_1utils_1_1_i_line}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a597c68e946081753a595b285e9b5f8bd}{ILine}} ()
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a9e4873cecf295e529c2a797b82b83410}{ILine}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&start\+Point)
+\item 
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ae2d978b56d17d4d6c67a85d5e4019a36}{ILine}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}$<$ Dim $>$ \&other)
+\item 
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ad813599fd47e5f08c4615094c08b72ff}{distance}} (const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}$<$ Dim $>$ \&other) const
+\begin{DoxyCompactList}\small\item\em Compute the distance between the two lines. \end{DoxyCompactList}\item 
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_adf292560a189d8e3f5000d2228ff8f68}{get\+\_\+closest\+\_\+point\+\_\+on\+\_\+line}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&point) const noexcept
+\begin{DoxyCompactList}\small\item\em Find the closest point to a given point, that will be on the current line. \end{DoxyCompactList}\item 
+virtual Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ab3602ee99bc47d161e7a3df5c44e89d2}{distance}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&point) const noexcept
+\begin{DoxyCompactList}\small\item\em Compute the signed distance between this line and a point. \end{DoxyCompactList}\item 
+virtual Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a555006e1a66c7f58e9270b3abed017d8}{compute\+\_\+normal}} () const noexcept=0
+\begin{DoxyCompactList}\small\item\em get the normal vector from the start point \end{DoxyCompactList}\item 
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac994fd816a051a5d81108d66ed235e6c}{get\+\_\+start\+\_\+point}} () const noexcept
+\item 
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a027ed8ca301449320d7da4ca08987d39}{set\+\_\+start\+\_\+point}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&start\+Point) noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\+\_\+start\+Point}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$int Dim$>$\newline
+class rgbd\+\_\+slam\+::utils\+::\+ILine$<$ Dim $>$}
+Base class for all line related stuff. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_a597c68e946081753a595b285e9b5f8bd}\label{classrgbd__slam_1_1utils_1_1_i_line_a597c68e946081753a595b285e9b5f8bd} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!ILine@{ILine}}
+\index{ILine@{ILine}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{ILine()}{ILine()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::\+ILine (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_a9e4873cecf295e529c2a797b82b83410}\label{classrgbd__slam_1_1utils_1_1_i_line_a9e4873cecf295e529c2a797b82b83410} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!ILine@{ILine}}
+\index{ILine@{ILine}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{ILine()}{ILine()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::\+ILine (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{start\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_ae2d978b56d17d4d6c67a85d5e4019a36}\label{classrgbd__slam_1_1utils_1_1_i_line_ae2d978b56d17d4d6c67a85d5e4019a36} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!ILine@{ILine}}
+\index{ILine@{ILine}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{ILine()}{ILine()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::\+ILine (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}$<$ Dim $>$ \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_a555006e1a66c7f58e9270b3abed017d8}\label{classrgbd__slam_1_1utils_1_1_i_line_a555006e1a66c7f58e9270b3abed017d8} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!compute\_normal@{compute\_normal}}
+\index{compute\_normal@{compute\_normal}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{compute\_normal()}{compute\_normal()}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+virtual Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::compute\+\_\+normal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}, {\ttfamily [noexcept]}}
+
+
+
+get the normal vector from the start point 
+
+
+
+Implemented in \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_ad12cad5448cdab1b26779c3cc6309c1a}{rgbd\+\_\+slam\+::utils\+::\+Segment$<$ Dim $>$}}, and \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a76e1c89d70055bab5fcb695e6c65e49c}{rgbd\+\_\+slam\+::utils\+::\+Line$<$ Dim $>$}}.
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_ab3602ee99bc47d161e7a3df5c44e89d2}\label{classrgbd__slam_1_1utils_1_1_i_line_ab3602ee99bc47d161e7a3df5c44e89d2} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!distance@{distance}}
+\index{distance@{distance}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+virtual Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{point }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}, {\ttfamily [noexcept]}}
+
+
+
+Compute the signed distance between this line and a point. 
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_ad813599fd47e5f08c4615094c08b72ff}\label{classrgbd__slam_1_1utils_1_1_i_line_ad813599fd47e5f08c4615094c08b72ff} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!distance@{distance}}
+\index{distance@{distance}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+double \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}$<$ Dim $>$ \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compute the distance between the two lines. 
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_adf292560a189d8e3f5000d2228ff8f68}\label{classrgbd__slam_1_1utils_1_1_i_line_adf292560a189d8e3f5000d2228ff8f68} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!get\_closest\_point\_on\_line@{get\_closest\_point\_on\_line}}
+\index{get\_closest\_point\_on\_line@{get\_closest\_point\_on\_line}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{get\_closest\_point\_on\_line()}{get\_closest\_point\_on\_line()}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::get\+\_\+closest\+\_\+point\+\_\+on\+\_\+line (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{point }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Find the closest point to a given point, that will be on the current line. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em point} & the point to find the closest point to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the point on the line that is the closest to the given point 
+\end{DoxyReturn}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_ac994fd816a051a5d81108d66ed235e6c}\label{classrgbd__slam_1_1utils_1_1_i_line_ac994fd816a051a5d81108d66ed235e6c} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!get\_start\_point@{get\_start\_point}}
+\index{get\_start\_point@{get\_start\_point}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{get\_start\_point()}{get\_start\_point()}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::get\+\_\+start\+\_\+point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_a027ed8ca301449320d7da4ca08987d39}\label{classrgbd__slam_1_1utils_1_1_i_line_a027ed8ca301449320d7da4ca08987d39} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!set\_start\_point@{set\_start\_point}}
+\index{set\_start\_point@{set\_start\_point}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{set\_start\_point()}{set\_start\_point()}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+void \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::set\+\_\+start\+\_\+point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{start\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}\label{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5} 
+\index{rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}!\_startPoint@{\_startPoint}}
+\index{\_startPoint@{\_startPoint}!rgbd\_slam::utils::ILine$<$ Dim $>$@{rgbd\_slam::utils::ILine$<$ Dim $>$}}
+\doxysubsubsection{\texorpdfstring{\_startPoint}{\_startPoint}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+Eigen\+::\+Vector$<$double, Dim$>$ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{rgbd\+\_\+slam\+::utils\+::\+ILine}}$<$ Dim $>$\+::\+\_\+start\+Point\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/\mbox{\hyperlink{line_8hpp}{line.\+hpp}}\end{DoxyCompactItemize}

@@ -21,12 +21,12 @@ void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point__
 \doxysubsubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::vector$<$ cv\+::\+Point2f $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3dd17b8809f72dfccf19c7a683ba0a97}{detect\+\_\+keypoints}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat\+\_\+$<$ uchar $>$ \&mask) const noexcept
+std\+::vector$<$ cv\+::\+Point2f $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_adca3ec24bd2446716381907f6d77b401}{detect\+\_\+keypoints}} (const cv\+::\+Mat \&gray\+Image, const std\+::vector$<$ cv\+::\+Point2f $>$ \&already\+Detected\+Points) const noexcept
 \begin{DoxyCompactList}\small\item\em Compute new key point, with an optional mask to exclude detection zones. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a773c6a3f5cf7d3d9072921d5379ba452}{perform\+\_\+keypoint\+\_\+detection}} (const cv\+::\+Mat \&gray\+Image, const cv\+::\+Mat\+\_\+$<$ uchar $>$ \&mask, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&frame\+Keypoints) const noexcept
+void \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3e893c646a35d86a5da04f98b7008d25}{perform\+\_\+keypoint\+\_\+detection}} (const cv\+::\+Mat \&gray\+Image, const std\+::vector$<$ cv\+::\+Point2f $>$ \&already\+Detected\+Points, std\+::vector$<$ cv\+::\+Key\+Point $>$ \&frame\+Keypoints) const noexcept
 \begin{DoxyCompactList}\small\item\em Perform keypoint detection on the image, divided in smaller patches. \end{DoxyCompactList}\item 
-cv\+::\+Mat\+\_\+$<$ uchar $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a221ade8e21ddd75719aedbc886f12661}{compute\+\_\+key\+\_\+point\+\_\+mask}} (const cv\+::\+Size image\+Size, const std\+::vector$<$ cv\+::\+Point2f $>$ \&keypoint\+Container) const noexcept
-\end{DoxyCompactItemize}
+cv\+::\+Mat\+\_\+$<$ uchar $>$ \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_aa7f9da8b5febfed7c03d26e2477770bd}{compute\+\_\+key\+\_\+point\+\_\+mask}} (const cv\+::\+Size image\+Size, const std\+::vector$<$ cv\+::\+Point2f $>$ \&keypoint\+Container, const double point\+Mask\+Radius\+\_\+px, std\+::array$<$ uint16\+\_\+t, \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1d525f0abd1cc1403d08f52b59a7a86b}{number\+Of\+Detection\+Cells}} $>$ \&detection\+Window\+Detection\+Count) const noexcept
+\begin{DoxyCompactList}\small\item\em Compute a mask image of size image\+Size. A masked area will be put around each points in keypoint\+Container. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Static Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -52,12 +52,30 @@ A class to detect and track keypoints. This class will detect keypoints in gray 
 
 
 \doxysubsection{Member Function Documentation}
-\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a221ade8e21ddd75719aedbc886f12661}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a221ade8e21ddd75719aedbc886f12661} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_aa7f9da8b5febfed7c03d26e2477770bd}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_aa7f9da8b5febfed7c03d26e2477770bd} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!compute\_key\_point\_mask@{compute\_key\_point\_mask}}
 \index{compute\_key\_point\_mask@{compute\_key\_point\_mask}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 \doxysubsubsection{\texorpdfstring{compute\_key\_point\_mask()}{compute\_key\_point\_mask()}}
-{\footnotesize\ttfamily cv\+::\+Mat\+\_\+$<$ uchar $>$ rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::compute\+\_\+key\+\_\+point\+\_\+mask (\begin{DoxyParamCaption}\item[{const cv\+::\+Size}]{image\+Size,  }\item[{const std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{keypoint\+Container }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
+{\footnotesize\ttfamily cv\+::\+Mat\+\_\+$<$ uchar $>$ rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::compute\+\_\+key\+\_\+point\+\_\+mask (\begin{DoxyParamCaption}\item[{const cv\+::\+Size}]{image\+Size,  }\item[{const std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{keypoint\+Container,  }\item[{const double}]{point\+Mask\+Radius\+\_\+px,  }\item[{std\+::array$<$ uint16\+\_\+t, \mbox{\hyperlink{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a1d525f0abd1cc1403d08f52b59a7a86b}{number\+Of\+Detection\+Cells}} $>$ \&}]{detection\+Window\+Detection\+Count }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
+
+
+Compute a mask image of size image\+Size. A masked area will be put around each points in keypoint\+Container. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em image\+Size} & The size of the mask image to output \\
+\hline
+\mbox{\texttt{ in}}  & {\em keypoint\+Container} & The container of points we need to compute a mask for \\
+\hline
+\mbox{\texttt{ in}}  & {\em point\+Mask\+Radius\+\_\+px} & radius of the mask for each points \\
+\hline
+\mbox{\texttt{ out}}  & {\em detection\+Window\+Detection\+Count} & a container that associates the detection window index to the number of points already in keypoint\+Container \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A mask for all points 
+\end{DoxyReturn}
 \Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ad9efd1e5cd3a95375663ee00cbf9f23c}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_ad9efd1e5cd3a95375663ee00cbf9f23c} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!compute\_keypoints@{compute\_keypoints}}
 \index{compute\_keypoints@{compute\_keypoints}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
@@ -82,11 +100,11 @@ compute the keypoints in the gray image, using optical flow and/or generic featu
 \begin{DoxyReturn}{Returns}
 An object that contains the detected keypoints 
 \end{DoxyReturn}
-DESCRIPTORS\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3dd17b8809f72dfccf19c7a683ba0a97}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3dd17b8809f72dfccf19c7a683ba0a97} 
+DESCRIPTORS\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_adca3ec24bd2446716381907f6d77b401}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_adca3ec24bd2446716381907f6d77b401} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!detect\_keypoints@{detect\_keypoints}}
 \index{detect\_keypoints@{detect\_keypoints}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 \doxysubsubsection{\texorpdfstring{detect\_keypoints()}{detect\_keypoints()}}
-{\footnotesize\ttfamily std\+::vector$<$ cv\+::\+Point2f $>$ rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::detect\+\_\+keypoints (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat\+\_\+$<$ uchar $>$ \&}]{mask }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
+{\footnotesize\ttfamily std\+::vector$<$ cv\+::\+Point2f $>$ rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::detect\+\_\+keypoints (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{already\+Detected\+Points }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
 
 
@@ -96,7 +114,7 @@ Compute new key point, with an optional mask to exclude detection zones.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em gray\+Image} & The image in which we want to detect waypoints \\
 \hline
-\mbox{\texttt{ in}}  & {\em mask} & The mask which we do not want to detect waypoints detector \\
+\mbox{\texttt{ in}}  & {\em already\+Detected\+Points} & A container for the pointd already detected in this image (wont detect again) \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -129,11 +147,11 @@ Compute the current frame keypoints from optical flow. There is need for matchin
 \mbox{\texttt{ out}}  & {\em keypoint\+Struct} & The keypoints tracked by optical flow \\
 \hline
 \end{DoxyParams}
-\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a773c6a3f5cf7d3d9072921d5379ba452}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a773c6a3f5cf7d3d9072921d5379ba452} 
+\Hypertarget{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3e893c646a35d86a5da04f98b7008d25}\label{classrgbd__slam_1_1features_1_1keypoints_1_1_key___point___extraction_a3e893c646a35d86a5da04f98b7008d25} 
 \index{rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}!perform\_keypoint\_detection@{perform\_keypoint\_detection}}
 \index{perform\_keypoint\_detection@{perform\_keypoint\_detection}!rgbd\_slam::features::keypoints::Key\_Point\_Extraction@{rgbd\_slam::features::keypoints::Key\_Point\_Extraction}}
 \doxysubsubsection{\texorpdfstring{perform\_keypoint\_detection()}{perform\_keypoint\_detection()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::perform\+\_\+keypoint\+\_\+detection (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const cv\+::\+Mat\+\_\+$<$ uchar $>$ \&}]{mask,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{frame\+Keypoints }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
+{\footnotesize\ttfamily void rgbd\+\_\+slam\+::features\+::keypoints\+::\+Key\+\_\+\+Point\+\_\+\+Extraction\+::perform\+\_\+keypoint\+\_\+detection (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{gray\+Image,  }\item[{const std\+::vector$<$ cv\+::\+Point2f $>$ \&}]{already\+Detected\+Points,  }\item[{std\+::vector$<$ cv\+::\+Key\+Point $>$ \&}]{frame\+Keypoints }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
 
 
 
@@ -143,7 +161,7 @@ Perform keypoint detection on the image, divided in smaller patches.
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\texttt{ in}}  & {\em gray\+Image} & Image in which to detect keypoints \\
 \hline
-\mbox{\texttt{ in}}  & {\em mask} & Mask of the image in which to detect keypoints. No keypoints will be detected in this \\
+\mbox{\texttt{ in}}  & {\em already\+Detected\+Points} & A container for the pointd already detected in this image (wont detect again) \\
 \hline
 \mbox{\texttt{ out}}  & {\em frame\+Keypoints} & The keypoint detected in this process keypoints in the image \\
 \hline

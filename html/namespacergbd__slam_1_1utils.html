@@ -96,8 +96,14 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_cartesian.html">Cartesian</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_i_line.html">ILine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for all line related stuff.  <a href="classrgbd__slam_1_1utils_1_1_i_line.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html">InverseDepthWorldPoint</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contain an inverse depth representation of a world point. This is used to represent point with an unknown depth.  <a href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_line.html">Line</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classrgbd__slam_1_1utils_1_1_segment.html" title="Segment class: a line defined by two points.">Segment</a> class: a line defined by a start point and a normal vector.  <a href="classrgbd__slam_1_1utils_1_1_line.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_plane_camera_coordinates.html">PlaneCameraCoordinates</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parametrization of a plane in camera coordinates.  <a href="structrgbd__slam_1_1utils_1_1_plane_camera_coordinates.html#details">More...</a><br /></td></tr>
@@ -124,6 +130,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate2_d.html">ScreenCoordinate2D</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels.  <a href="structrgbd__slam_1_1utils_1_1_screen_coordinate2_d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1utils_1_1_segment.html">Segment</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classrgbd__slam_1_1utils_1_1_segment.html" title="Segment class: a line defined by two points.">Segment</a> class: a line defined by two points.  <a href="classrgbd__slam_1_1utils_1_1_segment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_spherical.html">Spherical</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -233,9 +242,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a4e8db2e9701462cd35d1800efc98f387" id="r_a4e8db2e9701462cd35d1800efc98f387"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a4e8db2e9701462cd35d1800efc98f387">double_equal</a> (const double a, const double b, const double epsilon=std::numeric_limits&lt; double &gt;::epsilon()) noexcept</td></tr>
 <tr class="memdesc:a4e8db2e9701462cd35d1800efc98f387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check an equality between two doubles, with an epsilon: TODO move this to a more sensible location.  <br /></td></tr>
 <tr class="separator:a4e8db2e9701462cd35d1800efc98f387"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68a1b2e241cceac86f0e40b7fc5c6259" id="r_a68a1b2e241cceac86f0e40b7fc5c6259"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a68a1b2e241cceac86f0e40b7fc5c6259">signed_line_distance</a> (const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line1point, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line1normal, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line2point, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;line2normal) noexcept</td></tr>
-<tr class="memdesc:a68a1b2e241cceac86f0e40b7fc5c6259"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute the distance between two lines. This is the distance between the two points closest to each others on each line  <br /></td></tr>
-<tr class="separator:a68a1b2e241cceac86f0e40b7fc5c6259"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aec3ebc9bc6bfde7f7c4e12768cfbe3" id="r_a9aec3ebc9bc6bfde7f7c4e12768cfbe3"><td class="memTemplParams" colspan="2">template&lt;int Dim&gt; </td></tr>
+<tr class="memitem:a9aec3ebc9bc6bfde7f7c4e12768cfbe3"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Vector&lt; double, Dim &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a9aec3ebc9bc6bfde7f7c4e12768cfbe3">signed_line_distance</a> (const Eigen::Vector&lt; double, Dim &gt; &amp;line1point, const Eigen::Vector&lt; double, Dim &gt; &amp;line1normal, const Eigen::Vector&lt; double, Dim &gt; &amp;line2point, const Eigen::Vector&lt; double, Dim &gt; &amp;line2normal) noexcept</td></tr>
+<tr class="memdesc:a9aec3ebc9bc6bfde7f7c4e12768cfbe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute the distance between two lines. This is the distance between the two points closest to each others on each line  <br /></td></tr>
+<tr class="separator:a9aec3ebc9bc6bfde7f7c4e12768cfbe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82917c7b90b3b7cc6a00354c63d07089" id="r_a82917c7b90b3b7cc6a00354c63d07089"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacergbd__slam_1_1utils.html#a82917c7b90b3b7cc6a00354c63d07089">select_correct_transform</a> (const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;normal) noexcept</td></tr>
 <tr class="memdesc:a82917c7b90b3b7cc6a00354c63d07089"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the transform vector furthest from the normal.  <br /></td></tr>
 <tr class="separator:a82917c7b90b3b7cc6a00354c63d07089"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1657,37 +1667,39 @@ template&lt;int N&gt; </div>
 
 </div>
 </div>
-<a id="a68a1b2e241cceac86f0e40b7fc5c6259" name="a68a1b2e241cceac86f0e40b7fc5c6259"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68a1b2e241cceac86f0e40b7fc5c6259">&#9670;&#160;</a></span>signed_line_distance()</h2>
+<a id="a9aec3ebc9bc6bfde7f7c4e12768cfbe3" name="a9aec3ebc9bc6bfde7f7c4e12768cfbe3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aec3ebc9bc6bfde7f7c4e12768cfbe3">&#9670;&#160;</a></span>signed_line_distance()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;int Dim&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> rgbd_slam::utils::signed_line_distance </td>
+          <td class="memname">Eigen::Vector&lt; double, Dim &gt; rgbd_slam::utils::signed_line_distance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const Eigen::Vector&lt; double, Dim &gt; &amp;&#160;</td>
           <td class="paramname"><em>line1point</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const Eigen::Vector&lt; double, Dim &gt; &amp;&#160;</td>
           <td class="paramname"><em>line1normal</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const Eigen::Vector&lt; double, Dim &gt; &amp;&#160;</td>
           <td class="paramname"><em>line2point</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramtype">const Eigen::Vector&lt; double, Dim &gt; &amp;&#160;</td>
           <td class="paramname"><em>line2normal</em>&#160;</td>
         </tr>
         <tr>

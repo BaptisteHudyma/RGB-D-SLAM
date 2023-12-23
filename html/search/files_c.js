@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['triangulation_2ecpp_0',['triangulation.cpp',['../triangulation_8cpp.html',1,'']]],
-  ['triangulation_2ehpp_1',['triangulation.hpp',['../triangulation_8hpp.html',1,'']]],
-  ['types_2ehpp_2',['types.hpp',['../types_8hpp.html',1,'']]]
+  ['shape_5fprimitives_2ecpp_0',['shape_primitives.cpp',['../shape__primitives_8cpp.html',1,'']]],
+  ['shape_5fprimitives_2ehpp_1',['shape_primitives.hpp',['../shape__primitives_8hpp.html',1,'']]]
 ];

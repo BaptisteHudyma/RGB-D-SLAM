@@ -11,8 +11,12 @@ class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_camera_polygon}{Camera\+Poly
 \begin{DoxyCompactList}\small\item\em Describe a polygon in camera coordinates. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_cartesian}{Cartesian}}
 \item 
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}
+\begin{DoxyCompactList}\small\item\em Base class for all line related stuff. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{Inverse\+Depth\+World\+Point}}
 \begin{DoxyCompactList}\small\item\em Contain an inverse depth representation of a world point. This is used to represent point with an unknown depth. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line}{Line}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classrgbd__slam_1_1utils_1_1_segment}{Segment} class\+: a line defined by a start point and a normal vector. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_camera_coordinates}{Plane\+Camera\+Coordinates}}
 \begin{DoxyCompactList}\small\item\em The parametrization of a plane in camera coordinates. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_plane_coordinates}{Plane\+Coordinates}}
@@ -31,6 +35,8 @@ struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{Screen\
 \begin{DoxyCompactList}\small\item\em Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels, and z in distance (millimeters) \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}}
 \begin{DoxyCompactList}\small\item\em Contains a single of coordinate in screen space. Screen space is defined as (x, y) in pixels. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{Segment}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classrgbd__slam_1_1utils_1_1_segment}{Segment} class\+: a line defined by two points. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_spherical}{Spherical}}
 \item 
 struct \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}}
@@ -109,7 +115,7 @@ double \mbox{\hyperlink{namespacergbd__slam_1_1utils_a16a02447a90e06cbf50b708dad
 \begin{DoxyCompactList}\small\item\em compute a distance bewteen two angles in radian \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{namespacergbd__slam_1_1utils_a4e8db2e9701462cd35d1800efc98f387}{double\+\_\+equal}} (const double a, const double b, const double epsilon=std\+::numeric\+\_\+limits$<$ double $>$\+::epsilon()) noexcept
 \begin{DoxyCompactList}\small\item\em Check an equality between two doubles, with an epsilon\+: TODO move this to a more sensible location. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a68a1b2e241cceac86f0e40b7fc5c6259}{signed\+\_\+line\+\_\+distance}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&line1point, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&line1normal, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&line2point, const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&line2normal) noexcept
+{\footnotesize template$<$int Dim$>$ }\\Eigen\+::\+Vector$<$ double, Dim $>$ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9aec3ebc9bc6bfde7f7c4e12768cfbe3}{signed\+\_\+line\+\_\+distance}} (const Eigen\+::\+Vector$<$ double, Dim $>$ \&line1point, const Eigen\+::\+Vector$<$ double, Dim $>$ \&line1normal, const Eigen\+::\+Vector$<$ double, Dim $>$ \&line2point, const Eigen\+::\+Vector$<$ double, Dim $>$ \&line2normal) noexcept
 \begin{DoxyCompactList}\small\item\em compute the distance between two lines. This is the distance between the two points closest to each others on each line \end{DoxyCompactList}\item 
 \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{namespacergbd__slam_1_1utils_a82917c7b90b3b7cc6a00354c63d07089}{select\+\_\+correct\+\_\+transform}} (const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&normal) noexcept
 \begin{DoxyCompactList}\small\item\em Select the transform vector furthest from the normal. \end{DoxyCompactList}\item 
@@ -636,11 +642,12 @@ Return true is a measurement is in the measurement range.
 
 Select the transform vector furthest from the normal. 
 
-\Hypertarget{namespacergbd__slam_1_1utils_a68a1b2e241cceac86f0e40b7fc5c6259}\label{namespacergbd__slam_1_1utils_a68a1b2e241cceac86f0e40b7fc5c6259} 
+\Hypertarget{namespacergbd__slam_1_1utils_a9aec3ebc9bc6bfde7f7c4e12768cfbe3}\label{namespacergbd__slam_1_1utils_a9aec3ebc9bc6bfde7f7c4e12768cfbe3} 
 \index{rgbd\_slam::utils@{rgbd\_slam::utils}!signed\_line\_distance@{signed\_line\_distance}}
 \index{signed\_line\_distance@{signed\_line\_distance}!rgbd\_slam::utils@{rgbd\_slam::utils}}
 \doxysubsubsection{\texorpdfstring{signed\_line\_distance()}{signed\_line\_distance()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::utils\+::signed\+\_\+line\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{line1point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{line1normal,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{line2point,  }\item[{const \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \&}]{line2normal }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+{\footnotesize\ttfamily template$<$int Dim$>$ \\
+Eigen\+::\+Vector$<$ double, Dim $>$ rgbd\+\_\+slam\+::utils\+::signed\+\_\+line\+\_\+distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{line1point,  }\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{line1normal,  }\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{line2point,  }\item[{const Eigen\+::\+Vector$<$ double, Dim $>$ \&}]{line2normal }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
 

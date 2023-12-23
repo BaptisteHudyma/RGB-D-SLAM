@@ -11,7 +11,7 @@ var searchData=
   ['maximumpointperframe_8',['maximumPointPerFrame',['../namespacergbd__slam_1_1parameters_1_1detection.html#a537cb4cb1ed112c441da8cc5b63d49f2',1,'rgbd_slam::parameters::detection']]],
   ['maximumretroprojectionerror_5fpx_9',['maximumRetroprojectionError_px',['../namespacergbd__slam_1_1parameters_1_1optimization.html#a064f259a0155bfc3ac28b57d1ca7b814',1,'rgbd_slam::parameters::optimization']]],
   ['maximumretroprojectionerrorforplaneinliers_5fmm_10',['maximumRetroprojectionErrorForPlaneInliers_mm',['../namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac.html#a191c4131ca672f1090af70205166bb93',1,'rgbd_slam::parameters::optimization::ransac']]],
-  ['maximumretroprojectionerrorforpoint2dinliers_5fmm_11',['maximumRetroprojectionErrorForPoint2DInliers_mm',['../namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac.html#a93671622ce56374058087c6b619e8136',1,'rgbd_slam::parameters::optimization::ransac']]],
+  ['maximumretroprojectionerrorforpoint2dinliers_5fpx_11',['maximumRetroprojectionErrorForPoint2DInliers_px',['../namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac.html#aed5de14b56da0d2d30e1364530a95348',1,'rgbd_slam::parameters::optimization::ransac']]],
   ['maximumretroprojectionerrorforpointinliers_5fpx_12',['maximumRetroprojectionErrorForPointInliers_px',['../namespacergbd__slam_1_1parameters_1_1optimization_1_1ransac.html#a0cadff9b4af49317efe33fa87556caf5',1,'rgbd_slam::parameters::optimization::ransac']]],
   ['maximumretroprojectionerrorfortriangulatepow_5fpx_13',['maximumRetroprojectionErrorForTriangulatePow_px',['../namespacergbd__slam_1_1parameters_1_1mapping.html#a1775ae0ba4b1aba0f07e50505a209019',1,'rgbd_slam::parameters::mapping']]],
   ['maxxminx_14',['maxXminX',['../namespacergbd__slam_1_1features_1_1primitives.html#a0934672d73718403af6852eb641ed300',1,'rgbd_slam::features::primitives']]],
@@ -22,9 +22,10 @@ var searchData=
   ['minimumplaneoverlaptoconsidermatch_19',['minimumPlaneOverlapToConsiderMatch',['../namespacergbd__slam_1_1parameters_1_1matching.html#a9818f8caf953bd93cacbad72b9c5509e',1,'rgbd_slam::parameters::matching']]],
   ['minimumplaneseedproportion_20',['minimumPlaneSeedProportion',['../namespacergbd__slam_1_1parameters_1_1detection.html#a38767713312f98351c7843ff4a849c04',1,'rgbd_slam::parameters::detection']]],
   ['minimumplanesforoptimization_21',['minimumPlanesForOptimization',['../namespacergbd__slam_1_1parameters_1_1optimization.html#a596cdb23070cf14a3063e673779362e6',1,'rgbd_slam::parameters::optimization']]],
-  ['minimumpointforoptimization_22',['minimumPointForOptimization',['../namespacergbd__slam_1_1parameters_1_1optimization.html#a6ac6911f7e441e728d91ce0550be308b',1,'rgbd_slam::parameters::optimization']]],
-  ['minimumzerodepthproportion_23',['minimumZeroDepthProportion',['../namespacergbd__slam_1_1parameters_1_1detection.html#a65345bd5184cf24c058942da9f0ca5d8',1,'rgbd_slam::parameters::detection']]],
-  ['minnumberoffeatureforopti_24',['minNumberOfFeatureForOpti',['../namespacergbd__slam_1_1pose__optimization.html#a6716e7f90aba42fbe972a637935f73e2',1,'rgbd_slam::pose_optimization']]],
-  ['minx_25',['minX',['../namespacergbd__slam_1_1features_1_1primitives.html#af42285b0620a66497104fe3358fca26f',1,'rgbd_slam::features::primitives']]],
-  ['miny_26',['minY',['../namespacergbd__slam_1_1features_1_1primitives.html#a9014d91babb1fd2bff8543f7d552801c',1,'rgbd_slam::features::primitives']]]
+  ['minimumpoint2dforoptimization_22',['minimumPoint2dForOptimization',['../namespacergbd__slam_1_1parameters_1_1optimization.html#a62eeb6083b8eaca4b63a1e661d9cd6f2',1,'rgbd_slam::parameters::optimization']]],
+  ['minimumpointforoptimization_23',['minimumPointForOptimization',['../namespacergbd__slam_1_1parameters_1_1optimization.html#a6ac6911f7e441e728d91ce0550be308b',1,'rgbd_slam::parameters::optimization']]],
+  ['minimumzerodepthproportion_24',['minimumZeroDepthProportion',['../namespacergbd__slam_1_1parameters_1_1detection.html#a65345bd5184cf24c058942da9f0ca5d8',1,'rgbd_slam::parameters::detection']]],
+  ['minnumberoffeatureforopti_25',['minNumberOfFeatureForOpti',['../namespacergbd__slam_1_1pose__optimization.html#a6716e7f90aba42fbe972a637935f73e2',1,'rgbd_slam::pose_optimization']]],
+  ['minx_26',['minX',['../namespacergbd__slam_1_1features_1_1primitives.html#af42285b0620a66497104fe3358fca26f',1,'rgbd_slam::features::primitives']]],
+  ['miny_27',['minY',['../namespacergbd__slam_1_1features_1_1primitives.html#a9014d91babb1fd2bff8543f7d552801c',1,'rgbd_slam::features::primitives']]]
 ];

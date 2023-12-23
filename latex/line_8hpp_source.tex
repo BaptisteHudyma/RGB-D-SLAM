@@ -1,0 +1,113 @@
+\doxysection{line.\+hpp}
+\hypertarget{line_8hpp_source}{}\label{line_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/line.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/utils/line.hpp}}
+\mbox{\hyperlink{line_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_UTILS\_LINE\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_UTILS\_LINE\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{distance__utils_8hpp}{distance\_utils.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <Eigen/Dense>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <Eigen/src/Core/Matrix.h>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1utils}{rgbd\_slam::utils}}\ \{}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Dim>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a597c68e946081753a595b285e9b5f8bd}{ILine}}()\ \{\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}}.setZero();\ \}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a9e4873cecf295e529c2a797b82b83410}{ILine}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ startPoint)\ :\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}}(startPoint)\ \{\}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ae2d978b56d17d4d6c67a85d5e4019a36}{ILine}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine<Dim>}}\&\ other)\ :\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}}(other.\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}})\ \{\}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ad813599fd47e5f08c4615094c08b72ff}{distance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine<Dim>}}\&\ other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespacergbd__slam_1_1utils_a9aec3ebc9bc6bfde7f7c4e12768cfbe3}{utils::signed\_line\_distance}}(\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}},\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a555006e1a66c7f58e9270b3abed017d8}{compute\_normal}}(),\ other.\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}},\ other.\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a555006e1a66c7f58e9270b3abed017d8}{compute\_normal}}());}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00036\ \ \ \ \ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_adf292560a189d8e3f5000d2228ff8f68}{get\_closest\_point\_on\_line}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ point)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00037\ \ \ \ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ normal\ =\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a555006e1a66c7f58e9270b3abed017d8}{compute\_normal}}();}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ad813599fd47e5f08c4615094c08b72ff}{distance}}\ =\ (point\ -\/\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}}).dot(normal);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}}\ +\ normal\ *\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ad813599fd47e5f08c4615094c08b72ff}{distance}};}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ab3602ee99bc47d161e7a3df5c44e89d2}{distance}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ point)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00047\ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ point\ -\/\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_adf292560a189d8e3f5000d2228ff8f68}{get\_closest\_point\_on\_line}}(point);}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{virtual}\ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a555006e1a66c7f58e9270b3abed017d8}{compute\_normal}}()\ const\ noexcept\ =\ 0;}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \mbox{\hyperlink{namespace_eigen}{Eigen}}::Vector<\textcolor{keywordtype}{double},\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac994fd816a051a5d81108d66ed235e6c}{get\_start\_point}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}};\ \};}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a027ed8ca301449320d7da4ca08987d39}{set\_start\_point}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ startPoint)\ \textcolor{keyword}{noexcept}\ \{\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}}\ =\ startPoint;\ \};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00060\ \ \ \ \ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}};}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Dim>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{Segment}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}<Dim>}
+\DoxyCodeLine{00067\ \{}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00069\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a435b512699306498854118fe5c17461d}{Segment}}()\ \{\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}{\_endPoint}}.setZero();\ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a811244a216a052d2c2d4be1621b5ef31}{Segment}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ startPoint,\ \textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ endPoint)\ :}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}<Dim>(startPoint),}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}{\_endPoint}}(endPoint)}
+\DoxyCodeLine{00074\ \ \ \ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a50600d6dfdd6f7f7e74b83a586537ce5}{Segment}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{Segment<Dim>}}\&\ other)\ :\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}<Dim>(other.\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}}),\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}{\_endPoint}}(other.\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}{\_endPoint}})\ \{\}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00082\ \ \ \ \ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_ad12cad5448cdab1b26779c3cc6309c1a}{compute\_normal}}()\ const\ noexcept\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00083\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ Eigen::Vector<double,\ Dim>\ normal\ =\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}{\_endPoint}}\ -\/\ this-\/>\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}};}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ normal.normalized();}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a8b331ad782e9154015af883914374959}{get\_end\_point}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}{\_endPoint}};\ \};}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a06b0eccbcf90f0a3829079aa6710545a}{set\_end\_point}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ endPoint)\ \textcolor{keyword}{noexcept}\ \{\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}{\_endPoint}}\ =\ endPoint;\ \};}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a7be42ed548a3f801091ffac95514f94b}{set\_points}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ startPoint,\ \textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ endPoint)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00091\ \ \ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a027ed8ca301449320d7da4ca08987d39}{set\_start\_point}}(startPoint);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_a06b0eccbcf90f0a3829079aa6710545a}{set\_end\_point}}(endPoint);}
+\DoxyCodeLine{00094\ \ \ \ \ \};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00097\ \ \ \ \ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment_abe15aa3112c46538c6667a5f79ab3be7}{\_endPoint}};}
+\DoxyCodeLine{00098\ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00103\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Dim>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line}{Line}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}<Dim>}
+\DoxyCodeLine{00104\ \{}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00106\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a26393926dc84d3dd701196d67a0ae342}{Line}}()\ \{\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a9e04abf9c455bbc9c7127fe3c02e660b}{\_normal}}.setZero();\ \}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_af0d0f442f09f35bcc6dd77da19b905c1}{Line}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ startPoint,\ \textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ normal)\ :}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}<Dim>(startPoint),}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a9e04abf9c455bbc9c7127fe3c02e660b}{\_normal}}(normal)}
+\DoxyCodeLine{00111\ \ \ \ \ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a88a5ed98ace1762a81b221de084a55ba}{Line}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line}{Line<Dim>}}\&\ other)\ :\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line}{ILine}}<Dim>(other.\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_ac79feb01e13fde383555da7b32e214a5}{\_startPoint}}),\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a9e04abf9c455bbc9c7127fe3c02e660b}{\_normal}}(other.\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a9e04abf9c455bbc9c7127fe3c02e660b}{\_normal}})\ \{\}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00119\ \ \ \ \ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a76e1c89d70055bab5fcb695e6c65e49c}{compute\_normal}}()\ const\ noexcept\textcolor{keyword}{\ override\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a9e04abf9c455bbc9c7127fe3c02e660b}{\_normal}};\ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ \ \ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a65f8cc850aebd751429e24510fd320c7}{get\_normal}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a9e04abf9c455bbc9c7127fe3c02e660b}{\_normal}};\ \};}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_ac676193da578f01e29ae30f636778a12}{set\_normal}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ normal)\ \textcolor{keyword}{noexcept}\ \{\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a9e04abf9c455bbc9c7127fe3c02e660b}{\_normal}}\ =\ normal;\ \};}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_ac20f162c06dcdf1fb6e15490e774b650}{set\_point\_and\_normal}}(\textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ startPoint,}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Vector<double,\ Dim>\&\ normal)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00125\ \ \ \ \ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ this-\/>\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_i_line_a027ed8ca301449320d7da4ca08987d39}{set\_start\_point}}(startPoint);}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_ac676193da578f01e29ae30f636778a12}{set\_normal}}(normal);}
+\DoxyCodeLine{00128\ \ \ \ \ \};}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00131\ \ \ \ \ Eigen::Vector<double,\ Dim>\ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_line_a9e04abf9c455bbc9c7127fe3c02e660b}{\_normal}};}
+\DoxyCodeLine{00132\ \};}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::utils}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

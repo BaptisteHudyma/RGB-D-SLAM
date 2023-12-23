@@ -18,44 +18,56 @@
 \DoxyCodeLine{00017\ }
 \DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_a4a420e04a58a28c0b13ee5cd1f2561eb}{add\_point}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ pointCoordinates)\ \textcolor{keyword}{noexcept}\ =\ 0;}
 \DoxyCodeLine{00019\ }
-\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_a97bfab2605ab08a084c276adfeffa4a7}{add\_polygon}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates)\ \textcolor{keyword}{noexcept}\ =\ 0;}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_af7d3b6b9769acdd1f13b774fab5709b0}{add\_line}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates)\ \textcolor{keyword}{noexcept}\ =\ 0;}
 \DoxyCodeLine{00021\ }
-\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00023\ \ \ \ \ std::ofstream\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_a324d33f96a95b4d833dbb1cdf5bcd931}{\_file}};}
-\DoxyCodeLine{00024\ \};}
-\DoxyCodeLine{00025\ }
-\DoxyCodeLine{00030\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer}{XYZ\_Map\_Writer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer}{IMap\_Writer}}}
-\DoxyCodeLine{00031\ \{}
-\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer}{XYZ\_Map\_Writer}}(\textcolor{keyword}{const}\ std::string\&\ filename);}
-\DoxyCodeLine{00034\ }
-\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer_abd5753b4fb2f7f1b666ebe29433b809d}{add\_point}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ pointCoordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_ae633d2ef19d7539e700222048c7536b8}{add\_polygon}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ normal)\ \textcolor{keyword}{noexcept}\ =\ 0;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ \ \ std::ofstream\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer_a324d33f96a95b4d833dbb1cdf5bcd931}{\_file}};}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer}{XYZ\_Map\_Writer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer}{IMap\_Writer}}}
+\DoxyCodeLine{00033\ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer}{XYZ\_Map\_Writer}}(\textcolor{keyword}{const}\ std::string\&\ filename);}
 \DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer_adfa91d7b5cfdcf17cd2b8c9b202b1f8e}{add\_polygon}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00038\ \};}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00044\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer}{PCD\_Map\_Writer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer}{IMap\_Writer}}}
-\DoxyCodeLine{00045\ \{}
-\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00047\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer}{PCD\_Map\_Writer}}(\textcolor{keyword}{const}\ std::string\&\ filename);}
-\DoxyCodeLine{00048\ }
-\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer_a55c9abb53ca5c90fcc490b8a8670bd46}{add\_point}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ pointCoordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00050\ }
-\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer_a47cfa04391fa52269f9545f99693303c}{add\_polygon}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00052\ \};}
-\DoxyCodeLine{00053\ }
-\DoxyCodeLine{00058\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer}{OBJ\_Map\_Writer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer}{IMap\_Writer}}}
-\DoxyCodeLine{00059\ \{}
-\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00061\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer}{OBJ\_Map\_Writer}}(\textcolor{keyword}{const}\ std::string\&\ filename);}
-\DoxyCodeLine{00062\ }
-\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer_a19477d8f7c0c1a182c7afba399177008}{add\_point}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ pointCoordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00064\ }
-\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer_a2f7a65f31eff4f003844c34c40ff17b5}{add\_polygon}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
-\DoxyCodeLine{00066\ \};}
-\DoxyCodeLine{00067\ }
-\DoxyCodeLine{00068\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::outputs}}
-\DoxyCodeLine{00069\ }
-\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer_abd5753b4fb2f7f1b666ebe29433b809d}{add\_point}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ pointCoordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer_a877481cb08c713d60b7a8e756f60c5e8}{add\_line}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer_a55c2d986efd08d163496c84df60b18fc}{add\_polygon}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ normal)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer}{PCD\_Map\_Writer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer}{IMap\_Writer}}}
+\DoxyCodeLine{00049\ \{}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer}{PCD\_Map\_Writer}}(\textcolor{keyword}{const}\ std::string\&\ filename);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer_a55c9abb53ca5c90fcc490b8a8670bd46}{add\_point}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ pointCoordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer_a50376b2dadc59f14e65070b93ac8297e}{add\_line}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer_ad35525624c9e4479ea3358e5ffa578e7}{add\_polygon}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ normal)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00058\ \};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer}{OBJ\_Map\_Writer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_i_map___writer}{IMap\_Writer}}}
+\DoxyCodeLine{00065\ \{}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer}{OBJ\_Map\_Writer}}(\textcolor{keyword}{const}\ std::string\&\ filename);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer_a19477d8f7c0c1a182c7afba399177008}{add\_point}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ pointCoordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer_a374ad4dfc98791ae9f89d163764f1783}{add\_line}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer_ab8bc925c0c44eb4d741cde391e1fe41c}{add\_polygon}}(\textcolor{keyword}{const}\ std::vector<vector3>\&\ coordinates,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}}\&\ normal)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer_a177fd973a000574e5c05804c4848611f}{\_vertexIndex}}\ =\ 1;}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer_a9a795439cf39568b0573e59ffe61aed7}{\_vectorIndex}}\ =\ 1;}
+\DoxyCodeLine{00078\ \};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::outputs}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

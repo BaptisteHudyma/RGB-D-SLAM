@@ -106,8 +106,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3f091381128f79f0999f8a2c5367c449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a420e04a58a28c0b13ee5cd1f2561eb" id="r_a4a420e04a58a28c0b13ee5cd1f2561eb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#a4a420e04a58a28c0b13ee5cd1f2561eb">add_point</a> (const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;pointCoordinates) noexcept=0</td></tr>
 <tr class="separator:a4a420e04a58a28c0b13ee5cd1f2561eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97bfab2605ab08a084c276adfeffa4a7" id="r_a97bfab2605ab08a084c276adfeffa4a7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#a97bfab2605ab08a084c276adfeffa4a7">add_polygon</a> (const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;coordinates) noexcept=0</td></tr>
-<tr class="separator:a97bfab2605ab08a084c276adfeffa4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7d3b6b9769acdd1f13b774fab5709b0" id="r_af7d3b6b9769acdd1f13b774fab5709b0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#af7d3b6b9769acdd1f13b774fab5709b0">add_line</a> (const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;coordinates) noexcept=0</td></tr>
+<tr class="separator:af7d3b6b9769acdd1f13b774fab5709b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae633d2ef19d7539e700222048c7536b8" id="r_ae633d2ef19d7539e700222048c7536b8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrgbd__slam_1_1outputs_1_1_i_map___writer.html#ae633d2ef19d7539e700222048c7536b8">add_polygon</a> (const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;coordinates, const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;normal) noexcept=0</td></tr>
+<tr class="separator:ae633d2ef19d7539e700222048c7536b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -161,6 +163,34 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af7d3b6b9769acdd1f13b774fab5709b0" name="af7d3b6b9769acdd1f13b774fab5709b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7d3b6b9769acdd1f13b774fab5709b0">&#9670;&#160;</a></span>add_line()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void rgbd_slam::outputs::IMap_Writer::add_line </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>coordinates</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer.html#a877481cb08c713d60b7a8e756f60c5e8">rgbd_slam::outputs::XYZ_Map_Writer</a>, <a class="el" href="classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer.html#a50376b2dadc59f14e65070b93ac8297e">rgbd_slam::outputs::PCD_Map_Writer</a>, and <a class="el" href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer.html#a374ad4dfc98791ae9f89d163764f1783">rgbd_slam::outputs::OBJ_Map_Writer</a>.</p>
+
+</div>
+</div>
 <a id="a4a420e04a58a28c0b13ee5cd1f2561eb" name="a4a420e04a58a28c0b13ee5cd1f2561eb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a420e04a58a28c0b13ee5cd1f2561eb">&#9670;&#160;</a></span>add_point()</h2>
 
@@ -189,8 +219,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a97bfab2605ab08a084c276adfeffa4a7" name="a97bfab2605ab08a084c276adfeffa4a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97bfab2605ab08a084c276adfeffa4a7">&#9670;&#160;</a></span>add_polygon()</h2>
+<a id="ae633d2ef19d7539e700222048c7536b8" name="ae633d2ef19d7539e700222048c7536b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae633d2ef19d7539e700222048c7536b8">&#9670;&#160;</a></span>add_polygon()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,8 +232,18 @@ Protected Attributes</h2></td></tr>
           <td class="memname">virtual void rgbd_slam::outputs::IMap_Writer::add_polygon </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>coordinates</em></td><td>)</td>
+          <td class="paramname"><em>coordinates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a> &amp;&#160;</td>
+          <td class="paramname"><em>normal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -213,7 +253,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer.html#adfa91d7b5cfdcf17cd2b8c9b202b1f8e">rgbd_slam::outputs::XYZ_Map_Writer</a>, <a class="el" href="classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer.html#a47cfa04391fa52269f9545f99693303c">rgbd_slam::outputs::PCD_Map_Writer</a>, and <a class="el" href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer.html#a2f7a65f31eff4f003844c34c40ff17b5">rgbd_slam::outputs::OBJ_Map_Writer</a>.</p>
+<p>Implemented in <a class="el" href="classrgbd__slam_1_1outputs_1_1_x_y_z___map___writer.html#a55c2d986efd08d163496c84df60b18fc">rgbd_slam::outputs::XYZ_Map_Writer</a>, <a class="el" href="classrgbd__slam_1_1outputs_1_1_p_c_d___map___writer.html#ad35525624c9e4479ea3358e5ffa578e7">rgbd_slam::outputs::PCD_Map_Writer</a>, and <a class="el" href="classrgbd__slam_1_1outputs_1_1_o_b_j___map___writer.html#ab8bc925c0c44eb4d741cde391e1fe41c">rgbd_slam::outputs::OBJ_Map_Writer</a>.</p>
 
 </div>
 </div>

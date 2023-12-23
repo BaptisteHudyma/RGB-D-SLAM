@@ -393,251 +393,249 @@
 \DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ \{}
 \DoxyCodeLine{00501\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ [\textcolor{keywordtype}{id},\ mapFeature]:\ \_stagedMap)}
 \DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Scalar\ stagedColor\ =}
-\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (mapFeature.is\_matched())\ ?\ cv::Scalar(0,\ 200,\ 255)\ :\ cv::Scalar(0,\ 255,\ 0);}
-\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.draw(worldToCamMatrix,\ debugImage,\ stagedColor);}
-\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00508\ }
-\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ [\textcolor{keywordtype}{id},\ mapFeature]:\ \_localMap)}
-\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mapFeature.is\_matched())}
-\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00513\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.draw(worldToCamMatrix,\ debugImage,\ mapFeature.\_color);}
-\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00516\ \ \ \ \ \}}
-\DoxyCodeLine{00517\ }
-\DoxyCodeLine{00521\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a02a516784fa7dcff68f166d920bc5626}{deactivate}}()\ noexcept\ \{\ \_isActivated\ =\ \textcolor{keyword}{false};\ \}}
-\DoxyCodeLine{00522\ }
-\DoxyCodeLine{00523\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a60876198bf37320052f4bc2c3e53db2e}{get\_local\_map\_size}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \_localMap.size();\ \};}
-\DoxyCodeLine{00524\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a743d2e11cad5b9b57b41f612bf4af30b}{get\_staged\_map\_size}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \_stagedMap.size();\ \};}
-\DoxyCodeLine{00525\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a0f3a331a583d26f2f5d04a9f74cf3cdd}{size}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ get\_local\_map\_size()\ +\ get\_staged\_map\_size();\ \};}
-\DoxyCodeLine{00526\ }
-\DoxyCodeLine{00530\ \ \ \ \ [[nodiscard]]\ std::vector<UpgradedFeatureType>\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a40722cda41dcf90a37f3ea91c84fdde0}{get\_upgraded\_features}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)}
-\DoxyCodeLine{00531\ \ \ \ \ \{}
-\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ upgradedMapFeatures\ =\ get\_upgraded\_map\_features(cameraToWorld);}
-\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ upgradedStagedFeatures\ =\ get\_upgraded\_staged\_features(cameraToWorld);}
-\DoxyCodeLine{00534\ \ \ \ \ \ \ \ \ upgradedMapFeatures.insert(}
-\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ upgradedMapFeatures.end(),\ upgradedStagedFeatures.begin(),\ upgradedStagedFeatures.end());}
-\DoxyCodeLine{00536\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ upgradedMapFeatures;}
-\DoxyCodeLine{00537\ \ \ \ \ \}}
-\DoxyCodeLine{00538\ }
-\DoxyCodeLine{00539\ \ \ \ \ \textcolor{comment}{//\ shortcut\ to\ add\ map\ points}}
-\DoxyCodeLine{00540\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_af6d5cdb64de4eefc3af29ce3db600e1d}{add\_local\_map\_point}}(\textcolor{keyword}{const}\ MapFeatureType\&\ mapFeature)\ \{\ \_localMap.emplace(mapFeature.\_id,\ mapFeature);\ \}}
-\DoxyCodeLine{00541\ }
-\DoxyCodeLine{00542\ \ \ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00543\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a859f3ff330c1ce69f920275f5c71c95a}{update\_local\_map}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
-\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
-\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DetectedFeaturesObject\&\ detectedFeatureObject,}
-\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<outputs::IMap\_Writer>\ mapWriter)}
-\DoxyCodeLine{00547\ \ \ \ \ \{}
-\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ utils::is\_covariance\_valid(poseCovariance))}
-\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}update\_local\_map:\ The\ given\ pose\ covariance\ is\ invalid,\ map\ wont\ be\ update"{}});}
-\DoxyCodeLine{00550\ }
-\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ localMapType::iterator\ featureMapIterator\ =\ \_localMap.begin();}
-\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (featureMapIterator\ !=\ \_localMap.end())}
-\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ the\ matched/unmatched\ status}}
-\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \ \ \ \ MapFeatureType\&\ mapFeature\ =\ featureMapIterator-\/>second;}
-\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \ \ assert(featureMapIterator-\/>first\ ==\ mapFeature.\_id);}
-\DoxyCodeLine{00557\ }
-\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ matched,\ update\ the\ features\ parameters}}
-\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mapFeature.is\_matched())}
-\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(mapFeature.\_matchIndex\ >=\ 0);}
-\DoxyCodeLine{00562\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ matchedFeatureIndex\ =\ mapFeature.\_matchIndex;}
-\DoxyCodeLine{00563\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(matchedFeatureIndex\ <\ detectedFeatureObject.size());}
-\DoxyCodeLine{00564\ }
-\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DetectedFeatureType\&\ detectedFeature\ =\ detectedFeatureObject.at(matchedFeatureIndex);}
-\DoxyCodeLine{00566\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.update\_matched(detectedFeature,\ poseCovariance,\ cameraToWorld);}
-\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00568\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00570\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.update\_unmatched();}
-\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00572\ }
-\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mapFeature.is\_lost())}
-\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00575\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ to\ file}}
-\DoxyCodeLine{00576\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.write\_to\_file(mapWriter);}
-\DoxyCodeLine{00577\ }
-\DoxyCodeLine{00578\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
-\DoxyCodeLine{00579\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ featureMapIterator\ =\ \_localMap.erase(featureMapIterator);}
-\DoxyCodeLine{00580\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00581\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{00582\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++featureMapIterator;}
-\DoxyCodeLine{00584\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00585\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00586\ \ \ \ \ \}}
-\DoxyCodeLine{00587\ }
-\DoxyCodeLine{00588\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a5786a636d4c71b8ed2fd80771a693dcc}{update\_staged\_map}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
-\DoxyCodeLine{00589\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
-\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DetectedFeaturesObject\&\ detectedFeatureObject)}
-\DoxyCodeLine{00591\ \ \ \ \ \{}
-\DoxyCodeLine{00592\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ utils::is\_covariance\_valid(poseCovariance))}
-\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}update\_staged\_map:\ The\ given\ pose\ covariance\ is\ invalid,\ map\ wont\ be\ update"{}});}
-\DoxyCodeLine{00594\ }
-\DoxyCodeLine{00595\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Add\ correct\ staged\ points\ to\ local\ map}}
-\DoxyCodeLine{00596\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ stagedMapType::iterator\ stagedFeatureIterator\ =\ \_stagedMap.begin();}
-\DoxyCodeLine{00597\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (stagedFeatureIterator\ !=\ \_stagedMap.end())}
-\DoxyCodeLine{00598\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00599\ \ \ \ \ \ \ \ \ \ \ \ \ StagedFeatureType\&\ stagedFeature\ =\ stagedFeatureIterator-\/>second;}
-\DoxyCodeLine{00600\ \ \ \ \ \ \ \ \ \ \ \ \ assert(stagedFeatureIterator-\/>first\ ==\ stagedFeature.\_id);}
-\DoxyCodeLine{00601\ }
-\DoxyCodeLine{00602\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ matched,\ update\ the\ features\ parameters}}
-\DoxyCodeLine{00603\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stagedFeature.is\_matched())}
-\DoxyCodeLine{00604\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(stagedFeature.\_matchIndex\ >=\ 0);}
-\DoxyCodeLine{00606\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ matchedFeatureIndex\ =\ stagedFeature.\_matchIndex;}
-\DoxyCodeLine{00607\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(matchedFeatureIndex\ <\ detectedFeatureObject.size());}
-\DoxyCodeLine{00608\ }
-\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DetectedFeatureType\&\ detectedFeature\ =\ detectedFeatureObject.at(matchedFeatureIndex);}
-\DoxyCodeLine{00610\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeature.update\_matched(detectedFeature,\ poseCovariance,\ cameraToWorld);}
-\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{00613\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00614\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeature.update\_unmatched();}
-\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00616\ }
-\DoxyCodeLine{00617\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stagedFeature.should\_add\_to\_local\_map())}
-\DoxyCodeLine{00618\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
-\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Add\ to\ local\ map,\ remove\ from\ staged\ points,\ with\ a\ copy\ of\ the\ id\ affected\ to\ the\ local\ map}}
-\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_localMap.emplace(stagedFeature.\_id,\ MapFeatureType(stagedFeature));}
-\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(\_localMap.at(stagedFeature.\_id).\_id\ ==\ stagedFeature.\_id);}
-\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeatureIterator\ =\ \_stagedMap.erase(stagedFeatureIterator);}
-\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::exception\&\ ex)}
-\DoxyCodeLine{00627\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ outputs::log\_error(\textcolor{stringliteral}{"{}Caught\ exeption\ while\ creating\ a\ map\ feature\ from\ a\ staged\ feature:\ "{}}\ +}
-\DoxyCodeLine{00629\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string(ex.what()));}
-\DoxyCodeLine{00630\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00631\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (stagedFeature.should\_remove\_from\_staged())}
-\DoxyCodeLine{00633\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ from\ staged\ points}}
-\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeatureIterator\ =\ \_stagedMap.erase(stagedFeatureIterator);}
-\DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00637\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00639\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Increment}}
-\DoxyCodeLine{00640\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++stagedFeatureIterator;}
-\DoxyCodeLine{00641\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00642\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00643\ \ \ \ \ \}}
-\DoxyCodeLine{00644\ }
-\DoxyCodeLine{00645\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_ae5e5526fac61428f5aa953c8f5d6a1aa}{update\_local\_map\_with\_no\_tracking}}(std::shared\_ptr<outputs::IMap\_Writer>\ mapWriter)\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00646\ \ \ \ \ \{}
-\DoxyCodeLine{00647\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ local\ map\ with\ no\ matchs}}
-\DoxyCodeLine{00648\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ localMapType::iterator\ featureMapIterator\ =\ \_localMap.begin();}
-\DoxyCodeLine{00649\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (featureMapIterator\ !=\ \_localMap.end())}
-\DoxyCodeLine{00650\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00651\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ the\ matched/unmatched\ status}}
-\DoxyCodeLine{00652\ \ \ \ \ \ \ \ \ \ \ \ \ MapFeatureType\&\ mapFeature\ =\ featureMapIterator-\/>second;}
-\DoxyCodeLine{00653\ \ \ \ \ \ \ \ \ \ \ \ \ assert(featureMapIterator-\/>first\ ==\ mapFeature.\_id);}
-\DoxyCodeLine{00654\ }
-\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.update\_unmatched();}
-\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mapFeature.is\_lost())}
-\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00658\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ to\ file}}
-\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.write\_to\_file(mapWriter);}
-\DoxyCodeLine{00660\ }
-\DoxyCodeLine{00661\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
-\DoxyCodeLine{00662\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ featureMapIterator\ =\ \_localMap.erase(featureMapIterator);}
-\DoxyCodeLine{00663\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00664\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{00665\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++featureMapIterator;}
-\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00669\ \ \ \ \ \}}
-\DoxyCodeLine{00670\ }
-\DoxyCodeLine{00671\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_ad03909157c05ed07693ab5c16a07e248}{update\_staged\_map\_with\_no\_tracking}}()\ noexcept}
-\DoxyCodeLine{00672\ \ \ \ \ \{}
-\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ staged\ map\ with\ no\ matchs}}
-\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ stagedMapType::iterator\ stagedFeatureIterator\ =\ \_stagedMap.begin();}
-\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (stagedFeatureIterator\ !=\ \_stagedMap.end())}
-\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00677\ \ \ \ \ \ \ \ \ \ \ \ \ StagedFeatureType\&\ stagedFeature\ =\ stagedFeatureIterator-\/>second;}
-\DoxyCodeLine{00678\ \ \ \ \ \ \ \ \ \ \ \ \ assert(stagedFeatureIterator-\/>first\ ==\ stagedFeature.\_id);}
-\DoxyCodeLine{00679\ }
-\DoxyCodeLine{00680\ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeature.update\_unmatched();}
-\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stagedFeature.should\_remove\_from\_staged())}
-\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00683\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
-\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeatureIterator\ =\ \_stagedMap.erase(stagedFeatureIterator);}
-\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00686\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++stagedFeatureIterator;}
-\DoxyCodeLine{00689\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00690\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00691\ \ \ \ \ \}}
-\DoxyCodeLine{00692\ }
-\DoxyCodeLine{00693\ \ \ \ \ [[nodiscard]]\ std::vector<UpgradedFeatureType>\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_aae00b9b9caf80776f5707f66808c3b73}{get\_upgraded\_map\_features}}(}
-\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00695\ \ \ \ \ \{}
-\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ std::vector<UpgradedFeatureType>\ upgradedFeatures;}
-\DoxyCodeLine{00697\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ staged\ map\ with\ no\ matchs}}
-\DoxyCodeLine{00698\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ localMapType::iterator\ mapFeatureIterator\ =\ \_localMap.begin();}
-\DoxyCodeLine{00699\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (mapFeatureIterator\ !=\ \_localMap.end())}
-\DoxyCodeLine{00700\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00701\ \ \ \ \ \ \ \ \ \ \ \ \ MapFeatureType\&\ mapFeature\ =\ mapFeatureIterator-\/>second;}
-\DoxyCodeLine{00702\ \ \ \ \ \ \ \ \ \ \ \ \ assert(mapFeatureIterator-\/>first\ ==\ mapFeature.\_id);}
-\DoxyCodeLine{00703\ }
-\DoxyCodeLine{00704\ \ \ \ \ \ \ \ \ \ \ \ \ UpgradedFeatureType\ upgraded;}
-\DoxyCodeLine{00705\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mapFeature.compute\_upgraded(cameraToWorld,\ upgraded))}
-\DoxyCodeLine{00706\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00707\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ upgradedFeatures.emplace\_back(upgraded);}
-\DoxyCodeLine{00708\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
-\DoxyCodeLine{00709\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeatureIterator\ =\ \_localMap.erase(mapFeatureIterator);}
-\DoxyCodeLine{00710\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00711\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{00712\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00713\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++mapFeatureIterator;}
-\DoxyCodeLine{00714\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00716\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ upgradedFeatures;}
-\DoxyCodeLine{00717\ \ \ \ \ \}}
-\DoxyCodeLine{00718\ }
-\DoxyCodeLine{00719\ \ \ \ \ [[nodiscard]]\ std::vector<UpgradedFeatureType>\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a7fc3bdbc68dff40bcd7078f4ca548c4d}{get\_upgraded\_staged\_features}}(}
-\DoxyCodeLine{00720\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00721\ \ \ \ \ \{}
-\DoxyCodeLine{00722\ \ \ \ \ \ \ \ \ std::vector<UpgradedFeatureType>\ upgradedFeatures;}
-\DoxyCodeLine{00723\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ staged\ map\ with\ no\ matchs}}
-\DoxyCodeLine{00724\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ stagedMapType::iterator\ stagedFeatureIterator\ =\ \_stagedMap.begin();}
-\DoxyCodeLine{00725\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (stagedFeatureIterator\ !=\ \_stagedMap.end())}
-\DoxyCodeLine{00726\ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00727\ \ \ \ \ \ \ \ \ \ \ \ \ StagedFeatureType\&\ stagedFeature\ =\ stagedFeatureIterator-\/>second;}
-\DoxyCodeLine{00728\ \ \ \ \ \ \ \ \ \ \ \ \ assert(stagedFeatureIterator-\/>first\ ==\ stagedFeature.\_id);}
-\DoxyCodeLine{00729\ }
-\DoxyCodeLine{00730\ \ \ \ \ \ \ \ \ \ \ \ \ UpgradedFeatureType\ upgraded;}
-\DoxyCodeLine{00731\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stagedFeature.compute\_upgraded(cameraToWorld,\ upgraded))}
-\DoxyCodeLine{00732\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ upgradedFeatures.emplace\_back(upgraded);}
-\DoxyCodeLine{00734\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
-\DoxyCodeLine{00735\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeatureIterator\ =\ \_stagedMap.erase(stagedFeatureIterator);}
-\DoxyCodeLine{00736\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00737\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{00738\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00739\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++stagedFeatureIterator;}
-\DoxyCodeLine{00740\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00741\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00742\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ upgradedFeatures;}
-\DoxyCodeLine{00743\ \ \ \ \ \}}
-\DoxyCodeLine{00744\ }
-\DoxyCodeLine{00745\ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00746\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_isActivated;\ \textcolor{comment}{//\ if\ false,\ no\ updates\ will\ occur\ on\ this\ map\ object\ (no\ matches,\ no\ tracking,\ ...)}}
-\DoxyCodeLine{00747\ \ \ \ \ localMapType\ \_localMap;}
-\DoxyCodeLine{00748\ \ \ \ \ stagedMapType\ \_stagedMap;}
-\DoxyCodeLine{00749\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}}\ \_isDetectedFeatureMatched;\ \textcolor{comment}{//\ indicates\ if\ a\ detected\ feature\ is\ macthed\ to\ a\ local\ map\ feature}}
-\DoxyCodeLine{00750\ \};}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ macthed\ staged\ points\ are\ orange,\ unmacthed\ are\ red}}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Scalar\ stagedColor\ =}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (mapFeature.is\_matched())\ ?\ cv::Scalar(0,\ 200,\ 255)\ :\ cv::Scalar(0,\ 0,\ 255);}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.draw(worldToCamMatrix,\ debugImage,\ stagedColor);}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00509\ }
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ [\textcolor{keywordtype}{id},\ mapFeature]:\ \_localMap)}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.draw(worldToCamMatrix,\ debugImage,\ mapFeature.\_color);}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00514\ \ \ \ \ \}}
+\DoxyCodeLine{00515\ }
+\DoxyCodeLine{00519\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a02a516784fa7dcff68f166d920bc5626}{deactivate}}()\ noexcept\ \{\ \_isActivated\ =\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00520\ }
+\DoxyCodeLine{00521\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a60876198bf37320052f4bc2c3e53db2e}{get\_local\_map\_size}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \_localMap.size();\ \};}
+\DoxyCodeLine{00522\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a743d2e11cad5b9b57b41f612bf4af30b}{get\_staged\_map\_size}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \_stagedMap.size();\ \};}
+\DoxyCodeLine{00523\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a0f3a331a583d26f2f5d04a9f74cf3cdd}{size}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ get\_local\_map\_size()\ +\ get\_staged\_map\_size();\ \};}
+\DoxyCodeLine{00524\ }
+\DoxyCodeLine{00528\ \ \ \ \ [[nodiscard]]\ std::vector<UpgradedFeatureType>\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a40722cda41dcf90a37f3ea91c84fdde0}{get\_upgraded\_features}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)}
+\DoxyCodeLine{00529\ \ \ \ \ \{}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ upgradedMapFeatures\ =\ get\_upgraded\_map\_features(cameraToWorld);}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ upgradedStagedFeatures\ =\ get\_upgraded\_staged\_features(cameraToWorld);}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ upgradedMapFeatures.insert(}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ upgradedMapFeatures.end(),\ upgradedStagedFeatures.begin(),\ upgradedStagedFeatures.end());}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ upgradedMapFeatures;}
+\DoxyCodeLine{00535\ \ \ \ \ \}}
+\DoxyCodeLine{00536\ }
+\DoxyCodeLine{00537\ \ \ \ \ \textcolor{comment}{//\ shortcut\ to\ add\ map\ points}}
+\DoxyCodeLine{00538\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_af6d5cdb64de4eefc3af29ce3db600e1d}{add\_local\_map\_point}}(\textcolor{keyword}{const}\ MapFeatureType\&\ mapFeature)\ \{\ \_localMap.emplace(mapFeature.\_id,\ mapFeature);\ \}}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00541\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a859f3ff330c1ce69f920275f5c71c95a}{update\_local\_map}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DetectedFeaturesObject\&\ detectedFeatureObject,}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<outputs::IMap\_Writer>\ mapWriter)}
+\DoxyCodeLine{00545\ \ \ \ \ \{}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ utils::is\_covariance\_valid(poseCovariance))}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}update\_local\_map:\ The\ given\ pose\ covariance\ is\ invalid,\ map\ wont\ be\ update"{}});}
+\DoxyCodeLine{00548\ }
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ localMapType::iterator\ featureMapIterator\ =\ \_localMap.begin();}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (featureMapIterator\ !=\ \_localMap.end())}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ the\ matched/unmatched\ status}}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \ \ \ \ MapFeatureType\&\ mapFeature\ =\ featureMapIterator-\/>second;}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ \ \ assert(featureMapIterator-\/>first\ ==\ mapFeature.\_id);}
+\DoxyCodeLine{00555\ }
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ matched,\ update\ the\ features\ parameters}}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mapFeature.is\_matched())}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(mapFeature.\_matchIndex\ >=\ 0);}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ matchedFeatureIndex\ =\ mapFeature.\_matchIndex;}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(matchedFeatureIndex\ <\ detectedFeatureObject.size());}
+\DoxyCodeLine{00562\ }
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DetectedFeatureType\&\ detectedFeature\ =\ detectedFeatureObject.at(matchedFeatureIndex);}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.update\_matched(detectedFeature,\ poseCovariance,\ cameraToWorld);}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.update\_unmatched();}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00570\ }
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mapFeature.is\_lost())}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ to\ file}}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.write\_to\_file(mapWriter);}
+\DoxyCodeLine{00575\ }
+\DoxyCodeLine{00576\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ featureMapIterator\ =\ \_localMap.erase(featureMapIterator);}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++featureMapIterator;}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00584\ \ \ \ \ \}}
+\DoxyCodeLine{00585\ }
+\DoxyCodeLine{00586\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a5786a636d4c71b8ed2fd80771a693dcc}{update\_staged\_map}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld,}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ poseCovariance,}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DetectedFeaturesObject\&\ detectedFeatureObject)}
+\DoxyCodeLine{00589\ \ \ \ \ \{}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (not\ utils::is\_covariance\_valid(poseCovariance))}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}update\_staged\_map:\ The\ given\ pose\ covariance\ is\ invalid,\ map\ wont\ be\ update"{}});}
+\DoxyCodeLine{00592\ }
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Add\ correct\ staged\ points\ to\ local\ map}}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ stagedMapType::iterator\ stagedFeatureIterator\ =\ \_stagedMap.begin();}
+\DoxyCodeLine{00595\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (stagedFeatureIterator\ !=\ \_stagedMap.end())}
+\DoxyCodeLine{00596\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00597\ \ \ \ \ \ \ \ \ \ \ \ \ StagedFeatureType\&\ stagedFeature\ =\ stagedFeatureIterator-\/>second;}
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \ \ \ \ \ \ assert(stagedFeatureIterator-\/>first\ ==\ stagedFeature.\_id);}
+\DoxyCodeLine{00599\ }
+\DoxyCodeLine{00600\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ matched,\ update\ the\ features\ parameters}}
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stagedFeature.is\_matched())}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(stagedFeature.\_matchIndex\ >=\ 0);}
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ matchedFeatureIndex\ =\ stagedFeature.\_matchIndex;}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(matchedFeatureIndex\ <\ detectedFeatureObject.size());}
+\DoxyCodeLine{00606\ }
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ DetectedFeatureType\&\ detectedFeature\ =\ detectedFeatureObject.at(matchedFeatureIndex);}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeature.update\_matched(detectedFeature,\ poseCovariance,\ cameraToWorld);}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeature.update\_unmatched();}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00614\ }
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stagedFeature.should\_add\_to\_local\_map())}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00617\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}}
+\DoxyCodeLine{00618\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Add\ to\ local\ map,\ remove\ from\ staged\ points,\ with\ a\ copy\ of\ the\ id\ affected\ to\ the\ local\ map}}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_localMap.emplace(stagedFeature.\_id,\ MapFeatureType(stagedFeature));}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(\_localMap.at(stagedFeature.\_id).\_id\ ==\ stagedFeature.\_id);}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeatureIterator\ =\ \_stagedMap.erase(stagedFeatureIterator);}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::exception\&\ ex)}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ outputs::log\_error(\textcolor{stringliteral}{"{}Caught\ exeption\ while\ creating\ a\ map\ feature\ from\ a\ staged\ feature:\ "{}}\ +}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string(ex.what()));}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (stagedFeature.should\_remove\_from\_staged())}
+\DoxyCodeLine{00631\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ from\ staged\ points}}
+\DoxyCodeLine{00633\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeatureIterator\ =\ \_stagedMap.erase(stagedFeatureIterator);}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Increment}}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++stagedFeatureIterator;}
+\DoxyCodeLine{00639\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00640\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00641\ \ \ \ \ \}}
+\DoxyCodeLine{00642\ }
+\DoxyCodeLine{00643\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_ae5e5526fac61428f5aa953c8f5d6a1aa}{update\_local\_map\_with\_no\_tracking}}(std::shared\_ptr<outputs::IMap\_Writer>\ mapWriter)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00644\ \ \ \ \ \{}
+\DoxyCodeLine{00645\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ local\ map\ with\ no\ matchs}}
+\DoxyCodeLine{00646\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ localMapType::iterator\ featureMapIterator\ =\ \_localMap.begin();}
+\DoxyCodeLine{00647\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (featureMapIterator\ !=\ \_localMap.end())}
+\DoxyCodeLine{00648\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00649\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ the\ matched/unmatched\ status}}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ \ \ \ \ \ \ MapFeatureType\&\ mapFeature\ =\ featureMapIterator-\/>second;}
+\DoxyCodeLine{00651\ \ \ \ \ \ \ \ \ \ \ \ \ assert(featureMapIterator-\/>first\ ==\ mapFeature.\_id);}
+\DoxyCodeLine{00652\ }
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.update\_unmatched();}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mapFeature.is\_lost())}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ write\ to\ file}}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeature.write\_to\_file(mapWriter);}
+\DoxyCodeLine{00658\ }
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ featureMapIterator\ =\ \_localMap.erase(featureMapIterator);}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++featureMapIterator;}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00667\ \ \ \ \ \}}
+\DoxyCodeLine{00668\ }
+\DoxyCodeLine{00669\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_ad03909157c05ed07693ab5c16a07e248}{update\_staged\_map\_with\_no\_tracking}}()\ noexcept}
+\DoxyCodeLine{00670\ \ \ \ \ \{}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ staged\ map\ with\ no\ matchs}}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ stagedMapType::iterator\ stagedFeatureIterator\ =\ \_stagedMap.begin();}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (stagedFeatureIterator\ !=\ \_stagedMap.end())}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ \ \ StagedFeatureType\&\ stagedFeature\ =\ stagedFeatureIterator-\/>second;}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \ \ \ \ assert(stagedFeatureIterator-\/>first\ ==\ stagedFeature.\_id);}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeature.update\_unmatched();}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stagedFeature.should\_remove\_from\_staged())}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeatureIterator\ =\ \_stagedMap.erase(stagedFeatureIterator);}
+\DoxyCodeLine{00683\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++stagedFeatureIterator;}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00689\ \ \ \ \ \}}
+\DoxyCodeLine{00690\ }
+\DoxyCodeLine{00691\ \ \ \ \ [[nodiscard]]\ std::vector<UpgradedFeatureType>\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_aae00b9b9caf80776f5707f66808c3b73}{get\_upgraded\_map\_features}}(}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00693\ \ \ \ \ \{}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ std::vector<UpgradedFeatureType>\ upgradedFeatures;}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ staged\ map\ with\ no\ matchs}}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ localMapType::iterator\ mapFeatureIterator\ =\ \_localMap.begin();}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (mapFeatureIterator\ !=\ \_localMap.end())}
+\DoxyCodeLine{00698\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00699\ \ \ \ \ \ \ \ \ \ \ \ \ MapFeatureType\&\ mapFeature\ =\ mapFeatureIterator-\/>second;}
+\DoxyCodeLine{00700\ \ \ \ \ \ \ \ \ \ \ \ \ assert(mapFeatureIterator-\/>first\ ==\ mapFeature.\_id);}
+\DoxyCodeLine{00701\ }
+\DoxyCodeLine{00702\ \ \ \ \ \ \ \ \ \ \ \ \ UpgradedFeatureType\ upgraded;}
+\DoxyCodeLine{00703\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mapFeature.compute\_upgraded(cameraToWorld,\ upgraded))}
+\DoxyCodeLine{00704\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ upgradedFeatures.emplace\_back(upgraded);}
+\DoxyCodeLine{00706\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapFeatureIterator\ =\ \_localMap.erase(mapFeatureIterator);}
+\DoxyCodeLine{00708\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00709\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00710\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++mapFeatureIterator;}
+\DoxyCodeLine{00712\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00713\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00714\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ upgradedFeatures;}
+\DoxyCodeLine{00715\ \ \ \ \ \}}
+\DoxyCodeLine{00716\ }
+\DoxyCodeLine{00717\ \ \ \ \ [[nodiscard]]\ std::vector<UpgradedFeatureType>\ \mbox{\hyperlink{classrgbd__slam_1_1map__management_1_1_feature___map_a7fc3bdbc68dff40bcd7078f4ca548c4d}{get\_upgraded\_staged\_features}}(}
+\DoxyCodeLine{00718\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00719\ \ \ \ \ \{}
+\DoxyCodeLine{00720\ \ \ \ \ \ \ \ \ std::vector<UpgradedFeatureType>\ upgradedFeatures;}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ the\ staged\ map\ with\ no\ matchs}}
+\DoxyCodeLine{00722\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ stagedMapType::iterator\ stagedFeatureIterator\ =\ \_stagedMap.begin();}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (stagedFeatureIterator\ !=\ \_stagedMap.end())}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \ \ \ \ \ \ StagedFeatureType\&\ stagedFeature\ =\ stagedFeatureIterator-\/>second;}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ \ \ \ \ \ \ assert(stagedFeatureIterator-\/>first\ ==\ stagedFeature.\_id);}
+\DoxyCodeLine{00727\ }
+\DoxyCodeLine{00728\ \ \ \ \ \ \ \ \ \ \ \ \ UpgradedFeatureType\ upgraded;}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stagedFeature.compute\_upgraded(cameraToWorld,\ upgraded))}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ upgradedFeatures.emplace\_back(upgraded);}
+\DoxyCodeLine{00732\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ useless\ point}}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stagedFeatureIterator\ =\ \_stagedMap.erase(stagedFeatureIterator);}
+\DoxyCodeLine{00734\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00735\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00736\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00737\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++stagedFeatureIterator;}
+\DoxyCodeLine{00738\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00739\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00740\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ upgradedFeatures;}
+\DoxyCodeLine{00741\ \ \ \ \ \}}
+\DoxyCodeLine{00742\ }
+\DoxyCodeLine{00743\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00744\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_isActivated;\ \textcolor{comment}{//\ if\ false,\ no\ updates\ will\ occur\ on\ this\ map\ object\ (no\ matches,\ no\ tracking,\ ...)}}
+\DoxyCodeLine{00745\ \ \ \ \ localMapType\ \_localMap;}
+\DoxyCodeLine{00746\ \ \ \ \ stagedMapType\ \_stagedMap;}
+\DoxyCodeLine{00747\ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_ad649f82d2e43d86f0f04317e62a6b25d}{vectorb}}\ \_isDetectedFeatureMatched;\ \textcolor{comment}{//\ indicates\ if\ a\ detected\ feature\ is\ macthed\ to\ a\ local\ map\ feature}}
+\DoxyCodeLine{00748\ \};}
+\DoxyCodeLine{00749\ }
+\DoxyCodeLine{00750\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::map\_management}}
 \DoxyCodeLine{00751\ }
-\DoxyCodeLine{00752\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::map\_management}}
-\DoxyCodeLine{00753\ }
-\DoxyCodeLine{00754\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00752\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

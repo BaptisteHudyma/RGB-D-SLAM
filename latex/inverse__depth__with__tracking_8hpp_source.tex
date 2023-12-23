@@ -1,0 +1,90 @@
+\doxysection{inverse\+\_\+depth\+\_\+with\+\_\+tracking.\+hpp}
+\hypertarget{inverse__depth__with__tracking_8hpp_source}{}\label{inverse__depth__with__tracking_8hpp_source}\index{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/inverse\_depth\_with\_tracking.hpp@{/home/baptisteh/Documents/code/robots/RGB\_SLAM/RGB-\/D-\/SLAM/src/tracking/inverse\_depth\_with\_tracking.hpp}}
+\mbox{\hyperlink{inverse__depth__with__tracking_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ RGBDSLAM\_TRACKING\_INVERSE\_DEPTH\_WITH\_TRACKING\_HPP}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ RGBDSLAM\_TRACKING\_INVERSE\_DEPTH\_WITH\_TRACKING\_HPP}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{types_8hpp}{types.hpp}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{inverse__depth__coordinates_8hpp}{utils/coordinates/inverse\_depth\_coordinates.hpp}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{kalman__filter_8hpp}{kalman\_filter.hpp}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}../utils/line.hpp"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <opencv2/opencv.hpp>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacergbd__slam_1_1tracking}{rgbd\_slam::tracking}}\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{PointInverseDepth}}}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a83b35919a37da16dab6e41dd03fbe11c}{firstPoseIndex}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a995e4b7e466df09dfd9b22036ef83232}{utils::InverseDepthWorldPoint::firstPoseIndex}};}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a5c12b129f05a9a832fe4acd7037230f1}{inverseDepthIndex}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2c876146df8e225465d37d5a189d6919}{utils::InverseDepthWorldPoint::inverseDepthIndex}};}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a7ad1e13aa6b8873aaf61f867d8816a65}{thetaIndex}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_af68f02bdb0becf2820a0bf83272390fe}{utils::InverseDepthWorldPoint::thetaIndex}};}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ uint\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a0f30a3ff2e7340276891a0f64b7874b5}{phiIndex}}\ =\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a381955f873897af8b4de1802b112ebdc}{utils::InverseDepthWorldPoint::phiIndex}};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}{Covariance}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}}}
+\DoxyCodeLine{00022\ \ \ \ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }matrix66::matrix66;}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance_a327921d148d3465184cf5a3bc79ef11a}{get\_first\_pose\_covariance}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ block<3,\ 3>(\mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a83b35919a37da16dab6e41dd03fbe11c}{firstPoseIndex}},\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a83b35919a37da16dab6e41dd03fbe11c}{firstPoseIndex}});\ \}}
+\DoxyCodeLine{00025\ \ \ \ \ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils::InverseDepthWorldPoint}}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ab9eb30c02653a7cc686748ca72970553}{\_coordinates}};}
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_1_1_covariance}{Covariance}}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_afbe503c5bc1c4cedd9ea9198db7c4c19}{\_covariance}};}
+\DoxyCodeLine{00029\ \ \ \ \ cv::Mat\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a930ef9e8df9ab3abeda7e9f964518556}{\_descriptor}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{PointInverseDepth}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ observation,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ c2w,}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ stateCovariance);}
+\DoxyCodeLine{00034\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{PointInverseDepth}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ observation,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ c2w,}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ stateCovariance,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{PointInverseDepth}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth}{PointInverseDepth}}\&\ other);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_af0febc65279ee9d326850362b5a80a05}{get\_covariance\_of\_observed\_pose}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_afbe503c5bc1c4cedd9ea9198db7c4c19}{\_covariance}}.block<3,\ 3>(0,\ 0);\ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00051\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a77ad40572be4e9f2d8659653dd38905c}{track}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{utils::ScreenCoordinate2D}}\&\ observation,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ c2w,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ stateCovariance,}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor);}
+\DoxyCodeLine{00055\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a77ad40572be4e9f2d8659653dd38905c}{track}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate}{utils::ScreenCoordinate}}\&\ observation,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ c2w,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ stateCovariance,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor);}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00067\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a3013d3c9f9041c16a69b38e1ef9aa9b4}{to\_screen\_coordinates}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ w2c,}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{utils::Segment<2>}}\&\ screenSegment)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00073\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_coordinate_covariance}{CameraCoordinateCovariance}}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ad1ff2f894dafa4d013e525a27531706c}{get\_camera\_coordinate\_variance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ w2c)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00078\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{structrgbd__slam_1_1_screen_coordinate_covariance}{ScreenCoordinateCovariance}}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a571fd7ca739c936b988cf2ecae7c1014}{get\_screen\_coordinate\_variance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{WorldToCameraMatrix}}\&\ w2c)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00083\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a2298ef542cb305e8ab02a150c283b303}{compute\_cartesian\_covariance}}(}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{utils::InverseDepthWorldPoint}}\&\ coordinates,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}}\&\ covariance);}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a2298ef542cb305e8ab02a150c283b303}{compute\_cartesian\_covariance}}(}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a502d6e9992f89238aab609e627445e55}{matrix66}}\&\ covariance,\ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ 3,\ 6>\&\ jacobian);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00092\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{static}\ Covariance\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a73bbe4f0d8281bcf580d644962194f62}{compute\_inverse\_depth\_covariance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\&\ pointCovariance,}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{namespacergbd__slam_a668ec4e90f57f06678a0b85a12c38db3}{matrix33}}\&\ firstPoseCovariance,}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Eigen::Matrix<double,\ 6,\ 3>\&\ jacobian);}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00100\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a8b17c443f38edda979b7f9b831755c5b}{compute\_linearity\_score}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{CameraToWorldMatrix}}\&\ cameraToWorld)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00106\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_aab6a6ec513d9599e85dce5909cc1bad4}{update\_with\_cartesian}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils::WorldCoordinate}}\&\ point,}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrgbd__slam_1_1_world_coordinate_covariance}{WorldCoordinateCovariance}}\&\ covariance,}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cv::Mat\&\ descriptor);}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_a09d5189f0ebcb5bd066bc86941b67f45}{build\_kalman\_filter}}()\ noexcept;}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//\ shared\ kalman\ filter,\ between\ all\ points}}
+\DoxyCodeLine{00116\ \ \ \ \ inline\ static\ std::unique\_ptr<tracking::\mbox{\hyperlink{classrgbd__slam_1_1tracking_1_1_shared_kalman_filter}{SharedKalmanFilter}}<3,\ 3>>\ \mbox{\hyperlink{structrgbd__slam_1_1tracking_1_1_point_inverse_depth_ae88efe6d3f9b41cdea59bbabeeaef9e1}{\_kalmanFilter}}\ =\ \textcolor{keywordtype}{nullptr};}
+\DoxyCodeLine{00117\ \};}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \}\ \textcolor{comment}{//\ namespace\ rgbd\_slam::tracking}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

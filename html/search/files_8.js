@@ -1,15 +1,12 @@
 var searchData=
 [
-  ['mainpage_2emd_0',['mainpage.md',['../mainpage_8md.html',1,'']]],
-  ['map_5fpoint_2ecpp_1',['map_point.cpp',['../map__point_8cpp.html',1,'']]],
-  ['map_5fpoint_2ehpp_2',['map_point.hpp',['../map__point_8hpp.html',1,'']]],
-  ['map_5fpoint2d_2ecpp_3',['map_point2d.cpp',['../map__point2d_8cpp.html',1,'']]],
-  ['map_5fpoint2d_2ehpp_4',['map_point2d.hpp',['../map__point2d_8hpp.html',1,'']]],
-  ['map_5fprimitive_2ecpp_5',['map_primitive.cpp',['../map__primitive_8cpp.html',1,'']]],
-  ['map_5fprimitive_2ehpp_6',['map_primitive.hpp',['../map__primitive_8hpp.html',1,'']]],
-  ['map_5fwriter_2ecpp_7',['map_writer.cpp',['../map__writer_8cpp.html',1,'']]],
-  ['map_5fwriter_2ehpp_8',['map_writer.hpp',['../map__writer_8hpp.html',1,'']]],
-  ['matches_5fcontainers_2ehpp_9',['matches_containers.hpp',['../matches__containers_8hpp.html',1,'']]],
-  ['motion_5fmodel_2ecpp_10',['motion_model.cpp',['../motion__model_8cpp.html',1,'']]],
-  ['motion_5fmodel_2ehpp_11',['motion_model.hpp',['../motion__model_8hpp.html',1,'']]]
+  ['levenberg_5fmarquard_5ffunctors_2ecpp_0',['levenberg_marquard_functors.cpp',['../levenberg__marquard__functors_8cpp.html',1,'']]],
+  ['levenberg_5fmarquard_5ffunctors_2ehpp_1',['levenberg_marquard_functors.hpp',['../levenberg__marquard__functors_8hpp.html',1,'']]],
+  ['line_2ehpp_2',['line.hpp',['../line_8hpp.html',1,'']]],
+  ['line_5fdetection_2ecpp_3',['line_detection.cpp',['../line__detection_8cpp.html',1,'']]],
+  ['line_5fdetection_2ehpp_4',['line_detection.hpp',['../line__detection_8hpp.html',1,'']]],
+  ['local_5fmap_2ecpp_5',['local_map.cpp',['../local__map_8cpp.html',1,'']]],
+  ['local_5fmap_2ehpp_6',['local_map.hpp',['../local__map_8hpp.html',1,'']]],
+  ['logger_2ecpp_7',['logger.cpp',['../logger_8cpp.html',1,'']]],
+  ['logger_2ehpp_8',['logger.hpp',['../logger_8hpp.html',1,'']]]
 ];

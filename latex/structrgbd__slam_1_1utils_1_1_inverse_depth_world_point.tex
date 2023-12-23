@@ -7,7 +7,7 @@ Contain an inverse depth representation of a world point. This is used to repres
 
 
 
-{\ttfamily \#include $<$point\+\_\+coordinates.\+hpp$>$}
+{\ttfamily \#include $<$inverse\+\_\+depth\+\_\+coordinates.\+hpp$>$}
 
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -19,9 +19,11 @@ Contain an inverse depth representation of a world point. This is used to repres
 \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ab3d4b202d64821a4ae4e5f0a442fe549}{Inverse\+Depth\+World\+Point}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_camera_coordinate}{Camera\+Coordinate}} \&observation, const \mbox{\hyperlink{structrgbd__slam_1_1_camera_to_world_matrix}{Camera\+To\+World\+Matrix}} \&c2w)
 \item 
 \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a1faed1178e71314dad531896f3e05ef5}{compute\+\_\+signed\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{Inverse\+Depth\+World\+Point}} \&other) const
-\begin{DoxyCompactList}\small\item\em signed Line to line distance \end{DoxyCompactList}\item 
-\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a0b656bc0a548df3449d881e458452561}{compute\+\_\+signed\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&other, const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&c2w) const
-\item 
+\begin{DoxyCompactList}\small\item\em signed \doxylink{classrgbd__slam_1_1utils_1_1_line}{Line} to line distance \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ad9683ccd214a96ac5cb8c2f352b9d445}{compute\+\_\+signed\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&other, const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&w2c) const
+\begin{DoxyCompactList}\small\item\em signed \doxylink{classrgbd__slam_1_1utils_1_1_line}{Line} to line distance \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a4d9b247d7c2fddc0543e6a8649084358}{compute\+\_\+signed\+\_\+screen\+\_\+distance}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&other, const double inverse\+Depth\+Covariance, const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&w2c) const
+\begin{DoxyCompactList}\small\item\em compute distance of the screen projections \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_acf6ad6bad670cf09b3bd5306da01b6da}{to\+\_\+world\+\_\+coordinates}} () const noexcept
 \begin{DoxyCompactList}\small\item\em compute the cartesian projection of this point in world space. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a26e307d1b97cab92c181afc60c3d357a}{to\+\_\+world\+\_\+coordinates}} (Eigen\+::\+Matrix$<$ double, 3, 6 $>$ \&jacobian) const noexcept
@@ -30,11 +32,21 @@ Contain an inverse depth representation of a world point. This is used to repres
 \begin{DoxyCompactList}\small\item\em Compute the projected coordinates of this point to camera space. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2742b793cfc38be169468a79713b5c53}{to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&w2c, \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&screen\+Coordinates) const noexcept
 \begin{DoxyCompactList}\small\item\em Compute the projected coordinates of this point to screen space. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_acddaa1eb5f9a66eadde5ee0ac940ed92}{to\+\_\+screen\+\_\+coordinates}} (const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&w2c, const double inverse\+Depth\+Covariance, \mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{utils\+::\+Segment}}$<$ 2 $>$ \&screen\+Segment) const noexcept
+\begin{DoxyCompactList}\small\item\em Compute a line that represent the potential position of the inverse depth point, taking into account the uncertainty. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a7a1e96661391c0331340ec93d075dbdd}{get\+\_\+closest\+\_\+estimation}} (const double inverse\+Depth\+Standard\+Dev) const
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a9c2ac45533d4ac1d588132aaee40be8b}{get\+\_\+furthest\+\_\+estimation}} (const double inverse\+Depth\+Standard\+Dev) const
+\item 
+\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_acfd5d2eb7e612f4f41404c17b7a37ece}{get\+\_\+first\+\_\+observation}} () const noexcept
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a9e3f64831d769f9fd9973450946b5a32}{get\+\_\+inverse\+\_\+depth}} () const noexcept
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ada2aeceb4bd9cfc35c73045478598e44}{get\+\_\+theta}} () const noexcept
+\item 
+double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_af7ffe8376df4504e5fc9f04cc206859c}{get\+\_\+phi}} () const noexcept
+\item 
 \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_aa54f391f74ef351f2c60a05475af52bd}{get\+\_\+bearing\+\_\+vector}} () const noexcept
-\item 
-\mbox{\hyperlink{namespacergbd__slam_ae2133ef07cc4ebf000105a2a314d6468}{vector6}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2645abd5c66f94dfe89e59542664e3cb}{get\+\_\+vector\+\_\+state}} () const noexcept
-\item 
-void \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a7d02adbd0e19fd0d1caa094da8b943bc}{from\+\_\+vector\+\_\+state}} (const \mbox{\hyperlink{namespacergbd__slam_ae2133ef07cc4ebf000105a2a314d6468}{vector6}} \&state) noexcept
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -43,17 +55,6 @@ static \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}
 \begin{DoxyCompactList}\small\item\em Set the parameters of this instance from a cartesian point. \end{DoxyCompactList}\item 
 static \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point}{Inverse\+Depth\+World\+Point}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a5dabdf8a3e9fffe10bc73cafa053312e}{from\+\_\+cartesian}} (const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&point, const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \&origin, Eigen\+::\+Matrix$<$ double, 6, 3 $>$ \&jacobian) noexcept
 \begin{DoxyCompactList}\small\item\em Set the parameters of this instance from a cartesian point. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsubsection*{Public Attributes}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ae23e097e915cbb2576beb62da375d72e}{\+\_\+first\+Observation}}
-\item 
-double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ab2484f556b50e31562a3ae0c9d4b8f72}{\+\_\+inverse\+Depth\+\_\+mm}} = 0.\+0
-\item 
-double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2210ed83d8f24352be3fb77810fa943b}{\+\_\+theta\+\_\+rad}} = 0.\+0
-\item 
-double \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_adcb7912bd2367f90fcdc5a334a7db866}{\+\_\+phi\+\_\+rad}} = 0.\+0
-\end{DoxyCompactItemize}
 \doxysubsubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -100,14 +101,58 @@ INVERSE DEPTH COORDINATES \Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_dep
 
 
 
-signed Line to line distance 
+signed \doxylink{classrgbd__slam_1_1utils_1_1_line}{Line} to line distance 
 
-\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a0b656bc0a548df3449d881e458452561}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a0b656bc0a548df3449d881e458452561} 
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The distance between the two closest points on the lines 
+\end{DoxyReturn}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ad9683ccd214a96ac5cb8c2f352b9d445}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ad9683ccd214a96ac5cb8c2f352b9d445} 
 \index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!compute\_signed\_distance@{compute\_signed\_distance}}
 \index{compute\_signed\_distance@{compute\_signed\_distance}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
 \doxysubsubsection{\texorpdfstring{compute\_signed\_distance()}{compute\_signed\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::compute\+\_\+signed\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&}]{other,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{c2w }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::compute\+\_\+signed\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&}]{other,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{w2c }\end{DoxyParamCaption}) const}
 
+
+
+signed \doxylink{classrgbd__slam_1_1utils_1_1_line}{Line} to line distance 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em other} & The 2d observation to put in inverse depth coordinates \\
+\hline
+\mbox{\texttt{ in}}  & {\em w2c} & The matrix to go from world to camera space \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The distance between the two closest points on the lines 
+\end{DoxyReturn}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a4d9b247d7c2fddc0543e6a8649084358}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a4d9b247d7c2fddc0543e6a8649084358} 
+\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!compute\_signed\_screen\_distance@{compute\_signed\_screen\_distance}}
+\index{compute\_signed\_screen\_distance@{compute\_signed\_screen\_distance}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
+\doxysubsubsection{\texorpdfstring{compute\_signed\_screen\_distance()}{compute\_signed\_screen\_distance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_a30d53a3c1b9189dbd47cba5f8e1b87a1}{vector2}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::compute\+\_\+signed\+\_\+screen\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&}]{other,  }\item[{const double}]{inverse\+Depth\+Covariance,  }\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{w2c }\end{DoxyParamCaption}) const}
+
+
+
+compute distance of the screen projections 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em other} & The 2d observation in the new image \\
+\hline
+\mbox{\texttt{ in}}  & {\em inverse\+Depth\+Covariance} & The covariance of the inverse depth \\
+\hline
+\mbox{\texttt{ in}}  & {\em w2c} & The matrix to go from world to camera space \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The distance between the two observations, in pixels 
+\end{DoxyReturn}
 \Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ac7ab061a731dc207a6c5dad3da482a4c}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ac7ab061a731dc207a6c5dad3da482a4c} 
 \index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!from\_cartesian@{from\_cartesian}}
 \index{from\_cartesian@{from\_cartesian}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
@@ -144,23 +189,47 @@ Set the parameters of this instance from a cartesian point.
 \mbox{\texttt{ out}}  & {\em jacobian} & The jacobian of this transformation \\
 \hline
 \end{DoxyParams}
-\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a7d02adbd0e19fd0d1caa094da8b943bc}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a7d02adbd0e19fd0d1caa094da8b943bc} 
-\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!from\_vector\_state@{from\_vector\_state}}
-\index{from\_vector\_state@{from\_vector\_state}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
-\doxysubsubsection{\texorpdfstring{from\_vector\_state()}{from\_vector\_state()}}
-{\footnotesize\ttfamily void rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::from\+\_\+vector\+\_\+state (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacergbd__slam_ae2133ef07cc4ebf000105a2a314d6468}{vector6}} \&}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
-
 \Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_aa54f391f74ef351f2c60a05475af52bd}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_aa54f391f74ef351f2c60a05475af52bd} 
 \index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!get\_bearing\_vector@{get\_bearing\_vector}}
 \index{get\_bearing\_vector@{get\_bearing\_vector}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
 \doxysubsubsection{\texorpdfstring{get\_bearing\_vector()}{get\_bearing\_vector()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::get\+\_\+bearing\+\_\+vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_aa713e4372aad00d97551abf1588572de}{vector3}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::get\+\_\+bearing\+\_\+vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
-\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2645abd5c66f94dfe89e59542664e3cb}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2645abd5c66f94dfe89e59542664e3cb} 
-\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!get\_vector\_state@{get\_vector\_state}}
-\index{get\_vector\_state@{get\_vector\_state}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
-\doxysubsubsection{\texorpdfstring{get\_vector\_state()}{get\_vector\_state()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{namespacergbd__slam_ae2133ef07cc4ebf000105a2a314d6468}{vector6}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::get\+\_\+vector\+\_\+state (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a7a1e96661391c0331340ec93d075dbdd}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a7a1e96661391c0331340ec93d075dbdd} 
+\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!get\_closest\_estimation@{get\_closest\_estimation}}
+\index{get\_closest\_estimation@{get\_closest\_estimation}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
+\doxysubsubsection{\texorpdfstring{get\_closest\_estimation()}{get\_closest\_estimation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::get\+\_\+closest\+\_\+estimation (\begin{DoxyParamCaption}\item[{const double}]{inverse\+Depth\+Standard\+Dev }\end{DoxyParamCaption}) const}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_acfd5d2eb7e612f4f41404c17b7a37ece}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_acfd5d2eb7e612f4f41404c17b7a37ece} 
+\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!get\_first\_observation@{get\_first\_observation}}
+\index{get\_first\_observation@{get\_first\_observation}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
+\doxysubsubsection{\texorpdfstring{get\_first\_observation()}{get\_first\_observation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::get\+\_\+first\+\_\+observation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+GETTERS \Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a9c2ac45533d4ac1d588132aaee40be8b}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a9c2ac45533d4ac1d588132aaee40be8b} 
+\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!get\_furthest\_estimation@{get\_furthest\_estimation}}
+\index{get\_furthest\_estimation@{get\_furthest\_estimation}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
+\doxysubsubsection{\texorpdfstring{get\_furthest\_estimation()}{get\_furthest\_estimation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{utils\+::\+World\+Coordinate}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::get\+\_\+furthest\+\_\+estimation (\begin{DoxyParamCaption}\item[{const double}]{inverse\+Depth\+Standard\+Dev }\end{DoxyParamCaption}) const}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a9e3f64831d769f9fd9973450946b5a32}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a9e3f64831d769f9fd9973450946b5a32} 
+\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!get\_inverse\_depth@{get\_inverse\_depth}}
+\index{get\_inverse\_depth@{get\_inverse\_depth}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
+\doxysubsubsection{\texorpdfstring{get\_inverse\_depth()}{get\_inverse\_depth()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::get\+\_\+inverse\+\_\+depth (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_af7ffe8376df4504e5fc9f04cc206859c}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_af7ffe8376df4504e5fc9f04cc206859c} 
+\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!get\_phi@{get\_phi}}
+\index{get\_phi@{get\_phi}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
+\doxysubsubsection{\texorpdfstring{get\_phi()}{get\_phi()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::get\+\_\+phi (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ada2aeceb4bd9cfc35c73045478598e44}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ada2aeceb4bd9cfc35c73045478598e44} 
+\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!get\_theta@{get\_theta}}
+\index{get\_theta@{get\_theta}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
+\doxysubsubsection{\texorpdfstring{get\_theta()}{get\_theta()}}
+{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::get\+\_\+theta (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 \Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_afdaa455b788a43d7279fd510afcb1c52}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_afdaa455b788a43d7279fd510afcb1c52} 
 \index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!to\_camera\_coordinates@{to\_camera\_coordinates}}
@@ -180,10 +249,32 @@ Compute the projected coordinates of this point to camera space.
 \begin{DoxyReturn}{Returns}
 The point in camera coordinates (the associated covariance can be huge) 
 \end{DoxyReturn}
+\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_acddaa1eb5f9a66eadde5ee0ac940ed92}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_acddaa1eb5f9a66eadde5ee0ac940ed92} 
+\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!to\_screen\_coordinates@{to\_screen\_coordinates}}
+\index{to\_screen\_coordinates@{to\_screen\_coordinates}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
+\doxysubsubsection{\texorpdfstring{to\_screen\_coordinates()}{to\_screen\_coordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{w2c,  }\item[{const double}]{inverse\+Depth\+Covariance,  }\item[{\mbox{\hyperlink{classrgbd__slam_1_1utils_1_1_segment}{utils\+::\+Segment}}$<$ 2 $>$ \&}]{screen\+Segment }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Compute a line that represent the potential position of the inverse depth point, taking into account the uncertainty. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em w2c} & The world to camera matrix \\
+\hline
+\mbox{\texttt{ in}}  & {\em inverse\+Depth\+Covariance} & The covariance of the inverse depth \\
+\hline
+\mbox{\texttt{ out}}  & {\em screen\+Segment} & the projection of this point as a segment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if screen\+Segment is valid 
+\end{DoxyReturn}
 \Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2742b793cfc38be169468a79713b5c53}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2742b793cfc38be169468a79713b5c53} 
 \index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!to\_screen\_coordinates@{to\_screen\_coordinates}}
 \index{to\_screen\_coordinates@{to\_screen\_coordinates}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
-\doxysubsubsection{\texorpdfstring{to\_screen\_coordinates()}{to\_screen\_coordinates()}}
+\doxysubsubsection{\texorpdfstring{to\_screen\_coordinates()}{to\_screen\_coordinates()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily bool rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::to\+\_\+screen\+\_\+coordinates (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrgbd__slam_1_1_world_to_camera_matrix}{World\+To\+Camera\+Matrix}} \&}]{w2c,  }\item[{\mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_screen_coordinate2_d}{Screen\+Coordinate2D}} \&}]{screen\+Coordinates }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
 
 
@@ -234,30 +325,6 @@ The point in camera coordinates (the associated covariance can be huge)
 
 
 \doxysubsection{Member Data Documentation}
-\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ae23e097e915cbb2576beb62da375d72e}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ae23e097e915cbb2576beb62da375d72e} 
-\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!\_firstObservation@{\_firstObservation}}
-\index{\_firstObservation@{\_firstObservation}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
-\doxysubsubsection{\texorpdfstring{\_firstObservation}{\_firstObservation}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structrgbd__slam_1_1utils_1_1_world_coordinate}{World\+Coordinate}} rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::\+\_\+first\+Observation}
-
-\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ab2484f556b50e31562a3ae0c9d4b8f72}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_ab2484f556b50e31562a3ae0c9d4b8f72} 
-\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!\_inverseDepth\_mm@{\_inverseDepth\_mm}}
-\index{\_inverseDepth\_mm@{\_inverseDepth\_mm}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
-\doxysubsubsection{\texorpdfstring{\_inverseDepth\_mm}{\_inverseDepth\_mm}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::\+\_\+inverse\+Depth\+\_\+mm = 0.\+0}
-
-\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_adcb7912bd2367f90fcdc5a334a7db866}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_adcb7912bd2367f90fcdc5a334a7db866} 
-\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!\_phi\_rad@{\_phi\_rad}}
-\index{\_phi\_rad@{\_phi\_rad}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
-\doxysubsubsection{\texorpdfstring{\_phi\_rad}{\_phi\_rad}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::\+\_\+phi\+\_\+rad = 0.\+0}
-
-\Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2210ed83d8f24352be3fb77810fa943b}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a2210ed83d8f24352be3fb77810fa943b} 
-\index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!\_theta\_rad@{\_theta\_rad}}
-\index{\_theta\_rad@{\_theta\_rad}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
-\doxysubsubsection{\texorpdfstring{\_theta\_rad}{\_theta\_rad}}
-{\footnotesize\ttfamily double rgbd\+\_\+slam\+::utils\+::\+Inverse\+Depth\+World\+Point\+::\+\_\+theta\+\_\+rad = 0.\+0}
-
 \Hypertarget{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a995e4b7e466df09dfd9b22036ef83232}\label{structrgbd__slam_1_1utils_1_1_inverse_depth_world_point_a995e4b7e466df09dfd9b22036ef83232} 
 \index{rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}!firstPoseIndex@{firstPoseIndex}}
 \index{firstPoseIndex@{firstPoseIndex}!rgbd\_slam::utils::InverseDepthWorldPoint@{rgbd\_slam::utils::InverseDepthWorldPoint}}
@@ -286,5 +353,5 @@ The point in camera coordinates (the associated covariance can be huge)
 
 The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/\mbox{\hyperlink{point__coordinates_8hpp}{point\+\_\+coordinates.\+hpp}}\item 
-/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/\mbox{\hyperlink{point__coordinates_8cpp}{point\+\_\+coordinates.\+cpp}}\end{DoxyCompactItemize}
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/\mbox{\hyperlink{inverse__depth__coordinates_8hpp}{inverse\+\_\+depth\+\_\+coordinates.\+hpp}}\item 
+/home/baptisteh/\+Documents/code/robots/\+RGB\+\_\+\+SLAM/\+RGB-\/\+D-\/\+SLAM/src/utils/coordinates/\mbox{\hyperlink{inverse__depth__coordinates_8cpp}{inverse\+\_\+depth\+\_\+coordinates.\+cpp}}\end{DoxyCompactItemize}

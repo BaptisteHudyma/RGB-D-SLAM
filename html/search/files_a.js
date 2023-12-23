@@ -1,8 +1,23 @@
 var searchData=
 [
-  ['random_2ehpp_0',['random.hpp',['../random_8hpp.html',1,'']]],
-  ['ransac_2ehpp_1',['ransac.hpp',['../ransac_8hpp.html',1,'']]],
-  ['readme_2emd_2',['readme.md',['../_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../src_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)']]],
-  ['rgbd_5fslam_2ecpp_3',['rgbd_slam.cpp',['../rgbd__slam_8cpp.html',1,'']]],
-  ['rgbd_5fslam_2ehpp_4',['rgbd_slam.hpp',['../rgbd__slam_8hpp.html',1,'']]]
+  ['parameters_2ecpp_0',['parameters.cpp',['../parameters_8cpp.html',1,'']]],
+  ['parameters_2ehpp_1',['parameters.hpp',['../parameters_8hpp.html',1,'']]],
+  ['plane_5fcoordinates_2ecpp_2',['plane_coordinates.cpp',['../plane__coordinates_8cpp.html',1,'']]],
+  ['plane_5fcoordinates_2ehpp_3',['plane_coordinates.hpp',['../plane__coordinates_8hpp.html',1,'']]],
+  ['plane_5fsegment_2ecpp_4',['plane_segment.cpp',['../plane__segment_8cpp.html',1,'']]],
+  ['plane_5fsegment_2ehpp_5',['plane_segment.hpp',['../plane__segment_8hpp.html',1,'']]],
+  ['plane_5fwith_5ftracking_2ecpp_6',['plane_with_tracking.cpp',['../plane__with__tracking_8cpp.html',1,'']]],
+  ['plane_5fwith_5ftracking_2ehpp_7',['plane_with_tracking.hpp',['../plane__with__tracking_8hpp.html',1,'']]],
+  ['point_5fcoordinates_2ecpp_8',['point_coordinates.cpp',['../point__coordinates_8cpp.html',1,'']]],
+  ['point_5fcoordinates_2ehpp_9',['point_coordinates.hpp',['../point__coordinates_8hpp.html',1,'']]],
+  ['point_5fwith_5ftracking_2ecpp_10',['point_with_tracking.cpp',['../point__with__tracking_8cpp.html',1,'']]],
+  ['point_5fwith_5ftracking_2ehpp_11',['point_with_tracking.hpp',['../point__with__tracking_8hpp.html',1,'']]],
+  ['polygon_2ecpp_12',['polygon.cpp',['../polygon_8cpp.html',1,'']]],
+  ['polygon_2ehpp_13',['polygon.hpp',['../polygon_8hpp.html',1,'']]],
+  ['pose_2ecpp_14',['pose.cpp',['../pose_8cpp.html',1,'']]],
+  ['pose_2ehpp_15',['pose.hpp',['../pose_8hpp.html',1,'']]],
+  ['pose_5foptimization_2ecpp_16',['pose_optimization.cpp',['../pose__optimization_8cpp.html',1,'']]],
+  ['pose_5foptimization_2ehpp_17',['pose_optimization.hpp',['../pose__optimization_8hpp.html',1,'']]],
+  ['primitive_5fdetection_2ecpp_18',['primitive_detection.cpp',['../primitive__detection_8cpp.html',1,'']]],
+  ['primitive_5fdetection_2ehpp_19',['primitive_detection.hpp',['../primitive__detection_8hpp.html',1,'']]]
 ];

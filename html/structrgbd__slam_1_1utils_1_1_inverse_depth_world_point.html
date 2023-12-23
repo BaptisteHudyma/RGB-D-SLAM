@@ -77,7 +77,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">rgbd_slam::utils::InverseDepthWorldPoint Struct Reference</div></div>
@@ -87,7 +86,7 @@ $(function() {
 <p>Contain an inverse depth representation of a world point. This is used to represent point with an unknown depth.  
  <a href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="point__coordinates_8hpp_source.html">point_coordinates.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="inverse__depth__coordinates_8hpp_source.html">inverse_depth_coordinates.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -98,10 +97,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab3d4b202d64821a4ae4e5f0a442fe549" id="r_ab3d4b202d64821a4ae4e5f0a442fe549"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#ab3d4b202d64821a4ae4e5f0a442fe549">InverseDepthWorldPoint</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_camera_coordinate.html">CameraCoordinate</a> &amp;observation, const <a class="el" href="structrgbd__slam_1_1_camera_to_world_matrix.html">CameraToWorldMatrix</a> &amp;c2w)</td></tr>
 <tr class="separator:ab3d4b202d64821a4ae4e5f0a442fe549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1faed1178e71314dad531896f3e05ef5" id="r_a1faed1178e71314dad531896f3e05ef5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a1faed1178e71314dad531896f3e05ef5">compute_signed_distance</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html">InverseDepthWorldPoint</a> &amp;other) const</td></tr>
-<tr class="memdesc:a1faed1178e71314dad531896f3e05ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">signed Line to line distance  <br /></td></tr>
+<tr class="memdesc:a1faed1178e71314dad531896f3e05ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">signed <a class="el" href="classrgbd__slam_1_1utils_1_1_line.html" title="Segment class: a line defined by a start point and a normal vector.">Line</a> to line distance  <br /></td></tr>
 <tr class="separator:a1faed1178e71314dad531896f3e05ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b656bc0a548df3449d881e458452561" id="r_a0b656bc0a548df3449d881e458452561"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a0b656bc0a548df3449d881e458452561">compute_signed_distance</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate2_d.html">ScreenCoordinate2D</a> &amp;other, const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;c2w) const</td></tr>
-<tr class="separator:a0b656bc0a548df3449d881e458452561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9683ccd214a96ac5cb8c2f352b9d445" id="r_ad9683ccd214a96ac5cb8c2f352b9d445"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#ad9683ccd214a96ac5cb8c2f352b9d445">compute_signed_distance</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate2_d.html">ScreenCoordinate2D</a> &amp;other, const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;w2c) const</td></tr>
+<tr class="memdesc:ad9683ccd214a96ac5cb8c2f352b9d445"><td class="mdescLeft">&#160;</td><td class="mdescRight">signed <a class="el" href="classrgbd__slam_1_1utils_1_1_line.html" title="Segment class: a line defined by a start point and a normal vector.">Line</a> to line distance  <br /></td></tr>
+<tr class="separator:ad9683ccd214a96ac5cb8c2f352b9d445"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d9b247d7c2fddc0543e6a8649084358" id="r_a4d9b247d7c2fddc0543e6a8649084358"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#a30d53a3c1b9189dbd47cba5f8e1b87a1">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a4d9b247d7c2fddc0543e6a8649084358">compute_signed_screen_distance</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate2_d.html">ScreenCoordinate2D</a> &amp;other, const double inverseDepthCovariance, const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;w2c) const</td></tr>
+<tr class="memdesc:a4d9b247d7c2fddc0543e6a8649084358"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute distance of the screen projections  <br /></td></tr>
+<tr class="separator:a4d9b247d7c2fddc0543e6a8649084358"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf6ad6bad670cf09b3bd5306da01b6da" id="r_acf6ad6bad670cf09b3bd5306da01b6da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">WorldCoordinate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#acf6ad6bad670cf09b3bd5306da01b6da">to_world_coordinates</a> () const noexcept</td></tr>
 <tr class="memdesc:acf6ad6bad670cf09b3bd5306da01b6da"><td class="mdescLeft">&#160;</td><td class="mdescRight">compute the cartesian projection of this point in world space.  <br /></td></tr>
 <tr class="separator:acf6ad6bad670cf09b3bd5306da01b6da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,12 +117,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2742b793cfc38be169468a79713b5c53" id="r_a2742b793cfc38be169468a79713b5c53"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a2742b793cfc38be169468a79713b5c53">to_screen_coordinates</a> (const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;w2c, <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate2_d.html">ScreenCoordinate2D</a> &amp;screenCoordinates) const noexcept</td></tr>
 <tr class="memdesc:a2742b793cfc38be169468a79713b5c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the projected coordinates of this point to screen space.  <br /></td></tr>
 <tr class="separator:a2742b793cfc38be169468a79713b5c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acddaa1eb5f9a66eadde5ee0ac940ed92" id="r_acddaa1eb5f9a66eadde5ee0ac940ed92"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#acddaa1eb5f9a66eadde5ee0ac940ed92">to_screen_coordinates</a> (const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;w2c, const double inverseDepthCovariance, <a class="el" href="classrgbd__slam_1_1utils_1_1_segment.html">utils::Segment</a>&lt; 2 &gt; &amp;screenSegment) const noexcept</td></tr>
+<tr class="memdesc:acddaa1eb5f9a66eadde5ee0ac940ed92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a line that represent the potential position of the inverse depth point, taking into account the uncertainty.  <br /></td></tr>
+<tr class="separator:acddaa1eb5f9a66eadde5ee0ac940ed92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a1e96661391c0331340ec93d075dbdd" id="r_a7a1e96661391c0331340ec93d075dbdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a7a1e96661391c0331340ec93d075dbdd">get_closest_estimation</a> (const double inverseDepthStandardDev) const</td></tr>
+<tr class="separator:a7a1e96661391c0331340ec93d075dbdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c2ac45533d4ac1d588132aaee40be8b" id="r_a9c2ac45533d4ac1d588132aaee40be8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a9c2ac45533d4ac1d588132aaee40be8b">get_furthest_estimation</a> (const double inverseDepthStandardDev) const</td></tr>
+<tr class="separator:a9c2ac45533d4ac1d588132aaee40be8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfd5d2eb7e612f4f41404c17b7a37ece" id="r_acfd5d2eb7e612f4f41404c17b7a37ece"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">WorldCoordinate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#acfd5d2eb7e612f4f41404c17b7a37ece">get_first_observation</a> () const noexcept</td></tr>
+<tr class="separator:acfd5d2eb7e612f4f41404c17b7a37ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e3f64831d769f9fd9973450946b5a32" id="r_a9e3f64831d769f9fd9973450946b5a32"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a9e3f64831d769f9fd9973450946b5a32">get_inverse_depth</a> () const noexcept</td></tr>
+<tr class="separator:a9e3f64831d769f9fd9973450946b5a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada2aeceb4bd9cfc35c73045478598e44" id="r_ada2aeceb4bd9cfc35c73045478598e44"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#ada2aeceb4bd9cfc35c73045478598e44">get_theta</a> () const noexcept</td></tr>
+<tr class="separator:ada2aeceb4bd9cfc35c73045478598e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7ffe8376df4504e5fc9f04cc206859c" id="r_af7ffe8376df4504e5fc9f04cc206859c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#af7ffe8376df4504e5fc9f04cc206859c">get_phi</a> () const noexcept</td></tr>
+<tr class="separator:af7ffe8376df4504e5fc9f04cc206859c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa54f391f74ef351f2c60a05475af52bd" id="r_aa54f391f74ef351f2c60a05475af52bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#aa713e4372aad00d97551abf1588572de">vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#aa54f391f74ef351f2c60a05475af52bd">get_bearing_vector</a> () const noexcept</td></tr>
 <tr class="separator:aa54f391f74ef351f2c60a05475af52bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2645abd5c66f94dfe89e59542664e3cb" id="r_a2645abd5c66f94dfe89e59542664e3cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacergbd__slam.html#ae2133ef07cc4ebf000105a2a314d6468">vector6</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a2645abd5c66f94dfe89e59542664e3cb">get_vector_state</a> () const noexcept</td></tr>
-<tr class="separator:a2645abd5c66f94dfe89e59542664e3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d02adbd0e19fd0d1caa094da8b943bc" id="r_a7d02adbd0e19fd0d1caa094da8b943bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a7d02adbd0e19fd0d1caa094da8b943bc">from_vector_state</a> (const <a class="el" href="namespacergbd__slam.html#ae2133ef07cc4ebf000105a2a314d6468">vector6</a> &amp;state) noexcept</td></tr>
-<tr class="separator:a7d02adbd0e19fd0d1caa094da8b943bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -129,17 +143,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a5dabdf8a3e9fffe10bc73cafa053312e" id="r_a5dabdf8a3e9fffe10bc73cafa053312e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html">InverseDepthWorldPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a5dabdf8a3e9fffe10bc73cafa053312e">from_cartesian</a> (const <a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">WorldCoordinate</a> &amp;point, const <a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">WorldCoordinate</a> &amp;origin, Eigen::Matrix&lt; double, 6, 3 &gt; &amp;jacobian) noexcept</td></tr>
 <tr class="memdesc:a5dabdf8a3e9fffe10bc73cafa053312e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the parameters of this instance from a cartesian point.  <br /></td></tr>
 <tr class="separator:a5dabdf8a3e9fffe10bc73cafa053312e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ae23e097e915cbb2576beb62da375d72e" id="r_ae23e097e915cbb2576beb62da375d72e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">WorldCoordinate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#ae23e097e915cbb2576beb62da375d72e">_firstObservation</a></td></tr>
-<tr class="separator:ae23e097e915cbb2576beb62da375d72e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2484f556b50e31562a3ae0c9d4b8f72" id="r_ab2484f556b50e31562a3ae0c9d4b8f72"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#ab2484f556b50e31562a3ae0c9d4b8f72">_inverseDepth_mm</a> = 0.0</td></tr>
-<tr class="separator:ab2484f556b50e31562a3ae0c9d4b8f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2210ed83d8f24352be3fb77810fa943b" id="r_a2210ed83d8f24352be3fb77810fa943b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#a2210ed83d8f24352be3fb77810fa943b">_theta_rad</a> = 0.0</td></tr>
-<tr class="separator:a2210ed83d8f24352be3fb77810fa943b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcb7912bd2367f90fcdc5a334a7db866" id="r_adcb7912bd2367f90fcdc5a334a7db866"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrgbd__slam_1_1utils_1_1_inverse_depth_world_point.html#adcb7912bd2367f90fcdc5a334a7db866">_phi_rad</a> = 0.0</td></tr>
-<tr class="separator:adcb7912bd2367f90fcdc5a334a7db866"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -269,12 +272,19 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>signed Line to line distance </p>
+<p>signed <a class="el" href="classrgbd__slam_1_1utils_1_1_line.html" title="Segment class: a line defined by a start point and a normal vector.">Line</a> to line distance </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The distance between the two closest points on the lines </dd></dl>
 
 </div>
 </div>
-<a id="a0b656bc0a548df3449d881e458452561" name="a0b656bc0a548df3449d881e458452561"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b656bc0a548df3449d881e458452561">&#9670;&#160;</a></span>compute_signed_distance() <span class="overload">[2/2]</span></h2>
+<a id="ad9683ccd214a96ac5cb8c2f352b9d445" name="ad9683ccd214a96ac5cb8c2f352b9d445"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9683ccd214a96ac5cb8c2f352b9d445">&#9670;&#160;</a></span>compute_signed_distance() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -289,7 +299,7 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;&#160;</td>
-          <td class="paramname"><em>c2w</em>&#160;</td>
+          <td class="paramname"><em>w2c</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -298,6 +308,61 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>signed <a class="el" href="classrgbd__slam_1_1utils_1_1_line.html" title="Segment class: a line defined by a start point and a normal vector.">Line</a> to line distance </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The 2d observation to put in inverse depth coordinates </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w2c</td><td>The matrix to go from world to camera space </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The distance between the two closest points on the lines </dd></dl>
+
+</div>
+</div>
+<a id="a4d9b247d7c2fddc0543e6a8649084358" name="a4d9b247d7c2fddc0543e6a8649084358"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d9b247d7c2fddc0543e6a8649084358">&#9670;&#160;</a></span>compute_signed_screen_distance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacergbd__slam.html#a30d53a3c1b9189dbd47cba5f8e1b87a1">vector2</a> rgbd_slam::utils::InverseDepthWorldPoint::compute_signed_screen_distance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1utils_1_1_screen_coordinate2_d.html">ScreenCoordinate2D</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>inverseDepthCovariance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>w2c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>compute distance of the screen projections </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The 2d observation in the new image </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">inverseDepthCovariance</td><td>The covariance of the inverse depth </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w2c</td><td>The matrix to go from world to camera space </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The distance between the two observations, in pixels </dd></dl>
 
 </div>
 </div>
@@ -398,32 +463,6 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7d02adbd0e19fd0d1caa094da8b943bc" name="a7d02adbd0e19fd0d1caa094da8b943bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d02adbd0e19fd0d1caa094da8b943bc">&#9670;&#160;</a></span>from_vector_state()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rgbd_slam::utils::InverseDepthWorldPoint::from_vector_state </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacergbd__slam.html#ae2133ef07cc4ebf000105a2a314d6468">vector6</a> &amp;&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aa54f391f74ef351f2c60a05475af52bd" name="aa54f391f74ef351f2c60a05475af52bd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa54f391f74ef351f2c60a05475af52bd">&#9670;&#160;</a></span>get_bearing_vector()</h2>
 
@@ -442,15 +481,33 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a2645abd5c66f94dfe89e59542664e3cb" name="a2645abd5c66f94dfe89e59542664e3cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2645abd5c66f94dfe89e59542664e3cb">&#9670;&#160;</a></span>get_vector_state()</h2>
+<a id="a7a1e96661391c0331340ec93d075dbdd" name="a7a1e96661391c0331340ec93d075dbdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a1e96661391c0331340ec93d075dbdd">&#9670;&#160;</a></span>get_closest_estimation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a> rgbd_slam::utils::InverseDepthWorldPoint::get_closest_estimation </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>inverseDepthStandardDev</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acfd5d2eb7e612f4f41404c17b7a37ece" name="acfd5d2eb7e612f4f41404c17b7a37ece"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfd5d2eb7e612f4f41404c17b7a37ece">&#9670;&#160;</a></span>get_first_observation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -459,7 +516,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacergbd__slam.html#ae2133ef07cc4ebf000105a2a314d6468">vector6</a> rgbd_slam::utils::InverseDepthWorldPoint::get_vector_state </td>
+          <td class="memname"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">WorldCoordinate</a> rgbd_slam::utils::InverseDepthWorldPoint::get_first_observation </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -467,7 +524,101 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>GETTERS </p>
+
+</div>
+</div>
+<a id="a9c2ac45533d4ac1d588132aaee40be8b" name="a9c2ac45533d4ac1d588132aaee40be8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c2ac45533d4ac1d588132aaee40be8b">&#9670;&#160;</a></span>get_furthest_estimation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">utils::WorldCoordinate</a> rgbd_slam::utils::InverseDepthWorldPoint::get_furthest_estimation </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>inverseDepthStandardDev</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9e3f64831d769f9fd9973450946b5a32" name="a9e3f64831d769f9fd9973450946b5a32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e3f64831d769f9fd9973450946b5a32">&#9670;&#160;</a></span>get_inverse_depth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rgbd_slam::utils::InverseDepthWorldPoint::get_inverse_depth </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af7ffe8376df4504e5fc9f04cc206859c" name="af7ffe8376df4504e5fc9f04cc206859c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7ffe8376df4504e5fc9f04cc206859c">&#9670;&#160;</a></span>get_phi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rgbd_slam::utils::InverseDepthWorldPoint::get_phi </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ada2aeceb4bd9cfc35c73045478598e44" name="ada2aeceb4bd9cfc35c73045478598e44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada2aeceb4bd9cfc35c73045478598e44">&#9670;&#160;</a></span>get_theta()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rgbd_slam::utils::InverseDepthWorldPoint::get_theta </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -509,8 +660,61 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="acddaa1eb5f9a66eadde5ee0ac940ed92" name="acddaa1eb5f9a66eadde5ee0ac940ed92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acddaa1eb5f9a66eadde5ee0ac940ed92">&#9670;&#160;</a></span>to_screen_coordinates() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rgbd_slam::utils::InverseDepthWorldPoint::to_screen_coordinates </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrgbd__slam_1_1_world_to_camera_matrix.html">WorldToCameraMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>w2c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>inverseDepthCovariance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classrgbd__slam_1_1utils_1_1_segment.html">utils::Segment</a>&lt; 2 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>screenSegment</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute a line that represent the potential position of the inverse depth point, taking into account the uncertainty. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">w2c</td><td>The world to camera matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">inverseDepthCovariance</td><td>The covariance of the inverse depth </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">screenSegment</td><td>the projection of this point as a segment </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if screenSegment is valid </dd></dl>
+
+</div>
+</div>
 <a id="a2742b793cfc38be169468a79713b5c53" name="a2742b793cfc38be169468a79713b5c53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2742b793cfc38be169468a79713b5c53">&#9670;&#160;</a></span>to_screen_coordinates()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2742b793cfc38be169468a79713b5c53">&#9670;&#160;</a></span>to_screen_coordinates() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -619,62 +823,6 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ae23e097e915cbb2576beb62da375d72e" name="ae23e097e915cbb2576beb62da375d72e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae23e097e915cbb2576beb62da375d72e">&#9670;&#160;</a></span>_firstObservation</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structrgbd__slam_1_1utils_1_1_world_coordinate.html">WorldCoordinate</a> rgbd_slam::utils::InverseDepthWorldPoint::_firstObservation</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab2484f556b50e31562a3ae0c9d4b8f72" name="ab2484f556b50e31562a3ae0c9d4b8f72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2484f556b50e31562a3ae0c9d4b8f72">&#9670;&#160;</a></span>_inverseDepth_mm</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::utils::InverseDepthWorldPoint::_inverseDepth_mm = 0.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="adcb7912bd2367f90fcdc5a334a7db866" name="adcb7912bd2367f90fcdc5a334a7db866"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adcb7912bd2367f90fcdc5a334a7db866">&#9670;&#160;</a></span>_phi_rad</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::utils::InverseDepthWorldPoint::_phi_rad = 0.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a2210ed83d8f24352be3fb77810fa943b" name="a2210ed83d8f24352be3fb77810fa943b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2210ed83d8f24352be3fb77810fa943b">&#9670;&#160;</a></span>_theta_rad</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double rgbd_slam::utils::InverseDepthWorldPoint::_theta_rad = 0.0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a995e4b7e466df09dfd9b22036ef83232" name="a995e4b7e466df09dfd9b22036ef83232"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a995e4b7e466df09dfd9b22036ef83232">&#9670;&#160;</a></span>firstPoseIndex</h2>
 
@@ -764,8 +912,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
-<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/coordinates/<a class="el" href="point__coordinates_8hpp_source.html">point_coordinates.hpp</a></li>
-<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/coordinates/<a class="el" href="point__coordinates_8cpp.html">point_coordinates.cpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/coordinates/<a class="el" href="inverse__depth__coordinates_8hpp_source.html">inverse_depth_coordinates.hpp</a></li>
+<li>/home/baptisteh/Documents/code/robots/RGB_SLAM/RGB-D-SLAM/src/utils/coordinates/<a class="el" href="inverse__depth__coordinates_8cpp.html">inverse_depth_coordinates.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
