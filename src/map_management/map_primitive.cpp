@@ -93,6 +93,9 @@ void MapPlane::draw(const WorldToCameraMatrix& worldToCamMatrix,
                     cv::Mat& debugImage,
                     const cv::Scalar& color) const noexcept
 {
+    if (not is_matched())
+        return;
+
     // display the boundary of the plane
     _boundaryPolygon.display(worldToCamMatrix, color, debugImage);
 }

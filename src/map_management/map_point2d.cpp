@@ -86,7 +86,11 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
     {
         const cv::Point p1(static_cast<int>(startPoint.x()), static_cast<int>(startPoint.y()));
         const cv::Point p2(static_cast<int>(endPoint.x()), static_cast<int>(endPoint.y()));
-        cv::line(debugImage, p1, p2, color, 5);
+
+        // if it's matched, display blue around it, else display red
+        cv::line(debugImage, p1, p2, is_matched() ? cv::Scalar(255, 0, 0) : cv::Scalar(0, 0, 255), 5);
+
+        cv::line(debugImage, p1, p2, color, 3);
     }
 
     // small blue circle around it
