@@ -3,6 +3,7 @@
 #include "../../parameters.hpp"
 
 // circle
+#include <array>
 #include <cmath>
 #include <mutex>
 #include <tbb/parallel_for.h>
@@ -82,13 +83,12 @@ Key_Point_Extraction::Key_Point_Extraction()
     }
 }
 
-std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& grayImage,
-                                                                const cv::Mat_<uchar>& mask) const noexcept
+std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(
+        const cv::Mat& grayImage, const std::vector<cv::Point2f>& alreadyDetectedPoints) const noexcept
 {
-    assert(grayImage.size() == mask.size());
     // search keypoints, using an advanced detector if not enough features are found
     std::vector<cv::KeyPoint> frameKeypoints;
-    perform_keypoint_detection(grayImage, mask, frameKeypoints);
+    perform_keypoint_detection(grayImage, alreadyDetectedPoints, frameKeypoints);
 
     // compute a subcorner accuracy estimation for all waypoints
     std::vector<cv::Point2f> framePoints;
@@ -109,11 +109,16 @@ std::vector<cv::Point2f> Key_Point_Extraction::detect_keypoints(const cv::Mat& g
 }
 
 cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(
-        const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const noexcept
+        const cv::Size imageSize,
+        const std::vector<cv::Point2f>& keypointContainer,
+        const double pointMaskRadius_px,
+        std::array<uint16_t, numberOfDetectionCells>& detectionWindowDetectionCount) const noexcept
 {
-    constexpr int radiusOfAreaAroundPoint = static_cast<int>(parameters::detection::trackedMaskRadius_px); // in pixels
+    const int radiusOfAreaAroundPoint = static_cast<int>(pointMaskRadius_px); // in pixels
     const static cv::Scalar fillColor(0);
-    cv::Mat_<uchar> mask(imageSize, 255);
+    // this intance could be optimised with a static and a reset to white each time
+    cv::Mat_<uchar> mask(imageSize, 255); // set all to white (no mask)
+    detectionWindowDetectionCount.fill(0);
     for (const cv::Point2f& point: keypointContainer)
     {
 #if 1
@@ -125,6 +130,22 @@ cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(
         const int areaYmax = point.y + radiusOfAreaAroundPoint;
         cv::rectangle(mask, cv::Point(areaXmin, areaYmin), cv::Point(areaXmax, areaYmax), fillColor, -1);
 #endif
+
+        // get the index of the associated detection window
+        for (size_t i = 0; i < _detectionWindows.size(); ++i)
+        {
+            const auto& detectionWindow = _detectionWindows[i];
+            if (detectionWindow.contains(point))
+            {
+                // add a point detection to this windows
+                detectionWindowDetectionCount[i]++;
+                break;
+            }
+        }
+        // it is possible that this loop finishes with no update to detectionWindowDetectionCount.
+        // It happens if the point was detected outside of the search windows.
+        // They can miss some pixels because the size of the camera is not divisible by the span of windows
+        // It can causes a small band of non detections in the image, negligeable
     }
     return mask;
 }
@@ -187,12 +208,9 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     if (forceKeypointDetection or opticalFlowTrackedPointCount < parameters::detection::maximumPointPerFrame)
     {
         const auto pointDetectionStartTime = cv::getTickCount();
-        // create a mask at current keypoint location
-        const cv::Mat_<uchar>& keypointMask =
-                compute_key_point_mask(grayImage.size(), newKeypointsObject.get_keypoints());
 
         // get new keypoints
-        detectedKeypoints = detect_keypoints(grayImage, keypointMask);
+        detectedKeypoints = detect_keypoints(grayImage, newKeypointsObject.get_keypoints());
         _meanPointDetectionDuration +=
                 static_cast<double>(cv::getTickCount() - pointDetectionStartTime) / cv::getTickFrequency();
 
@@ -379,12 +397,18 @@ void Key_Point_Extraction::show_statistics(const double meanFrameTreatmentDurati
 }
 
 void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
-                                                      const cv::Mat_<uchar>& mask,
+                                                      const std::vector<cv::Point2f>& alreadyDetectedPoints,
                                                       std::vector<cv::KeyPoint>& frameKeypoints) const noexcept
 {
-    assert(grayImage.size() == mask.size());
     frameKeypoints.clear();
     std::mutex mut;
+
+    // create a mask around already detected points location
+    std::array<uint16_t, numberOfDetectionCells> detectionWindowDetectionCount;
+    const cv::Mat_<uchar>& keypointMask = compute_key_point_mask(grayImage.size(),
+                                                                 alreadyDetectedPoints,
+                                                                 parameters::detection::trackedMaskRadius_px,
+                                                                 detectionWindowDetectionCount);
 
     constexpr size_t maxKeypointToDetectByCell =
             parameters::detection::maximumPointPerFrame / (parameters::detection::keypointCellDetectionHeightCount *
@@ -394,40 +418,49 @@ void Key_Point_Extraction::perform_keypoint_detection(const cv::Mat& grayImage,
 #ifndef MAKE_DETERMINISTIC
     tbb::parallel_for(size_t(0),
                       static_cast<size_t>(numberOfDetectionCells),
-                      [this, &grayImage, &mask, &frameKeypoints, &mut](size_t i)
+                      [this, &grayImage, &keypointMask, &detectionWindowDetectionCount, &frameKeypoints, &mut](size_t i)
 #else
     for (size_t i = 0; i < numberOfDetectionCells; ++i)
 #endif
                       {
-                          const auto& detectionWindow = _detectionWindows[i];
-                          assert(!detectionWindow.empty());
-
-                          const cv::Mat& subImg = grayImage(detectionWindow);
-                          const cv::Mat_<uchar>& subMask = mask(detectionWindow);
-
-                          std::vector<cv::KeyPoint> keypoints;
-                          keypoints.reserve(maxKeypointToDetectByCell);
-
-                          assert(!_featureDetectors[i].empty());
-                          _featureDetectors[i]->detect(subImg, keypoints, subMask);
-
-                          // Not enough keypoints detected: restart with a more precise detector
-                          if (keypoints.size() < maxKeypointToDetectByCell)
+                          const uint16_t alreadyDetectedCount = detectionWindowDetectionCount[i];
+                          // already enough points, no need to redetect
+                          if (alreadyDetectedCount < maxKeypointToDetectByCell)
                           {
-                              keypoints.clear();
-                              assert(!_advancedFeatureDetectors[i].empty());
-                              _advancedFeatureDetectors[i]->detect(subImg, keypoints, subMask);
-                          }
+                              // new max points to detect
+                              const uint16_t maxKeyPointToDetectHere =
+                                      std::max(0, static_cast<int>(maxKeypointToDetectByCell) - alreadyDetectedCount);
 
-                          // filter the keypoints by score, if we have too much
-                          cv::KeyPointsFilter::retainBest(keypoints, maxKeypointToDetectByCell);
-                          for (cv::KeyPoint& keypoint: keypoints)
-                          {
-                              keypoint.pt.x += (float)detectionWindow.x;
-                              keypoint.pt.y += (float)detectionWindow.y;
+                              const auto& detectionWindow = _detectionWindows[i];
+                              assert(!detectionWindow.empty());
+
+                              const cv::Mat& subImg = grayImage(detectionWindow);
+                              const cv::Mat_<uchar>& subMask = keypointMask(detectionWindow);
+
+                              std::vector<cv::KeyPoint> keypoints;
+                              keypoints.reserve(maxKeypointToDetectByCell);
+
+                              assert(!_featureDetectors[i].empty());
+                              _featureDetectors[i]->detect(subImg, keypoints, subMask);
+
+                              // Not enough keypoints detected: restart with a more precise detector
+                              if (keypoints.size() < maxKeyPointToDetectHere)
+                              {
+                                  keypoints.clear();
+                                  assert(!_advancedFeatureDetectors[i].empty());
+                                  _advancedFeatureDetectors[i]->detect(subImg, keypoints, subMask);
+                              }
+
+                              // filter the keypoints by score, if we have too much
+                              cv::KeyPointsFilter::retainBest(keypoints, maxKeyPointToDetectHere);
+                              for (cv::KeyPoint& keypoint: keypoints)
+                              {
+                                  keypoint.pt.x += (float)detectionWindow.x;
+                                  keypoint.pt.y += (float)detectionWindow.y;
+                              }
+                              std::scoped_lock<std::mutex> lock(mut);
+                              frameKeypoints.insert(frameKeypoints.end(), keypoints.begin(), keypoints.end());
                           }
-                          std::scoped_lock<std::mutex> lock(mut);
-                          frameKeypoints.insert(frameKeypoints.end(), keypoints.begin(), keypoints.end());
                       }
 #ifndef MAKE_DETERMINISTIC
     );

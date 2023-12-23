@@ -3,6 +3,7 @@
 
 #include "keypoint_handler.hpp"
 #include "parameters.hpp"
+#include <array>
 
 namespace rgbd_slam::features::keypoints {
 
@@ -69,25 +70,37 @@ class Key_Point_Extraction
     /**
      * \brief Compute new key point, with an optional mask to exclude detection zones
      * \param[in] grayImage The image in which we want to detect waypoints
-     * \param[in] mask The mask which we do not want to detect waypoints
-     * detector \return An array of points in the input image
+     * \param[in] alreadyDetectedPoints A container for the pointd already detected in this image (wont detect again)
+     * \return An array of points in the input image
      */
-    [[nodiscard]] std::vector<cv::Point2f> detect_keypoints(const cv::Mat& grayImage,
-                                                            const cv::Mat_<uchar>& mask) const noexcept;
+    [[nodiscard]] std::vector<cv::Point2f> detect_keypoints(
+            const cv::Mat& grayImage, const std::vector<cv::Point2f>& alreadyDetectedPoints) const noexcept;
 
     /**
      * \brief Perform keypoint detection on the image, divided in smaller patches.
      * \param[in] grayImage Image in which to detect keypoints
-     * \param[in] mask Mask of the image in which to detect keypoints. No keypoints will be detected in this
+     * \param[in] alreadyDetectedPoints A container for the pointd already detected in this image (wont detect again)
      * \param[out] frameKeypoints The keypoint detected in this process
      * keypoints in the image
      */
     void perform_keypoint_detection(const cv::Mat& grayImage,
-                                    const cv::Mat_<uchar>& mask,
+                                    const std::vector<cv::Point2f>& alreadyDetectedPoints,
                                     std::vector<cv::KeyPoint>& frameKeypoints) const noexcept;
 
+    /**
+     * \brief Compute a mask image of size imageSize. A masked area will be put around each points in keypointContainer.
+     * \param[in] imageSize The size of the mask image to output
+     * \param[in] keypointContainer The container of points we need to compute a mask for
+     * \param[in] pointMaskRadius_px radius of the mask for each points
+     * \param[out] detectionWindowDetectionCount a container that associates the detection window index to the number of
+     * points already in keypointContainer
+     * \return A mask for all points
+     */
     [[nodiscard]] cv::Mat_<uchar> compute_key_point_mask(
-            const cv::Size imageSize, const std::vector<cv::Point2f>& keypointContainer) const noexcept;
+            const cv::Size imageSize,
+            const std::vector<cv::Point2f>& keypointContainer,
+            const double pointMaskRadius_px,
+            std::array<uint16_t, numberOfDetectionCells>& detectionWindowDetectionCount) const noexcept;
 
   private:
     std::array<cv::Ptr<cv::FeatureDetector>, numberOfDetectionCells> _featureDetectors;

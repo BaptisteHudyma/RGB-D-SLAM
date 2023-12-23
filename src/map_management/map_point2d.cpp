@@ -92,18 +92,6 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
 
         cv::line(debugImage, p1, p2, color, 3);
     }
-
-    // small blue circle around it
-    /*cv::circle(debugImage,
-               cv::Point(static_cast<int>(screenCoordinates.x()), static_cast<int>(screenCoordinates.y())),
-               5,
-               cv::Scalar(255, 0, 0),
-               -1);
-    cv::circle(debugImage,
-               cv::Point(static_cast<int>(screenCoordinates.x()), static_cast<int>(screenCoordinates.y())),
-               3,
-               color,
-               -1);*/
 }
 
 bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
