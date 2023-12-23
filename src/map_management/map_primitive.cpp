@@ -20,8 +20,7 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 {
     const PlaneWorldToCameraMatrix& planeCameraToWorld = utils::compute_plane_world_to_camera_matrix(worldToCamera);
     // project plane in camera space
-    const utils::PlaneCameraCoordinates& projectedPlane =
-            get_parametrization().to_camera_coordinates(planeCameraToWorld);
+    const PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(planeCameraToWorld);
 
     const utils::CameraPolygon& projectedPolygon = _boundaryPolygon.to_camera_space(worldToCamera);
     const double projectedArea = projectedPolygon.get_area();
@@ -131,7 +130,7 @@ bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
     // compute projection matrices
     try
     {
-        const utils::PlaneCameraCoordinates& matchedFeatureParams = matchedFeature.get_parametrization();
+        const PlaneCameraCoordinates& matchedFeatureParams = matchedFeature.get_parametrization();
         const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
         const matrix44& planeParameterCovariance =
                 utils::compute_plane_covariance(matchedFeatureParams, matchedFeature.get_point_cloud_covariance());
@@ -154,7 +153,7 @@ bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
             return false;
         }
 
-        const utils::PlaneWorldCoordinates& projectedPlaneCoordinates =
+        const PlaneWorldCoordinates& projectedPlaneCoordinates =
                 matchedFeatureParams.to_world_coordinates(planeCameraToWorld);
 
         // update this plane with the other one's parameters
@@ -182,7 +181,7 @@ StagedMapPlane::StagedMapPlane(const matrix33& poseCovariance,
     MapPlane()
 {
     // compute plane transition matrix and plane parameter covariance
-    const utils::PlaneCameraCoordinates& detectedFeatureParams = detectedFeature.get_parametrization();
+    const PlaneCameraCoordinates& detectedFeatureParams = detectedFeature.get_parametrization();
     const PlaneCameraToWorldMatrix& planeCameraToWorld = utils::compute_plane_camera_to_world_matrix(cameraToWorld);
     const matrix44& planeParameterCovariance =
             utils::compute_plane_covariance(detectedFeatureParams, detectedFeature.get_point_cloud_covariance());

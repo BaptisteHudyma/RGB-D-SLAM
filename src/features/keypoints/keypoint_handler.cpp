@@ -86,7 +86,7 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
 
     // Fill depth values, add points to image boxes
     const size_t allKeypointSize = inKeypoints.size() + lastKeypointsWithIds.size();
-    _keypoints = std::vector<utils::ScreenCoordinate>(allKeypointSize);
+    _keypoints = std::vector<ScreenCoordinate>(allKeypointSize);
 
     // Add detected keypoints first
     const uint keypointIndexOffset = static_cast<uint>(inKeypoints.size());
@@ -95,7 +95,7 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
         const cv::Point2f& pt = inKeypoints[pointIndex];
         // Depths are in millimeters, will be 0 if coordinates are invalid
         const double associatedDepth = get_depth_approximation(depthImage, pt);
-        const utils::ScreenCoordinate vectorKeypoint(pt.x, pt.y, associatedDepth);
+        const ScreenCoordinate vectorKeypoint(pt.x, pt.y, associatedDepth);
 
         _keypoints[pointIndex] = vectorKeypoint;
 
@@ -127,7 +127,7 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
 
         // Depths are in millimeters, will be 0 if coordinates are invalid
         const double depthApproximation = get_depth_approximation(depthImage, pt);
-        const utils::ScreenCoordinate vectorKeypoint(pt.x, pt.y, depthApproximation);
+        const ScreenCoordinate vectorKeypoint(pt.x, pt.y, depthApproximation);
 
         // no search space: already matched
         _keypoints[newKeypointIndex] = vectorKeypoint;
@@ -141,7 +141,7 @@ uint Keypoint_Handler::get_search_space_index(const uint_pair& searchSpaceIndex)
 uint Keypoint_Handler::get_search_space_index(const uint x, const uint y) const noexcept { return y * _cellCountY + x; }
 
 Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(
-        const utils::ScreenCoordinate2D& pointToPlace) const noexcept
+        const ScreenCoordinate2D& pointToPlace) const noexcept
 {
     constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
     const uint_pair cellCoordinates(std::clamp(floor(pointToPlace.y() / cellSize), 0.0, _cellCountY - 1.0),
@@ -149,7 +149,7 @@ Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(
     return cellCoordinates;
 }
 
-cv::Mat_<uchar> Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch,
+cv::Mat_<uchar> Keypoint_Handler::compute_key_point_mask(const ScreenCoordinate2D& pointToSearch,
                                                          const vectorb& isKeyPointMatchedContainer,
                                                          const uint searchSpaceCellRadius) const noexcept
 {
@@ -179,7 +179,7 @@ cv::Mat_<uchar> Keypoint_Handler::compute_key_point_mask(const utils::ScreenCoor
     return keyPointMask;
 }
 
-void Keypoint_Handler::fill_keypoint_mask(const utils::ScreenCoordinate2D& pointToSearch,
+void Keypoint_Handler::fill_keypoint_mask(const ScreenCoordinate2D& pointToSearch,
                                           const index_container& keypointIndexContainer,
                                           const vectorb& isKeyPointMatchedContainer,
                                           cv::Mat_<uchar>& keyPointMask) const noexcept
@@ -191,7 +191,7 @@ void Keypoint_Handler::fill_keypoint_mask(const utils::ScreenCoordinate2D& point
         // ignore this point if it is already matched (prevent multiple matches of one point)
         if (not isKeyPointMatchedContainer[keypointIndex])
         {
-            const utils::ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
+            const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
             const double squarredDistance = (keypoint - pointToSearch).squaredNorm();
 
             // keypoint is in a circle around the target keypoints, allow a potential match
@@ -244,7 +244,7 @@ int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId,
     return INVALID_MATCH_INDEX;
 }
 
-int Keypoint_Handler::get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint,
+int Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoint,
                                       const cv::Mat& mapPointDescriptor,
                                       const vectorb& isKeyPointMatchedContainer,
                                       const double searchSpaceRadius) const noexcept

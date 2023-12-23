@@ -30,7 +30,7 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
     if (matchIndex == invalidfeatureIndex)
     {
         // No match: try to find match in a window around the point
-        utils::ScreenCoordinate2D screenCoordinates;
+        ScreenCoordinate2D screenCoordinates;
         if (_coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
         {
             // TODO use a real match to 2D function, this one will fail for 2D points
@@ -79,8 +79,8 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
     if (!to_screen_coordinates(worldToCamMatrix, screenCoordinates))
         return;
 
-    const utils::ScreenCoordinate2D startPoint(screenCoordinates.get_start_point());
-    const utils::ScreenCoordinate2D endPoint(screenCoordinates.get_end_point());
+    const ScreenCoordinate2D startPoint(screenCoordinates.get_start_point());
+    const ScreenCoordinate2D endPoint(screenCoordinates.get_end_point());
 
     // prevent a display out of the screen (visual bug)
     if (startPoint.is_in_screen_boundaries() and endPoint.is_in_screen_boundaries())
@@ -98,7 +98,7 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
 bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
 {
     // Those points should laways be visible but we never know
-    utils::ScreenCoordinate2D screenCoord;
+    ScreenCoordinate2D screenCoord;
     if (_coordinates.to_screen_coordinates(worldToCamMatrix, screenCoord))
     {
         return screenCoord.is_in_screen_boundaries();
@@ -157,7 +157,7 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
         return false;
     }
 
-    if (utils::is_depth_valid(matchedFeature._coordinates.z()))
+    if (is_depth_valid(matchedFeature._coordinates.z()))
     {
         // TODO: reactivate the following
         return false;

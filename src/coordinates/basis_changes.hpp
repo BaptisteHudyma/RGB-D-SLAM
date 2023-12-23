@@ -1,9 +1,9 @@
-#ifndef BASIC_CHANGES_HPP
-#define BASIC_CHANGES_HPP
+#ifndef RGBDSLAM_BASIC_CHANGES_HPP
+#define RGBDSLAM_BASIC_CHANGES_HPP
 
 #include "types.hpp"
 
-namespace rgbd_slam::utils {
+namespace rgbd_slam {
 
 struct Cartesian;
 struct Spherical;
@@ -57,6 +57,6 @@ struct Spherical
     static Spherical from(Cartesian coord, matrix33& jacobian);
 };
 
-} // namespace rgbd_slam::utils
+} // namespace rgbd_slam
 
 #endif

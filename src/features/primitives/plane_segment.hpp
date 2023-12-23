@@ -5,8 +5,8 @@
 
 #include "../../parameters.hpp"
 #include "../../types.hpp"
-#include "../utils/coordinates/point_coordinates.hpp"
-#include "../utils/coordinates/plane_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
+#include "coordinates/plane_coordinates.hpp"
 
 namespace rgbd_slam::features::primitives {
 
@@ -87,8 +87,8 @@ class Plane_Segment
 
     [[nodiscard]] double get_MSE() const noexcept { return _MSE; };
     [[nodiscard]] vector3 get_normal() const noexcept { return _parametrization.get_normal(); };
-    [[nodiscard]] utils::CameraCoordinate get_centroid() const noexcept { return _centroid; };
-    [[nodiscard]] utils::CameraCoordinate get_center() const noexcept { return _parametrization.get_center(); };
+    [[nodiscard]] CameraCoordinate get_centroid() const noexcept { return _centroid; };
+    [[nodiscard]] CameraCoordinate get_center() const noexcept { return _parametrization.get_center(); };
     [[nodiscard]] double get_plane_d() const noexcept { return _parametrization.get_d(); };
     [[nodiscard]] vector4 get_parametrization() const noexcept { return _parametrization.get_parametrization(); };
     [[nodiscard]] bool is_planar() const noexcept { return _isPlanar; };
@@ -125,8 +125,8 @@ class Plane_Segment
     double _MSE = std::numeric_limits<double>::max(); // plane fitting mean square error
     bool _isPlanar = false; // true if node represent a correct node, false: ignore node while mapping
 
-    utils::CameraCoordinate _centroid; // mean point of all points in node
-    utils::PlaneCoordinates _parametrization;
+    CameraCoordinate _centroid; // mean point of all points in node
+    PlaneCoordinates _parametrization;
 
     // PCA stored coeffs: efficient calculations of point cloud characteristics
     double _Sx = 0.0;  // sum of x

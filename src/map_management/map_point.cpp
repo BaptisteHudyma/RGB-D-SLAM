@@ -28,7 +28,7 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
     if (matchIndex == invalidfeatureIndex)
     {
         // No match: try to find match in a window around the point
-        utils::ScreenCoordinate2D projectedMapPoint;
+        ScreenCoordinate2D projectedMapPoint;
         const bool isScreenCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamera, projectedMapPoint);
         if (isScreenCoordinatesValid)
         {
@@ -68,7 +68,7 @@ bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
     assert(not _coordinates.hasNaN());
     if (shouldNotDropPoint)
     {
-        utils::ScreenCoordinate2D screenCoordinates;
+        ScreenCoordinate2D screenCoordinates;
         if (_coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
         {
             // use previously known screen coordinates
@@ -85,7 +85,7 @@ void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix,
                     cv::Mat& debugImage,
                     const cv::Scalar& color) const noexcept
 {
-    utils::ScreenCoordinate screenPoint;
+    ScreenCoordinate screenPoint;
     const bool isCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamMatrix, screenPoint);
 
     // do not display points behind the camera
@@ -111,7 +111,7 @@ void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix,
 
 bool MapPoint::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
 {
-    if (utils::ScreenCoordinate projectedScreenCoordinates;
+    if (ScreenCoordinate projectedScreenCoordinates;
         _coordinates.to_screen_coordinates(worldToCamMatrix, projectedScreenCoordinates))
     {
         return projectedScreenCoordinates.is_in_screen_boundaries();
@@ -141,11 +141,11 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
         return false;
     }
 
-    const utils::ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
-    if (utils::is_depth_valid(matchedScreenPoint.z()))
+    const ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
+    if (is_depth_valid(matchedScreenPoint.z()))
     {
         // transform screen point to world point
-        const utils::WorldCoordinate& worldPointCoordinates = matchedScreenPoint.to_world_coordinates(cameraToWorld);
+        const WorldCoordinate& worldPointCoordinates = matchedScreenPoint.to_world_coordinates(cameraToWorld);
         // get a measure of the estimated variance of the new world point
         const matrix33& worldCovariance =
                 utils::get_world_point_covariance(matchedScreenPoint, cameraToWorld, poseCovariance);
@@ -164,7 +164,7 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     {
         // Point is 2D, compute projection
         tracking::PointInverseDepth observation(
-                utils::ScreenCoordinate2D(matchedScreenPoint.head<2>()), cameraToWorld, poseCovariance);
+                ScreenCoordinate2D(matchedScreenPoint.head<2>()), cameraToWorld, poseCovariance);
         Eigen::Matrix<double, 3, 6> inverseToWorldJacobian;
         const auto projectedObservation = observation._coordinates.to_world_coordinates(inverseToWorldJacobian);
         const auto observationCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
@@ -230,7 +230,7 @@ LocalMapPoint::LocalMapPoint(const StagedMapPoint& stagedPoint) :
     _successivMatchedCount = stagedPoint._successivMatchedCount;
 }
 
-LocalMapPoint::LocalMapPoint(const utils::WorldCoordinate& coordinates,
+LocalMapPoint::LocalMapPoint(const WorldCoordinate& coordinates,
                              const WorldCoordinateCovariance& covariance,
                              const cv::Mat& descriptor,
                              const int matchIndex) :

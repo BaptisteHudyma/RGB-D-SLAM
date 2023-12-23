@@ -1,7 +1,7 @@
 #include "point_coordinates.hpp"
 
-#include "../parameters.hpp"
-#include "../utils/distance_utils.hpp"
+#include "parameters.hpp"
+#include "utils/distance_utils.hpp"
 #include "covariances.hpp"
 #include "types.hpp"
 
@@ -10,7 +10,7 @@
 #include <math.h>
 #include <stdexcept>
 
-namespace rgbd_slam::utils {
+namespace rgbd_slam {
 
 // TODO set in parameters
 const double MIN_DEPTH_DISTANCE = 40;   // (millimeters) is the depth camera minimum reliable distance
@@ -29,11 +29,11 @@ matrix44 get_transformation_matrix(const vector3& xFrom,
                                    const vector3& centerTo)
 {
     // sanity checks
-    if (not double_equal(xFrom.norm(), 1.0))
+    if (not utils::double_equal(xFrom.norm(), 1.0))
     {
         throw std::invalid_argument("get_transformation_matrix: xFrom as a norm different than 1");
     }
-    if (not double_equal(yFrom.norm(), 1.0))
+    if (not utils::double_equal(yFrom.norm(), 1.0))
     {
         throw std::invalid_argument("get_transformation_matrix: yFrom as a norm different than 1");
     }
@@ -42,11 +42,11 @@ matrix44 get_transformation_matrix(const vector3& xFrom,
         throw std::invalid_argument("get_transformation_matrix: yFrom and xFrom should be orthogonals");
     }
 
-    if (not double_equal(xTo.norm(), 1.0))
+    if (not utils::double_equal(xTo.norm(), 1.0))
     {
         throw std::invalid_argument("get_transformation_matrix: xTo as a norm different than 1");
     }
-    if (not double_equal(yTo.norm(), 1.0))
+    if (not utils::double_equal(yTo.norm(), 1.0))
     {
         throw std::invalid_argument("get_transformation_matrix: yTo as a norm different than 1");
     }
@@ -102,7 +102,7 @@ matrix22 ScreenCoordinate2D::get_covariance() const
     const double xyVariance = SQR(0.1);
     matrix22 cov({{xyVariance, 0.0}, {0.0, xyVariance}});
 
-    if (not is_covariance_valid(cov))
+    if (not utils::is_covariance_valid(cov))
     {
         throw std::logic_error("ScreenCoordinate2D::get_covariance: invalid covariance");
     }
@@ -125,7 +125,7 @@ ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
     const double xyVariance = SQR(0.1);
     const matrix22 covariance2D({{xyVariance, 0.0}, {0.0, xyVariance}});
 
-    const double depthQuantization = is_depth_valid(z()) ? get_depth_quantization(z()) : 1000.0;
+    const double depthQuantization = is_depth_valid(z()) ? utils::get_depth_quantization(z()) : 1000.0;
     // a zero variance will break the kalman gain
     if (depthQuantization <= 0)
     {
@@ -135,7 +135,7 @@ ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
     ScreenCoordinateCovariance cov;
     cov << covariance2D, vector2::Zero(), 0.0, 0.0, depthQuantization;
 
-    if (not is_covariance_valid(cov))
+    if (not utils::is_covariance_valid(cov))
     {
         throw std::logic_error("ScreenCoordinate::get_covariance: invalid covariance");
     }
@@ -157,7 +157,7 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
     {
         throw std::invalid_argument("ScreenCoordinate::to_camera_coordinates: y should be >= 0");
     }
-    if (double_equal(z(), 0.0))
+    if (utils::double_equal(z(), 0.0))
     {
         throw std::invalid_argument("ScreenCoordinate::to_camera_coordinates: z should not be 0");
     }
@@ -296,4 +296,4 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
     return CameraCoordinate(cameraHomogenousCoordinates);
 }
 
-} // namespace rgbd_slam::utils
+} // namespace rgbd_slam

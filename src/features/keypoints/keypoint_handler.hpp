@@ -1,7 +1,7 @@
 #ifndef RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_HANDLER_HPP
 #define RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_HANDLER_HPP
 
-#include "../../utils/coordinates/point_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include <opencv2/core/types.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include <utility>
@@ -15,7 +15,7 @@ const int INVALID_MATCH_INDEX = -1;
 
 struct DetectedKeyPoint
 {
-    utils::ScreenCoordinate _coordinates;
+    ScreenCoordinate _coordinates;
     cv::Mat _descriptor;
 };
 
@@ -133,7 +133,7 @@ class Keypoint_Handler
      * \param[in] searchSpaceRadius The radius of the search space for potential matches, in pixels
      * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
      */
-    [[nodiscard]] int get_match_index(const utils::ScreenCoordinate2D& projectedMapPoint,
+    [[nodiscard]] int get_match_index(const ScreenCoordinate2D& projectedMapPoint,
                                       const cv::Mat& mapPointDescriptor,
                                       const vectorb& isKeyPointMatchedContainer,
                                       const double searchSpaceRadius) const noexcept;
@@ -141,7 +141,7 @@ class Keypoint_Handler
     /**
      * \brief return the keypoint associated with the index
      */
-    [[nodiscard]] utils::ScreenCoordinate get_keypoint(const uint index) const noexcept
+    [[nodiscard]] ScreenCoordinate get_keypoint(const uint index) const noexcept
     {
         assert(index < _keypoints.size());
         return _keypoints[index];
@@ -185,7 +185,7 @@ class Keypoint_Handler
      *
      * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
      */
-    [[nodiscard]] cv::Mat_<uchar> compute_key_point_mask(const utils::ScreenCoordinate2D& pointToSearch,
+    [[nodiscard]] cv::Mat_<uchar> compute_key_point_mask(const ScreenCoordinate2D& pointToSearch,
                                                          const vectorb& isKeyPointMatchedContainer,
                                                          const uint searchSpaceCellRadius) const noexcept;
 
@@ -197,7 +197,7 @@ class Keypoint_Handler
      * \param[in] isKeyPointMatchedContainer If a keypoint is already matched, it's index will be true
      * \param[in, out] keyPointMask The match mask for each keypoints
      */
-    void fill_keypoint_mask(const utils::ScreenCoordinate2D& pointToSearch,
+    void fill_keypoint_mask(const ScreenCoordinate2D& pointToSearch,
                             const index_container& keypointIndexContainer,
                             const vectorb& isKeyPointMatchedContainer,
                             cv::Mat_<uchar>& keyPointMask) const noexcept;
@@ -207,7 +207,7 @@ class Keypoint_Handler
      * \brief Returns a 2D id corresponding to the X and Y of the search space in the image. The search space indexes
      * must be used with _searchSpaceIndexContainer
      */
-    [[nodiscard]] uint_pair get_search_space_coordinates(const utils::ScreenCoordinate2D& pointToPlace) const noexcept;
+    [[nodiscard]] uint_pair get_search_space_coordinates(const ScreenCoordinate2D& pointToPlace) const noexcept;
 
     /**
      * \brief Compute an 1D array index from a 2D array index.
@@ -225,7 +225,7 @@ class Keypoint_Handler
     const double _maxMatchDistance;
 
     // store current frame keypoints
-    std::vector<utils::ScreenCoordinate> _keypoints;
+    std::vector<ScreenCoordinate> _keypoints;
     using uintToUintContainer = std::unordered_map<size_t, size_t>;
     uintToUintContainer _uniqueIdsToKeypointIndex;
     cv::Mat _descriptors;

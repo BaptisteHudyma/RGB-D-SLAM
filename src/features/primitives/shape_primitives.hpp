@@ -3,7 +3,7 @@
 
 // cv:Mat
 #include "../../types.hpp"
-#include "../../utils/coordinates/point_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include "cylinder_segment.hpp"
 #include "plane_segment.hpp"
 #include "polygon.hpp"
@@ -89,21 +89,21 @@ class Plane : public IPrimitive
      * \return A true if those shapes are similar
      */
     [[nodiscard]] bool is_normal_similar(const Plane& prim) const noexcept;
-    [[nodiscard]] bool is_normal_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept;
+    [[nodiscard]] bool is_normal_similar(const PlaneCameraCoordinates& planeParametrization) const noexcept;
 
     /**
      * \brief Check that the distance between the two plane d component is less than a threshold
      * \param[in] prim Another primitive to compare to
      */
     [[nodiscard]] bool is_distance_similar(const Plane& prim) const noexcept;
-    [[nodiscard]] bool is_distance_similar(const utils::PlaneCameraCoordinates& planeParametrization) const noexcept;
+    [[nodiscard]] bool is_distance_similar(const PlaneCameraCoordinates& planeParametrization) const noexcept;
 
     [[nodiscard]] bool is_similar(const Cylinder& prim) const noexcept;
 
     [[nodiscard]] vector3 get_normal() const noexcept { return _parametrization.get_normal(); };
     [[nodiscard]] double get_d() const noexcept { return _parametrization.get_d(); };
-    [[nodiscard]] utils::PlaneCameraCoordinates get_parametrization() const noexcept { return _parametrization; };
-    [[nodiscard]] utils::CameraCoordinate get_center() const noexcept { return get_normal() * (-get_d()); };
+    [[nodiscard]] PlaneCameraCoordinates get_parametrization() const noexcept { return _parametrization; };
+    [[nodiscard]] CameraCoordinate get_center() const noexcept { return get_normal() * (-get_d()); };
     [[nodiscard]] matrix33 get_point_cloud_covariance() const noexcept { return _pointCloudCovariance; };
 
     [[nodiscard]] utils::CameraPolygon get_boundary_polygon() const noexcept { return _boundaryPolygon; };
@@ -116,8 +116,8 @@ class Plane : public IPrimitive
      */
     [[nodiscard]] double get_distance(const vector3& point) const noexcept;
 
-    utils::PlaneCameraCoordinates _parametrization; // infinite plane representation
-    matrix33 _pointCloudCovariance;                 // the covariance of point cloud that this plane is fitted from
+    PlaneCameraCoordinates _parametrization; // infinite plane representation
+    matrix33 _pointCloudCovariance;          // the covariance of point cloud that this plane is fitted from
     const utils::CameraPolygon _boundaryPolygon;
 
     // remove copy functions

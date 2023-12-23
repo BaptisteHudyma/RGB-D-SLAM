@@ -663,7 +663,7 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
                 const double depth = depthImage(y, x);
                 if (depth > 0)
                 {
-                    const auto& cameraPoint = utils::ScreenCoordinate(x, y, depth).to_camera_coordinates();
+                    const auto& cameraPoint = ScreenCoordinate(x, y, depth).to_camera_coordinates();
                     // if distance of this point to the plane < threshold, this point is contained in the plane
                     if (planeSegment.get_point_distance_squared(cameraPoint) < maxBoundaryDistance)
                     {

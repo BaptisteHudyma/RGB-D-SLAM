@@ -8,10 +8,12 @@
 #include "ransac.hpp"
 #include "types.hpp"
 
+#include "coordinates/inverse_depth_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
+#include "coordinates/plane_coordinates.hpp"
+
 #include "utils/camera_transformation.hpp"
 #include "utils/random.hpp"
-#include "utils/coordinates/point_coordinates.hpp"
-#include "utils/coordinates/plane_coordinates.hpp"
 
 #include <Eigen/StdVector>
 #include <algorithm>
@@ -771,7 +773,7 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     matches_containers::match_sets variatedSet;
     for (const matches_containers::PointMatch2D& match: matchedFeatures._point2DSets._inliers)
     {
-        utils::WorldCoordinate variatedObservationPoint = match._worldFeature.get_first_observation();
+        WorldCoordinate variatedObservationPoint = match._worldFeature.get_first_observation();
         // TODO: variate the observation point
         // variatedObservationPoint +=
         // utils::Random::get_normal_doubles<3>().cwiseProduct(match._worldFeatureCovariance.diagonal().head<3>());
@@ -779,18 +781,18 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
                 match._worldFeature
                         .get_inverse_depth(); // do not variate the depth, the uncertainty is too great anyway
         const double variatedTheta =
-                std::clamp(match._worldFeature.get_theta() + utils::Random::get_normal_double() *
-                                                                     match._worldFeatureCovariance.diagonal()(
-                                                                             utils::InverseDepthWorldPoint::thetaIndex),
+                std::clamp(match._worldFeature.get_theta() +
+                                   utils::Random::get_normal_double() *
+                                           match._worldFeatureCovariance.diagonal()(InverseDepthWorldPoint::thetaIndex),
                            0.0,
                            M_PI);
         const double variatedPhi =
-                std::clamp(match._worldFeature.get_phi() + utils::Random::get_normal_double() *
-                                                                   match._worldFeatureCovariance.diagonal()(
-                                                                           utils::InverseDepthWorldPoint::phiIndex),
+                std::clamp(match._worldFeature.get_phi() +
+                                   utils::Random::get_normal_double() *
+                                           match._worldFeatureCovariance.diagonal()(InverseDepthWorldPoint::phiIndex),
                            -M_PI,
                            M_PI);
-        utils::InverseDepthWorldPoint variatedCoordinates(
+        InverseDepthWorldPoint variatedCoordinates(
                 variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi);
 
         variatedSet._point2DSets._inliers.emplace_back(
@@ -799,7 +801,7 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     for (const matches_containers::PointMatch& match: matchedFeatures._pointSets._inliers)
     {
         // make random variation
-        utils::WorldCoordinate variatedCoordinates = match._worldFeature;
+        WorldCoordinate variatedCoordinates = match._worldFeature;
         variatedCoordinates +=
                 utils::Random::get_normal_doubles<3>().cwiseProduct(match._worldFeatureCovariance.cwiseSqrt());
 
@@ -809,7 +811,7 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     }
     for (const matches_containers::PlaneMatch& match: matchedFeatures._planeSets._inliers)
     {
-        utils::PlaneWorldCoordinates variatedCoordinates = match._worldFeature;
+        PlaneWorldCoordinates variatedCoordinates = match._worldFeature;
 
         const vector4& diagonalSqrt = match._worldFeatureCovariance.diagonal().cwiseSqrt();
         variatedCoordinates.normal() += utils::Random::get_normal_doubles<3>().cwiseProduct(diagonalSqrt.head<3>());

@@ -25,7 +25,7 @@ class MapPoint :
                        UpgradedPointType>
 {
   public:
-    MapPoint(const utils::WorldCoordinate& coordinates,
+    MapPoint(const WorldCoordinate& coordinates,
              const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor) :
         tracking::Point(coordinates, covariance, descriptor),
@@ -38,7 +38,7 @@ class MapPoint :
         assert(_id > 0);
     }
 
-    MapPoint(const utils::WorldCoordinate& coordinates,
+    MapPoint(const WorldCoordinate& coordinates,
              const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor,
              const size_t id) :
@@ -102,7 +102,7 @@ class StagedMapPoint : public MapPoint, public IStagedMapFeature<DetectedPointTy
 
     [[nodiscard]] static bool can_add_to_map(const DetectedPointType& detectedPoint) noexcept
     {
-        return not detectedPoint._descriptor.empty() and utils::is_depth_valid(detectedPoint._coordinates.z());
+        return not detectedPoint._descriptor.empty() and is_depth_valid(detectedPoint._coordinates.z());
     }
 
   protected:
@@ -118,7 +118,7 @@ class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
     explicit LocalMapPoint(const StagedMapPoint& stagedPoint);
 
     // constructor for upgraded features
-    LocalMapPoint(const utils::WorldCoordinate& coordinates,
+    LocalMapPoint(const WorldCoordinate& coordinates,
                   const WorldCoordinateCovariance& covariance,
                   const cv::Mat& descriptor,
                   const int matchIndex);

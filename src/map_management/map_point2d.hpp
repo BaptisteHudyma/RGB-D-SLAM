@@ -11,7 +11,7 @@ namespace rgbd_slam::map_management {
 
 struct UpgradedPoint2D
 {
-    utils::WorldCoordinate _coordinates;
+    WorldCoordinate _coordinates;
     WorldCoordinateCovariance _covariance;
     cv::Mat _descriptor;
     int _matchIndex;
@@ -32,7 +32,7 @@ class MapPoint2D :
                        UpgradedPoint2DType>
 {
   public:
-    MapPoint2D(const utils::ScreenCoordinate2D& coordinates,
+    MapPoint2D(const ScreenCoordinate2D& coordinates,
                const CameraToWorldMatrix& c2w,
                const matrix33& stateCovariance,
                const cv::Mat& descriptor) :
@@ -107,7 +107,7 @@ class StagedMapPoint2D : public MapPoint2D, public IStagedMapFeature<DetectedPoi
 
     [[nodiscard]] static bool can_add_to_map(const DetectedPoint2DType& detectedPoint) noexcept
     {
-        return not detectedPoint._descriptor.empty() and not utils::is_depth_valid(detectedPoint._coordinates.z());
+        return not detectedPoint._descriptor.empty() and not is_depth_valid(detectedPoint._coordinates.z());
     }
 
   protected:
