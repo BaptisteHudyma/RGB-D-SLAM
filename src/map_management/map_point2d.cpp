@@ -31,7 +31,7 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
     {
         // No match: try to find match in a window around the point
         ScreenCoordinate2D screenCoordinates;
-        if (_coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
+        if (_coordinates.to_world_coordinates().to_screen_coordinates(worldToCamera, screenCoordinates))
         {
             // TODO use a real match to 2D function, this one will fail for 2D points
             matchIndex = detectedFeatures.get_match_index(
@@ -97,9 +97,11 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
 
 bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
 {
+    // TODO: should not use to_screen_coordinates !!
+
     // Those points should laways be visible but we never know
     ScreenCoordinate2D screenCoord;
-    if (_coordinates.to_screen_coordinates(worldToCamMatrix, screenCoord))
+    if (_coordinates.to_world_coordinates().to_screen_coordinates(worldToCamMatrix, screenCoord))
     {
         return screenCoord.is_in_screen_boundaries();
     }
@@ -159,9 +161,6 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
 
     if (is_depth_valid(matchedFeature._coordinates.z()))
     {
-        // TODO: reactivate the following
-        return false;
-
         // use the real observation, it will most likely overide the covariance inside the inverse depth point
         return track(matchedFeature._coordinates, cameraToWorld, poseCovariance, matchedFeature._descriptor);
     }

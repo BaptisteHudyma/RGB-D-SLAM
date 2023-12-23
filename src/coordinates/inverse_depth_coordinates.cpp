@@ -138,21 +138,6 @@ WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<doubl
     return to_world_coordinates();
 }
 
-CameraCoordinate InverseDepthWorldPoint::to_camera_coordinates(const WorldToCameraMatrix& w2c) const noexcept
-{
-    // this is a transformation of retroprojection of the inverse depth (world) to camera
-    return to_world_coordinates().to_camera_coordinates(w2c);
-    // this as the advantage of handling nicely a point at infinite distance (_inverseDepth_mm == 0)
-    // return CameraCoordinate(w2c.rotation() * (_inverseDepth_mm * (_firstObservation - w2c.translation()) +
-    // _bearingVector));
-}
-
-bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
-                                                   ScreenCoordinate2D& screenCoordinates) const noexcept
-{
-    return to_camera_coordinates(w2c).to_screen_coordinates(screenCoordinates);
-}
-
 WorldCoordinate InverseDepthWorldPoint::get_furthest_estimation(const double inverseDepthStandardDev) const
 {
     // 3 standard deviations (>99% of certainty in this interval)
@@ -180,6 +165,25 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
     if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
     {
         screenSegment.set_points(firstScreenPoint.get_2D(), endScreenPoint.get_2D());
+        return true;
+    }
+
+    return false;
+}
+
+bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                                   const double inverseDepthCovariance,
+                                                   utils::Segment<3>& screenSegment) const noexcept
+{
+    const double depthStandardDev = sqrt(inverseDepthCovariance);
+    const WorldCoordinate& firstPoint = get_furthest_estimation(depthStandardDev);
+    const WorldCoordinate& endPoint = get_closest_estimation(depthStandardDev);
+
+    ScreenCoordinate firstScreenPoint;
+    ScreenCoordinate endScreenPoint;
+    if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
+    {
+        screenSegment.set_points(firstScreenPoint, endScreenPoint);
         return true;
     }
 

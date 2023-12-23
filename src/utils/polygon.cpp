@@ -415,7 +415,6 @@ Polygon Polygon::transform(const vector3& nextXAxis, const vector3& nextYAxis, c
         return *this;
 
     // compute transformation matrix between the two spaces
-    // TODO: the coordinates system is XZY for the world, and should be changed to XYZ for this to work
     const matrix44& transfoMatrix =
             get_transformation_matrix(_xAxis, _yAxis, _center, nextXAxis, nextYAxis, nextCenter);
     // project the boundary to the new space

@@ -173,7 +173,8 @@ CameraCoordinateCovariance PointInverseDepth::get_camera_coordinate_variance(con
 
 ScreenCoordinateCovariance PointInverseDepth::get_screen_coordinate_variance(const WorldToCameraMatrix& w2c) const
 {
-    return utils::get_screen_point_covariance(_coordinates.to_camera_coordinates(w2c),
+    // this use of the projection to screen is ok as long as the inverse depth point uncertainty is fairly low
+    return utils::get_screen_point_covariance(_coordinates.to_world_coordinates().to_camera_coordinates(w2c),
                                               get_camera_coordinate_variance(w2c));
 }
 
