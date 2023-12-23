@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "polygon.hpp"
+#include "coordinates/polygon_coordinates.hpp"
 
 namespace rgbd_slam::utils {
 

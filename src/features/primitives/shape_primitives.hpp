@@ -6,7 +6,7 @@
 #include "coordinates/point_coordinates.hpp"
 #include "cylinder_segment.hpp"
 #include "plane_segment.hpp"
-#include "polygon.hpp"
+#include "coordinates/polygon_coordinates.hpp"
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::features::primitives {
@@ -79,7 +79,7 @@ class Plane : public IPrimitive
      * \param[in] planeSeg Plane to copy
      * \param[in] boundaryPolygon Polygon describing the boundary of the plane, in plane coordiates
      */
-    Plane(const Plane_Segment& planeSeg, const utils::CameraPolygon& boundaryPolygon);
+    Plane(const Plane_Segment& planeSeg, const CameraPolygon& boundaryPolygon);
 
     Plane(const Plane& plane);
 
@@ -106,7 +106,7 @@ class Plane : public IPrimitive
     [[nodiscard]] CameraCoordinate get_center() const noexcept { return get_normal() * (-get_d()); };
     [[nodiscard]] matrix33 get_point_cloud_covariance() const noexcept { return _pointCloudCovariance; };
 
-    [[nodiscard]] utils::CameraPolygon get_boundary_polygon() const noexcept { return _boundaryPolygon; };
+    [[nodiscard]] CameraPolygon get_boundary_polygon() const noexcept { return _boundaryPolygon; };
 
     ~Plane() = default;
 
@@ -118,7 +118,7 @@ class Plane : public IPrimitive
 
     PlaneCameraCoordinates _parametrization; // infinite plane representation
     matrix33 _pointCloudCovariance;          // the covariance of point cloud that this plane is fitted from
-    const utils::CameraPolygon _boundaryPolygon;
+    const CameraPolygon _boundaryPolygon;
 
     // remove copy functions
     Plane() = delete;

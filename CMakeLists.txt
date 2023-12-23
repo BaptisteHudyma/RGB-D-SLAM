@@ -101,6 +101,7 @@ add_library(coordinates SHARED
     ${COORDINATES}/inverse_depth_coordinates.cpp
     ${COORDINATES}/point_coordinates.cpp
     ${COORDINATES}/plane_coordinates.cpp
+    ${COORDINATES}/polygon_coordinates.cpp
     )
 
 add_library(keypoints SHARED

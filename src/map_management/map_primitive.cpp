@@ -22,7 +22,7 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
     // project plane in camera space
     const PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(planeCameraToWorld);
 
-    const utils::CameraPolygon& projectedPolygon = _boundaryPolygon.to_camera_space(worldToCamera);
+    const CameraPolygon& projectedPolygon = _boundaryPolygon.to_camera_space(worldToCamera);
     const double projectedArea = projectedPolygon.get_area();
 
     // minimum plane overlap
@@ -52,7 +52,7 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 
         // compute a similarity score: compute the inter area of the map plane and the detected plane, divide it by
         // the detected plane area. Considers that the detected plane area should be lower than the map plane area
-        const utils::CameraPolygon& detectedPolygon = shapePlane.get_boundary_polygon();
+        const CameraPolygon& detectedPolygon = shapePlane.get_boundary_polygon();
         // TODO: this metric fails as the plane becomes bigger
         const double newPlaneArea = detectedPolygon.get_area(); // max area of the two potential planes
         const double interArea = detectedPolygon.inter_area(projectedPolygon);
