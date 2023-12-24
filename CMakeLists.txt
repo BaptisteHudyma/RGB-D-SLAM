@@ -128,11 +128,9 @@ add_library(mapManagement SHARED
     ${MAP}/map_primitive.cpp
     )
 
-add_library(thirdParty SHARED
-    ${THIRD_PARTY}/concave_fitting.cpp
-    ${THIRD_PARTY}/line_segment_detector.cpp
-    ${THIRD_PARTY}/geodesic_operations.cpp
-    ${THIRD_PARTY}/p3p.cpp
+add_library(outputs SHARED
+    ${OUTPUTS}/map_writer.cpp
+    ${OUTPUTS}/logger.cpp
     )
 
 add_library(poseOptimization SHARED
@@ -141,30 +139,33 @@ add_library(poseOptimization SHARED
     )
 
 add_library(tracking SHARED
+${TRACKING}/inverse_depth_with_tracking.cpp
     ${TRACKING}/motion_model.cpp
-    ${TRACKING}/triangulation.cpp
-    ${TRACKING}/inverse_depth_with_tracking.cpp
     ${TRACKING}/plane_with_tracking.cpp
     ${TRACKING}/point_with_tracking.cpp
+    ${TRACKING}/triangulation.cpp
 )
-
-add_library(outputs SHARED
-    ${OUTPUTS}/map_writer.cpp
-    ${OUTPUTS}/logger.cpp
-    )
 
 add_library(utils SHARED
     ${UTILS}/angle_utils.cpp
-    ${UTILS}/covariances.cpp
     ${UTILS}/camera_transformation.cpp
-    ${UTILS}/pose.cpp
+    ${UTILS}/covariances.cpp
     ${UTILS}/distance_utils.cpp
+    ${UTILS}/line.cpp
     ${UTILS}/polygon.cpp
+    ${UTILS}/pose.cpp
     )
 
 add_library(${PROJECT_NAME} SHARED
     ${SRC}/parameters.cpp
     ${SRC}/rgbd_slam.cpp
+    )
+
+add_library(thirdParty SHARED
+    ${THIRD_PARTY}/concave_fitting.cpp
+    ${THIRD_PARTY}/line_segment_detector.cpp
+    ${THIRD_PARTY}/geodesic_operations.cpp
+    ${THIRD_PARTY}/p3p.cpp
     )
 
 target_link_libraries(${PROJECT_NAME}
