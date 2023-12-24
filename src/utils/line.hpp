@@ -20,19 +20,12 @@ template<int Dim> class ILine
     ILine(const ILine<Dim>& other) : _startPoint(other._startPoint) {}
 
     /**
-     * \brief Compute the distance between the two lines
-     */
-    double distance(const ILine<Dim>& other) const
-    {
-        return utils::signed_line_distance(_startPoint, compute_normal(), other._startPoint, other.compute_normal());
-    }
-
-    /**
      * \brief Find the closest point to a given point, that will be on the current line
      * \param[in] point the point to find the closest point to
      * \return the point on the line that is the closest to the given point
      */
-    Eigen::Vector<double, Dim> get_closest_point_on_line(const Eigen::Vector<double, Dim>& point) const noexcept
+    [[nodiscard]] Eigen::Vector<double, Dim> get_closest_point_on_line(
+            const Eigen::Vector<double, Dim>& point) const noexcept
     {
         const Eigen::Vector<double, Dim>& normal = compute_normal();
         const double distance = (point - _startPoint).dot(normal);
@@ -42,9 +35,15 @@ template<int Dim> class ILine
     /**
      * \brief Compute the signed distance between this line and a point
      */
-    virtual Eigen::Vector<double, Dim> distance(const Eigen::Vector<double, Dim>& point) const noexcept
+    [[nodiscard]] virtual Eigen::Vector<double, Dim> distance(const Eigen::Vector<double, Dim>& point) const noexcept
     {
         return point - get_closest_point_on_line(point);
+    }
+
+    [[nodiscard]] virtual bool intersects(const ILine<Dim>& other, Eigen::Vector<double, Dim>& point) const noexcept
+    {
+        // TODO: generalize to N dimentions
+        return false;
     }
 
     /**
@@ -52,7 +51,7 @@ template<int Dim> class ILine
      */
     virtual Eigen::Vector<double, Dim> compute_normal() const noexcept = 0;
 
-    Eigen::Vector<double, Dim> get_start_point() const noexcept { return _startPoint; };
+    [[nodiscard]] Eigen::Vector<double, Dim> get_start_point() const noexcept { return _startPoint; };
     void set_start_point(const Eigen::Vector<double, Dim>& startPoint) noexcept { _startPoint = startPoint; };
 
   protected:
@@ -78,13 +77,13 @@ template<int Dim> class Segment : public ILine<Dim>
     /**
      * \brief compute the normal of this line
      */
-    Eigen::Vector<double, Dim> compute_normal() const noexcept override
+    [[nodiscard]] Eigen::Vector<double, Dim> compute_normal() const noexcept override
     {
         Eigen::Vector<double, Dim> normal = _endPoint - this->_startPoint;
         return normal.normalized();
     }
 
-    Eigen::Vector<double, Dim> get_end_point() const noexcept { return _endPoint; };
+    [[nodiscard]] Eigen::Vector<double, Dim> get_end_point() const noexcept { return _endPoint; };
     void set_end_point(const Eigen::Vector<double, Dim>& endPoint) noexcept { _endPoint = endPoint; };
     void set_points(const Eigen::Vector<double, Dim>& startPoint, const Eigen::Vector<double, Dim>& endPoint) noexcept
     {
@@ -115,9 +114,9 @@ template<int Dim> class Line : public ILine<Dim>
     /**
      * \brief compute the normal of this line
      */
-    Eigen::Vector<double, Dim> compute_normal() const noexcept override { return _normal; }
+    [[nodiscard]] Eigen::Vector<double, Dim> compute_normal() const noexcept override { return _normal; }
 
-    Eigen::Vector<double, Dim> get_normal() const noexcept { return _normal; };
+    [[nodiscard]] Eigen::Vector<double, Dim> get_normal() const noexcept { return _normal; };
     void set_normal(const Eigen::Vector<double, Dim>& normal) noexcept { _normal = normal; };
     void set_point_and_normal(const Eigen::Vector<double, Dim>& startPoint,
                               const Eigen::Vector<double, Dim>& normal) noexcept
