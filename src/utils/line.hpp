@@ -4,7 +4,6 @@
 #include "distance_utils.hpp"
 #include <Eigen/Dense>
 #include <Eigen/src/Core/Matrix.h>
-#include <cmath>
 
 namespace rgbd_slam::utils {
 
@@ -107,7 +106,7 @@ template<int Dim> class Line : public ILine<Dim>
 
     Line(const Eigen::Vector<double, Dim>& startPoint, const Eigen::Vector<double, Dim>& normal) :
         ILine<Dim>(startPoint),
-        _normal(normal)
+        _normal(normal.normalized())
     {
     }
 

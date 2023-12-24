@@ -1,6 +1,7 @@
 #include "angle_utils.hpp"
 #include "covariances.hpp"
 #include "distance_utils.hpp"
+#include "line.hpp"
 #include "parameters.hpp"
 #include "inverse_depth_with_tracking.hpp"
 #include "types.hpp"
@@ -788,10 +789,212 @@ TEST(PlaneCoordinateSystemTests, CameraToWorldToCameraRotation3)
 }
 
 /**
- *      Test the line distance function
+ *      Test the point to line distance function
  */
 
-TEST(LineDistances, LineDistancesAtZero)
+TEST(PointToLine2dDistances, LineDistancesAtZero)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // origin forward
+    const vector2 point1(0.0, 0.0);
+    const vector2 normal1(1.0, 0.0);
+
+    utils::Line<2> line1(point1, normal1);
+
+    ASSERT_NEAR(line1.distance(vector2(0.0, 0.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(0.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(1000.0, 0.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(1000.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(-1000.0, 0.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(-1000.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(0.0, 1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(0.0, 1000.0)).y(), 1000.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(0.0, -1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(0.0, -1000.0)).y(), -1000.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(1000.0, -1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(1000.0, -1000.0)).y(), -1000.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(1000.0, 1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(1000.0, 1000.0)).y(), 1000.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(-1000.0, -1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(-1000.0, -1000.0)).y(), -1000.0, 0.0001);
+
+    // origin backward
+    const vector2 point2(0.0, 0.0);
+    const vector2 normal2(-1.0, 0.0);
+
+    utils::Line<2> line2(point2, normal2);
+
+    ASSERT_NEAR(line2.distance(vector2(0.0, 0.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line2.distance(vector2(0.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line2.distance(vector2(1000.0, 0.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line2.distance(vector2(1000.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line2.distance(vector2(-1000.0, 0.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line2.distance(vector2(-1000.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line2.distance(vector2(0.0, 1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line2.distance(vector2(0.0, 1000.0)).y(), 1000.0, 0.0001);
+
+    ASSERT_NEAR(line2.distance(vector2(0.0, -1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line2.distance(vector2(0.0, -1000.0)).y(), -1000.0, 0.0001);
+
+    ASSERT_NEAR(line2.distance(vector2(1000.0, -1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line2.distance(vector2(1000.0, -1000.0)).y(), -1000.0, 0.0001);
+
+    ASSERT_NEAR(line2.distance(vector2(1000.0, 1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line2.distance(vector2(1000.0, 1000.0)).y(), 1000.0, 0.0001);
+
+    ASSERT_NEAR(line2.distance(vector2(-1000.0, -1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line2.distance(vector2(-1000.0, -1000.0)).y(), -1000.0, 0.0001);
+
+    // origin right
+    const vector2 point3(0.0, 0.0);
+    const vector2 normal3(0.0, 1.0);
+
+    utils::Line<2> line3(point3, normal3);
+
+    ASSERT_NEAR(line3.distance(vector2(0.0, 0.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line3.distance(vector2(0.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line3.distance(vector2(1000.0, 0.0)).x(), 1000.0, 0.0001);
+    ASSERT_NEAR(line3.distance(vector2(1000.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line3.distance(vector2(-1000.0, 0.0)).x(), -1000.0, 0.0001);
+    ASSERT_NEAR(line3.distance(vector2(-1000.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line3.distance(vector2(0.0, 1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line3.distance(vector2(0.0, 1000.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line3.distance(vector2(0.0, -1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line3.distance(vector2(0.0, -1000.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line3.distance(vector2(1000.0, -1000.0)).x(), 1000.0, 0.0001);
+    ASSERT_NEAR(line3.distance(vector2(1000.0, -1000.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line3.distance(vector2(1000.0, 1000.0)).x(), 1000.0, 0.0001);
+    ASSERT_NEAR(line3.distance(vector2(1000.0, 1000.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line3.distance(vector2(-1000.0, -1000.0)).x(), -1000.0, 0.0001);
+    ASSERT_NEAR(line3.distance(vector2(-1000.0, -1000.0)).y(), 0.0, 0.0001);
+}
+
+TEST(PointToLine2dDistances, LineDistancesRotated)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // origin diagonal
+    const vector2 point1(100.0, 100.0);
+    const vector2 normal1(1.0, 1.0); // pointing right at 45 degrees
+
+    utils::Line<2> line1(point1, normal1);
+
+    ASSERT_NEAR(line1.distance(vector2(0.0, 0.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(0.0, 0.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(1000.0, 0.0)).x(), 500.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(1000.0, 0.0)).y(), -500.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(-1000.0, 0.0)).x(), -500.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(-1000.0, 0.0)).y(), 500.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(0.0, 1000.0)).x(), -500.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(0.0, 1000.0)).y(), 500.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(0.0, -1000.0)).x(), 500.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(0.0, -1000.0)).y(), -500.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(1000.0, -1000.0)).x(), 1000.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(1000.0, -1000.0)).y(), -1000.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(1000.0, 1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(1000.0, 1000.0)).y(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector2(-1000.0, -1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector2(-1000.0, -1000.0)).y(), 0.0, 0.0001);
+}
+
+TEST(PointToLine3Distances, LineDistancesRotated)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // origin diagonal
+    const vector3 point1(0.0, 0.0, 0.0);
+    const vector3 normal1(1.0, 1.0, 1.0); // pointing right at 45 degrees
+
+    utils::Line<3> line1(point1, normal1);
+
+    ASSERT_NEAR(line1.distance(vector3(0.0, 0.0, 0.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 0.0, 0.0)).y(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 0.0, 0.0)).z(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(1000.0, 0.0, 0.0)).x(), 666.66666, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(1000.0, 0.0, 0.0)).y(), -333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(1000.0, 0.0, 0.0)).z(), -333.33333, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(-1000.0, 0.0, 0.0)).x(), -666.66666, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(-1000.0, 0.0, 0.0)).y(), 333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(-1000.0, 0.0, 0.0)).z(), 333.33333, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(0.0, 1000.0, 0.0)).x(), -333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 1000.0, 0.0)).y(), 666.66666, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 1000.0, 0.0)).z(), -333.33333, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(0.0, -1000.0, 0.0)).x(), 333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, -1000.0, 0.0)).y(), -666.66666, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, -1000.0, 0.0)).z(), 333.33333, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(0.0, 0.0, 1000.0)).x(), -333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 0.0, 1000.0)).y(), -333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 0.0, 1000.0)).z(), 666.66666, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(0.0, 0.0, -1000.0)).x(), 333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 0.0, -1000.0)).y(), 333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 0.0, -1000.0)).z(), -666.66666, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(0.0, 1000.0, 0.0)).x(), -333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 1000.0, 0.0)).y(), 666.66666, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, 1000.0, 0.0)).z(), -333.33333, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(0.0, -1000.0, 0.0)).x(), 333.33333, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, -1000.0, 0.0)).y(), -666.66666, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(0.0, -1000.0, 0.0)).z(), 333.33333, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(1000.0, -1000.0, 0.0)).x(), 1000.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(1000.0, -1000.0, 0.0)).y(), -1000.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(1000.0, -1000.0, 0.0)).z(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(1000.0, 1000.0, 1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(1000.0, 1000.0, 1000.0)).y(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(1000.0, 1000.0, 1000.0)).z(), 0.0, 0.0001);
+
+    ASSERT_NEAR(line1.distance(vector3(-1000.0, -1000.0, -1000.0)).x(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(-1000.0, -1000.0, -1000.0)).y(), 0.0, 0.0001);
+    ASSERT_NEAR(line1.distance(vector3(-1000.0, -1000.0, -1000.0)).z(), 0.0, 0.0001);
+}
+
+/**
+ *      Test the line to line distance function
+ */
+
+TEST(LineToLineDistances, LineDistancesAtZero)
 {
     if (not Parameters::is_valid())
     {
@@ -836,7 +1039,7 @@ TEST(LineDistances, LineDistancesAtZero)
     ASSERT_NEAR(utils::signed_line_distance<3>(point1, -normal1, point4, normal4).norm(), 0.0, 0.0001);
 }
 
-TEST(LineDistances, LineDistances)
+TEST(LineToLineDistances, LineDistances)
 {
     if (not Parameters::is_valid())
     {
