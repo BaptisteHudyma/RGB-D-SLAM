@@ -3,6 +3,7 @@
 #include "camera_transformation.hpp"
 #include "coordinates/basis_changes.hpp"
 
+#include "distance_utils.hpp"
 #include "parameters.hpp"
 
 namespace rgbd_slam {

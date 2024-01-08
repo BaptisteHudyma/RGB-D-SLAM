@@ -1,7 +1,6 @@
 #ifndef RGBDSLAM_UTILS_LINE_HPP
 #define RGBDSLAM_UTILS_LINE_HPP
 
-#include "distance_utils.hpp"
 #include <Eigen/Dense>
 #include <Eigen/src/Core/Matrix.h>
 
@@ -40,12 +39,6 @@ template<int Dim> class ILine
         return point - get_closest_point_on_line(point);
     }
 
-    [[nodiscard]] virtual bool intersects(const ILine<Dim>& other, Eigen::Vector<double, Dim>& point) const noexcept
-    {
-        // TODO: generalize to N dimentions
-        return false;
-    }
-
     /**
      * \brief get the normal vector from the start point
      */
@@ -57,6 +50,26 @@ template<int Dim> class ILine
   protected:
     Eigen::Vector<double, Dim> _startPoint;
 };
+
+/**
+ * \brief check the intersection of two lines (in 2d)
+ * \param[in] firstLine
+ * \param[in] secondLine
+ * \param[in] point the point of intersection of the two lines, if the function returns true
+ */
+[[nodiscard]] bool intersects(const ILine<2>& firstLine,
+                              const ILine<2>& secondLine,
+                              Eigen::Vector<double, 2>& point) noexcept;
+
+/**
+ * \brief check the intersection of two lines (in 3d)
+ * \param[in] firstLine
+ * \param[in] secondLine
+ * \param[in] point the point of intersection of the two lines, if the function returns true
+ */
+[[nodiscard]] bool intersects(const ILine<3>& firstLine,
+                              const ILine<3>& secondLine,
+                              Eigen::Vector<double, 3>& point) noexcept;
 
 /**
  * \brief Segment class: a line defined by two points
@@ -94,6 +107,26 @@ template<int Dim> class Segment : public ILine<Dim>
   protected:
     Eigen::Vector<double, Dim> _endPoint;
 };
+
+/**
+ * \brief check the intersection of two lines (in 2d)
+ * \param[in] firstLine
+ * \param[in] secondLine
+ * \param[in] point the point of intersection of the two lines, if the function returns true
+ */
+[[nodiscard]] bool intersects(const Segment<2>& firstLine,
+                              const Segment<2>& secondLine,
+                              Eigen::Vector<double, 2>& point) noexcept;
+
+/**
+ * \brief check the intersection of two lines (in 3d)
+ * \param[in] firstLine
+ * \param[in] secondLine
+ * \param[in] point the point of intersection of the two lines, if the function returns true
+ */
+[[nodiscard]] bool intersects(const Segment<3>& firstLine,
+                              const Segment<3>& secondLine,
+                              Eigen::Vector<double, 3>& point) noexcept;
 
 /**
  * \brief Segment class: a line defined by a start point and a normal vector
