@@ -1,13 +1,75 @@
 #include "line.hpp"
 #include "coordinates/point_coordinates.hpp"
+#include "logger.hpp"
+#include "polygon.hpp"
 
 #include <boost/geometry/geometries/infinite_line.hpp>
 #include <boost/geometry/geometries/linestring.hpp>
 #include <boost/geometry/geometries/point_xyz.hpp>
 #include <boost/geometry/geometries/segment.hpp>
 #include <boost/geometry/algorithms/intersection.hpp>
+#include <format>
 
 namespace rgbd_slam::utils {
+
+[[nodiscard]] bool clamp_to_screen(const Segment<2>& line, Segment<2>& out) noexcept
+{
+    typedef boost::geometry::model::d2::point_xy<double> point_t;
+    typedef boost::geometry::model::linestring<point_t> line_t;
+
+    line_t lineBoost({point_t(line.get_start_point().x(), line.get_start_point().y()),
+                      point_t(line.get_end_point().x(), line.get_end_point().y())});
+
+    const auto& boundar = get_static_screen_boundary_polygon();
+    std::vector<point_t> output;
+    if (boost::geometry::intersection(lineBoost, boundar, output))
+    {
+        switch (output.size())
+        {
+            case 0: // no intersection with boundary
+                {
+                    const ScreenCoordinate2D startPoint(line.get_start_point());
+                    const ScreenCoordinate2D endPoint(line.get_end_point());
+                    // no points in boundary, quit
+                    if (not startPoint.is_in_screen_boundaries() or not endPoint.is_in_screen_boundaries())
+                    {
+                        return false;
+                    }
+                    // all points in boundary, continue
+                    out.set_points(line.get_start_point(), line.get_end_point());
+                    break;
+                }
+            case 1:
+                {
+                    // find the point in the screen boundary
+                    const ScreenCoordinate2D startPoint(output[0].x(), output[0].y());
+                    const ScreenCoordinate2D endPoint(output[0].x(), output[0].y());
+                    if (startPoint.is_in_screen_boundaries())
+                    {
+                        out.set_points(startPoint, vector2(output[0].x(), output[0].y()));
+                    }
+                    else
+                    {
+                        out.set_points(vector2(output[0].x(), output[0].y()), endPoint);
+                    }
+                    break;
+                }
+            case 2:
+                {
+                    out.set_points(vector2(output[0].x(), output[0].y()), vector2(output[1].x(), output[1].y()));
+                    break;
+                }
+                // should never have other cases
+            default:
+                {
+                    outputs::log_error(std::format("unhandled case for value {}", output.size()));
+                    return false;
+                }
+        }
+        return true;
+    }
+    return false;
+}
 
 bool intersects(const ILine<2>& firstLine, const ILine<2>& secondLine, Eigen::Vector<double, 2>& point) noexcept
 {

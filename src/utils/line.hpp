@@ -109,6 +109,14 @@ template<int Dim> class Segment : public ILine<Dim>
 };
 
 /**
+ * \brief clamp a 2D line to screen space
+ * \param[in] line the line to clamp
+ * \param[out] out the line clamped
+ * \return true if the line is still in screen space, false if out is invalid
+ */
+[[nodiscard]] bool clamp_to_screen(const Segment<2>& line, Segment<2>& out) noexcept;
+
+/**
  * \brief check the intersection of two lines (in 2d)
  * \param[in] firstLine
  * \param[in] secondLine

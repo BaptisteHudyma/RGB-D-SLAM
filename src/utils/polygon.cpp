@@ -23,15 +23,19 @@ namespace rgbd_slam::utils {
 
 Polygon::polygon get_static_screen_boundary_polygon() noexcept
 {
+    // prevent floatting number problems
+    static constexpr uint boundarySize = 1;
+
     // define a polygon that span the screen space
-    static const uint screenSizeX = Parameters::get_camera_1_image_size().x();
-    static const uint screenSizeY = Parameters::get_camera_1_image_size().y();
+    static const uint screenSizeX = Parameters::get_camera_1_image_size().x() - boundarySize;
+    static const uint screenSizeY = Parameters::get_camera_1_image_size().y() - boundarySize;
     static const std::array<Polygon::point_2d, 5> screenBoundaryPoints(
-            {Polygon::point_2d(0, 0),
-             Polygon::point_2d(static_cast<int>(round(screenSizeX)), 0),
+            {Polygon::point_2d(boundarySize, boundarySize),
+             Polygon::point_2d(static_cast<int>(round(screenSizeX)), boundarySize),
              Polygon::point_2d(static_cast<int>(round(screenSizeX)), static_cast<int>(round(screenSizeY))),
-             Polygon::point_2d(0, static_cast<int>(round(screenSizeY))),
-             Polygon::point_2d(0, 0)});
+             Polygon::point_2d(boundarySize, static_cast<int>(round(screenSizeY))),
+             Polygon::point_2d(boundarySize, boundarySize)});
+
     static Polygon::polygon boundary;
     if (boundary.outer().size() <= 0)
     {
