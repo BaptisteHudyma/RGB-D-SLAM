@@ -75,9 +75,16 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
                       cv::Mat& debugImage,
                       const cv::Scalar& color) const noexcept
 {
-    utils::Segment<2> screenCoordinates;
-    if (!to_screen_coordinates(worldToCamMatrix, screenCoordinates))
+    utils::Segment<2> lineInScreen;
+    if (not to_screen_coordinates(worldToCamMatrix, lineInScreen))
         return;
+
+    // clamp the line to screen space (prevent problems when drawing)
+    utils::Segment<2> screenCoordinates;
+    if (not utils::clamp_to_screen(lineInScreen, screenCoordinates))
+    {
+        return;
+    }
 
     const ScreenCoordinate2D startPoint(screenCoordinates.get_start_point());
     const ScreenCoordinate2D endPoint(screenCoordinates.get_end_point());
@@ -92,6 +99,10 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
         cv::line(debugImage, p1, p2, is_matched() ? cv::Scalar(255, 0, 0) : cv::Scalar(0, 0, 255), 5);
 
         cv::line(debugImage, p1, p2, color, 3);
+    }
+    else
+    {
+        outputs::log_error("Cannot draw a line out of screen boundaries");
     }
 }
 
