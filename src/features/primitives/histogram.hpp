@@ -22,7 +22,7 @@ template<size_t Size> class Histogram
   public:
     Histogram()
     {
-        _H.fill(0);
+        _histogram.fill(0);
         reset();
     }
 
@@ -36,10 +36,10 @@ template<size_t Size> class Histogram
     {
         //_reset();
         _pointCount = static_cast<uint>(points.rows());
-        _B.assign(_pointCount, -1);
+        _bins.assign(_pointCount, -1);
 
         assert(_pointCount == isUnasignedMask.size());
-        assert(_B.size() == static_cast<size_t>(isUnasignedMask.size()));
+        assert(_bins.size() == static_cast<size_t>(isUnasignedMask.size()));
 
         for (uint i = 0; i < _pointCount; ++i)
         {
@@ -52,11 +52,11 @@ template<size_t Size> class Histogram
                     yQ = static_cast<int>(floor((Size - 1) * (points(i, 1) - minY) / maxYminY));
 
                 const uint bin = yQ * Size + xQ;
-                assert(i < _B.size());
-                _B[i] = static_cast<int>(bin);
+                assert(i < _bins.size());
+                _bins[i] = static_cast<int>(bin);
 
-                assert(bin < _H.size());
-                _H[bin] += 1;
+                assert(bin < _histogram.size());
+                _histogram[bin] += 1;
             }
         }
     }
@@ -71,13 +71,13 @@ template<size_t Size> class Histogram
         int mostFrequentBin = -1;
         uint maxOccurencesCount = 0;
 
-        for (uint i = 0; i < _H.size(); ++i)
+        for (uint i = 0; i < _histogram.size(); ++i)
         {
             // get most frequent bin index
-            if (_H[i] > maxOccurencesCount)
+            if (_histogram[i] > maxOccurencesCount)
             {
                 mostFrequentBin = static_cast<int>(i);
-                maxOccurencesCount = _H[i];
+                maxOccurencesCount = _histogram[i];
             }
         }
 
@@ -88,7 +88,7 @@ template<size_t Size> class Histogram
             // most frequent bin is not empty
             for (uint i = 0; i < _pointCount; ++i)
             {
-                if (_B[i] == mostFrequentBin)
+                if (_bins[i] == mostFrequentBin)
                 {
                     pointsIds.push_back(i);
                 }
@@ -102,14 +102,14 @@ template<size_t Size> class Histogram
      */
     void remove_point(const uint pointId) noexcept
     {
-        if (pointId >= _B.size())
+        if (pointId >= _bins.size())
         {
             outputs::log_error(std::format("Histogram: remove_point called on invalid ID {}", pointId));
             exit(-1);
         }
-        if (_H[_B[pointId]] != 0)
-            _H[_B[pointId]] -= 1;
-        _B[pointId] = 1;
+        if (_histogram[_bins[pointId]] != 0)
+            _histogram[_bins[pointId]] -= 1;
+        _bins[pointId] = 1;
     }
 
     /**
@@ -117,13 +117,13 @@ template<size_t Size> class Histogram
      */
     void reset() noexcept
     {
-        _H.fill(0);
-        _B.clear();
+        _histogram.fill(0);
+        _bins.clear();
     }
 
   private:
-    std::array<uint, Size * Size> _H;
-    std::vector<int> _B;
+    std::array<uint, Size * Size> _histogram;
+    std::vector<int> _bins;
 
     uint _pointCount;
 
