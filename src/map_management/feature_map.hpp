@@ -18,6 +18,9 @@
 
 namespace rgbd_slam::map_management {
 
+/**
+ * \brief Interface for a map feature. All map features should inherit this
+ */
 template<class DetectedFeaturesObject,
          class DetectedFeatureType,
          class FeatureMatchType,
@@ -164,6 +167,9 @@ class IMapFeature
     inline static uint _idAllocator = 0;
 };
 
+/**
+ * \brief Interface for a staged feature. All staged features should inherit this
+ */
 template<class DetectedFeatureType> class IStagedMapFeature
 {
   public:
@@ -184,6 +190,9 @@ template<class DetectedFeatureType> class IStagedMapFeature
     }
 };
 
+/**
+ * \brief Interface for a local map feature. All local map features should inherit this
+ */
 template<class StagedMapFeature> class ILocalMapFeature
 {
   public:
@@ -205,7 +214,7 @@ template<class StagedMapFeature> class ILocalMapFeature
 };
 
 /**
- * Handle the storage and update of features in local and staged map
+ * \brief Handle the storage and update of features in local and staged map
  */
 template<class MapFeatureType,
          class StagedFeatureType,

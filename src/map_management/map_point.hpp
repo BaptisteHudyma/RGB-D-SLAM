@@ -16,6 +16,9 @@ using PointMatchType = matches_containers::PointMatch;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
 using UpgradedPointType = void*; // no upgrade for 3D points
 
+/**
+ * \brief Classic point feature in map, all map points should inherit this
+ */
 class MapPoint :
     public tracking::Point,
     public IMapFeature<DetectedKeypointsObject,

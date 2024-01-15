@@ -9,6 +9,9 @@
 
 namespace rgbd_slam::tracking {
 
+/**
+ * \brief Defines a point, with tracking capabilities
+ */
 struct Point
 {
     // world coordinates

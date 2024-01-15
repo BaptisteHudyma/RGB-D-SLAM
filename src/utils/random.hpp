@@ -8,6 +8,9 @@
 
 namespace rgbd_slam::utils {
 
+/**
+ * \brief static class, to handle the random generation
+ */
 class Random
 {
   public:

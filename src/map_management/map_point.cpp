@@ -63,6 +63,7 @@ bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPointsObject& trackedFeatures,
                               const uint dropChance) const noexcept
 {
+    return false;
     const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
     assert(not _coordinates.hasNaN());
