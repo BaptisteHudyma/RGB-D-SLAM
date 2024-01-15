@@ -1,4 +1,4 @@
-#include "levenberg_marquard_functors.hpp"
+#include "levenberg_marquardt_functors.hpp"
 #include "matches_containers.hpp"
 #include "utils/camera_transformation.hpp"
 #include <Eigen/src/Core/util/Meta.h>

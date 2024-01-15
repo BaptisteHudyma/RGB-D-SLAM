@@ -11,3 +11,9 @@ The program source files are organized as so:
 - **pose_optimization** Contains all the pose optimization functions. The optimization process uses a Levenberg-Marquardt algorithm for frame to frame optimization
 - **tracking** The tracking functions, as Kalman filters and observers motion model. it also handle the tracking of the feature used in the program (points, planes, inverse depth points)
 - **utils** Math and cameras utils functions. Also contains the main types (eg: Pose)
+
+
+- **matches_containes**: Containers for feature matches
+- **parameters**: Contains all parameters (magic numbers !) for this program.
+- **rgbd_slam**: Main class of this program
+- **types**: Define all base types used in this program (specially vectors and matrices) 
