@@ -63,7 +63,6 @@ bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPointsObject& trackedFeatures,
                               const uint dropChance) const noexcept
 {
-    return false;
     const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
     assert(not _coordinates.hasNaN());
@@ -150,6 +149,7 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
         // get a measure of the estimated variance of the new world point
         const matrix33& worldCovariance =
                 utils::get_world_point_covariance(matchedScreenPoint, cameraToWorld, poseCovariance);
+
         // update this map point errors & position
         const double mergeScore = track(worldPointCoordinates, worldCovariance);
         if (mergeScore < 0)
@@ -179,6 +179,8 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
         // If a new descriptor is available, update it
         if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
             _descriptor = descriptor;
+
+        return true;
     }
     return false;
 }

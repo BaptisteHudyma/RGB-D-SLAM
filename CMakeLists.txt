@@ -134,7 +134,7 @@ add_library(outputs SHARED
     )
 
 add_library(poseOptimization SHARED
-    ${POSE_OPTI}/levenberg_marquard_functors.cpp
+    ${POSE_OPTI}/levenberg_marquardt_functors.cpp
     ${POSE_OPTI}/pose_optimization.cpp
     )
 

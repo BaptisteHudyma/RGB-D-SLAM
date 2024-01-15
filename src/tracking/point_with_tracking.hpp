@@ -31,6 +31,8 @@ struct Point
      */
     double track(const WorldCoordinate& newDetectionCoordinates, const matrix33& newDetectionCovariance) noexcept;
 
+    [[nodiscard]] bool is_moving() const noexcept { return _isMoving; }
+
   private:
     /**
      * \brief Build the caracteristics of the kalman filter
@@ -39,6 +41,8 @@ struct Point
 
     // shared kalman filter, between all points
     inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
+
+    bool _isMoving = false;
 };
 
 } // namespace rgbd_slam::tracking

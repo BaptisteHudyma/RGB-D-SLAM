@@ -87,6 +87,8 @@ class MapPoint2D :
     [[nodiscard]] bool compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
                                         UpgradedPoint2DType& upgradeFeature) const noexcept override;
 
+    [[nodiscard]] bool is_moving() const noexcept override { return tracking::PointInverseDepth::is_moving(); }
+
   protected:
     [[nodiscard]] bool update_with_match(const DetectedPoint2DType& matchedFeature,
                                          const matrix33& poseCovariance,
