@@ -600,9 +600,9 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         const cv::Mat_<uchar>& maskBoundary = _maskDilated - _maskEroded;
 
         const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(pointsPerCellCount)));
-        cv::Scalar color(utils::Random::get_random_uint(255),
-                         utils::Random::get_random_uint(255),
-                         utils::Random::get_random_uint(255));
+        cv::Scalar color(utils::Random::get_random_uint(256),
+                         utils::Random::get_random_uint(256),
+                         utils::Random::get_random_uint(256));
         maskBoundary.forEach([&debugImage, &color, &pixelPerCellSide](const uchar value, const int position[]) {
             if (value > 0)
                 cv::rectangle(debugImage,
@@ -636,9 +636,9 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
 #ifdef DEBUG_DETECTED_POLYGONS
     for (const auto& poly: planeContainer)
     {
-        poly.get_boundary_polygon().display(cv::Scalar(utils::Random::get_random_uint(255),
-                                                       utils::Random::get_random_uint(255),
-                                                       utils::Random::get_random_uint(255)),
+        poly.get_boundary_polygon().display(cv::Scalar(utils::Random::get_random_uint(256),
+                                                       utils::Random::get_random_uint(256),
+                                                       utils::Random::get_random_uint(256)),
                                             debugImage);
     }
 #endif

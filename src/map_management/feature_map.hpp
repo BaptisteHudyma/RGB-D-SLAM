@@ -198,9 +198,9 @@ template<class StagedMapFeature> class ILocalMapFeature
     void set_color() noexcept
     {
         // set a random color for this feature
-        _color[0] = utils::Random::get_random_uint(255);
-        _color[1] = utils::Random::get_random_uint(255);
-        _color[2] = utils::Random::get_random_uint(255);
+        _color[0] = utils::Random::get_random_uint(256);
+        _color[1] = utils::Random::get_random_uint(256);
+        _color[2] = utils::Random::get_random_uint(256);
     }
 };
 
