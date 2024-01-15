@@ -8,6 +8,10 @@
 
 namespace rgbd_slam::tracking {
 
+/**
+ * \brief Defines a plane, with tracking capabilities.
+ * The normal vector and distance to the origin will be tracked, and boundary polygon uses a simple merge operation
+ */
 class Plane
 {
   public:

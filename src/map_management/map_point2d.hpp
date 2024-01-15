@@ -23,6 +23,10 @@ using PointMatch2DType = matches_containers::PointMatch2D;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
 using UpgradedPoint2DType = UpgradedPoint2D; // 2D points can be upgraded to 3D
 
+/**
+ * \brief Classic 2D point feature in map, all 2D map points should inherit this.
+ * Here, the 2d points are presented in inverse depth form
+ */
 class MapPoint2D :
     public tracking::PointInverseDepth,
     public IMapFeature<DetectedKeypointsObject,

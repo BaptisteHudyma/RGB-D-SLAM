@@ -15,6 +15,9 @@
 
 namespace rgbd_slam::map_management {
 
+/**
+ * \brief Contains sets of detected features
+ */
 struct DetectedFeatureContainer
 {
     DetectedFeatureContainer(const features::keypoints::Keypoint_Handler& newKeypointObject,

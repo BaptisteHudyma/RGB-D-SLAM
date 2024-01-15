@@ -8,6 +8,9 @@ namespace rgbd_slam {
 struct Cartesian;
 struct Spherical;
 
+/**
+ * \brief Contain a cartesian point, with methods to convert between representations
+ */
 struct Cartesian
 {
     double x;
@@ -33,6 +36,9 @@ struct Cartesian
     static Cartesian from(Spherical coord, matrix33& jacobian);
 };
 
+/**
+ * \brief Contain a spherical point, with methods to convert between representations
+ */
 struct Spherical
 {
     double p;

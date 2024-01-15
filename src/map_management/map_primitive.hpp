@@ -14,6 +14,11 @@ using PlaneMatchType = matches_containers::PlaneMatch;
 using TrackedPlaneObject = void*; // TODO implement
 using UpgradedPlaneType = void*;  // no upgrades for planes
 
+/**
+ * \brief Classic plane feature in map, all map plane should inherit this.
+ * A plane is defined in hessian form (normal vector and distance to the origin).
+ * Each plane also have a boundary polygon.
+ */
 class MapPlane :
     public tracking::Plane,
     public IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject, UpgradedPlaneType>
@@ -68,6 +73,9 @@ class MapPlane :
     void update_no_match() noexcept override;
 };
 
+/**
+ * \brief Candidate for a map plane
+ */
 class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneType>
 {
   public:
@@ -86,6 +94,9 @@ class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneTy
     }
 };
 
+/**
+ * \brief A map plane structure, containing all the necessary informations to identify a map plane in local map
+ */
 class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
 {
   public:

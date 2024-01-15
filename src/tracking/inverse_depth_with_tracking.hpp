@@ -11,6 +11,9 @@
 
 namespace rgbd_slam::tracking {
 
+/**
+ * \brief Defines a 2D point, with tracking capabilities
+ */
 struct PointInverseDepth
 {
     static constexpr uint firstPoseIndex = InverseDepthWorldPoint::firstPoseIndex;
