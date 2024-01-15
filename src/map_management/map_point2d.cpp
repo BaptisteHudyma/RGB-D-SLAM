@@ -108,13 +108,13 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
 
 bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept
 {
-    // TODO: should not use to_screen_coordinates !!
-
     // Those points should laways be visible but we never know
-    ScreenCoordinate2D screenCoord;
-    if (_coordinates.to_world_coordinates().to_screen_coordinates(worldToCamMatrix, screenCoord))
+    utils::Segment<2> screenSegment;
+    if (_coordinates.to_screen_coordinates(worldToCamMatrix, _covariance.get_inverse_depth_variance(), screenSegment))
     {
-        return screenCoord.is_in_screen_boundaries();
+        // clamp to screen: if this fails, point is not visible
+        utils::Segment<2> screenCoordinates;
+        return utils::clamp_to_screen(screenSegment, screenCoordinates);
     }
     return false;
 }

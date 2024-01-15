@@ -81,6 +81,8 @@ class MapPoint :
         return false;
     }
 
+    [[nodiscard]] bool is_moving() const noexcept override { return tracking::Point::is_moving(); }
+
   protected:
     [[nodiscard]] bool update_with_match(const DetectedPointType& matchedFeature,
                                          const matrix33& poseCovariance,

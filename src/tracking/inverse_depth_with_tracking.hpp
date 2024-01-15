@@ -105,6 +105,8 @@ struct PointInverseDepth
      */
     [[nodiscard]] double compute_linearity_score(const CameraToWorldMatrix& cameraToWorld) const noexcept;
 
+    [[nodiscard]] bool is_moving() const noexcept { return _isMoving; }
+
   protected:
     /**
      * \brief update the value of this point using an observation in cartesian space
@@ -120,6 +122,9 @@ struct PointInverseDepth
 
     // shared kalman filter, between all points
     inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
+
+  private:
+    bool _isMoving = false;
 };
 
 } // namespace rgbd_slam::tracking

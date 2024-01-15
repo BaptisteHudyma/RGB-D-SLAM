@@ -139,6 +139,10 @@ bool PointInverseDepth::update_with_cartesian(const WorldCoordinate& point,
         if (not utils::is_covariance_valid(newCovariance))
             throw std::invalid_argument("Inverse depth point covariance is invalid at the kalman output");
 
+        // moved above the uncertainty of this point
+        _isMoving = ((_coordinates.to_world_coordinates() - point).array() > covariance.diagonal().cwiseSqrt().array())
+                            .any();
+
         // put back in inverse depth coordinates
         Eigen::Matrix<double, 6, 3> fromCartesianJacobian;
         _coordinates = InverseDepthWorldPoint::from_cartesian(
@@ -259,8 +263,7 @@ void PointInverseDepth::build_kalman_filter() noexcept
 bool PointInverseDepth::to_screen_coordinates(const WorldToCameraMatrix& w2c,
                                               utils::Segment<2>& screenSegment) const noexcept
 {
-    const double depthCovariance = _covariance.diagonal()(inverseDepthIndex);
-    return _coordinates.to_screen_coordinates(w2c, depthCovariance, screenSegment);
+    return _coordinates.to_screen_coordinates(w2c, _covariance.get_inverse_depth_variance(), screenSegment);
 }
 
 } // namespace rgbd_slam::tracking

@@ -59,12 +59,18 @@ class IMapFeature
                                          const bool shouldAddToMatches = true,
                                          const bool useAdvancedSearch = false) const noexcept = 0;
 
-    /** \brief Return true if this feature can be upgraded to UpgradedFeatureType
+    /**
+     * \brief Return true if this feature can be upgraded to UpgradedFeatureType
      * \param[in] cameraToWorld The optimized pose
      * \param[out] upgradeFeature The upgraded feature, valid if this function returned true
      */
     [[nodiscard]] virtual bool compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
                                                 UpgradedFeatureType& upgradeFeature) const noexcept = 0;
+
+    /**
+     * \brief Should return true if the feature is detected as moving
+     */
+    [[nodiscard]] virtual bool is_moving() const noexcept = 0;
 
     /**
      * \return True if this map feature is marked as matched
@@ -285,7 +291,7 @@ class Feature_Map
             // start by reseting this point
             mapFeature.mark_unmatched();
 
-            if (not mapFeature.is_visible(worldToCamera))
+            if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
                 continue;
 
             const int matchIndex = mapFeature.find_match(
@@ -309,7 +315,7 @@ class Feature_Map
             // start by reseting this point
             mapFeature.mark_unmatched();
 
-            if (not mapFeature.is_visible(worldToCamera))
+            if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
                 continue;
 
             const int matchIndex = mapFeature.find_match(detectedFeatures,
@@ -343,6 +349,7 @@ class Feature_Map
         for (const auto& [id, mapFeature]: _localMap)
         {
             assert(id == mapFeature._id);
+            // feature was matched at the last iteration, and is visible
             if (mapFeature.is_matched() and mapFeature.is_visible(worldToCamera))
             {
                 mapFeature.add_to_tracked(worldToCamera, trackedFeatures, localMapDropChance);
@@ -579,8 +586,11 @@ class Feature_Map
 
             if (mapFeature.is_lost())
             {
-                // write to file
-                mapFeature.write_to_file(mapWriter);
+                if (not mapFeature.is_moving())
+                {
+                    // write to file
+                    mapFeature.write_to_file(mapWriter);
+                }
 
                 // Remove useless point
                 featureMapIterator = _localMap.erase(featureMapIterator);

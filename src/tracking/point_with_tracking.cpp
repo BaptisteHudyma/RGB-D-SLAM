@@ -48,6 +48,11 @@ double Point::track(const WorldCoordinate& newDetectionCoordinates, const matrix
         const auto& [newCoordinates, newCovariance] = _kalmanFilter->get_new_state(
                 _coordinates, _covariance, newDetectionCoordinates, newDetectionCovariance);
 
+        // moved above the uncertainty of this point
+        _isMoving = ((_coordinates - newDetectionCoordinates).array() >
+                     newDetectionCovariance.diagonal().cwiseSqrt().array())
+                            .any();
+
         const double score = (_coordinates - newCoordinates).norm();
 
         _coordinates << newCoordinates;

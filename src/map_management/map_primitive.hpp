@@ -65,6 +65,12 @@ class MapPlane :
         return false;
     }
 
+    [[nodiscard]] bool is_moving() const noexcept override
+    {
+        // TODO
+        return false;
+    }
+
   protected:
     [[nodiscard]] bool update_with_match(const DetectedPlaneType& matchedFeature,
                                          const matrix33& poseCovariance,

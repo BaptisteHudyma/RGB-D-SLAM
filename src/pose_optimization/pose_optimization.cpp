@@ -3,7 +3,7 @@
 #include "covariances.hpp"
 #include "outputs/logger.hpp"
 #include "parameters.hpp"
-#include "levenberg_marquard_functors.hpp"
+#include "levenberg_marquardt_functors.hpp"
 #include "matches_containers.hpp"
 #include "ransac.hpp"
 #include "types.hpp"
