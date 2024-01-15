@@ -80,43 +80,60 @@ std::array<uint, numberOfFeatures> get_random_selection(
         const std::array<uint, numberOfFeatures>& featuresCounts,
         const std::array<std::pair<uint, uint>, numberOfFeatures>& minMaxNumberOfFeatures) noexcept
 {
-    std::array<uint, numberOfFeatures> selection = {0, 0, 0};
+    std::array<uint, numberOfFeatures> selection;
+    selection.fill(0);
 
+    // set the array of feature indexes
+    std::array<size_t, numberOfFeatures> featureIndexes;
+    size_t n = 0;
+    std::ranges::generate(featureIndexes, [&n]() mutable {
+        return n++;
+    });
+    std::ranges::shuffle(featureIndexes, utils::Random::get_random_engine());
+
+    constexpr double targetScoreThreshold = 1.0;
     double scoreAccumulation = 0.0;
-    // set the minimum features
-    for (size_t i = 0; i < numberOfFeatures; ++i)
+    // set the minimum features (small opti)
+    for (size_t i: featureIndexes)
     {
         const auto& minmax = minMaxNumberOfFeatures[i];
         scoreAccumulation += minmax.first * scorePerFeature[i];
         selection[i] = minmax.first;
     }
 
-    // fill the remaining space with random features
+    //  fill the remaining space with random features
     static constexpr size_t MAX_ITERATIONS = 10;
-    for (size_t currentIteration = 0; (scoreAccumulation < 1.0) and (currentIteration < MAX_ITERATIONS);
+    for (size_t currentIteration = 0; (scoreAccumulation < targetScoreThreshold) and currentIteration < MAX_ITERATIONS;
          ++currentIteration)
     {
-        for (size_t i = 0; i < numberOfFeatures; ++i)
+        for (const size_t i: featureIndexes)
         {
             const auto select = selection[i];
-            const auto& minmax = minMaxNumberOfFeatures[i];
-            const double scoreLeft = 1.0 - std::clamp(scoreAccumulation, 0.0, 1.0);
-            const uint selectedFeatureCount =
-                    (uint)std::ceil(utils::Random::get_normal_double() * scoreLeft / scorePerFeature[i]);
-            const uint newVal = std::clamp(select + selectedFeatureCount, minmax.first, minmax.second);
-            if (newVal > select)
-            {
-                scoreAccumulation += (newVal - select) * scorePerFeature[i];
-                selection[i] = newVal;
-            }
+            const auto maxNumberOffeatures = featuresCounts[i];
+            const auto featureScore = scorePerFeature[i];
+
+            // max features to get !
+            const uint featuresToSelect =
+                    std::min(static_cast<uint>(std::ceil((targetScoreThreshold - scoreAccumulation) / featureScore)),
+                             maxNumberOffeatures - select);
+            // select a random
+            const uint toSelect = utils::Random::get_random_uint(featuresToSelect + 1);
+            if (toSelect == 0)
+                continue;
+
+            // add feature count and score
+            selection[i] += toSelect;
+            scoreAccumulation += toSelect * featureScore;
+            if (scoreAccumulation >= targetScoreThreshold)
+                break;
         }
     }
 
     // fill the remaining features (maybe not needed)
-    if (scoreAccumulation < 1.0)
+    if (scoreAccumulation < targetScoreThreshold)
     {
         outputs::log_warning("filling remaining features with non random loop");
-        for (size_t i = 0; i < numberOfFeatures; ++i)
+        for (const size_t i: featureIndexes)
         {
             const auto select = selection[i];
             const auto& minmax = minMaxNumberOfFeatures[i];
@@ -128,24 +145,6 @@ std::array<uint, numberOfFeatures> get_random_selection(
             }
         }
     }
-
-    // sanity check loop
-    for (size_t i = 0; i < numberOfFeatures; ++i)
-    {
-        const auto& minmax = minMaxNumberOfFeatures[i];
-        const auto select = selection[i];
-        if (select < minmax.first or select > minmax.second or select > featuresCounts[i])
-        {
-            outputs::log_warning(
-                    std::format("Selected {} feature at index {} but we have {} available [min {}, max {}]",
-                                select,
-                                i,
-                                featuresCounts[i],
-                                minmax.first,
-                                minmax.second));
-        }
-    }
-
     return selection;
 }
 

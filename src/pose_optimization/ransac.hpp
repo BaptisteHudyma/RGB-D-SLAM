@@ -24,12 +24,9 @@ template<template<typename> class Container, typename T>
         throw std::invalid_argument("get_random_subset: numberOfElementsToChoose should be >= to the elements count");
     }
 
-    // get a local random engine
-    thread_local std::mt19937 randomEngine(0);
-
     // get a vector of references and shuffle it
     std::vector<std::reference_wrapper<const T>> copyVector(inContainer.cbegin(), inContainer.cend());
-    std::ranges::shuffle(copyVector, randomEngine);
+    std::ranges::shuffle(copyVector, utils::Random::get_random_engine());
     if (copyVector.size() != inContainer.size())
     {
         throw std::invalid_argument("get_random_subset: failed to create a reference vector");
