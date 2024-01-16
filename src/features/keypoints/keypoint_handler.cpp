@@ -2,6 +2,7 @@
 #include "../../outputs/logger.hpp"
 #include "../../parameters.hpp"
 #include "../../types.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include <cstddef>
 
 namespace rgbd_slam::features::keypoints {
@@ -13,23 +14,13 @@ bool is_in_border(const cv::Point2f& pt, const cv::Mat& im, const double borderS
            pt.y < static_cast<double>(im.rows) - borderSize;
 }
 
-double get_depth_approximation(const cv::Mat_<float>& depthImage, const cv::Point2f& depthCoordinates) noexcept
+double get_depth(const cv::Mat_<float>& depthImage, const cv::Point2f& depthCoordinates) noexcept
 {
     const double border = BORDER_SIZE;
     assert(border > 0);
     if (is_in_border(depthCoordinates, depthImage, border))
     {
-        const cv::Mat_<float> roi(depthImage(cv::Rect(std::max(int(depthCoordinates.x - border), 0),
-                                                      std::max(int(depthCoordinates.y - border), 0),
-                                                      int(border * 2.0),
-                                                      int(border * 2.0))));
-        double min;
-        double max;
-        cv::minMaxLoc(roi, &min, &max);
-        if (min <= 0)
-            return max;
-        else
-            return min;
+        return depthImage.at<float>(std::round(depthCoordinates.y), std::round(depthCoordinates.x));
     }
     return 0.0;
 }
@@ -94,8 +85,7 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
     {
         const cv::Point2f& pt = inKeypoints[pointIndex];
         // Depths are in millimeters, will be 0 if coordinates are invalid
-        const double associatedDepth = get_depth_approximation(depthImage, pt);
-        const ScreenCoordinate vectorKeypoint(pt.x, pt.y, associatedDepth);
+        const ScreenCoordinate vectorKeypoint(pt.x, pt.y, get_depth(depthImage, pt));
 
         _keypoints[pointIndex] = vectorKeypoint;
 
@@ -126,11 +116,8 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
         }
 
         // Depths are in millimeters, will be 0 if coordinates are invalid
-        const double depthApproximation = get_depth_approximation(depthImage, pt);
-        const ScreenCoordinate vectorKeypoint(pt.x, pt.y, depthApproximation);
-
         // no search space: already matched
-        _keypoints[newKeypointIndex] = vectorKeypoint;
+        _keypoints[newKeypointIndex] = ScreenCoordinate(pt.x, pt.y, get_depth(depthImage, pt));
     }
 }
 

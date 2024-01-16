@@ -25,11 +25,10 @@ struct DetectedKeyPoint
 [[nodiscard]] bool is_in_border(const cv::Point2f& pt, const cv::Mat& im, const double borderSize = 0) noexcept;
 
 /**
- * \brief Return the depth value in the depth image, or 0 if not depth info is found. This function approximates depth
- * with the surrounding points to prevent invalid depth on edges
+ * \brief Return the depth value in the depth image, or 0 if not depth info is found.
+ * A border check is applied to reject points to close to the image edge
  */
-[[nodiscard]] double get_depth_approximation(const cv::Mat_<float>& depthImage,
-                                             const cv::Point2f& depthCoordinates) noexcept;
+[[nodiscard]] double get_depth(const cv::Mat_<float>& depthImage, const cv::Point2f& depthCoordinates) noexcept;
 
 /**
  * \brief Stores a vector of keypoints, along with a vector of the unique ids associated with those keypoints in the
