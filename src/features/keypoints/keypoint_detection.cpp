@@ -116,8 +116,11 @@ cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(
 {
     const int radiusOfAreaAroundPoint = static_cast<int>(pointMaskRadius_px); // in pixels
     const static cv::Scalar fillColor(0);
-    // this intance could be optimised with a static and a reset to white each time
-    cv::Mat_<uchar> mask(imageSize, 255); // set all to white (no mask)
+
+    // this intance is a small optimisation with a static and a reset to white each time
+    static cv::Mat_<uchar> mask(imageSize);
+    mask.setTo(255); // set all to white (no mask)
+
     detectionWindowDetectionCount.fill(0);
     for (const cv::Point2f& point: keypointContainer)
     {
@@ -147,6 +150,8 @@ cv::Mat_<uchar> Key_Point_Extraction::compute_key_point_mask(
         // They can miss some pixels because the size of the camera is not divisible by the span of windows
         // It can causes a small band of non detections in the image, negligeable
     }
+
+    // i'm not a fan of returning a local static variable, but hey it works...
     return mask;
 }
 
