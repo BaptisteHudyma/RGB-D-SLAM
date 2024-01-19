@@ -25,7 +25,7 @@ class Pose_Optimization
      * \return True if a valid pose was computed
      */
     [[nodiscard]] static bool compute_optimized_pose(const utils::Pose& currentPose,
-                                                     const matches_containers::matchContainer& matchedFeatures,
+                                                     const matches_containers::match_container& matchedFeatures,
                                                      utils::Pose& optimizedPose,
                                                      matches_containers::match_sets& featureSets) noexcept;
 
@@ -75,7 +75,7 @@ class Pose_Optimization
      * \return True if a valid pose and inliers were found
      */
     [[nodiscard]] static bool compute_pose_with_ransac(const utils::PoseBase& currentPose,
-                                                       const matches_containers::matchContainer& matchedFeatures,
+                                                       const matches_containers::match_container& matchedFeatures,
                                                        utils::PoseBase& finalPose,
                                                        matches_containers::match_sets& featureSets) noexcept;
 

@@ -47,7 +47,7 @@ features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_feat
     return keypointsWithIds;
 }
 
-matches_containers::matchContainer Local_Map::find_feature_matches(
+matches_containers::match_container Local_Map::find_feature_matches(
         const utils::Pose& currentPose, const DetectedFeatureContainer& detectedFeatures) noexcept
 {
     // store the id given to the function
@@ -57,57 +57,63 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
     const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
             currentPose.get_orientation_quaternion(), currentPose.get_position());
 
-    matches_containers::matchContainer matchSets;
+    matches_containers::match_container matchSets;
 
     // find point matches
     const double find2dPointMatchesStartTime = static_cast<double>(cv::getTickCount());
-    _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
-                                 worldToCamera,
-                                 false,
-                                 parameters::optimization::minimumPointForOptimization,
-                                 matchSets._points2D);
-    if (matchSets._points2D.size() < parameters::optimization::minimumPointForOptimization or
-        matchSets._points2D.size() <
-                std::min(detectedFeatures.keypointObject.size(), _localPoint2DMap.get_local_map_size()) / 2)
+    const bool enough2dPointsForOpti =
+            _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
+                                         worldToCamera,
+                                         false,
+                                         parameters::optimization::minimumPointForOptimization,
+                                         matchSets);
+    if (not enough2dPointsForOpti)
     {
         // if the process as not enough matches, retry matches with a greater margin
         _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
                                      worldToCamera,
                                      true,
                                      parameters::optimization::minimumPointForOptimization,
-                                     matchSets._points2D);
+                                     matchSets);
     }
     find2DPointMatchDuration +=
             (static_cast<double>(cv::getTickCount()) - find2dPointMatchesStartTime) / cv::getTickFrequency();
 
     // find point matches
     const double findPointMatchesStartTime = static_cast<double>(cv::getTickCount());
-    _localPointMap.get_matches(detectedFeatures.keypointObject,
-                               worldToCamera,
-                               false,
-                               parameters::optimization::minimumPointForOptimization,
-                               matchSets._points);
-    if (matchSets._points.size() < parameters::optimization::minimumPointForOptimization or
-        matchSets._points.size() <
-                std::min(detectedFeatures.keypointObject.size(), _localPointMap.get_local_map_size()) / 2)
+    const bool enoughPointsForOpti = _localPointMap.get_matches(detectedFeatures.keypointObject,
+                                                                worldToCamera,
+                                                                false,
+                                                                parameters::optimization::minimumPointForOptimization,
+                                                                matchSets);
+    if (not enoughPointsForOpti)
     {
         // if the process as not enough matches, retry matches with a greater margin
         _localPointMap.get_matches(detectedFeatures.keypointObject,
                                    worldToCamera,
                                    true,
                                    parameters::optimization::minimumPointForOptimization,
-                                   matchSets._points);
+                                   matchSets);
     }
     findPointMatchDuration +=
             (static_cast<double>(cv::getTickCount()) - findPointMatchesStartTime) / cv::getTickFrequency();
 
     // find plane matches
     const double findPlaneMatchesStartTime = static_cast<double>(cv::getTickCount());
-    _localPlaneMap.get_matches(detectedFeatures.detectedPlanes,
-                               worldToCamera,
-                               false,
-                               parameters::optimization::minimumPlanesForOptimization,
-                               matchSets._planes);
+    const bool enoughPlanesForOpti = _localPlaneMap.get_matches(detectedFeatures.detectedPlanes,
+                                                                worldToCamera,
+                                                                false,
+                                                                parameters::optimization::minimumPlanesForOptimization,
+                                                                matchSets);
+    if (not enoughPlanesForOpti)
+    {
+        // if the process as not enough matches, retry matches with a greater margin
+        _localPlaneMap.get_matches(detectedFeatures.detectedPlanes,
+                                   worldToCamera,
+                                   true,
+                                   parameters::optimization::minimumPlanesForOptimization,
+                                   matchSets);
+    }
     findPlaneMatchDuration +=
             (static_cast<double>(cv::getTickCount()) - findPlaneMatchesStartTime) / cv::getTickFrequency();
 
@@ -116,8 +122,7 @@ matches_containers::matchContainer Local_Map::find_feature_matches(
 
 void Local_Map::update(const utils::Pose& optimizedPose,
                        const DetectedFeatureContainer& detectedFeatures,
-                       const matches_containers::match_point_container& outlierMatchedPoints,
-                       const matches_containers::match_plane_container& outlierMatchedPlanes)
+                       const matches_containers::match_container& outlierMatched)
 {
     const double updateMapStartTime = static_cast<double>(cv::getTickCount());
     assert(_detectedFeatureId == detectedFeatures.id);
@@ -127,8 +132,7 @@ void Local_Map::update(const utils::Pose& optimizedPose,
         throw std::invalid_argument("update: The given pose covariance is invalid, map wont be update");
 
     // Unmatch detected outliers
-    mark_outliers_as_unmatched(outlierMatchedPoints);
-    mark_outliers_as_unmatched(outlierMatchedPlanes);
+    mark_outliers_as_unmatched(outlierMatched);
 
     const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
             optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
@@ -300,32 +304,53 @@ void Local_Map::show_statistics(const double meanFrameTreatmentDuration,
     }
 }
 
-void Local_Map::mark_outliers_as_unmatched(
-        const matches_containers::match_point_container& outlierMatchedPoints) noexcept
+void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_container& outlierMatched) noexcept
 {
     // Mark outliers as unmatched
-    for (const matches_containers::PointMatch& match: outlierMatchedPoints)
+    for (const auto& match: outlierMatched)
     {
-        const bool isOutlierRemoved = _localPointMap.mark_feature_with_id_as_unmatched(match._idInMap);
-        // If no points were found, this is bad. A match marked as outliers must be in the local map or staged points
-        if (not isOutlierRemoved)
+        switch (match->get_feature_type())
         {
-            outputs::log_error(std::format("Could not find the target point with id {}", match._idInMap));
-        }
-    }
-}
-
-void Local_Map::mark_outliers_as_unmatched(
-        const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept
-{
-    // Mark outliers as unmatched
-    for (const matches_containers::PlaneMatch& match: outlierMatchedPlanes)
-    {
-        const bool isOutlierRemoved = _localPlaneMap.mark_feature_with_id_as_unmatched(match._idInMap);
-        // If no plane were found, this is bad. A match marked as outliers must be in the local map or staged planes
-        if (not isOutlierRemoved)
-        {
-            outputs::log_error(std::format("Could not find the target point with id {}", match._idInMap));
+            case FeatureType::Point:
+                {
+                    const bool isOutlierRemoved = _localPointMap.mark_feature_with_id_as_unmatched(match->_idInMap);
+                    // If no points were found, this is bad. A match marked as outliers must be in the local map or
+                    // staged points
+                    if (not isOutlierRemoved)
+                    {
+                        outputs::log_error(std::format("Could not find the target point with id {}", match->_idInMap));
+                    }
+                    break;
+                }
+            case FeatureType::Point2d:
+                {
+                    const bool isOutlierRemoved = _localPoint2DMap.mark_feature_with_id_as_unmatched(match->_idInMap);
+                    // If no points were found, this is bad. A match marked as outliers must be in the local map or
+                    // staged points
+                    if (not isOutlierRemoved)
+                    {
+                        outputs::log_error(
+                                std::format("Could not find the target point2d with id {}", match->_idInMap));
+                    }
+                    break;
+                }
+            case FeatureType::Plane:
+                {
+                    const bool isOutlierRemoved = _localPlaneMap.mark_feature_with_id_as_unmatched(match->_idInMap);
+                    // If no plane were found, this is bad. A match marked as outliers must be in the local map or
+                    // staged plane
+                    if (not isOutlierRemoved)
+                    {
+                        outputs::log_error(std::format("Could not find the target plane with id {}", match->_idInMap));
+                    }
+                    break;
+                }
+            default:
+                {
+                    outputs::log_error(std::format("The feature type {} is not handled in local map",
+                                                   (int)match->get_feature_type()));
+                    break;
+                }
         }
     }
 }

@@ -5,11 +5,11 @@
 #include "outputs/map_writer.hpp"
 #include "outputs/logger.hpp"
 
+#include "matches_containers.hpp"
 #include "utils/random.hpp"
 
 #include "types.hpp"
 
-#include <list>
 #include <memory>
 
 #include <opencv2/core/matx.hpp>
@@ -23,7 +23,6 @@ namespace rgbd_slam::map_management {
  */
 template<class DetectedFeaturesObject,
          class DetectedFeatureType,
-         class FeatureMatchType,
          class TrackedFeaturesObject,
          class UpgradedFeatureType>
 class IMapFeature
@@ -55,7 +54,7 @@ class IMapFeature
     [[nodiscard]] virtual int find_match(const DetectedFeaturesObject& detectedFeatures,
                                          const WorldToCameraMatrix& worldToCamera,
                                          const vectorb& isDetectedFeatureMatched,
-                                         std::list<FeatureMatchType>& matches,
+                                         matches_containers::match_container& matches,
                                          const bool shouldAddToMatches = true,
                                          const bool useAdvancedSearch = false) const noexcept = 0;
 
@@ -226,7 +225,6 @@ template<class MapFeatureType,
          class StagedFeatureType,
          class DetectedFeaturesObject,
          class DetectedFeatureType,
-         class FeatureMatchType,
          class TrackedFeaturesObject,
          class UpgradedFeatureType>
 class Feature_Map
@@ -268,21 +266,23 @@ class Feature_Map
      * \param[in] detectedFeatures The object of detected features to match
      * \param[in] worldToCamera A matrix to convert from world to camera space
      * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if
-     * True. Also less precise \param[in] minimumFeaturesForOptimization The minimum feature count for a pose
-     * optimization \param[out] matches An object of matches between map object and detected features
+     * True. Also less precise
+     * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
+     * \param[in, out] matches An object of matches between map object and detected features
+     *
+     * \return true if enough features are matched for an optimization
      */
-    void get_matches(const DetectedFeaturesObject& detectedFeatures,
+    bool get_matches(const DetectedFeaturesObject& detectedFeatures,
                      const WorldToCameraMatrix& worldToCamera,
                      const bool useAdvancedMatch,
                      const uint minimumFeaturesForOptimization,
-                     std::list<FeatureMatchType>& matches) noexcept
+                     matches_containers::match_container& matches) noexcept
     {
         if (not _isActivated)
-            return;
+            return false;
 
         // reset match status
         _isDetectedFeatureMatched = vectorb::Zero(detectedFeatures.size());
-        matches.clear();
 
         // search matches in local map first
         for (auto& [mapId, mapFeature]: _localMap)
@@ -330,6 +330,8 @@ class Feature_Map
                 _isDetectedFeatureMatched[matchIndex] = true;
             }
         }
+
+        return true; // TODO: depending on the number of matches, set to false
     }
 
     /**

@@ -63,7 +63,7 @@ class Local_Map
      * \param[in] currentPose The pose of the observer
      * \param[in] detectedFeatures An object that contains the detected features
      */
-    [[nodiscard]] matches_containers::matchContainer find_feature_matches(
+    [[nodiscard]] matches_containers::match_container find_feature_matches(
             const utils::Pose& currentPose, const DetectedFeatureContainer& detectedFeatures) noexcept;
 
     /**
@@ -71,15 +71,12 @@ class Local_Map
      *
      * \param[in] optimizedPose The clean true pose of the observer, after optimization
      * \param[in] detectedFeatures An object that contains all the detected features
-     * \param[in] outlierMatchedPoints A container for all the wrongly associated points detected in the pose
-     * optimization process. They should be marked as invalid matches
-     * \param[in] outlierMatchedPlanes A container for all the wrongly associated planes detected in the pose
+     * \param[in] outlierMatched A container for all the wrongly associated features detected in the pose
      * optimization process. They should be marked as invalid matches
      */
     void update(const utils::Pose& optimizedPose,
                 const DetectedFeatureContainer& detectedFeatures,
-                const matches_containers::match_point_container& outlierMatchedPoints,
-                const matches_containers::match_plane_container& outlierMatchedPlanes);
+                const matches_containers::match_container& outlierMatched);
 
     /**
      * \brief Update the local map when no pose could be estimated. Consider all features as unmatched
@@ -134,14 +131,9 @@ class Local_Map
 
     /**
      * \brief Mark all the outliers detected during optimization as unmatched
-     * \param[in] outlierMatchedPoints A container of the wrong matches detected after the optimization process
+     * \param[in] outlierMatched A container of the wrong matches detected after the optimization process
      */
-    void mark_outliers_as_unmatched(const matches_containers::match_point_container& outlierMatchedPoints) noexcept;
-    /**
-     * \brief Mark all the outliers detected during optimization as unmatched
-     * \param[in] outlierMatchedPlanes A container of the wrong matches detected after the optimization process
-     */
-    void mark_outliers_as_unmatched(const matches_containers::match_plane_container& outlierMatchedPlanes) noexcept;
+    void mark_outliers_as_unmatched(const matches_containers::match_container& outlierMatched) noexcept;
 
   private:
     size_t _detectedFeatureId; // store the if of the detected feature

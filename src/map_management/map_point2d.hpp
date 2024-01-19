@@ -2,6 +2,7 @@
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT2D_HPP
 
 #include "coordinates/point_coordinates.hpp"
+#include "parameters.hpp"
 #include "feature_map.hpp"
 #include "features/keypoints/keypoint_handler.hpp"
 #include "tracking/inverse_depth_with_tracking.hpp"
@@ -17,9 +18,78 @@ struct UpgradedPoint2D
     int _matchIndex;
 };
 
+/**
+ *  \brief The OptimizationFeature for a 2d point
+ */
+struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeature
+{
+    Point2dOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
+                               const InverseDepthWorldPoint& mapPoint,
+                               const tracking::PointInverseDepth::Covariance& mapPointVariance,
+                               const size_t mapFeatureId) :
+        matches_containers::IOptimizationFeature(mapFeatureId),
+        _matchedPoint(matchedPoint),
+        _mapPoint(mapPoint),
+        _mapPointVariance(mapPointVariance) {};
+
+    size_t get_feature_part_count() const noexcept override { return 2; }
+
+    double get_score() const noexcept override
+    {
+        static constexpr double optiScore = 1.0 / parameters::optimization::minimumPoint2dForOptimization;
+        return optiScore;
+    }
+
+    vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override
+    {
+        const vector2& distance =
+                _mapPoint.compute_signed_screen_distance(_matchedPoint, _mapPointVariance.diagonal()(3), worldToCamera);
+        return distance;
+    }
+
+    double get_max_retroprojection_error() const noexcept override
+    {
+        return parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px;
+    }
+
+    double get_alpha_reduction() const noexcept override { return 0.3; }
+
+    matches_containers::IOptimizationFeature* compute_random_variation() const noexcept override
+    {
+        WorldCoordinate variatedObservationPoint = _mapPoint.get_first_observation();
+        // TODO: variate the observation point
+        // variatedObservationPoint +=
+        // utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointVariance.diagonal().head<3>());
+        const double variatedInverseDepth =
+                _mapPoint.get_inverse_depth(); // do not variate the depth, the uncertainty is too great anyway
+        const double variatedTheta = std::clamp(
+                _mapPoint.get_theta() + utils::Random::get_normal_double() *
+                                                _mapPointVariance.diagonal()(InverseDepthWorldPoint::thetaIndex),
+                0.0,
+                M_PI);
+        const double variatedPhi =
+                std::clamp(_mapPoint.get_phi() + utils::Random::get_normal_double() *
+                                                         _mapPointVariance.diagonal()(InverseDepthWorldPoint::phiIndex),
+                           -M_PI,
+                           M_PI);
+
+        return new Point2dOptimizationFeature(
+                _matchedPoint,
+                InverseDepthWorldPoint(variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi),
+                _mapPointVariance,
+                _idInMap);
+    }
+
+    FeatureType get_feature_type() const noexcept override { return FeatureType::Point2d; }
+
+  protected:
+    const ScreenCoordinate2D _matchedPoint;
+    const InverseDepthWorldPoint _mapPoint;
+    const tracking::PointInverseDepth::Covariance _mapPointVariance;
+};
+
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
 using DetectedPoint2DType = features::keypoints::DetectedKeyPoint;
-using PointMatch2DType = matches_containers::PointMatch2D;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
 using UpgradedPoint2DType = UpgradedPoint2D; // 2D points can be upgraded to 3D
 
@@ -29,11 +99,7 @@ using UpgradedPoint2DType = UpgradedPoint2D; // 2D points can be upgraded to 3D
  */
 class MapPoint2D :
     public tracking::PointInverseDepth,
-    public IMapFeature<DetectedKeypointsObject,
-                       DetectedPoint2DType,
-                       PointMatch2DType,
-                       TrackedPointsObject,
-                       UpgradedPoint2DType>
+    public IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject, UpgradedPoint2DType>
 {
   public:
     MapPoint2D(const ScreenCoordinate2D& coordinates,
@@ -41,11 +107,7 @@ class MapPoint2D :
                const matrix33& stateCovariance,
                const cv::Mat& descriptor) :
         PointInverseDepth(coordinates, c2w, stateCovariance, descriptor),
-        IMapFeature<DetectedKeypointsObject,
-                    DetectedPoint2DType,
-                    PointMatch2DType,
-                    TrackedPointsObject,
-                    UpgradedPoint2DType>()
+        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject, UpgradedPoint2DType>()
     {
         assert(_id > 0);
         assert(not _descriptor.empty());
@@ -53,11 +115,7 @@ class MapPoint2D :
 
     MapPoint2D(const tracking::PointInverseDepth& coordinates, const size_t id) :
         tracking::PointInverseDepth(coordinates),
-        IMapFeature<DetectedKeypointsObject,
-                    DetectedPoint2DType,
-                    PointMatch2DType,
-                    TrackedPointsObject,
-                    UpgradedPoint2DType>(id)
+        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject, UpgradedPoint2DType>(id)
     {
         assert(_id > 0);
         assert(not _descriptor.empty());
@@ -68,7 +126,7 @@ class MapPoint2D :
     [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
                                  const vectorb& isDetectedFeatureMatched,
-                                 std::list<PointMatch2DType>& matches,
+                                 matches_containers::match_container& matches,
                                  const bool shouldAddToMatches = true,
                                  const bool useAdvancedSearch = false) const noexcept override;
 
@@ -135,7 +193,6 @@ using localPoint2DMap = Feature_Map<LocalMapPoint2D,
                                     StagedMapPoint2D,
                                     DetectedKeypointsObject,
                                     DetectedPoint2DType,
-                                    PointMatch2DType,
                                     TrackedPointsObject,
                                     UpgradedPoint2DType>;
 

@@ -15,7 +15,7 @@ namespace rgbd_slam::map_management {
 int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
                            const WorldToCameraMatrix& worldToCamera,
                            const vectorb& isDetectedFeatureMatched,
-                           std::list<PointMatch2DType>& matches,
+                           matches_containers::match_container& matches,
                            const bool shouldAddToMatches,
                            const bool useAdvancedSearch) const noexcept
 {
@@ -55,7 +55,9 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.emplace_back(detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance, _id);
+        matches_containers::IOptimizationFeature* opt = new Point2dOptimizationFeature(
+                detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance, _id);
+        matches.push_back(opt);
     }
     return matchIndex;
 }
@@ -121,7 +123,7 @@ bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const n
 
 void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
 {
-    const double inverseDepthStandardDev = sqrt(_covariance.diagonal()(inverseDepthIndex));
+    const double inverseDepthStandardDev = sqrt(_covariance.get_inverse_depth_variance());
 
     // TODO find a way to add 2D points without breaking stuff (those line can be kilometers long)
     // Maybe reduce the furthest estimation to a maximum ?

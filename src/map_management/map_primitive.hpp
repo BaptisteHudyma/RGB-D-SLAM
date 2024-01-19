@@ -2,15 +2,79 @@
 #define RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 
 #include "feature_map.hpp"
+#include "parameters.hpp"
 #include "features/primitives/shape_primitives.hpp"
 #include "tracking/plane_with_tracking.hpp"
 #include "matches_containers.hpp"
+#include "camera_transformation.hpp"
 
 namespace rgbd_slam::map_management {
 
+/**
+ *  \brief The OptimizationFeature for a plane
+ */
+struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeature
+{
+    PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
+                             const PlaneWorldCoordinates& mapPlane,
+                             const matrix44& mapPlaneVariance,
+                             const size_t mapFeatureId) :
+        matches_containers::IOptimizationFeature(mapFeatureId),
+        _matchedPlane(matchedPlane),
+        _mapPlane(mapPlane),
+        _mapPlaneVariance(mapPlaneVariance) {};
+
+    size_t get_feature_part_count() const noexcept override { return 3; }
+
+    double get_score() const noexcept override
+    {
+        static constexpr double optiScore = 1.0 / parameters::optimization::minimumPlanesForOptimization;
+        return optiScore;
+    }
+
+    vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override
+    {
+        // TODO: combine this for all plane features somehow
+        const PlaneWorldToCameraMatrix& planeTransformationMatrix =
+                utils::compute_plane_world_to_camera_matrix(worldToCamera);
+
+        // TODO Add boundary optimization
+        const auto& planeProjectionError =
+                _mapPlane.get_reduced_signed_distance(_matchedPlane, planeTransformationMatrix);
+
+        return planeProjectionError;
+    }
+
+    double get_max_retroprojection_error() const noexcept override
+    {
+        return parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm;
+    }
+
+    double get_alpha_reduction() const noexcept override { return 1.0; }
+
+    matches_containers::IOptimizationFeature* compute_random_variation() const noexcept override
+    {
+        PlaneWorldCoordinates variatedCoordinates = _mapPlane;
+
+        const vector4& diagonalSqrt = _mapPlaneVariance.diagonal().cwiseSqrt();
+        variatedCoordinates.normal() += utils::Random::get_normal_doubles<3>().cwiseProduct(diagonalSqrt.head<3>());
+        variatedCoordinates.normal().normalize();
+
+        variatedCoordinates.d() += utils::Random::get_normal_double() * diagonalSqrt(3);
+
+        return new PlaneOptimizationFeature(_matchedPlane, variatedCoordinates, _mapPlaneVariance, _idInMap);
+    }
+
+    FeatureType get_feature_type() const noexcept override { return FeatureType::Plane; }
+
+  protected:
+    const PlaneCameraCoordinates _matchedPlane;
+    const PlaneWorldCoordinates _mapPlane;
+    const matrix44 _mapPlaneVariance;
+};
+
 using DetectedPlaneType = features::primitives::Plane;
 using DetectedPlaneObject = features::primitives::plane_container;
-using PlaneMatchType = matches_containers::PlaneMatch;
 using TrackedPlaneObject = void*; // TODO implement
 using UpgradedPlaneType = void*;  // no upgrades for planes
 
@@ -21,17 +85,16 @@ using UpgradedPlaneType = void*;  // no upgrades for planes
  */
 class MapPlane :
     public tracking::Plane,
-    public IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject, UpgradedPlaneType>
+    public IMapFeature<DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject, UpgradedPlaneType>
 {
   public:
-    MapPlane() :
-        IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject, UpgradedPlaneType>()
+    MapPlane() : IMapFeature<DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject, UpgradedPlaneType>()
     {
         assert(_id > 0);
     }
 
     explicit MapPlane(const size_t id) :
-        IMapFeature<DetectedPlaneObject, DetectedPlaneType, PlaneMatchType, TrackedPlaneObject, UpgradedPlaneType>(id)
+        IMapFeature<DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject, UpgradedPlaneType>(id)
     {
         assert(_id > 0);
     }
@@ -41,7 +104,7 @@ class MapPlane :
     [[nodiscard]] int find_match(const DetectedPlaneObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
                                  const vectorb& isDetectedFeatureMatched,
-                                 std::list<PlaneMatchType>& matches,
+                                 matches_containers::match_container& matches,
                                  const bool shouldAddToMatches = true,
                                  const bool useAdvancedSearch = false) const noexcept override;
 
@@ -115,7 +178,6 @@ using localPlaneMap = Feature_Map<LocalMapPlane,
                                   StagedMapPlane,
                                   DetectedPlaneObject,
                                   DetectedPlaneType,
-                                  PlaneMatchType,
                                   TrackedPlaneObject,
                                   UpgradedPlaneType>;
 

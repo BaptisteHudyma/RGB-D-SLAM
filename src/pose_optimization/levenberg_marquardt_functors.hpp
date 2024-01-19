@@ -64,27 +64,23 @@ struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
 {
     // Simple constructor
     /**
-     * \param[in] points2d Matched 2D (screen) to 2D (inverse depth) points
-     * \param[in] points Matched 2D (screen) to 3D (world) points
-     * \param[in] planes Matched camera to world planes
+     * \param[in] optimizationParts The sum of all feature parts
+     * \param[in] features The container for the matched features
      */
-    Global_Pose_Estimator(const matches_containers::match_point2D_container* const points2d,
-                          const matches_containers::match_point_container* const points,
-                          const matches_containers::match_plane_container* const planes);
+    Global_Pose_Estimator(const size_t optimizationParts, const matches_containers::match_container* const features);
 
     /**
      * \brief Implementation of the objective function
      *
      * \param[in] optimizedParameters The vector of parameters to optimize (Size M)
-     * \param[out] outputScores The vector of errors, of size N (N the number of points)
+     * \param[out] outputScores The vector of errors, of size N (N is optimizationParts)
      */
     int operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const;
 
   private:
     // use pointers to prevent useless copy
-    const matches_containers::match_point2D_container* const _points2d;
-    const matches_containers::match_point_container* const _points;
-    const matches_containers::match_plane_container* const _planes;
+    const size_t _optimizationParts;
+    const matches_containers::match_container* const _features;
 };
 
 struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator>

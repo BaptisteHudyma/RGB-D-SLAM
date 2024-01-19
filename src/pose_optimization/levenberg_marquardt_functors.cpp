@@ -42,79 +42,57 @@ quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizati
 /**
  * GLOBAL POSE ESTIMATOR members
  */
-constexpr uint scoreCountPerPoints = 2;
-constexpr uint scoreCountPer2DPoints = 2;
-constexpr uint scoreCountPerPlanes = 3;
-
-Global_Pose_Estimator::Global_Pose_Estimator(const matches_containers::match_point2D_container* const points2d,
-                                             const matches_containers::match_point_container* const points,
-                                             const matches_containers::match_plane_container* const planes) :
-    Levenberg_Marquardt_Functor<double>(6,
-                                        points2d->size() * scoreCountPer2DPoints +
-                                                points->size() * scoreCountPerPoints +
-                                                planes->size() * scoreCountPerPlanes),
-    _points2d(points2d),
-    _points(points),
-    _planes(planes)
+Global_Pose_Estimator::Global_Pose_Estimator(const size_t optimizationParts,
+                                             const matches_containers::match_container* const features) :
+    Levenberg_Marquardt_Functor<double>(6, optimizationParts),
+    _optimizationParts(optimizationParts),
+    _features(features)
 {
-    assert(_points2d != nullptr and _points != nullptr and _planes != nullptr);
-    if (_points2d->empty() and _points->empty() and _planes->empty())
+    // parameter checks
+    if (_features == nullptr or _features->empty() or _optimizationParts == 0)
     {
-        throw std::logic_error("cannot optimize on empty vectors");
+        throw std::logic_error("cannot optimize on empty vector");
+    }
+
+    // sanity check
+    size_t featureParts = 0;
+    for (const auto& feature: *_features)
+    {
+        featureParts += feature->get_feature_part_count();
+    }
+    if (featureParts != optimizationParts)
+    {
+        throw std::logic_error("optimization vector do not match the given vector size");
     }
 }
 
 // Implementation of the objective function
 int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const
 {
-    assert(_points2d != nullptr and _points != nullptr and _planes != nullptr);
-    assert(not _points2d->empty() or not _points->empty() or not _planes->empty());
-    assert(static_cast<size_t>(outputScores.size()) ==
-           (_points2d->size() * scoreCountPer2DPoints + _points->size() * scoreCountPerPoints +
-            _planes->size() * scoreCountPerPlanes));
+    // sanity checks
+    assert(_features != nullptr);
+    assert(not _features->empty());
+    assert(static_cast<size_t>(outputScores.size()) == _optimizationParts);
 
     // Get the new estimated pose
     const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
             vector3(optimizedParameters(3), optimizedParameters(4), optimizedParameters(5)));
     const vector3 translation(optimizedParameters(0), optimizedParameters(1), optimizedParameters(2));
 
+    // convert to optimization matrix
     const WorldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+
+    // Compute projection distances
     int featureScoreIndex = 0; // index of the match being treated
-
-    // Compute retroprojection distances
-    static constexpr double point2dAlphaReduction = 0.3; // multiplier for points parameters in the equation
-    for (const matches_containers::PointMatch2D& match: *_points2d)
+    for (const matches_containers::IOptimizationFeature* feature: *_features)
     {
-        const vector2& distance = match._worldFeature.compute_signed_screen_distance(
-                match._screenFeature, match._worldFeatureCovariance.diagonal()(3), transformationMatrix);
+        const auto& distance = feature->get_distance(transformationMatrix);
+        const auto partCount = feature->get_feature_part_count();
 
-        outputScores.segment<scoreCountPer2DPoints>(featureScoreIndex) = distance * point2dAlphaReduction;
-        featureScoreIndex += scoreCountPer2DPoints;
-    }
+        assert(static_cast<int>(partCount) == distance.size());
 
-    static constexpr double pointAlphaReduction = 1.0; // multiplier for points parameters in the equation
-    for (const matches_containers::PointMatch& match: *_points)
-    {
-        // Compute retroprojected distance
-        const Eigen::Vector<double, scoreCountPerPoints>& distance =
-                match._worldFeature.get_signed_distance_2D_px(match._screenFeature, transformationMatrix);
-
-        outputScores.segment<scoreCountPerPoints>(featureScoreIndex) = distance * pointAlphaReduction;
-        featureScoreIndex += scoreCountPerPoints;
-    }
-
-    // add plane optimization vectors
-    static constexpr double planeAlphaReduction = 1.0; // multiplier for plane parameters in the equation
-    const PlaneWorldToCameraMatrix& planeTransformationMatrix =
-            utils::compute_plane_world_to_camera_matrix(transformationMatrix);
-    for (const matches_containers::PlaneMatch& match: *_planes)
-    {
-        // TODO remove d from optimization, replace with boundary optimization
-        const Eigen::Vector<double, scoreCountPerPlanes>& planeProjectionError =
-                match._worldFeature.get_reduced_signed_distance(match._screenFeature, planeTransformationMatrix);
-
-        outputScores.segment<scoreCountPerPlanes>(featureScoreIndex) = planeProjectionError * planeAlphaReduction;
-        featureScoreIndex += scoreCountPerPlanes;
+        outputScores.segment(featureScoreIndex, partCount) = distance * feature->get_alpha_reduction();
+        featureScoreIndex += static_cast<int>(partCount);
     }
     return 0;
 }
