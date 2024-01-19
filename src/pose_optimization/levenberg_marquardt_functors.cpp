@@ -84,7 +84,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
 
     // Compute projection distances
     int featureScoreIndex = 0; // index of the match being treated
-    for (const matches_containers::IOptimizationFeature* feature: *_features)
+    for (const auto& feature: *_features)
     {
         const auto& distance = feature->get_distance(transformationMatrix);
         const auto partCount = feature->get_feature_part_count();

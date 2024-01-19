@@ -3,6 +3,7 @@
 
 #include "types.hpp"
 #include <list>
+#include <memory>
 
 namespace rgbd_slam {
 
@@ -13,11 +14,29 @@ enum FeatureType
     Plane
 };
 
+inline std::string to_string(const FeatureType feat)
+{
+    switch (feat)
+    {
+        case FeatureType::Point:
+            return "point";
+        case FeatureType::Point2d:
+            return "point2d";
+        case FeatureType::Plane:
+            return "plane";
+        default:
+            return "unsupported";
+    }
+}
+
 namespace matches_containers {
 
 /**
  * \brief Generic feature for optimization
  */
+struct IOptimizationFeature;
+using feat_ptr = std::shared_ptr<IOptimizationFeature>;
+
 struct IOptimizationFeature
 {
     IOptimizationFeature(const size_t idInMap) : _idInMap(idInMap) {};
@@ -54,7 +73,7 @@ struct IOptimizationFeature
      * \brief compute a random variation of this feature.
      * Should be based on the feature covariance
      */
-    virtual IOptimizationFeature* compute_random_variation() const noexcept = 0;
+    virtual feat_ptr compute_random_variation() const noexcept = 0;
 
     /**
      * \brief return the feature type in this object
@@ -86,7 +105,7 @@ template<class Container> struct match_sets_template
     }
 };
 
-using match_container = std::list<IOptimizationFeature*>;
+using match_container = std::list<feat_ptr>;
 
 // store a set of inliers and a set of outliers for all features
 using match_sets = match_sets_template<match_container>;

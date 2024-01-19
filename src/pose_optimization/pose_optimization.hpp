@@ -41,7 +41,7 @@ class Pose_Optimization
      * \return True if the process succeded, or False
      */
     [[nodiscard]] static bool compute_pose_variance(const utils::PoseBase& optimizedPose,
-                                                    const matches_containers::match_sets& matchedFeatures,
+                                                    const matches_containers::match_container& matchedFeatures,
                                                     matrix66& poseCovariance,
                                                     const uint iterations = 100) noexcept;
 
@@ -61,7 +61,7 @@ class Pose_Optimization
      * \return True if a valid pose was computed
      */
     [[nodiscard]] static bool compute_optimized_global_pose(const utils::PoseBase& currentPose,
-                                                            const matches_containers::match_sets& matchedFeatures,
+                                                            const matches_containers::match_container& matchedFeatures,
                                                             utils::PoseBase& optimizedPose) noexcept;
 
     /**
@@ -88,9 +88,10 @@ class Pose_Optimization
      *
      * \return True if the new pose optimization is succesful, or False
      */
-    [[nodiscard]] static bool compute_random_variation_of_pose(const utils::PoseBase& currentPose,
-                                                               const matches_containers::match_sets& matchedFeatures,
-                                                               utils::PoseBase& optimizedPose) noexcept;
+    [[nodiscard]] static bool compute_random_variation_of_pose(
+            const utils::PoseBase& currentPose,
+            const matches_containers::match_container& matchedFeatures,
+            utils::PoseBase& optimizedPose) noexcept;
 
     // perf monitoring
     inline static double _meanPoseRANSACDuration = 0.0;

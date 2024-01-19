@@ -2,7 +2,6 @@
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 
 #include "feature_map.hpp"
-#include "parameters.hpp"
 #include "features/keypoints/keypoint_handler.hpp"
 #include "tracking/point_with_tracking.hpp"
 #include "matches_containers.hpp"
@@ -19,44 +18,21 @@ struct PointOptimizationFeature : public matches_containers::IOptimizationFeatur
     PointOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                              const WorldCoordinate& mapPoint,
                              const vector3& mapPointVariance,
-                             const size_t mapFeatureId) :
-        matches_containers::IOptimizationFeature(mapFeatureId),
-        _matchedPoint(matchedPoint),
-        _mapPoint(mapPoint),
-        _mapPointVariance(mapPointVariance) {};
+                             const size_t mapFeatureId);
 
-    size_t get_feature_part_count() const noexcept override { return 2; }
+    size_t get_feature_part_count() const noexcept override;
 
-    double get_score() const noexcept override
-    {
-        static constexpr double optiScore = 1.0 / parameters::optimization::minimumPointForOptimization;
-        return optiScore;
-    }
+    double get_score() const noexcept override;
 
-    vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override
-    {
-        // Compute retroprojected distance
-        const auto& distance = _mapPoint.get_signed_distance_2D_px(_matchedPoint, worldToCamera);
-        return distance;
-    }
+    vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
 
-    double get_max_retroprojection_error() const noexcept override
-    {
-        return parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px;
-    }
+    double get_max_retroprojection_error() const noexcept override;
 
-    double get_alpha_reduction() const noexcept override { return 1.0; }
+    double get_alpha_reduction() const noexcept override;
 
-    matches_containers::IOptimizationFeature* compute_random_variation() const noexcept override
-    {
-        // make random variation
-        WorldCoordinate variatedCoordinates = _mapPoint;
-        variatedCoordinates += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointVariance.cwiseSqrt());
+    matches_containers::feat_ptr compute_random_variation() const noexcept override;
 
-        return new PointOptimizationFeature(_matchedPoint, variatedCoordinates, _mapPointVariance, _idInMap);
-    }
-
-    FeatureType get_feature_type() const noexcept override { return FeatureType::Point; }
+    FeatureType get_feature_type() const noexcept override;
 
   protected:
     const ScreenCoordinate2D _matchedPoint;

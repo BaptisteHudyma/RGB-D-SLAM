@@ -109,16 +109,16 @@ double get_feature_set_retroprojection_score(const matches_containers::match_con
 /**
  * \brief Return a subset of features
  */
-[[nodiscard]] matches_containers::match_sets get_random_subset(
+[[nodiscard]] matches_containers::match_container get_random_subset(
         const matches_containers::match_container& matchedFeatures)
 {
-    matches_containers::match_sets matchSubset;
+    matches_containers::match_container matchSubset;
 
     // we can have a lot of points, so use a more efficient but with potential duplicates subset
     // matchSubset._inliers = ransac::get_random_subset_with_score_with_duplicates(matchedFeatures, 1.0);
-    matchSubset._inliers = ransac::get_random_subset_with_score(matchedFeatures, 1.0);
+    matchSubset = ransac::get_random_subset_with_score(matchedFeatures, 1.0);
 
-    if (get_feature_set_optimization_score(matchSubset._inliers) < 1.0)
+    if (get_feature_set_optimization_score(matchSubset) < 1.0)
     {
         throw std::logic_error("get_random_subset: the output subset should have the requested score");
     }
@@ -165,12 +165,14 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
 
     double minScore = maxFittingScore;
     utils::PoseBase bestPose = currentPose;
+    matches_containers::match_sets finalFeatureSets;
+
     uint iteration = 0;
     for (; iteration < maximumIterations; ++iteration)
     {
         const double getRandomSubsetStartTime = static_cast<double>(cv::getTickCount());
         // get a random subset for this iteration
-        const matches_containers::match_sets& selectedMatches = get_random_subset(matchedFeatures);
+        const matches_containers::match_container& selectedMatches = get_random_subset(matchedFeatures);
         _meanGetRandomSubsetDuration +=
                 (static_cast<double>(cv::getTickCount()) - getRandomSubsetStartTime) / cv::getTickFrequency();
 
@@ -200,17 +202,26 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         // We have a better score than the previous best one
         if (transformationScore < minScore)
         {
+            // detect the first optimization score
+            const bool isFirstGuess = minScore >= maxFittingScore;
+
             minScore = transformationScore;
             bestPose = candidatePose;
             // save features inliers and outliers
-            featureSets.swap(potentialInliersOutliers);
+            finalFeatureSets.swap(potentialInliersOutliers);
 
-            // TODO: add early stop based on inlier proportion to total features
+            // we have enough features, quit the loop
+            if (not isFirstGuess and
+                finalFeatureSets._inliers.size() >
+                        // TODO: check the constant: 60% inlier proportion is weak
+                        // matchedFeatures.size() * parameters::optimization::ransac::inlierProportion)
+                        matchedFeatures.size() * 0.85)
+                break;
         }
     }
 
     // We do not have enough inliers to consider this optimization as valid
-    const double inlierScore = get_feature_set_optimization_score(featureSets._inliers);
+    const double inlierScore = get_feature_set_optimization_score(finalFeatureSets._inliers);
     if (inlierScore < 1.0)
     {
         outputs::log_error(std::format(
@@ -226,9 +237,12 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     }
 
     // optimize on all inliers, starting pose is the best pose we found with RANSAC
-    const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose(bestPose, featureSets, finalPose);
+    const bool isPoseValid =
+            Pose_Optimization::compute_optimized_global_pose(bestPose, finalFeatureSets._inliers, finalPose);
     if (isPoseValid)
     {
+        // store the result
+        featureSets.swap(finalFeatureSets);
         _meanPoseRANSACDuration +=
                 (static_cast<double>(cv::getTickCount()) - computePoseRansacStartTime) / cv::getTickFrequency();
         return true;
@@ -250,7 +264,7 @@ bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose,
     {
         // Compute pose variance
         if (matrix66 estimatedPoseCovariance;
-            compute_pose_variance(optimizedPose, featureSets, estimatedPoseCovariance))
+            compute_pose_variance(optimizedPose, featureSets._inliers, estimatedPoseCovariance))
         {
             optimizedPose.set_position_variance(estimatedPoseCovariance);
             return true;
@@ -264,7 +278,7 @@ bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose,
 }
 
 bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& currentPose,
-                                                      const matches_containers::match_sets& matchedFeatures,
+                                                      const matches_containers::match_container& matchedFeatures,
                                                       utils::PoseBase& optimizedPose) noexcept
 {
     const vector3& position = currentPose.get_position(); // Work in millimeters
@@ -285,13 +299,13 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     input[5] = rotationCoefficients.z();
 
     size_t optiParts = 0;
-    for (const auto& feat: matchedFeatures._inliers)
+    for (const auto& feat: matchedFeatures)
     {
         optiParts += feat->get_feature_part_count();
     }
 
     // Optimization function (ok to use pointers: optimization of copy)
-    Global_Pose_Functor pose_optimisation_functor(Global_Pose_Estimator(optiParts, &matchedFeatures._inliers));
+    Global_Pose_Functor pose_optimisation_functor(Global_Pose_Estimator(optiParts, &matchedFeatures));
     // Optimization algorithm
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
 
@@ -319,7 +333,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     {
         // Error while optimizing
         outputs::log(std::format("Failed to converge with {} features | Status {}",
-                                 matchedFeatures._inliers.size(),
+                                 matchedFeatures.size(),
                                  get_human_readable_end_message(endStatus)));
         return false;
     }
@@ -330,7 +344,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
 }
 
 bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPose,
-                                              const matches_containers::match_sets& matchedFeatures,
+                                              const matches_containers::match_container& matchedFeatures,
                                               matrix66& poseCovariance,
                                               const uint iterations) noexcept
 {
@@ -449,14 +463,14 @@ void Pose_Optimization::show_statistics(const double meanFrameTreatmentDuration,
 }
 
 bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& currentPose,
-                                                         const matches_containers::match_sets& matchedFeatures,
+                                                         const matches_containers::match_container& matchedFeatures,
                                                          utils::PoseBase& optimizedPose) noexcept
 {
-    matches_containers::match_sets variatedSet;
-    for (const auto& feature: matchedFeatures._inliers)
+    matches_containers::match_container variatedSet;
+    for (const auto& feature: matchedFeatures)
     {
         // add to the new match set
-        variatedSet._inliers.emplace_back(feature->compute_random_variation());
+        variatedSet.emplace_back(feature->compute_random_variation());
     }
 
     return compute_optimized_global_pose(currentPose, variatedSet, optimizedPose);

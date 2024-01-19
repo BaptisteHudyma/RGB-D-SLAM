@@ -2,7 +2,6 @@
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT2D_HPP
 
 #include "coordinates/point_coordinates.hpp"
-#include "parameters.hpp"
 #include "feature_map.hpp"
 #include "features/keypoints/keypoint_handler.hpp"
 #include "tracking/inverse_depth_with_tracking.hpp"
@@ -26,60 +25,21 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
     Point2dOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                                const InverseDepthWorldPoint& mapPoint,
                                const tracking::PointInverseDepth::Covariance& mapPointVariance,
-                               const size_t mapFeatureId) :
-        matches_containers::IOptimizationFeature(mapFeatureId),
-        _matchedPoint(matchedPoint),
-        _mapPoint(mapPoint),
-        _mapPointVariance(mapPointVariance) {};
+                               const size_t mapFeatureId);
 
-    size_t get_feature_part_count() const noexcept override { return 2; }
+    size_t get_feature_part_count() const noexcept override;
 
-    double get_score() const noexcept override
-    {
-        static constexpr double optiScore = 1.0 / parameters::optimization::minimumPoint2dForOptimization;
-        return optiScore;
-    }
+    double get_score() const noexcept override;
 
-    vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override
-    {
-        const vector2& distance = _mapPoint.compute_signed_screen_distance(
-                _matchedPoint, _mapPointVariance.get_inverse_depth_variance(), worldToCamera);
-        return distance;
-    }
+    vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
 
-    double get_max_retroprojection_error() const noexcept override
-    {
-        return parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px;
-    }
+    double get_max_retroprojection_error() const noexcept override;
 
-    double get_alpha_reduction() const noexcept override { return 0.3; }
+    double get_alpha_reduction() const noexcept override;
 
-    matches_containers::IOptimizationFeature* compute_random_variation() const noexcept override
-    {
-        WorldCoordinate variatedObservationPoint = _mapPoint.get_first_observation();
-        // TODO: variate the observation point
-        // variatedObservationPoint += utils::Random::get_normal_doubles<3>().cwiseProduct(
-        //        _mapPointVariance.get_first_pose_covariance().diagonal().cwiseSqrt());
-        const double variatedInverseDepth =
-                _mapPoint.get_inverse_depth(); // do not variate the depth, the uncertainty is too great anyway
-        const double variatedTheta =
-                std::clamp(_mapPoint.get_theta() +
-                                   utils::Random::get_normal_double() * sqrt(_mapPointVariance.get_theta_variance()),
-                           0.0,
-                           M_PI);
-        const double variatedPhi = std::clamp(_mapPoint.get_phi() + utils::Random::get_normal_double() *
-                                                                            sqrt(_mapPointVariance.get_phi_variance()),
-                                              -M_PI,
-                                              M_PI);
+    matches_containers::feat_ptr compute_random_variation() const noexcept override;
 
-        return new Point2dOptimizationFeature(
-                _matchedPoint,
-                InverseDepthWorldPoint(variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi),
-                _mapPointVariance,
-                _idInMap);
-    }
-
-    FeatureType get_feature_type() const noexcept override { return FeatureType::Point2d; }
+    FeatureType get_feature_type() const noexcept override;
 
   protected:
     const ScreenCoordinate2D _matchedPoint;
