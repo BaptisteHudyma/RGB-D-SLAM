@@ -189,7 +189,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     const auto& detectedFeatures = detect_features(predictedPose, grayImage, depthImage, cloudArrayOrganized);
 
     // Find matches by the pose predicted by motion model
-    const matches_containers::matchContainer& matchedFeatures =
+    const matches_containers::match_container& matchedFeatures =
             _localMap->find_feature_matches(predictedPose, detectedFeatures);
 
     // The new pose, after optimization
@@ -213,8 +213,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         // Update local map if a valid transformation was found
         try
         {
-            _localMap->update(
-                    optimizedPose, detectedFeatures, matchSets._pointSets._outliers, matchSets._planeSets._outliers);
+            _localMap->update(optimizedPose, detectedFeatures, matchSets._outliers);
             _isTrackingLost = false;
             _failedTrackingCount = 0;
         }

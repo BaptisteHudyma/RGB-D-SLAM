@@ -14,7 +14,7 @@ namespace rgbd_slam::map_management {
 int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
                          const WorldToCameraMatrix& worldToCamera,
                          const vectorb& isDetectedFeatureMatched,
-                         std::list<PlaneMatchType>& matches,
+                         matches_containers::match_container& matches,
                          const bool shouldAddToMatches,
                          const bool useAdvancedSearch) const noexcept
 {
@@ -69,8 +69,9 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
-        matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), get_covariance(), _id);
+        matches_containers::IOptimizationFeature* opt = new PlaneOptimizationFeature(
+                detectedFeatures[selectedIndex].get_parametrization(), get_parametrization(), get_covariance(), _id);
+        matches.push_back(opt);
     }
 
     return selectedIndex;

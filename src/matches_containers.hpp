@@ -1,72 +1,68 @@
 #ifndef RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 #define RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 
-#include "coordinates/inverse_depth_coordinates.hpp"
-#include "coordinates/point_coordinates.hpp"
-#include "coordinates/plane_coordinates.hpp"
+#include "types.hpp"
 #include <list>
 
-namespace rgbd_slam::matches_containers {
+namespace rgbd_slam {
 
-template<class FeatureCameraSpace, class FeatureWorldSpace, class WorldFeatureCovariance> struct MatchTemplate
+enum FeatureType
 {
-    MatchTemplate(const FeatureCameraSpace& screenfeature,
-                  const FeatureWorldSpace& worldFeature,
-                  const WorldFeatureCovariance& worldfeatureCovariance,
-                  const size_t mapId) :
-        _screenFeature(screenfeature),
-        _worldFeature(worldFeature),
-        _worldFeatureCovariance(worldfeatureCovariance),
-        _idInMap(mapId) {};
-
-    FeatureCameraSpace _screenFeature;              // Coordinates of the detected screen point
-    FeatureWorldSpace _worldFeature;                // coordinates of the local world point
-    WorldFeatureCovariance _worldFeatureCovariance; // Covariance of this feature in world space
-    size_t _idInMap;                                // Id of the world feature in the local map
+    Point2d,
+    Point,
+    Plane
 };
 
-// KeyPoint matching: contains :
-//      - the coordinates of the detected point in screen space
-//      - the coordinates of the matched point in world space
-//      - the diagonal of the covariance of the world point in world space
-using PointMatch = MatchTemplate<ScreenCoordinate2D, WorldCoordinate, vector3>;
-using match_point_container = std::list<PointMatch>;
+namespace matches_containers {
 
-// KeyPoint matching: contains :
-//      - the coordinates of the detected point in screen space
-//      - the coordinates of the matched point in inverse depth space
-//      - the diagonal of the covariance of the screen point in screen space
-using PointMatch2D = MatchTemplate<ScreenCoordinate2D, InverseDepthWorldPoint, matrix66>;
-using match_point2D_container = std::list<PointMatch2D>;
-
-// MapPlane matching: contains :
-//      - the normal vector of the plane in camera space
-//      - the normal vector of the plane in world space
-//      - the covariance of the world plane in world space
-using PlaneMatch = MatchTemplate<PlaneCameraCoordinates, PlaneWorldCoordinates, matrix44>;
-using match_plane_container = std::list<PlaneMatch>;
-
-struct matchContainer
+/**
+ * \brief Generic feature for optimization
+ */
+struct IOptimizationFeature
 {
-    match_point_container _points;
-    match_point2D_container _points2D;
-    match_plane_container _planes;
+    IOptimizationFeature(const size_t idInMap) : _idInMap(idInMap) {};
+    /**
+     * \brief Return the number of distance element that this feature will return
+     */
+    virtual size_t get_feature_part_count() const noexcept = 0;
 
-    void clear() noexcept
-    {
-        _points.clear();
-        _points2D.clear();
-        _planes.clear();
-    }
+    /**
+     * \brief Return the score of this feature for an optimization.
+     * This score is dependent on the minimum number of features of this type that must be used for an optimization.
+     * The feature score should be 1.0 / minNumberOfFeaturesForOpti. Result should be in range ]0.0; 1.0]
+     * Eg: we need at least 5 points for a 6D pose optimization, so the score for points should be 0.2
+     */
+    virtual double get_score() const noexcept = 0;
 
-    void swap(matchContainer& other) noexcept
-    {
-        _points.swap(other._points);
-        _points2D.swap(other._points2D);
-        _planes.swap(other._planes);
-    }
+    /**
+     * \brief Compute the distance to the matched feature, given a specific transformation matrix
+     * The size of the returned vector corresponds to the part count.
+     */
+    virtual vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept = 0;
 
-    [[nodiscard]] size_t size() const noexcept { return _points.size() + _points2D.size() + _planes.size(); };
+    /**
+     * \brief Return the maximum allowed retroprojection error before rejecting this match
+     */
+    virtual double get_max_retroprojection_error() const noexcept = 0;
+
+    /**
+     * \brief return this feature alpha reduction (optimization weight)
+     */
+    virtual double get_alpha_reduction() const noexcept = 0;
+
+    /**
+     * \brief compute a random variation of this feature.
+     * Should be based on the feature covariance
+     */
+    virtual IOptimizationFeature* compute_random_variation() const noexcept = 0;
+
+    /**
+     * \brief return the feature type in this object
+     */
+    virtual FeatureType get_feature_type() const noexcept = 0;
+
+    /// store the id of the feature in the local map/staged features
+    const size_t _idInMap;
 };
 
 /**
@@ -90,35 +86,12 @@ template<class Container> struct match_sets_template
     }
 };
 
-// store a set of inliers and a set of outliers for points
-using point2D_match_sets = match_sets_template<match_point2D_container>;
-// store a set of inliers and a set of outliers for points
-using point_match_sets = match_sets_template<match_point_container>;
-// store a set of inliers and a set of outliers for planes
-using plane_match_sets = match_sets_template<match_plane_container>;
+using match_container = std::list<IOptimizationFeature*>;
 
 // store a set of inliers and a set of outliers for all features
-struct match_sets
-{
-    point2D_match_sets _point2DSets;
-    point_match_sets _pointSets;
-    plane_match_sets _planeSets;
+using match_sets = match_sets_template<match_container>;
 
-    void clear() noexcept
-    {
-        _point2DSets.clear();
-        _pointSets.clear();
-        _planeSets.clear();
-    }
-
-    void swap(match_sets& other) noexcept
-    {
-        _point2DSets.swap(other._point2DSets);
-        _pointSets.swap(other._pointSets);
-        _planeSets.swap(other._planeSets);
-    }
-};
-
-} // namespace rgbd_slam::matches_containers
+} // namespace matches_containers
+} // namespace rgbd_slam
 
 #endif

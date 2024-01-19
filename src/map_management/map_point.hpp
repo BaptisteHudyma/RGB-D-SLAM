@@ -2,6 +2,7 @@
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 
 #include "feature_map.hpp"
+#include "parameters.hpp"
 #include "features/keypoints/keypoint_handler.hpp"
 #include "tracking/point_with_tracking.hpp"
 #include "matches_containers.hpp"
@@ -10,9 +11,61 @@ namespace rgbd_slam::map_management {
 
 const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
 
+/**
+ *  \brief The OptimizationFeature for a 3d point
+ */
+struct PointOptimizationFeature : public matches_containers::IOptimizationFeature
+{
+    PointOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
+                             const WorldCoordinate& mapPoint,
+                             const vector3& mapPointVariance,
+                             const size_t mapFeatureId) :
+        matches_containers::IOptimizationFeature(mapFeatureId),
+        _matchedPoint(matchedPoint),
+        _mapPoint(mapPoint),
+        _mapPointVariance(mapPointVariance) {};
+
+    size_t get_feature_part_count() const noexcept override { return 2; }
+
+    double get_score() const noexcept override
+    {
+        static constexpr double optiScore = 1.0 / parameters::optimization::minimumPointForOptimization;
+        return optiScore;
+    }
+
+    vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override
+    {
+        // Compute retroprojected distance
+        const auto& distance = _mapPoint.get_signed_distance_2D_px(_matchedPoint, worldToCamera);
+        return distance;
+    }
+
+    double get_max_retroprojection_error() const noexcept override
+    {
+        return parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px;
+    }
+
+    double get_alpha_reduction() const noexcept override { return 1.0; }
+
+    matches_containers::IOptimizationFeature* compute_random_variation() const noexcept override
+    {
+        // make random variation
+        WorldCoordinate variatedCoordinates = _mapPoint;
+        variatedCoordinates += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointVariance.cwiseSqrt());
+
+        return new PointOptimizationFeature(_matchedPoint, variatedCoordinates, _mapPointVariance, _idInMap);
+    }
+
+    FeatureType get_feature_type() const noexcept override { return FeatureType::Point; }
+
+  protected:
+    const ScreenCoordinate2D _matchedPoint;
+    const WorldCoordinate _mapPoint;
+    const vector3 _mapPointVariance;
+};
+
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
 using DetectedPointType = features::keypoints::DetectedKeyPoint;
-using PointMatchType = matches_containers::PointMatch;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
 using UpgradedPointType = void*; // no upgrade for 3D points
 
@@ -21,22 +74,14 @@ using UpgradedPointType = void*; // no upgrade for 3D points
  */
 class MapPoint :
     public tracking::Point,
-    public IMapFeature<DetectedKeypointsObject,
-                       DetectedPointType,
-                       PointMatchType,
-                       TrackedPointsObject,
-                       UpgradedPointType>
+    public IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject, UpgradedPointType>
 {
   public:
     MapPoint(const WorldCoordinate& coordinates,
              const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor) :
         tracking::Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject,
-                    DetectedPointType,
-                    PointMatchType,
-                    TrackedPointsObject,
-                    UpgradedPointType>()
+        IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject, UpgradedPointType>()
     {
         assert(_id > 0);
     }
@@ -46,8 +91,7 @@ class MapPoint :
              const cv::Mat& descriptor,
              const size_t id) :
         tracking::Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject, UpgradedPointType>(
-                id)
+        IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject, UpgradedPointType>(id)
     {
         assert(_id > 0);
     }
@@ -57,7 +101,7 @@ class MapPoint :
     [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
                                  const vectorb& isDetectedFeatureMatched,
-                                 std::list<PointMatchType>& matches,
+                                 matches_containers::match_container& matches,
                                  const bool shouldAddToMatches = true,
                                  const bool useAdvancedSearch = false) const noexcept override;
 
@@ -135,7 +179,6 @@ using localPointMap = Feature_Map<LocalMapPoint,
                                   StagedMapPoint,
                                   DetectedKeypointsObject,
                                   DetectedPointType,
-                                  PointMatchType,
                                   TrackedPointsObject,
                                   UpgradedPointType>;
 

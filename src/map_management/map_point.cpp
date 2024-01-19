@@ -14,7 +14,7 @@ namespace rgbd_slam::map_management {
 int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
                          const WorldToCameraMatrix& worldToCamera,
                          const vectorb& isDetectedFeatureMatched,
-                         std::list<PointMatchType>& matches,
+                         matches_containers::match_container& matches,
                          const bool shouldAddToMatches,
                          const bool useAdvancedSearch) const noexcept
 {
@@ -53,8 +53,9 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.emplace_back(
+        matches_containers::IOptimizationFeature* opt = new PointOptimizationFeature(
                 detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance.diagonal(), _id);
+        matches.push_back(opt);
     }
     return matchIndex;
 }

@@ -3,11 +3,18 @@
 #include "parameters.hpp"
 #include "pose_optimization/pose_optimization.hpp"
 #include "types.hpp"
+
+#include "utils/pose.hpp"
 #include "utils/angle_utils.hpp"
 #include "utils/camera_transformation.hpp"
+
 #include "coordinates/point_coordinates.hpp"
 #include "coordinates/plane_coordinates.hpp"
-#include "utils/pose.hpp"
+
+#include "map_management/map_point.hpp"
+#include "map_management/map_point2d.hpp"
+#include "map_management/map_primitive.hpp"
+
 #include <gtest/gtest.h>
 #include <random>
 
@@ -35,14 +42,15 @@ const double POINTS_ERROR = 5;
 std::random_device randomDevice;
 std::mt19937 randomEngine(randomDevice());
 
-struct Point
+struct Point_
 {
     double x;
     double y;
     double z;
 };
-typedef std::vector<Point> point_container;
-const point_container get_cube_points(const uint numberOfPoints, const double error)
+using point_container = std::vector<Point_>;
+
+point_container get_cube_points(const uint numberOfPoints, const double error)
 {
     assert(error >= 0);
     std::uniform_real_distribution<double> errorDistribution(-error, error);
@@ -59,7 +67,7 @@ const point_container get_cube_points(const uint numberOfPoints, const double er
         {
             for (uint cubeColumnIndex = 0; cubeColumnIndex <= numberOfPointsByLine; ++cubeColumnIndex)
             {
-                Point cubePoint;
+                Point_ cubePoint;
                 cubePoint.x =
                         CUBE_START_X + cubePlaneIndex * numberOfPointsByLineDouble + errorDistribution(randomEngine);
                 cubePoint.y =
@@ -74,15 +82,15 @@ const point_container get_cube_points(const uint numberOfPoints, const double er
     return pointContainer;
 }
 
-matches_containers::match_point_container get_matched_points(const utils::Pose& endPose, const double error = 0.0)
+matches_containers::match_container get_matched_points(const utils::Pose& endPose, const double error = 0.0)
 {
     assert(error >= 0);
     const WorldToCameraMatrix& worldToCamera =
             utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
     uint invalidPointsCounter = 0;
 
-    matches_containers::match_point_container matchedPoints;
-    for (const Point point: get_cube_points(NUMBER_OF_POINTS_IN_CUBE, error))
+    matches_containers::match_container matchedPoints;
+    for (const auto& point: get_cube_points(NUMBER_OF_POINTS_IN_CUBE, error))
     {
         // world coordinates
         const WorldCoordinate worldPointStart(point.x, point.y, point.z);
@@ -92,11 +100,13 @@ matches_containers::match_point_container get_matched_points(const utils::Pose& 
         if (isScreenCoordinatesValid)
         {
             // Dont care about the map id
-            matchedPoints.emplace_back(transformedPoint, // screenPoint
-                                       worldPointStart,  // worldPoint
-                                       vector3::Ones(),
-                                       0 // uniq map id
-            );
+            matches_containers::IOptimizationFeature* opt =
+                    new map_management::PointOptimizationFeature(transformedPoint, // screenPoint
+                                                                 worldPointStart,  // worldPoint
+                                                                 vector3::Ones(),
+                                                                 0 // uniq map id
+                    );
+            matchedPoints.push_back(opt);
         }
         else
         {
@@ -110,13 +120,13 @@ matches_containers::match_point_container get_matched_points(const utils::Pose& 
     return matchedPoints;
 }
 
-matches_containers::match_plane_container get_matched_planes(const utils::Pose& endPose)
+matches_containers::match_container get_matched_planes(const utils::Pose& endPose)
 {
     const PlaneWorldToCameraMatrix& worldToCamera = utils::compute_plane_world_to_camera_matrix(
             utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position()));
     std::uniform_real_distribution<double> normalDistribution(-1, 1);
 
-    matches_containers::match_plane_container matchedPlanes;
+    matches_containers::match_container matchedPlanes;
 
     const std::vector<PlaneWorldCoordinates> planes = {
             PlaneWorldCoordinates(vector3(0.452271, -0.419436, -0.787099), 10),
@@ -128,7 +138,9 @@ matches_containers::match_plane_container get_matched_planes(const utils::Pose& 
     {
         const PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
 
-        matchedPlanes.emplace_back(cameraPlane, worldPlane, matrix44::Identity(), 0);
+        matches_containers::IOptimizationFeature* opt =
+                new map_management::PlaneOptimizationFeature(cameraPlane, worldPlane, matrix44::Identity(), 0);
+        matchedPlanes.push_back(opt);
     }
     return matchedPlanes;
 }
@@ -142,20 +154,16 @@ double get_angle_distance(const double angleA, const double angleB)
     return std::min(diff, abs(diff - 2.0 * M_PI));
 }
 
-void run_test_optimization(const matches_containers::match_point_container& matchedPoints,
-                           const matches_containers::match_plane_container& matchedPlanes,
+void run_test_optimization(const matches_containers::match_container& matchedFeatures,
                            const utils::Pose& trueEndPose,
                            const utils::Pose& initialPoseGuess)
 {
     // Compute end pose
     utils::Pose endPose;
-    matches_containers::matchContainer matches;
-    matches._planes = matchedPlanes;
-    matches._points = matchedPoints;
 
     matches_containers::match_sets inliersOutliers;
     const bool isPoseValid = pose_optimization::Pose_Optimization::compute_optimized_pose(
-            initialPoseGuess, matches, endPose, inliersOutliers);
+            initialPoseGuess, matchedFeatures, endPose, inliersOutliers);
 
     if (not isPoseValid)
         FAIL();
@@ -195,8 +203,7 @@ TEST(PoseOptimizationTests, noRotationNoTranslation)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -204,7 +211,7 @@ TEST(PoseOptimizationTests, noRotationNoTranslation)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /*
@@ -223,8 +230,7 @@ TEST(PoseOptimizationTests, perfectGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(END_POSITION, END_POSITION, END_POSITION);
@@ -232,7 +238,7 @@ TEST(PoseOptimizationTests, perfectGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /*
@@ -252,8 +258,7 @@ TEST(PoseOptimizationTests, rotationTranslationGoodGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS);
@@ -262,7 +267,7 @@ TEST(PoseOptimizationTests, rotationTranslationGoodGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /*
@@ -282,8 +287,7 @@ TEST(PoseOptimizationTests, rotationTranslationMediumGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(
@@ -293,7 +297,7 @@ TEST(PoseOptimizationTests, rotationTranslationMediumGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /*
@@ -312,8 +316,7 @@ TEST(PoseOptimizationTests, rotationTranslationBadGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
@@ -322,7 +325,7 @@ TEST(PoseOptimizationTests, rotationTranslationBadGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /**
@@ -345,8 +348,7 @@ TEST(TranslationOptimizationTests, translationGoodGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS);
@@ -354,7 +356,7 @@ TEST(TranslationOptimizationTests, translationGoodGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /*
@@ -373,8 +375,7 @@ TEST(TranslationOptimizationTests, translationMediumGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(
@@ -383,7 +384,7 @@ TEST(TranslationOptimizationTests, translationMediumGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /*
@@ -402,8 +403,7 @@ TEST(TranslationOptimizationTests, translationBadGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
@@ -411,7 +411,7 @@ TEST(TranslationOptimizationTests, translationBadGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /**
@@ -435,8 +435,7 @@ TEST(RotationOptimizationTests, rotationYawGoodGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -444,7 +443,7 @@ TEST(RotationOptimizationTests, rotationYawGoodGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 TEST(RotationOptimizationTests, rotationPitchGoodGuess)
@@ -460,8 +459,7 @@ TEST(RotationOptimizationTests, rotationPitchGoodGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -469,7 +467,7 @@ TEST(RotationOptimizationTests, rotationPitchGoodGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 TEST(RotationOptimizationTests, rotationRollGoodGuess)
@@ -485,8 +483,7 @@ TEST(RotationOptimizationTests, rotationRollGoodGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -494,7 +491,7 @@ TEST(RotationOptimizationTests, rotationRollGoodGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 TEST(RotationOptimizationTests, rotationGoodGuess)
@@ -510,8 +507,7 @@ TEST(RotationOptimizationTests, rotationGoodGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -520,7 +516,7 @@ TEST(RotationOptimizationTests, rotationGoodGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /*
@@ -540,8 +536,7 @@ TEST(RotationOptimizationTests, rotationYawMediumGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -549,7 +544,7 @@ TEST(RotationOptimizationTests, rotationYawMediumGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 TEST(RotationOptimizationTests, rotationPitchMediumguess)
@@ -565,8 +560,7 @@ TEST(RotationOptimizationTests, rotationPitchMediumguess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -574,7 +568,7 @@ TEST(RotationOptimizationTests, rotationPitchMediumguess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 TEST(RotationOptimizationTests, rotationRollMediumGuess)
@@ -590,8 +584,7 @@ TEST(RotationOptimizationTests, rotationRollMediumGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -599,7 +592,7 @@ TEST(RotationOptimizationTests, rotationRollMediumGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 TEST(RotationOptimizationTests, rotationMediumGuess)
@@ -615,8 +608,7 @@ TEST(RotationOptimizationTests, rotationMediumGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -625,7 +617,7 @@ TEST(RotationOptimizationTests, rotationMediumGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /*
@@ -644,8 +636,7 @@ TEST(RotationOptimizationTests, rotationYawBadGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -653,7 +644,7 @@ TEST(RotationOptimizationTests, rotationYawBadGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 TEST(RotationOptimizationTests, rotationPitchBadGuess)
@@ -669,8 +660,7 @@ TEST(RotationOptimizationTests, rotationPitchBadGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -678,7 +668,7 @@ TEST(RotationOptimizationTests, rotationPitchBadGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 TEST(RotationOptimizationTests, rotationRollBadGuess)
@@ -694,8 +684,7 @@ TEST(RotationOptimizationTests, rotationRollBadGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -703,7 +692,7 @@ TEST(RotationOptimizationTests, rotationRollBadGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 TEST(RotationOptimizationTests, rotationBadGuess)
@@ -719,8 +708,7 @@ TEST(RotationOptimizationTests, rotationBadGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
-    matches_containers::match_plane_container matchedPlanes;
+    const matches_containers::match_container& matchedPoints = get_matched_points(trueEndPose, POINTS_ERROR);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -729,7 +717,7 @@ TEST(RotationOptimizationTests, rotationBadGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPoints, trueEndPose, initialPoseGuess);
 }
 
 /**
@@ -749,14 +737,13 @@ TEST(PlanePositionOptimizationTests, plane4PerfectGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container matchedPoints;
-    const matches_containers::match_plane_container& matchedPlanes = get_matched_planes(trueEndPose);
+    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose);
 
     // Estimated pose base (perfect guess)
     const utils::Pose initialPoseGuess(
             trueEndPose.get_position(), trueEndPose.get_orientation_quaternion(), trueEndPose.get_pose_variance());
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPlanes, trueEndPose, initialPoseGuess);
 }
 
 TEST(PlanePositionOptimizationTests, plane4GoodGuess)
@@ -772,8 +759,7 @@ TEST(PlanePositionOptimizationTests, plane4GoodGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container matchedPoints;
-    const matches_containers::match_plane_container& matchedPlanes = get_matched_planes(trueEndPose);
+    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -782,7 +768,7 @@ TEST(PlanePositionOptimizationTests, plane4GoodGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPlanes, trueEndPose, initialPoseGuess);
 }
 
 TEST(PlanePositionOptimizationTests, plane4MediumGuess)
@@ -798,8 +784,7 @@ TEST(PlanePositionOptimizationTests, plane4MediumGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container matchedPoints;
-    const matches_containers::match_plane_container& matchedPlanes = get_matched_planes(trueEndPose);
+    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -808,7 +793,7 @@ TEST(PlanePositionOptimizationTests, plane4MediumGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPlanes, trueEndPose, initialPoseGuess);
 }
 
 TEST(PlanePositionOptimizationTests, plane4BadGuess)
@@ -824,8 +809,7 @@ TEST(PlanePositionOptimizationTests, plane4BadGuess)
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_point_container matchedPoints;
-    const matches_containers::match_plane_container& matchedPlanes = get_matched_planes(trueEndPose);
+    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose);
 
     // Estimated pose base
     const vector3 initialPositionGuess(0, 0, 0);
@@ -834,7 +818,9 @@ TEST(PlanePositionOptimizationTests, plane4BadGuess)
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
-    run_test_optimization(matchedPoints, matchedPlanes, trueEndPose, initialPoseGuess);
+    run_test_optimization(matchedPlanes, trueEndPose, initialPoseGuess);
 }
+
+// TODO: run tests with 2D points
 
 } // namespace rgbd_slam
