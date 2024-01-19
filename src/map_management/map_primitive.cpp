@@ -8,6 +8,62 @@
 namespace rgbd_slam::map_management {
 
 /**
+ *  PlaneOptimizationFeature
+ */
+
+PlaneOptimizationFeature::PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
+                                                   const PlaneWorldCoordinates& mapPlane,
+                                                   const matrix44& mapPlaneVariance,
+                                                   const size_t mapFeatureId) :
+    matches_containers::IOptimizationFeature(mapFeatureId),
+    _matchedPlane(matchedPlane),
+    _mapPlane(mapPlane),
+    _mapPlaneVariance(mapPlaneVariance) {};
+
+size_t PlaneOptimizationFeature::get_feature_part_count() const noexcept { return 3; }
+
+double PlaneOptimizationFeature::get_score() const noexcept
+{
+    static constexpr double optiScore = 1.0 / parameters::optimization::minimumPlanesForOptimization;
+    return optiScore;
+}
+
+vectorxd PlaneOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    // TODO: combine this for all plane features somehow
+    const PlaneWorldToCameraMatrix& planeTransformationMatrix =
+            utils::compute_plane_world_to_camera_matrix(worldToCamera);
+
+    // TODO Add boundary optimization
+    const auto& planeProjectionError = _mapPlane.get_reduced_signed_distance(_matchedPlane, planeTransformationMatrix);
+
+    return planeProjectionError;
+}
+
+double PlaneOptimizationFeature::get_max_retroprojection_error() const noexcept
+{
+    return parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm;
+}
+
+double PlaneOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }
+
+matches_containers::feat_ptr PlaneOptimizationFeature::compute_random_variation() const noexcept
+{
+    PlaneWorldCoordinates variatedCoordinates = _mapPlane;
+
+    const vector4& diagonalSqrt = _mapPlaneVariance.diagonal().cwiseSqrt();
+    variatedCoordinates.normal() += utils::Random::get_normal_doubles<3>().cwiseProduct(diagonalSqrt.head<3>());
+    variatedCoordinates.normal().normalize();
+
+    variatedCoordinates.d() += utils::Random::get_normal_double() * diagonalSqrt(3);
+
+    return matches_containers::feat_ptr(
+            new PlaneOptimizationFeature(_matchedPlane, variatedCoordinates, _mapPlaneVariance, _idInMap));
+}
+
+FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Plane; }
+
+/**
  *  MapPlane
  */
 
@@ -69,9 +125,8 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches_containers::IOptimizationFeature* opt = new PlaneOptimizationFeature(
-                detectedFeatures[selectedIndex].get_parametrization(), get_parametrization(), get_covariance(), _id);
-        matches.push_back(opt);
+        matches.push_back(matches_containers::feat_ptr(new PlaneOptimizationFeature(
+                detectedFeatures[selectedIndex].get_parametrization(), get_parametrization(), get_covariance(), _id)));
     }
 
     return selectedIndex;

@@ -93,7 +93,9 @@ template<template<typename> class Container, typename T>
         cumulatedScore += picked->get_score();
         outContainer.insert(outContainer.begin(), picked);
         if (cumulatedScore >= targetScore)
+        {
             return outContainer;
+        }
     }
 
     throw std::invalid_argument("get_random_subset: failed to pick enough feature to respect targetScore");

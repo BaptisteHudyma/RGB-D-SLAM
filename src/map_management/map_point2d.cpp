@@ -9,6 +9,67 @@
 namespace rgbd_slam::map_management {
 
 /**
+ * Point2dOptimizationFeature
+ */
+
+Point2dOptimizationFeature::Point2dOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
+                                                       const InverseDepthWorldPoint& mapPoint,
+                                                       const tracking::PointInverseDepth::Covariance& mapPointVariance,
+                                                       const size_t mapFeatureId) :
+    matches_containers::IOptimizationFeature(mapFeatureId),
+    _matchedPoint(matchedPoint),
+    _mapPoint(mapPoint),
+    _mapPointVariance(mapPointVariance) {};
+
+size_t Point2dOptimizationFeature::get_feature_part_count() const noexcept { return 2; }
+
+double Point2dOptimizationFeature::get_score() const noexcept
+{
+    static constexpr double optiScore = 1.0 / parameters::optimization::minimumPoint2dForOptimization;
+    return optiScore;
+}
+
+vectorxd Point2dOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const vector2& distance = _mapPoint.compute_signed_screen_distance(
+            _matchedPoint, _mapPointVariance.get_inverse_depth_variance(), worldToCamera);
+    return distance;
+}
+
+double Point2dOptimizationFeature::get_max_retroprojection_error() const noexcept
+{
+    return parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px;
+}
+
+double Point2dOptimizationFeature::get_alpha_reduction() const noexcept { return 0.3; }
+
+matches_containers::feat_ptr Point2dOptimizationFeature::compute_random_variation() const noexcept
+{
+    WorldCoordinate variatedObservationPoint = _mapPoint.get_first_observation();
+    // TODO: variate the observation point
+    // variatedObservationPoint += utils::Random::get_normal_doubles<3>().cwiseProduct(
+    //        _mapPointVariance.get_first_pose_covariance().diagonal().cwiseSqrt());
+    const double variatedInverseDepth =
+            _mapPoint.get_inverse_depth(); // do not variate the depth, the uncertainty is too great anyway
+    const double variatedTheta = std::clamp(
+            _mapPoint.get_theta() + utils::Random::get_normal_double() * sqrt(_mapPointVariance.get_theta_variance()),
+            0.0,
+            M_PI);
+    const double variatedPhi = std::clamp(_mapPoint.get_phi() + utils::Random::get_normal_double() *
+                                                                        sqrt(_mapPointVariance.get_phi_variance()),
+                                          -M_PI,
+                                          M_PI);
+
+    return matches_containers::feat_ptr(new Point2dOptimizationFeature(
+            _matchedPoint,
+            InverseDepthWorldPoint(variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi),
+            _mapPointVariance,
+            _idInMap));
+}
+
+FeatureType Point2dOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point2d; }
+
+/**
  * MapPoint
  */
 
@@ -55,9 +116,8 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches_containers::IOptimizationFeature* opt = new Point2dOptimizationFeature(
-                detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance, _id);
-        matches.push_back(opt);
+        matches.push_back(matches_containers::feat_ptr(new Point2dOptimizationFeature(
+                detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance, _id)));
     }
     return matchIndex;
 }

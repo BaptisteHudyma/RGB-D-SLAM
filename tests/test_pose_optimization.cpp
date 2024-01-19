@@ -100,13 +100,12 @@ matches_containers::match_container get_matched_points(const utils::Pose& endPos
         if (isScreenCoordinatesValid)
         {
             // Dont care about the map id
-            matches_containers::IOptimizationFeature* opt =
+            matchedPoints.push_back(matches_containers::feat_ptr(
                     new map_management::PointOptimizationFeature(transformedPoint, // screenPoint
                                                                  worldPointStart,  // worldPoint
                                                                  vector3::Ones(),
                                                                  0 // uniq map id
-                    );
-            matchedPoints.push_back(opt);
+                                                                 )));
         }
         else
         {
@@ -137,10 +136,8 @@ matches_containers::match_container get_matched_planes(const utils::Pose& endPos
     for (const PlaneWorldCoordinates& worldPlane: planes)
     {
         const PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
-
-        matches_containers::IOptimizationFeature* opt =
-                new map_management::PlaneOptimizationFeature(cameraPlane, worldPlane, matrix44::Identity(), 0);
-        matchedPlanes.push_back(opt);
+        matchedPlanes.push_back(matches_containers::feat_ptr(
+                new map_management::PlaneOptimizationFeature(cameraPlane, worldPlane, matrix44::Identity(), 0)));
     }
     return matchedPlanes;
 }
