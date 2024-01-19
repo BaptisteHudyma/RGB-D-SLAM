@@ -110,7 +110,8 @@ template<template<typename> class Container, typename T>
  */
 template<template<typename> class Container, typename T>
 [[nodiscard]] Container<T> get_random_subset_with_score_with_duplicates(const Container<T>& inContainer,
-                                                                        const double targetScore)
+                                                                        const double targetScore,
+                                                                        size_t maxIterations = 512)
 {
     // get a vector of references
     std::vector<std::reference_wrapper<const T>> copyVector(inContainer.cbegin(), inContainer.cend());
@@ -118,12 +119,13 @@ template<template<typename> class Container, typename T>
     // copy the first matches, they will be randoms
     Container<T> outContainer;
     double cumulatedScore = 0.0;
-    while (cumulatedScore < targetScore)
+    while (maxIterations > 0 and cumulatedScore < targetScore)
     {
         const T& picked = copyVector[utils::Random::get_random_uint(inContainer.size())];
 
         cumulatedScore += picked.get_score();
         outContainer.insert(outContainer.begin(), picked);
+        maxIterations--;
     }
     return outContainer;
 }

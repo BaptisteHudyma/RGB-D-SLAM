@@ -136,7 +136,7 @@ bool MapPlane::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPlaneObject& trackedFeatures,
                               const uint dropChance) const noexcept
 {
-    // TODO: track 2D points
+    // TODO: track primitives
     // silence warning for unused parameters
     (void)worldToCamera;
     (void)trackedFeatures;

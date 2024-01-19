@@ -20,6 +20,7 @@
 #include <format>
 
 #include <tbb/parallel_for.h>
+#include <utility>
 
 namespace rgbd_slam::pose_optimization {
 
@@ -34,11 +35,12 @@ constexpr size_t featureIndex2dPoint = 2;
  * \param[in] featuresToEvaluate The set of features to evaluate the transformation on
  * \param[in] transformationPose The transformation that needs to be evaluated
  * \param[out] matchSets The set of inliers/outliers of this transformation
- * \return The transformation score
+ * \return The transformation score, and the inlier feature score
  */
-[[nodiscard]] double get_features_inliers_outliers(const matches_containers::match_container& featuresToEvaluate,
-                                                   const utils::PoseBase& transformationPose,
-                                                   matches_containers::match_sets& matchSets) noexcept
+[[nodiscard]] std::pair<double, double> get_features_inliers_outliers(
+        const matches_containers::match_container& featuresToEvaluate,
+        const utils::PoseBase& transformationPose,
+        matches_containers::match_sets& matchSets) noexcept
 {
     matchSets.clear();
 
@@ -47,6 +49,7 @@ constexpr size_t featureIndex2dPoint = 2;
             transformationPose.get_orientation_quaternion(), transformationPose.get_position());
 
     double retroprojectionScore = 0.0;
+    double featureScore = 0.0;
     for (const auto& match: featuresToEvaluate)
     {
         // TODO: handle each component separatly ?
@@ -61,6 +64,7 @@ constexpr size_t featureIndex2dPoint = 2;
             if (distance < maxRetroprojectionError)
             {
                 matchSets._inliers.insert(matchSets._inliers.end(), match);
+                featureScore += match->get_score();
             }
             // outlier
             else
@@ -77,7 +81,7 @@ constexpr size_t featureIndex2dPoint = 2;
             retroprojectionScore += maxRetroprojectionError;
         }
     }
-    return retroprojectionScore;
+    return std::make_pair(retroprojectionScore, featureScore);
 }
 
 /**
@@ -163,7 +167,11 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     // set the start score to the maximum score
     const double maxFittingScore = get_feature_set_retroprojection_score(matchedFeatures);
 
-    double minScore = maxFittingScore;
+    // TODO: check the constant: 60% inlier proportion is weak
+    // matchedFeatures.size() * parameters::optimization::ransac::inlierProportion);
+    const size_t inliersToStop = matchedFeatures.size() * 0.80;
+
+    double minScore = 1.0;
     utils::PoseBase bestPose = currentPose;
     matches_containers::match_sets finalFeatureSets;
 
@@ -187,8 +195,10 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         // get inliers and outliers for this transformation
         const double getRANSACInliersTime = static_cast<double>(cv::getTickCount());
         matches_containers::match_sets potentialInliersOutliers;
-        const double transformationScore =
+        const auto& transformationScores =
                 get_features_inliers_outliers(matchedFeatures, candidatePose, potentialInliersOutliers);
+        const double transformationScore = transformationScores.first;
+        const double featureInlierScore = transformationScores.second;
         _meanRANSACGetInliersDuration +=
                 (static_cast<double>(cv::getTickCount()) - getRANSACInliersTime) / cv::getTickFrequency();
 
@@ -199,25 +209,20 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
             continue;
         }
 
-        // We have a better score than the previous best one
-        if (transformationScore < minScore)
+        // We have a better score than the previous best one, and enough inliers to consider it valid
+        if (featureInlierScore > 1.0 and featureInlierScore > minScore)
         {
-            // detect the first optimization score
-            const bool isFirstGuess = minScore >= maxFittingScore;
-
-            minScore = transformationScore;
+            minScore = featureInlierScore;
             bestPose = candidatePose;
             // save features inliers and outliers
             finalFeatureSets.swap(potentialInliersOutliers);
-
-            // we have enough features, quit the loop
-            if (not isFirstGuess and
-                finalFeatureSets._inliers.size() >
-                        // TODO: check the constant: 60% inlier proportion is weak
-                        // matchedFeatures.size() * parameters::optimization::ransac::inlierProportion)
-                        matchedFeatures.size() * 0.85)
-                break;
         }
+
+        // we have enough features, quit the loop
+        // The first guess forces the program to try at least some iterations
+        static constexpr size_t minIterations = 3;
+        if (iteration >= minIterations and finalFeatureSets._inliers.size() > inliersToStop)
+            break;
     }
 
     // We do not have enough inliers to consider this optimization as valid

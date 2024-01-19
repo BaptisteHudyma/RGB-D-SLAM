@@ -44,6 +44,7 @@ features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_feat
     constexpr uint refreshFrequency = parameters::detection::keypointRefreshFrequency * 2;
     _localPoint2DMap.get_tracked_features(worldToCamera, keypointsWithIds, refreshFrequency);
     _localPointMap.get_tracked_features(worldToCamera, keypointsWithIds, refreshFrequency);
+    //_localPlaneMap.get_tracked_features(worldToCamera, nullptr, refreshFrequency);
     return keypointsWithIds;
 }
 
@@ -61,59 +62,30 @@ matches_containers::match_container Local_Map::find_feature_matches(
 
     // find point matches
     const double find2dPointMatchesStartTime = static_cast<double>(cv::getTickCount());
-    const bool enough2dPointsForOpti =
-            _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
-                                         worldToCamera,
-                                         false,
-                                         parameters::optimization::minimumPointForOptimization,
-                                         matchSets);
-    if (not enough2dPointsForOpti)
-    {
-        // if the process as not enough matches, retry matches with a greater margin
-        _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
-                                     worldToCamera,
-                                     true,
-                                     parameters::optimization::minimumPointForOptimization,
-                                     matchSets);
-    }
+    _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
+                                 worldToCamera,
+                                 parameters::optimization::minimumPointForOptimization,
+                                 matchSets);
+
     find2DPointMatchDuration +=
             (static_cast<double>(cv::getTickCount()) - find2dPointMatchesStartTime) / cv::getTickFrequency();
 
     // find point matches
     const double findPointMatchesStartTime = static_cast<double>(cv::getTickCount());
-    const bool enoughPointsForOpti = _localPointMap.get_matches(detectedFeatures.keypointObject,
-                                                                worldToCamera,
-                                                                false,
-                                                                parameters::optimization::minimumPointForOptimization,
-                                                                matchSets);
-    if (not enoughPointsForOpti)
-    {
-        // if the process as not enough matches, retry matches with a greater margin
-        _localPointMap.get_matches(detectedFeatures.keypointObject,
-                                   worldToCamera,
-                                   true,
-                                   parameters::optimization::minimumPointForOptimization,
-                                   matchSets);
-    }
+    _localPointMap.get_matches(detectedFeatures.keypointObject,
+                               worldToCamera,
+                               parameters::optimization::minimumPointForOptimization,
+                               matchSets);
+
     findPointMatchDuration +=
             (static_cast<double>(cv::getTickCount()) - findPointMatchesStartTime) / cv::getTickFrequency();
 
     // find plane matches
     const double findPlaneMatchesStartTime = static_cast<double>(cv::getTickCount());
-    const bool enoughPlanesForOpti = _localPlaneMap.get_matches(detectedFeatures.detectedPlanes,
-                                                                worldToCamera,
-                                                                false,
-                                                                parameters::optimization::minimumPlanesForOptimization,
-                                                                matchSets);
-    if (not enoughPlanesForOpti)
-    {
-        // if the process as not enough matches, retry matches with a greater margin
-        _localPlaneMap.get_matches(detectedFeatures.detectedPlanes,
-                                   worldToCamera,
-                                   true,
-                                   parameters::optimization::minimumPlanesForOptimization,
-                                   matchSets);
-    }
+    _localPlaneMap.get_matches(detectedFeatures.detectedPlanes,
+                               worldToCamera,
+                               parameters::optimization::minimumPlanesForOptimization,
+                               matchSets);
     findPlaneMatchDuration +=
             (static_cast<double>(cv::getTickCount()) - findPlaneMatchesStartTime) / cv::getTickFrequency();
 
@@ -142,9 +114,8 @@ void Local_Map::update(const utils::Pose& optimizedPose,
     _localPointMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.keypointObject, _mapWriter);
     _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.detectedPlanes, _mapWriter);
 
-    // try to triangulate the new features
-    const std::vector<UpgradedPoint2DType>& newFeatures = _localPoint2DMap.get_upgraded_features(cameraToWorld);
-    for (const auto& upgraded: newFeatures)
+    // try to upgrade to new features (2D to 3D)
+    for (const auto& upgraded: _localPoint2DMap.get_upgraded_features(cameraToWorld))
     {
         _localPointMap.add_local_map_point(
                 LocalMapPoint(upgraded._coordinates, upgraded._covariance, upgraded._descriptor, upgraded._matchIndex));
