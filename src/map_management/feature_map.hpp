@@ -262,76 +262,28 @@ class Feature_Map
 
     /**
      * \brief return the object thta contains the matches between detected and map feature. Set the
-     * _isDetectedFeatureMatched flags
+     * _isDetectedFeatureMatched flags. Will relaunch the proces if not enough matches were found
      * \param[in] detectedFeatures The object of detected features to match
      * \param[in] worldToCamera A matrix to convert from world to camera space
-     * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if
-     * True. Also less precise
      * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
      * \param[in, out] matches An object of matches between map object and detected features
-     *
-     * \return true if enough features are matched for an optimization
      */
-    bool get_matches(const DetectedFeaturesObject& detectedFeatures,
+    void get_matches(const DetectedFeaturesObject& detectedFeatures,
                      const WorldToCameraMatrix& worldToCamera,
-                     const bool useAdvancedMatch,
                      const uint minimumFeaturesForOptimization,
                      matches_containers::match_container& matches) noexcept
     {
-        if (not _isActivated)
-            return false;
-
-        // reset match status
-        _isDetectedFeatureMatched = vectorb::Zero(detectedFeatures.size());
-
-        // search matches in local map first
-        for (auto& [mapId, mapFeature]: _localMap)
+        matches_containers::match_container testMatches;
+        get_matches(detectedFeatures, worldToCamera, false, minimumFeaturesForOptimization, testMatches);
+        if (testMatches.size() < minimumFeaturesForOptimization)
+        // What is the use of this metric ? TODO: document
+        // or testMatches.size() < std::min(detectedFeatures.size(), get_local_map_size()) / 2)
         {
-            assert(mapId == mapFeature._id);
-            // start by reseting this point
-            mapFeature.mark_unmatched();
-
-            if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
-                continue;
-
-            const int matchIndex = mapFeature.find_match(
-                    detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches, true, useAdvancedMatch);
-            if (matchIndex >= 0)
-            {
-                mapFeature.mark_matched(matchIndex);
-                _isDetectedFeatureMatched[matchIndex] = true;
-            }
+            get_matches(detectedFeatures, worldToCamera, true, minimumFeaturesForOptimization, testMatches);
         }
 
-        // if we have enough features from local map to run the optimization, no need to add the staged features
-        // Still, we need to try and match them to insure tracking and new map features
-        // TODO: Why 3 ? seems about right to be sure to have enough features for the optimization process...
-        const bool shouldUseStagedFeatures = matches.size() < minimumFeaturesForOptimization * 3;
-
-        // search matches in staged map second
-        for (auto& [mapId, mapFeature]: _stagedMap)
-        {
-            assert(mapId == mapFeature._id);
-            // start by reseting this point
-            mapFeature.mark_unmatched();
-
-            if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
-                continue;
-
-            const int matchIndex = mapFeature.find_match(detectedFeatures,
-                                                         worldToCamera,
-                                                         _isDetectedFeatureMatched,
-                                                         matches,
-                                                         shouldUseStagedFeatures,
-                                                         useAdvancedMatch);
-            if (matchIndex >= 0)
-            {
-                mapFeature.mark_matched(matchIndex);
-                _isDetectedFeatureMatched[matchIndex] = true;
-            }
-        }
-
-        return true; // TODO: depending on the number of matches, set to false
+        // merge the two
+        matches.merge(testMatches);
     }
 
     /**
@@ -556,6 +508,77 @@ class Feature_Map
     void add_local_map_point(const MapFeatureType& mapFeature) { _localMap.emplace(mapFeature._id, mapFeature); }
 
   protected:
+    /**
+     * \brief return the object thta contains the matches between detected and map feature. Set the
+     * _isDetectedFeatureMatched flags
+     * \param[in] detectedFeatures The object of detected features to match
+     * \param[in] worldToCamera A matrix to convert from world to camera space
+     * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if
+     * True. Also less precise
+     * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
+     * \param[out] matches An object of matches between map object and detected features
+     */
+    void get_matches(const DetectedFeaturesObject& detectedFeatures,
+                     const WorldToCameraMatrix& worldToCamera,
+                     const bool useAdvancedMatch,
+                     const uint minimumFeaturesForOptimization,
+                     matches_containers::match_container& matches) noexcept
+    {
+        if (not _isActivated)
+            return;
+
+        // reset match status
+        _isDetectedFeatureMatched = vectorb::Zero(detectedFeatures.size());
+        matches.clear();
+
+        // search matches in local map first
+        for (auto& [mapId, mapFeature]: _localMap)
+        {
+            assert(mapId == mapFeature._id);
+            // start by reseting this point
+            mapFeature.mark_unmatched();
+
+            if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
+                continue;
+
+            const int matchIndex = mapFeature.find_match(
+                    detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches, true, useAdvancedMatch);
+            if (matchIndex >= 0)
+            {
+                mapFeature.mark_matched(matchIndex);
+                _isDetectedFeatureMatched[matchIndex] = true;
+            }
+        }
+
+        // if we have enough features from local map to run the optimization, no need to add the staged features
+        // Still, we need to try and match them to insure tracking and new map features
+        // TODO: Why 3 ? seems about right to be sure to have enough features for the optimization process...
+        const bool shouldUseStagedFeatures = matches.size() < minimumFeaturesForOptimization * 3;
+
+        // search matches in staged map second
+        for (auto& [mapId, mapFeature]: _stagedMap)
+        {
+            assert(mapId == mapFeature._id);
+            // start by reseting this point
+            mapFeature.mark_unmatched();
+
+            if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
+                continue;
+
+            const int matchIndex = mapFeature.find_match(detectedFeatures,
+                                                         worldToCamera,
+                                                         _isDetectedFeatureMatched,
+                                                         matches,
+                                                         shouldUseStagedFeatures,
+                                                         useAdvancedMatch);
+            if (matchIndex >= 0)
+            {
+                mapFeature.mark_matched(matchIndex);
+                _isDetectedFeatureMatched[matchIndex] = true;
+            }
+        }
+    }
+
     void update_local_map(const CameraToWorldMatrix& cameraToWorld,
                           const matrix33& poseCovariance,
                           const DetectedFeaturesObject& detectedFeatureObject,
