@@ -42,8 +42,8 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
 
     vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override
     {
-        const vector2& distance =
-                _mapPoint.compute_signed_screen_distance(_matchedPoint, _mapPointVariance.diagonal()(3), worldToCamera);
+        const vector2& distance = _mapPoint.compute_signed_screen_distance(
+                _matchedPoint, _mapPointVariance.get_inverse_depth_variance(), worldToCamera);
         return distance;
     }
 
@@ -58,20 +58,19 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
     {
         WorldCoordinate variatedObservationPoint = _mapPoint.get_first_observation();
         // TODO: variate the observation point
-        // variatedObservationPoint +=
-        // utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointVariance.diagonal().head<3>());
+        // variatedObservationPoint += utils::Random::get_normal_doubles<3>().cwiseProduct(
+        //        _mapPointVariance.get_first_pose_covariance().diagonal().cwiseSqrt());
         const double variatedInverseDepth =
                 _mapPoint.get_inverse_depth(); // do not variate the depth, the uncertainty is too great anyway
-        const double variatedTheta = std::clamp(
-                _mapPoint.get_theta() + utils::Random::get_normal_double() *
-                                                _mapPointVariance.diagonal()(InverseDepthWorldPoint::thetaIndex),
-                0.0,
-                M_PI);
-        const double variatedPhi =
-                std::clamp(_mapPoint.get_phi() + utils::Random::get_normal_double() *
-                                                         _mapPointVariance.diagonal()(InverseDepthWorldPoint::phiIndex),
-                           -M_PI,
+        const double variatedTheta =
+                std::clamp(_mapPoint.get_theta() +
+                                   utils::Random::get_normal_double() * sqrt(_mapPointVariance.get_theta_variance()),
+                           0.0,
                            M_PI);
+        const double variatedPhi = std::clamp(_mapPoint.get_phi() + utils::Random::get_normal_double() *
+                                                                            sqrt(_mapPointVariance.get_phi_variance()),
+                                              -M_PI,
+                                              M_PI);
 
         return new Point2dOptimizationFeature(
                 _matchedPoint,
