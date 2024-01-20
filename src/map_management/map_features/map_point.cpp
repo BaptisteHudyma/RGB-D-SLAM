@@ -72,9 +72,8 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
     const double searchRadius = useAdvancedSearch ? advancedSearchSpaceRadius : searchSpaceRadius;
 
     // try to match with tracking
-    const int invalidfeatureIndex = features::keypoints::INVALID_MATCH_INDEX;
     int matchIndex = detectedFeatures.get_tracking_match_index(_id, isDetectedFeatureMatched);
-    if (matchIndex == invalidfeatureIndex)
+    if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
     {
         // No match: try to find match in a window around the point
         ScreenCoordinate2D projectedMapPoint;
@@ -86,7 +85,7 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
         }
     }
 
-    if (matchIndex == invalidfeatureIndex)
+    if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
     {
         // unmatched point
         return UNMATCHED_FEATURE_INDEX;

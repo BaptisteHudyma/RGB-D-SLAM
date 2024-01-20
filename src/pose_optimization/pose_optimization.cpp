@@ -175,55 +175,85 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     utils::PoseBase bestPose = currentPose;
     matches_containers::match_sets finalFeatureSets;
 
+    std::atomic_bool canQuit = false;
+    std::mutex mut;
+
     uint iteration = 0;
+#ifndef MAKE_DETERMINISTIC
+    // parallel loop to speed up the process
+    // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
+    tbb::parallel_for(
+            uint(0),
+            maximumIterations,
+            [&](uint iteration) {
+                if (canQuit.load())
+                    return;
+#else
     for (; iteration < maximumIterations; ++iteration)
     {
-        const double getRandomSubsetStartTime = static_cast<double>(cv::getTickCount());
-        // get a random subset for this iteration
-        const matches_containers::match_container& selectedMatches = get_random_subset(matchedFeatures);
-        _meanGetRandomSubsetDuration +=
-                (static_cast<double>(cv::getTickCount()) - getRandomSubsetStartTime) / cv::getTickFrequency();
-
-        // compute a new candidate pose to evaluate
-        const double computeOptimisedPoseTime = static_cast<double>(cv::getTickCount());
-        utils::PoseBase candidatePose;
-        if (not Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, candidatePose))
-            continue;
-        _meanRANSACPoseOptimizationDuration +=
-                (static_cast<double>(cv::getTickCount()) - computeOptimisedPoseTime) / cv::getTickFrequency();
-
-        // get inliers and outliers for this transformation
-        const double getRANSACInliersTime = static_cast<double>(cv::getTickCount());
-        matches_containers::match_sets potentialInliersOutliers;
-        const auto& transformationScores =
-                get_features_inliers_outliers(matchedFeatures, candidatePose, potentialInliersOutliers);
-        const double transformationScore = transformationScores.first;
-        const double featureInlierScore = transformationScores.second;
-        _meanRANSACGetInliersDuration +=
-                (static_cast<double>(cv::getTickCount()) - getRANSACInliersTime) / cv::getTickFrequency();
-
-        // safety
-        if (transformationScore > maxFittingScore)
-        {
-            outputs::log_error("The computed score is higher than the max fitting score");
-            continue;
-        }
-
-        // We have a better score than the previous best one, and enough inliers to consider it valid
-        if (featureInlierScore > 1.0 and featureInlierScore > minScore)
-        {
-            minScore = featureInlierScore;
-            bestPose = candidatePose;
-            // save features inliers and outliers
-            finalFeatureSets.swap(potentialInliersOutliers);
-        }
-
-        // we have enough features, quit the loop
-        // The first guess forces the program to try at least some iterations
-        static constexpr size_t minIterations = 3;
-        if (iteration >= minIterations and finalFeatureSets._inliers.size() > inliersToStop)
+        if (canQuit.load())
             break;
-    }
+#endif
+                const double getRandomSubsetStartTime = static_cast<double>(cv::getTickCount());
+                // get a random subset for this iteration
+                const matches_containers::match_container& selectedMatches = get_random_subset(matchedFeatures);
+                _meanGetRandomSubsetDuration +=
+                        (static_cast<double>(cv::getTickCount()) - getRandomSubsetStartTime) / cv::getTickFrequency();
+
+                // compute a new candidate pose to evaluate
+                const double computeOptimisedPoseTime = static_cast<double>(cv::getTickCount());
+                utils::PoseBase candidatePose;
+                if (not Pose_Optimization::compute_optimized_global_pose(currentPose, selectedMatches, candidatePose))
+#ifndef MAKE_DETERMINISTIC
+                    return;
+#else
+            continue;
+#endif
+                _meanRANSACPoseOptimizationDuration +=
+                        (static_cast<double>(cv::getTickCount()) - computeOptimisedPoseTime) / cv::getTickFrequency();
+
+                // get inliers and outliers for this transformation
+                const double getRANSACInliersTime = static_cast<double>(cv::getTickCount());
+                matches_containers::match_sets potentialInliersOutliers;
+                const auto& transformationScores =
+                        get_features_inliers_outliers(matchedFeatures, candidatePose, potentialInliersOutliers);
+                const double transformationScore = transformationScores.first;
+                const double featureInlierScore = transformationScores.second;
+                _meanRANSACGetInliersDuration +=
+                        (static_cast<double>(cv::getTickCount()) - getRANSACInliersTime) / cv::getTickFrequency();
+
+                // safety
+                if (transformationScore > maxFittingScore)
+                {
+                    outputs::log_error("The computed score is higher than the max fitting score");
+#ifndef MAKE_DETERMINISTIC
+                    return;
+#else
+            continue;
+#endif
+                }
+
+                // We have a better score than the previous best one, and enough inliers to consider it valid
+                if (featureInlierScore > 1.0 and featureInlierScore > minScore)
+                {
+                    minScore = featureInlierScore;
+                    bestPose = candidatePose;
+                    // save features inliers and outliers
+                    std::scoped_lock<std::mutex> lock(mut);
+                    finalFeatureSets.swap(potentialInliersOutliers);
+                }
+
+                // we have enough features, quit the loop
+                // The first guess forces the program to try at least some iterations
+                static constexpr size_t minIterations = 3;
+                if (iteration >= minIterations and finalFeatureSets._inliers.size() > inliersToStop)
+                {
+                    canQuit.store(true);
+                }
+            }
+#ifndef MAKE_DETERMINISTIC
+    );
+#endif
 
     // We do not have enough inliers to consider this optimization as valid
     const double inlierScore = get_feature_set_optimization_score(finalFeatureSets._inliers);
