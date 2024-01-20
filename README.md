@@ -7,7 +7,7 @@ See the Doxygen documentation for this program on [GitHub Pages](https://baptist
 
 Each map feature is tracked using independent Kalman filter instead of bundle adjustment.
 
-Point detection is based on [ORB detection and descriptors](https://ieeexplore.ieee.org/document/6126544), as well as optical flow for short term tracking.
+Point detection is based on Fast detector, with brief descriptors, as well as optical flow for short term tracking.
 Line detection uses [LSD - Line Segment Detector](http://www.ipol.im/pub/art/2012/gjmr-lsd/).
 The primitive detection is based on [Fast Cylinder and Plane Extraction from Depth Cameras for Visual Odometry](https://arxiv.org/pdf/1803.02380.pdf).
 
