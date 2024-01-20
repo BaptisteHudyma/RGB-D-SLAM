@@ -63,15 +63,19 @@ constexpr size_t featureIndex2dPoint = 2;
             // inlier
             if (distance < maxRetroprojectionError)
             {
+                // TODO: there is a bias toward feature that are numerous but low score (eg: points)
+                // Planes should be considered to be much more important than points (higher level of feature)
                 matchSets._inliers.insert(matchSets._inliers.end(), match);
+                retroprojectionScore += distance;
                 featureScore += match->get_score();
             }
             // outlier
             else
             {
                 matchSets._outliers.insert(matchSets._outliers.end(), match);
+                // outliers are still taken into account (MSAC)
+                retroprojectionScore += maxRetroprojectionError;
             }
-            retroprojectionScore += std::min(maxRetroprojectionError, distance);
         }
         catch (const std::exception& ex)
         {
@@ -171,7 +175,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     // matchedFeatures.size() * parameters::optimization::ransac::inlierProportion);
     const size_t inliersToStop = matchedFeatures.size() * 0.80;
 
-    double minScore = 1.0;
+    double maxScore = 1.0;
     utils::PoseBase bestPose = currentPose;
     matches_containers::match_sets finalFeatureSets;
 
@@ -234,12 +238,12 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                 }
 
                 // We have a better score than the previous best one, and enough inliers to consider it valid
-                if (featureInlierScore > 1.0 and featureInlierScore > minScore)
+                if (featureInlierScore > 1.0 and featureInlierScore > maxScore)
                 {
-                    minScore = featureInlierScore;
+                    std::scoped_lock<std::mutex> lock(mut);
+                    maxScore = featureInlierScore;
                     bestPose = candidatePose;
                     // save features inliers and outliers
-                    std::scoped_lock<std::mutex> lock(mut);
                     finalFeatureSets.swap(potentialInliersOutliers);
                 }
 
