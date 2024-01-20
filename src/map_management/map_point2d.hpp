@@ -24,7 +24,7 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
 {
     Point2dOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                                const InverseDepthWorldPoint& mapPoint,
-                               const tracking::PointInverseDepth::Covariance& mapPointVariance,
+                               const vector6& mapPointStandardDev,
                                const size_t mapFeatureId);
 
     size_t get_feature_part_count() const noexcept override;
@@ -44,7 +44,7 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
   protected:
     const ScreenCoordinate2D _matchedPoint;
     const InverseDepthWorldPoint _mapPoint;
-    const tracking::PointInverseDepth::Covariance _mapPointVariance;
+    const vector6 _mapPointStandardDev;
 };
 
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;

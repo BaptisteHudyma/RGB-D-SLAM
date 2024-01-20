@@ -15,12 +15,12 @@ namespace rgbd_slam::map_management {
 
 PointOptimizationFeature::PointOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                                                    const WorldCoordinate& mapPoint,
-                                                   const vector3& mapPointVariance,
+                                                   const vector3& mapPointStandardDev,
                                                    const size_t mapFeatureId) :
     matches_containers::IOptimizationFeature(mapFeatureId),
     _matchedPoint(matchedPoint),
     _mapPoint(mapPoint),
-    _mapPointVariance(mapPointVariance) {};
+    _mapPointStandardDev(mapPointStandardDev) {};
 
 size_t PointOptimizationFeature::get_feature_part_count() const noexcept { return 2; }
 
@@ -48,10 +48,10 @@ matches_containers::feat_ptr PointOptimizationFeature::compute_random_variation(
 {
     // make random variation
     WorldCoordinate variatedCoordinates = _mapPoint;
-    variatedCoordinates += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointVariance.cwiseSqrt());
+    variatedCoordinates += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointStandardDev);
 
     return matches_containers::feat_ptr(
-            new PointOptimizationFeature(_matchedPoint, variatedCoordinates, _mapPointVariance, _idInMap));
+            new PointOptimizationFeature(_matchedPoint, variatedCoordinates, _mapPointStandardDev, _idInMap));
 }
 
 FeatureType PointOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point; }
@@ -102,8 +102,11 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.push_back(matches_containers::feat_ptr(new PointOptimizationFeature(
-                detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance.diagonal(), _id)));
+        matches.push_back(matches_containers::feat_ptr(
+                new PointOptimizationFeature(detectedFeatures.get_keypoint(matchIndex).get_2D(),
+                                             _coordinates,
+                                             _covariance.diagonal().cwiseSqrt(),
+                                             _id)));
     }
     return matchIndex;
 }
