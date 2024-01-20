@@ -9,9 +9,9 @@
 #include "matches_containers.hpp"
 #include "utils/pose.hpp"
 
-#include "map_point2d.hpp"
-#include "map_point.hpp"
-#include "map_primitive.hpp"
+#include "map_features/map_point2d.hpp"
+#include "map_features/map_point.hpp"
+#include "map_features/map_primitive.hpp"
 
 namespace rgbd_slam::map_management {
 

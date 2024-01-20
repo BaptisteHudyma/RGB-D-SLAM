@@ -11,9 +11,9 @@
 #include "coordinates/point_coordinates.hpp"
 #include "coordinates/plane_coordinates.hpp"
 
-#include "map_management/map_point.hpp"
-#include "map_management/map_point2d.hpp"
-#include "map_management/map_primitive.hpp"
+#include "map_management/map_features/map_point.hpp"
+#include "map_management/map_features/map_point2d.hpp"
+#include "map_management/map_features/map_primitive.hpp"
 
 #include <gtest/gtest.h>
 #include <random>
