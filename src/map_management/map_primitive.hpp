@@ -15,7 +15,7 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
 {
     PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
                              const PlaneWorldCoordinates& mapPlane,
-                             const matrix44& mapPlaneVariance,
+                             const vector4& mapPlaneStandardDev,
                              const size_t mapFeatureId);
 
     size_t get_feature_part_count() const noexcept override;
@@ -35,7 +35,7 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
   protected:
     const PlaneCameraCoordinates _matchedPlane;
     const PlaneWorldCoordinates _mapPlane;
-    const matrix44 _mapPlaneVariance;
+    const vector4 _mapPlaneStandardDev;
 };
 
 using DetectedPlaneType = features::primitives::Plane;

@@ -137,7 +137,7 @@ matches_containers::match_container get_matched_planes(const utils::Pose& endPos
     {
         const PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
         matchedPlanes.push_back(matches_containers::feat_ptr(
-                new map_management::PlaneOptimizationFeature(cameraPlane, worldPlane, matrix44::Identity(), 0)));
+                new map_management::PlaneOptimizationFeature(cameraPlane, worldPlane, vector4::Ones(), 0)));
     }
     return matchedPlanes;
 }

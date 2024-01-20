@@ -17,7 +17,7 @@ struct PointOptimizationFeature : public matches_containers::IOptimizationFeatur
 {
     PointOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                              const WorldCoordinate& mapPoint,
-                             const vector3& mapPointVariance,
+                             const vector3& mapPointStandardDev,
                              const size_t mapFeatureId);
 
     size_t get_feature_part_count() const noexcept override;
@@ -37,7 +37,7 @@ struct PointOptimizationFeature : public matches_containers::IOptimizationFeatur
   protected:
     const ScreenCoordinate2D _matchedPoint;
     const WorldCoordinate _mapPoint;
-    const vector3 _mapPointVariance;
+    const vector3 _mapPointStandardDev;
 };
 
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;

@@ -13,12 +13,12 @@ namespace rgbd_slam::map_management {
 
 PlaneOptimizationFeature::PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
                                                    const PlaneWorldCoordinates& mapPlane,
-                                                   const matrix44& mapPlaneVariance,
+                                                   const vector4& mapPlaneStandardDev,
                                                    const size_t mapFeatureId) :
     matches_containers::IOptimizationFeature(mapFeatureId),
     _matchedPlane(matchedPlane),
     _mapPlane(mapPlane),
-    _mapPlaneVariance(mapPlaneVariance) {};
+    _mapPlaneStandardDev(mapPlaneStandardDev) {};
 
 size_t PlaneOptimizationFeature::get_feature_part_count() const noexcept { return 3; }
 
@@ -51,14 +51,13 @@ matches_containers::feat_ptr PlaneOptimizationFeature::compute_random_variation(
 {
     PlaneWorldCoordinates variatedCoordinates = _mapPlane;
 
-    const vector4& diagonalSqrt = _mapPlaneVariance.diagonal().cwiseSqrt();
-    variatedCoordinates.normal() += utils::Random::get_normal_doubles<3>().cwiseProduct(diagonalSqrt.head<3>());
+    variatedCoordinates.normal() += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPlaneStandardDev.head<3>());
     variatedCoordinates.normal().normalize();
 
-    variatedCoordinates.d() += utils::Random::get_normal_double() * diagonalSqrt(3);
+    variatedCoordinates.d() += utils::Random::get_normal_double() * _mapPlaneStandardDev(3);
 
     return matches_containers::feat_ptr(
-            new PlaneOptimizationFeature(_matchedPlane, variatedCoordinates, _mapPlaneVariance, _idInMap));
+            new PlaneOptimizationFeature(_matchedPlane, variatedCoordinates, _mapPlaneStandardDev, _idInMap));
 }
 
 FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Plane; }
@@ -125,8 +124,11 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.push_back(matches_containers::feat_ptr(new PlaneOptimizationFeature(
-                detectedFeatures[selectedIndex].get_parametrization(), get_parametrization(), get_covariance(), _id)));
+        matches.push_back(matches_containers::feat_ptr(
+                new PlaneOptimizationFeature(detectedFeatures[selectedIndex].get_parametrization(),
+                                             get_parametrization(),
+                                             get_covariance().diagonal().cwiseSqrt(),
+                                             _id)));
     }
 
     return selectedIndex;
