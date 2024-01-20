@@ -72,6 +72,7 @@ set(PRIMITIVES  ${FEATS}/primitives)
 
 set(POSE_OPTI   ${SRC}/pose_optimization)
 set(MAP         ${SRC}/map_management)
+set(MAP_FEAT    ${MAP}/map_features)
 set(TRACKING    ${SRC}/tracking)
 set(OUTPUTS     ${SRC}/outputs)
 set(UTILS       ${SRC}/utils)
@@ -123,9 +124,9 @@ add_library(primitives SHARED
 
 add_library(mapManagement SHARED
     ${MAP}/local_map.cpp
-    ${MAP}/map_point.cpp
-    ${MAP}/map_point2d.cpp
-    ${MAP}/map_primitive.cpp
+    ${MAP_FEAT}/map_point.cpp
+    ${MAP_FEAT}/map_point2d.cpp
+    ${MAP_FEAT}/map_primitive.cpp
     )
 
 add_library(outputs SHARED
