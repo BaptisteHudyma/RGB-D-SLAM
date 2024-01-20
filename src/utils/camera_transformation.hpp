@@ -5,7 +5,18 @@
 
 namespace rgbd_slam::utils {
 
-[[nodiscard]] matrix44 get_transformation_matrix(const quaternion& rotation, const vector3& position) noexcept;
+[[nodiscard]] inline matrix44 get_transformation_matrix(const matrix33& rotationMatrix,
+                                                        const vector3& position) noexcept
+{
+    matrix44 transfoMatrix;
+    transfoMatrix << rotationMatrix, position, 0, 0, 0, 1;
+    return transfoMatrix;
+}
+
+[[nodiscard]] inline matrix44 get_transformation_matrix(const quaternion& rotation, const vector3& position) noexcept
+{
+    return get_transformation_matrix(rotation.toRotationMatrix(), position);
+}
 
 /**
  * \brief Given a camera pose, returns a transformation matrix to convert a world point (xyz) to camera point (uvd)

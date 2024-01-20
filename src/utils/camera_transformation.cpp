@@ -12,13 +12,6 @@ static const matrix44 CameraToWorld = get_transformation_matrix(
         get_quaternion_from_euler_angles(EulerAngles(0.0, 90.0 * EulerToRadian, -90.0 * EulerToRadian)),
         vector3::Zero());
 
-matrix44 get_transformation_matrix(const quaternion& rotation, const vector3& position) noexcept
-{
-    matrix44 transfoMatrix;
-    transfoMatrix << rotation.toRotationMatrix(), position, 0, 0, 0, 1;
-    return transfoMatrix;
-}
-
 CameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position) noexcept
 {
     return CameraToWorldMatrix(CameraToWorld * get_transformation_matrix(rotation, position));
@@ -69,6 +62,7 @@ PlaneCameraToWorldMatrix compute_plane_camera_to_world_matrix(const CameraToWorl
 
 PlaneWorldToCameraMatrix compute_plane_world_to_camera_matrix(const WorldToCameraMatrix& worldToCamera) noexcept
 {
+    // TODO: seems inefficient: double matrix inversion
     const PlaneCameraToWorldMatrix& PlaneCameraToWorldMatrix =
             compute_plane_camera_to_world_matrix(compute_camera_to_world_transform(worldToCamera));
     PlaneWorldToCameraMatrix cameraToWorld;
