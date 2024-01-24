@@ -49,16 +49,12 @@ class RGBD_SLAM
      * \param[in] camPose Current pose of the observer
      * \param[in] originalRGB Raw rgb image. Will be used as a base for the final image
      * \param[in] elapsedTime Time since the last call (used for FPS count)
-     * \param[in] shouldDisplayStagedPoints Display the points that are not map points yet
-     * \param[in] shouldDisplayLineDetection Display the detected lines
-     * \param[in] shouldDisplayPrimitiveMasks Display the detected primitive masks
+     * \param[in] shouldDisplayStagedFeatures Display the features that are not map features yet
      */
     [[nodiscard]] cv::Mat get_debug_image(const utils::Pose& camPose,
                                           const cv::Mat& originalRGB,
                                           const double elapsedTime,
-                                          const bool shouldDisplayStagedPoints = false,
-                                          const bool shouldDisplayLineDetection = false,
-                                          const bool shouldDisplayPrimitiveMasks = false) const noexcept;
+                                          const bool shouldDisplayStagedFeatures = false) const noexcept;
 
     /**
      * \brief Show the time statistics for certain parts of the program. Kind of a basic profiler

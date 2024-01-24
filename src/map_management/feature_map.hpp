@@ -237,6 +237,21 @@ class Feature_Map
     Feature_Map() : _isActivated(true) {}
 
     /**
+     * \brief Return the handled feature type 
+     */
+    virtual FeatureType get_feature_type() const = 0;
+
+    /**
+     * \brief Return a shortened name of the feature handled (debug and display) 
+     */
+    virtual std::string get_display_name() const = 0;
+
+    /**
+     * \brief From the given feature container return the type handled by this class
+     */
+    virtual DetectedFeaturesObject get_detected_feature(const DetectedFeatureContainer& features) const = 0;
+
+    /**
      * \brief Reset the content of this map, empty all local maps
      */
     void reset() noexcept
@@ -268,18 +283,20 @@ class Feature_Map
      * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
      * \param[in, out] matches An object of matches between map object and detected features
      */
-    void get_matches(const DetectedFeaturesObject& detectedFeatures,
+    void get_matches(const DetectedFeatureContainer& detectedFeatures,
                      const WorldToCameraMatrix& worldToCamera,
                      const uint minimumFeaturesForOptimization,
                      matches_containers::match_container& matches) noexcept
     {
+        const auto& detected = get_detected_feature(detectedFeatures);
+
         matches_containers::match_container testMatches;
-        get_matches(detectedFeatures, worldToCamera, false, minimumFeaturesForOptimization, testMatches);
+        get_matches(detected, worldToCamera, false, minimumFeaturesForOptimization, testMatches);
         if (testMatches.size() < minimumFeaturesForOptimization)
         // What is the use of this metric ? TODO: document
         // or testMatches.size() < std::min(detectedFeatures.size(), get_local_map_size()) / 2)
         {
-            get_matches(detectedFeatures, worldToCamera, true, minimumFeaturesForOptimization, testMatches);
+            get_matches(detected, worldToCamera, true, minimumFeaturesForOptimization, testMatches);
         }
 
         // merge the two
@@ -317,12 +334,12 @@ class Feature_Map
      * \brief Update this local map with a succesful tracking
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \param[in] poseCovariance Covariance of the pose after tracking
-     * \param[in] detectedFeatureObject The object containing the detected features used for the tracking
+     * \param[in] detectedFeatures The object containing the detected features used for the tracking
      * \param[in] mapWriter A pointer to the map writer object
      */
     void update_map(const CameraToWorldMatrix& cameraToWorld,
                     const matrix33& poseCovariance,
-                    const DetectedFeaturesObject& detectedFeatureObject,
+                    const DetectedFeatureContainer& detectedFeatures,
                     std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
         if (not _isActivated)
@@ -332,8 +349,10 @@ class Feature_Map
 
         assert(mapWriter != nullptr);
 
-        update_local_map(cameraToWorld, poseCovariance, detectedFeatureObject, mapWriter);
-        update_staged_map(cameraToWorld, poseCovariance, detectedFeatureObject);
+        const auto& detected = get_detected_feature(detectedFeatures);
+
+        update_local_map(cameraToWorld, poseCovariance, detected, mapWriter);
+        update_staged_map(cameraToWorld, poseCovariance, detected);
     }
 
     /**
@@ -360,7 +379,7 @@ class Feature_Map
      */
     void add_features_to_staged_map(const matrix33& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
-                                    const DetectedFeaturesObject& detectedFeatures,
+                                    const DetectedFeatureContainer& detectedFeatures,
                                     const bool addAllFeatures)
     {
         if (not _isActivated)
@@ -370,15 +389,17 @@ class Feature_Map
             throw std::invalid_argument(
                     "add_features_to_staged_map: The given pose covariance is invalid, map wont be update");
 
+        const auto& detected = get_detected_feature(detectedFeatures);
+
         // Add all unmatched points to staged point container
-        const size_t featureVectorSize = detectedFeatures.size();
+        const size_t featureVectorSize = detected.size();
         assert(featureVectorSize == static_cast<size_t>(_isDetectedFeatureMatched.size()));
         for (unsigned int i = 0; i < featureVectorSize; ++i)
         {
             // Add all features, or add only the unmatched points
             if (addAllFeatures or not _isDetectedFeatureMatched[i])
             {
-                const DetectedFeatureType& detectedfeature = detectedFeatures.at(i);
+                const DetectedFeatureType& detectedfeature = detected.at(i);
                 // some features cannot be added to map
                 if (StagedFeatureType::can_add_to_map(detectedfeature))
                 {
@@ -392,9 +413,30 @@ class Feature_Map
                     }
                     catch (const std::exception& ex)
                     {
-                        outputs::log_error("Caught exception while creating the staged feature: " +
+                        outputs::log_error(get_display_name() + ": Caught exception while creating the staged feature: " +
                                            std::string(ex.what()));
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * \brief Mark all outliers hanled by this map as unmatched features
+     */
+    void mark_outliers_as_unmatched(const matches_containers::match_container& outlierMatched) noexcept
+    {
+        // Mark outliers as unmatched
+        for (const auto& match: outlierMatched)
+        {
+            if(match->get_feature_type() == get_feature_type())
+            {
+                const bool isOutlierRemoved = mark_feature_with_id_as_unmatched(match->_idInMap);
+                // If no feature were found, this is bad. A match marked as outliers must be in the local map or
+                // staged features
+                if (not isOutlierRemoved)
+                {
+                    outputs::log_error(std::format("{}: Could not find the target feature with id {}", get_display_name(), match->_idInMap));
                 }
             }
         }
@@ -412,7 +454,7 @@ class Feature_Map
 
         if (featureId == 0)
         {
-            outputs::log_error("Cannot match a feature with invalid id");
+            outputs::log_error(get_display_name() + ": Cannot match a feature with invalid id");
             return false;
         }
         // Check if id is in local map
@@ -667,7 +709,7 @@ class Feature_Map
                 }
                 catch (const std::exception& ex)
                 {
-                    outputs::log_error("Caught exeption while creating a map feature from a staged feature: " +
+                    outputs::log_error(get_display_name() + ": Caught exeption while creating a map feature from a staged feature: " +
                                        std::string(ex.what()));
                 }
             }

@@ -130,11 +130,8 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat_<float>
 cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
                                    const cv::Mat& originalRGB,
                                    const double elapsedTime,
-                                   const bool shouldDisplayStagedPoints,
-                                   const bool shouldDisplayLineDetection,
-                                   const bool shouldDisplayPrimitiveMasks) const noexcept
+                                   const bool shouldDisplayStagedFeatures) const noexcept
 {
-    // TODO: use shouldDisplayLineDetection
     cv::Mat debugImage = originalRGB.clone();
 
     const uint bandSize =
@@ -154,7 +151,7 @@ cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
                 debugImage, fps.str(), cv::Point(15, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
     }
 
-    _localMap->get_debug_image(camPose, shouldDisplayStagedPoints, shouldDisplayPrimitiveMasks, debugImage);
+    _localMap->get_debug_image(camPose, shouldDisplayStagedFeatures, debugImage);
 
     // display a red overlay if tracking is lost
     if (_isTrackingLost)

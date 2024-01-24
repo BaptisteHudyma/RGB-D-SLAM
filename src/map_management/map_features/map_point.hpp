@@ -151,12 +151,29 @@ class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
     [[nodiscard]] bool is_lost() const noexcept override;
 };
 
-using localPointMap = Feature_Map<LocalMapPoint,
+class localPointMap : public Feature_Map<LocalMapPoint,
                                   StagedMapPoint,
                                   DetectedKeypointsObject,
                                   DetectedPointType,
                                   TrackedPointsObject,
-                                  UpgradedPointType>;
+                                  UpgradedPointType>
+{
+  public:
+
+    FeatureType get_feature_type() const override {
+      return FeatureType::Point;
+    }
+
+    std::string get_display_name() const override
+    {
+      return "Points";
+    }
+
+    DetectedKeypointsObject get_detected_feature(const DetectedFeatureContainer& features) const
+    {
+      return features.keypointObject;
+    }
+};
 
 } // namespace rgbd_slam::map_management
 
