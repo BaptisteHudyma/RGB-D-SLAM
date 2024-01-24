@@ -9,35 +9,13 @@
 #include "matches_containers.hpp"
 #include "utils/pose.hpp"
 
+#include "feature_map.hpp"
 #include "map_features/map_point2d.hpp"
 #include "map_features/map_point.hpp"
 #include "map_features/map_primitive.hpp"
 
 namespace rgbd_slam::map_management {
 
-/**
- * \brief Contains sets of detected features
- */
-struct DetectedFeatureContainer
-{
-    DetectedFeatureContainer(const features::keypoints::Keypoint_Handler& newKeypointObject,
-                             const features::lines::line_container& newdDetectedLines,
-                             const features::primitives::plane_container& newDetectedPlanes) :
-        keypointObject(newKeypointObject),
-        detectedLines(newdDetectedLines),
-        detectedPlanes(newDetectedPlanes),
-        id(++idAllocator)
-    {
-    }
-
-    const features::keypoints::Keypoint_Handler keypointObject;
-    const features::lines::line_container detectedLines;
-    const features::primitives::plane_container detectedPlanes;
-    const size_t id; // unique id to differenciate from other detections
-
-  private:
-    inline static size_t idAllocator = 0;
-};
 
 /**
  * \brief Maintain a local (around the camera) map.
@@ -106,12 +84,10 @@ class Local_Map
      *
      * \param[in] camPose Pose of the camera in world coordinates
      * \param[in] shouldDisplayStaged If true, will also display the content of the staged keypoint map
-     * \param[in] shouldDisplayPlaneMasks If true, will also display the planes in local map
      * \param[in, out] debugImage Output image
      */
     void get_debug_image(const utils::Pose& camPose,
                          const bool shouldDisplayStaged,
-                         const bool shouldDisplayPlaneMasks,
                          cv::Mat& debugImage) const noexcept;
 
     void show_statistics(const double meanFrameTreatmentDuration,

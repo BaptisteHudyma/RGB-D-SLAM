@@ -5,6 +5,10 @@
 #include <list>
 #include <memory>
 
+#include "features/keypoints/keypoint_handler.hpp"
+#include "features/primitives/shape_primitives.hpp"
+#include "features/lines/line_detection.hpp"
+
 namespace rgbd_slam {
 
 enum FeatureType
@@ -28,6 +32,36 @@ inline std::string to_string(const FeatureType feat)
             return "unsupported";
     }
 }
+
+
+namespace map_management {
+
+/**
+ * \brief Contains sets of detected features
+ */
+struct DetectedFeatureContainer
+{
+    DetectedFeatureContainer(const features::keypoints::Keypoint_Handler& newKeypointObject,
+                             const features::lines::line_container& newdDetectedLines,
+                             const features::primitives::plane_container& newDetectedPlanes) :
+        keypointObject(newKeypointObject),
+        detectedLines(newdDetectedLines),
+        detectedPlanes(newDetectedPlanes),
+        id(++idAllocator)
+    {
+    }
+
+    const features::keypoints::Keypoint_Handler keypointObject;
+    const features::lines::line_container detectedLines;
+    const features::primitives::plane_container detectedPlanes;
+    const size_t id; // unique id to differenciate from other detections
+
+  private:
+    inline static size_t idAllocator = 0;
+};
+
+}
+
 
 namespace matches_containers {
 

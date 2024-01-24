@@ -139,12 +139,29 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
     [[nodiscard]] bool is_lost() const noexcept override;
 };
 
-using localPlaneMap = Feature_Map<LocalMapPlane,
+class localPlaneMap : public Feature_Map<LocalMapPlane,
                                   StagedMapPlane,
                                   DetectedPlaneObject,
                                   DetectedPlaneType,
                                   TrackedPlaneObject,
-                                  UpgradedPlaneType>;
+                                  UpgradedPlaneType>
+{
+  public:
+
+    FeatureType get_feature_type() const override {
+      return FeatureType::Plane;
+    }
+
+    std::string get_display_name() const override
+    {
+      return "Planes";
+    }
+
+    DetectedPlaneObject get_detected_feature(const DetectedFeatureContainer& features) const
+    {
+      return features.detectedPlanes;
+    }
+};
 
 } // namespace rgbd_slam::map_management
 

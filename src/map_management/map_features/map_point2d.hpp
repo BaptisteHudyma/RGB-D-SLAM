@@ -148,12 +148,29 @@ class LocalMapPoint2D : public MapPoint2D, public ILocalMapFeature<StagedMapPoin
     [[nodiscard]] bool is_lost() const noexcept override;
 };
 
-using localPoint2DMap = Feature_Map<LocalMapPoint2D,
+class localPoint2DMap : public Feature_Map<LocalMapPoint2D,
                                     StagedMapPoint2D,
                                     DetectedKeypointsObject,
                                     DetectedPoint2DType,
                                     TrackedPointsObject,
-                                    UpgradedPoint2DType>;
+                                    UpgradedPoint2DType>
+{
+  public:
+
+    FeatureType get_feature_type() const override {
+      return FeatureType::Point2d;
+    }
+
+    std::string get_display_name() const override
+    {
+      return "P2D";
+    }
+
+    DetectedKeypointsObject get_detected_feature(const DetectedFeatureContainer& features) const
+    {
+      return features.keypointObject;
+    }
+};
 
 } // namespace rgbd_slam::map_management
 

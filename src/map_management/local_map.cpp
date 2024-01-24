@@ -30,7 +30,7 @@ features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_feat
         const utils::Pose& lastPose) const noexcept
 {
     // small opti: 2D points should never be tracked
-    const size_t numberOfNewKeypoints = _localPointMap.size(); // + _localPoint2DMap.size()
+    const size_t numberOfNewKeypoints = _localPointMap.get_local_map_size(); // + _localPoint2DMap.get_local_map_size()
 
     const WorldToCameraMatrix& worldToCamera =
             utils::compute_world_to_camera_transform(lastPose.get_orientation_quaternion(), lastPose.get_position());
@@ -42,6 +42,7 @@ features::keypoints::KeypointsWithIdStruct Local_Map::get_tracked_keypoints_feat
     keypointsWithIds.reserve(numberOfNewKeypoints);
 
     constexpr uint refreshFrequency = parameters::detection::keypointRefreshFrequency * 2;
+    // TODO: generic code for tracked features
     _localPoint2DMap.get_tracked_features(worldToCamera, keypointsWithIds, refreshFrequency);
     _localPointMap.get_tracked_features(worldToCamera, keypointsWithIds, refreshFrequency);
     //_localPlaneMap.get_tracked_features(worldToCamera, nullptr, refreshFrequency);
@@ -62,7 +63,7 @@ matches_containers::match_container Local_Map::find_feature_matches(
 
     // find point matches
     const double find2dPointMatchesStartTime = static_cast<double>(cv::getTickCount());
-    _localPoint2DMap.get_matches(detectedFeatures.keypointObject,
+    _localPoint2DMap.get_matches(detectedFeatures,
                                  worldToCamera,
                                  parameters::optimization::minimumPointForOptimization,
                                  matchSets);
@@ -72,7 +73,7 @@ matches_containers::match_container Local_Map::find_feature_matches(
 
     // find point matches
     const double findPointMatchesStartTime = static_cast<double>(cv::getTickCount());
-    _localPointMap.get_matches(detectedFeatures.keypointObject,
+    _localPointMap.get_matches(detectedFeatures,
                                worldToCamera,
                                parameters::optimization::minimumPointForOptimization,
                                matchSets);
@@ -82,7 +83,7 @@ matches_containers::match_container Local_Map::find_feature_matches(
 
     // find plane matches
     const double findPlaneMatchesStartTime = static_cast<double>(cv::getTickCount());
-    _localPlaneMap.get_matches(detectedFeatures.detectedPlanes,
+    _localPlaneMap.get_matches(detectedFeatures,
                                worldToCamera,
                                parameters::optimization::minimumPlanesForOptimization,
                                matchSets);
@@ -110,9 +111,11 @@ void Local_Map::update(const utils::Pose& optimizedPose,
             optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
 
     // update all local maps
-    _localPoint2DMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.keypointObject, _mapWriter);
-    _localPointMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.keypointObject, _mapWriter);
-    _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedFeatures.detectedPlanes, _mapWriter);
+    _localPoint2DMap.update_map(cameraToWorld, poseCovariance, detectedFeatures, _mapWriter);
+    _localPointMap.update_map(cameraToWorld, poseCovariance, detectedFeatures, _mapWriter);
+    _localPlaneMap.update_map(cameraToWorld, poseCovariance, detectedFeatures, _mapWriter);
+
+    // TODO: generic uprade
 
     // try to upgrade to new features (2D to 3D)
     for (const auto& upgraded: _localPoint2DMap.get_upgraded_features(cameraToWorld))
@@ -143,14 +146,14 @@ void Local_Map::add_features_to_map(const matrix33& poseCovariance,
     assert(_detectedFeatureId == detectedFeatures.id);
 
     _localPoint2DMap.add_features_to_staged_map(
-            poseCovariance, cameraToWorld, detectedFeatures.keypointObject, addAllFeatures);
+            poseCovariance, cameraToWorld, detectedFeatures, addAllFeatures);
 
     _localPointMap.add_features_to_staged_map(
-            poseCovariance, cameraToWorld, detectedFeatures.keypointObject, addAllFeatures);
+            poseCovariance, cameraToWorld, detectedFeatures, addAllFeatures);
 
     // Add unmatched poins to the staged map, to unsure tracking of new features
     _localPlaneMap.add_features_to_staged_map(
-            poseCovariance, cameraToWorld, detectedFeatures.detectedPlanes, addAllFeatures);
+            poseCovariance, cameraToWorld, detectedFeatures, addAllFeatures);
 
     mapAddFeaturesDuration += (static_cast<double>(cv::getTickCount()) - addfeaturesStartTime) / cv::getTickFrequency();
 }
@@ -212,7 +215,6 @@ void Local_Map::draw_image_head_band(cv::Mat& debugImage) const noexcept
 
 void Local_Map::get_debug_image(const utils::Pose& camPose,
                                 const bool shouldDisplayStaged,
-                                const bool shouldDisplayPlaneMasks,
                                 cv::Mat& debugImage) const noexcept
 {
     draw_image_head_band(debugImage);
@@ -222,8 +224,7 @@ void Local_Map::get_debug_image(const utils::Pose& camPose,
     // draw all map features
     _localPoint2DMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
     _localPointMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
-    if (shouldDisplayPlaneMasks)
-        _localPlaneMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
+    _localPlaneMap.draw_on_image(worldToCamMatrix, debugImage, shouldDisplayStaged);
 }
 
 void Local_Map::show_statistics(const double meanFrameTreatmentDuration,
@@ -277,53 +278,9 @@ void Local_Map::show_statistics(const double meanFrameTreatmentDuration,
 
 void Local_Map::mark_outliers_as_unmatched(const matches_containers::match_container& outlierMatched) noexcept
 {
-    // Mark outliers as unmatched
-    for (const auto& match: outlierMatched)
-    {
-        switch (match->get_feature_type())
-        {
-            case FeatureType::Point:
-                {
-                    const bool isOutlierRemoved = _localPointMap.mark_feature_with_id_as_unmatched(match->_idInMap);
-                    // If no points were found, this is bad. A match marked as outliers must be in the local map or
-                    // staged points
-                    if (not isOutlierRemoved)
-                    {
-                        outputs::log_error(std::format("Could not find the target point with id {}", match->_idInMap));
-                    }
-                    break;
-                }
-            case FeatureType::Point2d:
-                {
-                    const bool isOutlierRemoved = _localPoint2DMap.mark_feature_with_id_as_unmatched(match->_idInMap);
-                    // If no points were found, this is bad. A match marked as outliers must be in the local map or
-                    // staged points
-                    if (not isOutlierRemoved)
-                    {
-                        outputs::log_error(
-                                std::format("Could not find the target point2d with id {}", match->_idInMap));
-                    }
-                    break;
-                }
-            case FeatureType::Plane:
-                {
-                    const bool isOutlierRemoved = _localPlaneMap.mark_feature_with_id_as_unmatched(match->_idInMap);
-                    // If no plane were found, this is bad. A match marked as outliers must be in the local map or
-                    // staged plane
-                    if (not isOutlierRemoved)
-                    {
-                        outputs::log_error(std::format("Could not find the target plane with id {}", match->_idInMap));
-                    }
-                    break;
-                }
-            default:
-                {
-                    outputs::log_error(std::format("The feature type {} is not handled in local map",
-                                                   (int)match->get_feature_type()));
-                    break;
-                }
-        }
-    }
+    _localPointMap.mark_outliers_as_unmatched(outlierMatched);
+    _localPoint2DMap.mark_outliers_as_unmatched(outlierMatched);
+    _localPlaneMap.mark_outliers_as_unmatched(outlierMatched);
 }
 
 } // namespace rgbd_slam::map_management

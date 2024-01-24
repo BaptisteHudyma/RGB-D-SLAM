@@ -20,14 +20,11 @@
 #include "types.hpp"
 #include "TUM_parser.hpp"
 
-void check_user_inputs(bool& shouldStop, bool& shouldDisplayPrimitiveMasks)
+void check_user_inputs(bool& shouldStop)
 {
     switch (cv::waitKey(1))
     {
         // check pressed key
-        case 's':
-            shouldDisplayPrimitiveMasks = not shouldDisplayPrimitiveMasks;
-            break;
         case 'p':            // pause button
             cv::waitKey(-1); // wait until any key is pressed
             break;
@@ -51,9 +48,7 @@ inline bool is_file_valid(const std::string& fileName)
 bool parse_parameters(int argc,
                       char** argv,
                       std::string& dataset,
-                      bool& shouldDisplayPrimitiveMasks,
-                      bool& shouldDisplayStagedPoints,
-                      bool& shouldDisplayLineDetection,
+                      bool& shouldDisplayStagedFeatures,
                       int& startIndex,
                       unsigned int& jumpImages,
                       unsigned int& fpsTarget,
@@ -62,9 +57,7 @@ bool parse_parameters(int argc,
     const cv::String keys =
             "{help h usage ?  |      | print this message     }"
             "{@dataset        | yoga | Dataset to process }"
-            "{p primitive     |  1   | display primitive masks }"
-            "{d staged        |  0   | display points in staged container }"
-            "{l lines         |  0   | display lines }"
+            "{d staged        |  0   | display features in staged container }"
             "{i index         |  0   | First image to parse   }"
             "{j jump          |  0   | Only take every j image into consideration   }"
             "{r fps           |  30  | Used to slow down the treatment to correspond to a certain frame rate }"
@@ -80,9 +73,7 @@ bool parse_parameters(int argc,
     }
 
     dataset = parser.get<std::string>("@dataset");
-    shouldDisplayPrimitiveMasks = parser.get<bool>("p");
-    shouldDisplayStagedPoints = parser.get<bool>("d");
-    shouldDisplayLineDetection = parser.get<bool>("l");
+    shouldDisplayStagedFeatures = parser.get<bool>("d");
     startIndex = parser.get<int>("i");
     jumpImages = parser.get<unsigned int>("j");
     fpsTarget = parser.get<unsigned int>("r");
@@ -138,9 +129,7 @@ std::vector<Data> get_data_association(const std::string& dataPath)
 int main(int argc, char* argv[])
 {
     std::string dataset;
-    bool shouldDisplayPrimitiveMasks;
-    bool shouldDisplayStagedPoints;
-    bool shouldDisplayLineDetection;
+    bool shouldDisplayStagedFeatures;
     bool shouldSavePoses;
     int startIndex;
     uint jumpFrames = 0;
@@ -149,9 +138,7 @@ int main(int argc, char* argv[])
     if (not parse_parameters(argc,
                              argv,
                              dataset,
-                             shouldDisplayPrimitiveMasks,
-                             shouldDisplayStagedPoints,
-                             shouldDisplayLineDetection,
+shouldDisplayStagedFeatures,
                              startIndex,
                              jumpFrames,
                              fpsTarget,
@@ -286,13 +273,11 @@ int main(int argc, char* argv[])
         const cv::Mat& segRgb = RGBD_Slam.get_debug_image(pose,
                                                           rgbImage,
                                                           trackingDuration,
-                                                          shouldDisplayStagedPoints,
-                                                          shouldDisplayLineDetection,
-                                                          shouldDisplayPrimitiveMasks);
+                                                          shouldDisplayStagedFeatures);
         cv::imshow("RGBD-SLAM", segRgb);
 
         // check user inputs
-        check_user_inputs(shouldStop, shouldDisplayPrimitiveMasks);
+        check_user_inputs(shouldStop);
 
         // counters
         ++totalFrameTreated;
