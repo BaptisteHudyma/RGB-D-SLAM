@@ -18,6 +18,8 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
                              const vector4& mapPlaneStandardDev,
                              const size_t mapFeatureId);
 
+    ~PlaneOptimizationFeature() override = default;
+
     size_t get_feature_part_count() const noexcept override;
 
     double get_score() const noexcept override;
@@ -41,30 +43,23 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
 using DetectedPlaneType = features::primitives::Plane;
 using DetectedPlaneObject = features::primitives::plane_container;
 using TrackedPlaneObject = void*; // TODO implement
-using UpgradedPlaneType = void*;  // no upgrades for planes
 
 /**
  * \brief Classic plane feature in map, all map plane should inherit this.
  * A plane is defined in hessian form (normal vector and distance to the origin).
  * Each plane also have a boundary polygon.
  */
-class MapPlane :
-    public tracking::Plane,
-    public IMapFeature<DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject, UpgradedPlaneType>
+class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject>
 {
   public:
-    MapPlane() : IMapFeature<DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject, UpgradedPlaneType>()
+    MapPlane() : IMapFeature<DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject>() { assert(_id > 0); }
+
+    explicit MapPlane(const size_t id) : IMapFeature<DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject>(id)
     {
         assert(_id > 0);
     }
 
-    explicit MapPlane(const size_t id) :
-        IMapFeature<DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject, UpgradedPlaneType>(id)
-    {
-        assert(_id > 0);
-    }
-
-    virtual ~MapPlane() = default;
+    ~MapPlane() override = default;
 
     [[nodiscard]] int find_match(const DetectedPlaneObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
@@ -86,10 +81,10 @@ class MapPlane :
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
     [[nodiscard]] bool compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
-                                        UpgradedPlaneType& upgradeFeature) const noexcept override
+                                        UpgradedFeature_ptr& upgradeFeature) const noexcept override
     {
-        (void)cameraToWorld;
-        (void)upgradeFeature;
+        std::ignore = cameraToWorld;
+        std::ignore = upgradeFeature;
         return false;
     }
 
@@ -139,27 +134,40 @@ class LocalMapPlane : public MapPlane, public ILocalMapFeature<StagedMapPlane>
     [[nodiscard]] bool is_lost() const noexcept override;
 };
 
-class localPlaneMap : public Feature_Map<LocalMapPlane,
-                                  StagedMapPlane,
-                                  DetectedPlaneObject,
-                                  DetectedPlaneType,
-                                  TrackedPlaneObject,
-                                  UpgradedPlaneType>
+class localPlaneMap :
+    public Feature_Map<LocalMapPlane, StagedMapPlane, DetectedPlaneObject, DetectedPlaneType, TrackedPlaneObject>
 {
   public:
+    FeatureType get_feature_type() const override { return FeatureType::Plane; }
 
-    FeatureType get_feature_type() const override {
-      return FeatureType::Plane;
+    std::string get_display_name() const override { return "Planes"; }
+
+    DetectedPlaneObject get_detected_feature(const DetectedFeatureContainer& features) const override
+    {
+        return features.detectedPlanes;
     }
 
-    std::string get_display_name() const override
+    std::shared_ptr<TrackedPlaneObject> get_tracked_features_container(
+            const TrackedFeaturesContainer& tracked) const override
     {
-      return "Planes";
+        std::ignore = tracked;
+        // no tracking for planes
+        return nullptr;
     }
 
-    DetectedPlaneObject get_detected_feature(const DetectedFeatureContainer& features) const
+    size_t minimum_features_for_opti() const override { return parameters::optimization::minimumPlanesForOptimization; }
+
+  protected:
+    void add_upgraded_to_local_map(const UpgradedFeature_ptr upgradedfeature) override
     {
-      return features.detectedPlanes;
+        if (upgradedfeature->get_type() == get_feature_type())
+        {
+            outputs::log_error("Upgraded planes is not supported");
+        }
+        else
+        {
+            outputs::log_error("Cannot add this feature to the plane map");
+        }
     }
 };
 

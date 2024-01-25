@@ -21,11 +21,7 @@ namespace rgbd_slam::map_management {
 /**
  * \brief Interface for a map feature. All map features should inherit this
  */
-template<class DetectedFeaturesObject,
-         class DetectedFeatureType,
-         class TrackedFeaturesObject,
-         class UpgradedFeatureType>
-class IMapFeature
+template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedFeaturesObject> class IMapFeature
 {
   public:
     IMapFeature() :
@@ -38,6 +34,8 @@ class IMapFeature
         _successivMatchedCount(0),
         _id(id),
         _matchIndex(FIRST_DETECTION_INDEX) {};
+
+    virtual ~IMapFeature() = default;
 
     /**
      * \brief Searches for a match in the detectedFeatures object.
@@ -59,12 +57,12 @@ class IMapFeature
                                          const bool useAdvancedSearch = false) const noexcept = 0;
 
     /**
-     * \brief Return true if this feature can be upgraded to UpgradedFeatureType
+     * \brief Return true if this feature can be upgraded to UpgradedFeature_ptr
      * \param[in] cameraToWorld The optimized pose
      * \param[out] upgradeFeature The upgraded feature, valid if this function returned true
      */
     [[nodiscard]] virtual bool compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
-                                                UpgradedFeatureType& upgradeFeature) const noexcept = 0;
+                                                UpgradedFeature_ptr& upgradeFeature) const noexcept = 0;
 
     /**
      * \brief Should return true if the feature is detected as moving
@@ -184,6 +182,8 @@ template<class DetectedFeatureType> class IStagedMapFeature
                       const DetectedFeatureType& detectedFeature) = 0;
     */
 
+    virtual ~IStagedMapFeature() = default;
+
     [[nodiscard]] virtual bool should_remove_from_staged() const noexcept = 0;
     [[nodiscard]] virtual bool should_add_to_local_map() const noexcept = 0;
 
@@ -205,6 +205,8 @@ template<class StagedMapFeature> class ILocalMapFeature
     ILocalMapFeature(const StagedMapFeature& stagedfeature);
     */
 
+    virtual ~ILocalMapFeature() = default;
+
     [[nodiscard]] virtual bool is_lost() const noexcept = 0;
 
     cv::Vec3b _color;
@@ -225,8 +227,7 @@ template<class MapFeatureType,
          class StagedFeatureType,
          class DetectedFeaturesObject,
          class DetectedFeatureType,
-         class TrackedFeaturesObject,
-         class UpgradedFeatureType>
+         class TrackedFeaturesObject>
 class Feature_Map
 {
   private:
@@ -236,13 +237,15 @@ class Feature_Map
   public:
     Feature_Map() : _isActivated(true) {}
 
+    virtual ~Feature_Map() = default;
+
     /**
-     * \brief Return the handled feature type 
+     * \brief Return the handled feature type
      */
     virtual FeatureType get_feature_type() const = 0;
 
     /**
-     * \brief Return a shortened name of the feature handled (debug and display) 
+     * \brief Return a shortened name of the feature handled (debug and display)
      */
     virtual std::string get_display_name() const = 0;
 
@@ -250,6 +253,18 @@ class Feature_Map
      * \brief From the given feature container return the type handled by this class
      */
     virtual DetectedFeaturesObject get_detected_feature(const DetectedFeatureContainer& features) const = 0;
+
+    /**
+     * \brief From the given tracked feature container return the type handled by this class
+     * If the result is nullptr, this map cannot track features
+     */
+    virtual std::shared_ptr<TrackedFeaturesObject> get_tracked_features_container(
+            const TrackedFeaturesContainer& tracked) const = 0;
+
+    /**
+     * \brief Return the minimum number of features for a pose optimization
+     */
+    virtual size_t minimum_features_for_opti() const = 0;
 
     /**
      * \brief Reset the content of this map, empty all local maps
@@ -263,6 +278,9 @@ class Feature_Map
         _stagedMap.clear();
     }
 
+    /**
+     * \brief empty the map, but store map features to a map file
+     */
     void destroy(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
     {
         if (not _isActivated)
@@ -310,10 +328,15 @@ class Feature_Map
      * \param[in] localMapDropChance Chance to randomly drop a local map point and not return it
      */
     void get_tracked_features(const WorldToCameraMatrix& worldToCamera,
-                              TrackedFeaturesObject& trackedFeatures,
+                              TrackedFeaturesContainer& trackedFeatures,
                               const uint localMapDropChance = 1000) const noexcept
     {
         if (not _isActivated)
+            return;
+
+        std::shared_ptr<TrackedFeaturesObject> tracked = get_tracked_features_container(trackedFeatures);
+        // this map cannot track
+        if (tracked == nullptr)
             return;
 
         // local Map features
@@ -323,7 +346,7 @@ class Feature_Map
             // feature was matched at the last iteration, and is visible
             if (mapFeature.is_matched() and mapFeature.is_visible(worldToCamera))
             {
-                mapFeature.add_to_tracked(worldToCamera, trackedFeatures, localMapDropChance);
+                mapFeature.add_to_tracked(worldToCamera, *tracked, localMapDropChance);
             }
         }
 
@@ -413,8 +436,9 @@ class Feature_Map
                     }
                     catch (const std::exception& ex)
                     {
-                        outputs::log_error(get_display_name() + ": Caught exception while creating the staged feature: " +
-                                           std::string(ex.what()));
+                        outputs::log_error(
+                                get_display_name() +
+                                ": Caught exception while creating the staged feature: " + std::string(ex.what()));
                     }
                 }
             }
@@ -429,14 +453,15 @@ class Feature_Map
         // Mark outliers as unmatched
         for (const auto& match: outlierMatched)
         {
-            if(match->get_feature_type() == get_feature_type())
+            if (match->get_feature_type() == get_feature_type())
             {
                 const bool isOutlierRemoved = mark_feature_with_id_as_unmatched(match->_idInMap);
                 // If no feature were found, this is bad. A match marked as outliers must be in the local map or
                 // staged features
                 if (not isOutlierRemoved)
                 {
-                    outputs::log_error(std::format("{}: Could not find the target feature with id {}", get_display_name(), match->_idInMap));
+                    outputs::log_error(std::format(
+                            "{}: Could not find the target feature with id {}", get_display_name(), match->_idInMap));
                 }
             }
         }
@@ -537,7 +562,7 @@ class Feature_Map
     /**
      * \brief compute the upgraded features and remove them from the map
      */
-    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_features(const CameraToWorldMatrix& cameraToWorld)
+    [[nodiscard]] std::vector<UpgradedFeature_ptr> get_upgraded_features(const CameraToWorldMatrix& cameraToWorld)
     {
         auto upgradedMapFeatures = get_upgraded_map_features(cameraToWorld);
         auto upgradedStagedFeatures = get_upgraded_staged_features(cameraToWorld);
@@ -546,10 +571,29 @@ class Feature_Map
         return upgradedMapFeatures;
     }
 
-    // shortcut to add map points
-    void add_local_map_point(const MapFeatureType& mapFeature) { _localMap.emplace(mapFeature._id, mapFeature); }
+    /**
+     * \brief Add the new features of correct type to the local map
+     * \return the number of feature added to the map ( <= upgradedFeatures.size())
+     */
+    size_t add_upgraded_features(const std::vector<UpgradedFeature_ptr>& upgradedFeatures)
+    {
+        size_t addedFeatures = 0;
+        for (const auto& upgraded: upgradedFeatures)
+        {
+            // if they are the same type, add this new feature
+            if (upgraded->get_type() == get_feature_type())
+            {
+                add_upgraded_to_local_map(upgraded);
+                addedFeatures += 1;
+            }
+        }
+        return addedFeatures;
+    }
 
   protected:
+    // shortcut to add map points
+    virtual void add_upgraded_to_local_map(const UpgradedFeature_ptr upgradedfeature) = 0;
+
     /**
      * \brief return the object thta contains the matches between detected and map feature. Set the
      * _isDetectedFeatureMatched flags
@@ -709,7 +753,8 @@ class Feature_Map
                 }
                 catch (const std::exception& ex)
                 {
-                    outputs::log_error(get_display_name() + ": Caught exeption while creating a map feature from a staged feature: " +
+                    outputs::log_error(get_display_name() +
+                                       ": Caught exeption while creating a map feature from a staged feature: " +
                                        std::string(ex.what()));
                 }
             }
@@ -774,22 +819,28 @@ class Feature_Map
         }
     }
 
-    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_map_features(
+    [[nodiscard]] std::vector<UpgradedFeature_ptr> get_upgraded_map_features(
             const CameraToWorldMatrix& cameraToWorld) noexcept
     {
-        std::vector<UpgradedFeatureType> upgradedFeatures;
-        // update the staged map with no matchs
+        std::vector<UpgradedFeature_ptr> upgradedFeatures;
+
         typename localMapType::iterator mapFeatureIterator = _localMap.begin();
         while (mapFeatureIterator != _localMap.end())
         {
             MapFeatureType& mapFeature = mapFeatureIterator->second;
             assert(mapFeatureIterator->first == mapFeature._id);
 
-            UpgradedFeatureType upgraded;
+            UpgradedFeature_ptr upgraded;
             if (mapFeature.compute_upgraded(cameraToWorld, upgraded))
             {
-                upgradedFeatures.emplace_back(upgraded);
-                // Remove useless point
+                if (upgraded == nullptr)
+                {
+                    outputs::log_error(get_display_name() + ": compute_upgraded returned null");
+                    ++mapFeatureIterator;
+                    continue;
+                }
+                upgradedFeatures.push_back(upgraded);
+                // Remove the upgraded feature
                 mapFeatureIterator = _localMap.erase(mapFeatureIterator);
             }
             else
@@ -800,22 +851,29 @@ class Feature_Map
         return upgradedFeatures;
     }
 
-    [[nodiscard]] std::vector<UpgradedFeatureType> get_upgraded_staged_features(
+    [[nodiscard]] std::vector<UpgradedFeature_ptr> get_upgraded_staged_features(
             const CameraToWorldMatrix& cameraToWorld) noexcept
     {
-        std::vector<UpgradedFeatureType> upgradedFeatures;
-        // update the staged map with no matchs
+        std::vector<UpgradedFeature_ptr> upgradedFeatures;
+
         typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();
         while (stagedFeatureIterator != _stagedMap.end())
         {
             StagedFeatureType& stagedFeature = stagedFeatureIterator->second;
             assert(stagedFeatureIterator->first == stagedFeature._id);
 
-            UpgradedFeatureType upgraded;
+            UpgradedFeature_ptr upgraded;
             if (stagedFeature.compute_upgraded(cameraToWorld, upgraded))
             {
-                upgradedFeatures.emplace_back(upgraded);
-                // Remove useless point
+                if (upgraded == nullptr)
+                {
+                    outputs::log_error(get_display_name() + ": compute_upgraded returned null");
+                    ++stagedFeatureIterator;
+                    continue;
+                }
+
+                upgradedFeatures.push_back(upgraded);
+                // Remove the upgraded feature
                 stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);
             }
             else
@@ -824,6 +882,19 @@ class Feature_Map
             }
         }
         return upgradedFeatures;
+    }
+
+    void add_to_local_map(const MapFeatureType& newFeature)
+    {
+        // check that no feature with the same id exists
+        if (not _localMap.contains(newFeature._id))
+        {
+            _localMap.emplace(newFeature._id, newFeature);
+        }
+        else
+        {
+            outputs::log_error(get_display_name() + ": a feature with this id already exists");
+        }
     }
 
   private:

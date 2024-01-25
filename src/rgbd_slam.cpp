@@ -53,9 +53,6 @@ RGBD_SLAM::RGBD_SLAM(const utils::Pose& startPose, const uint imageWidth, const 
         exit(-1);
     }
 
-    // local map
-    _localMap = std::make_unique<map_management::Local_Map>();
-
     // plane/cylinder finder
     _primitiveDetector = std::make_unique<features::primitives::Primitive_Detection>(_width, _height);
 
@@ -151,7 +148,7 @@ cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
                 debugImage, fps.str(), cv::Point(15, 15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255, 1));
     }
 
-    _localMap->get_debug_image(camPose, shouldDisplayStagedFeatures, debugImage);
+    _localMap.get_debug_image(camPose, shouldDisplayStagedFeatures, debugImage);
 
     // display a red overlay if tracking is lost
     if (_isTrackingLost)
@@ -187,7 +184,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
 
     // Find matches by the pose predicted by motion model
     const matches_containers::match_container& matchedFeatures =
-            _localMap->find_feature_matches(predictedPose, detectedFeatures);
+            _localMap.find_feature_matches(predictedPose, detectedFeatures);
 
     // The new pose, after optimization
     utils::Pose newPose = predictedPose;
@@ -210,7 +207,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         // Update local map if a valid transformation was found
         try
         {
-            _localMap->update(optimizedPose, detectedFeatures, matchSets._outliers);
+            _localMap.update(optimizedPose, detectedFeatures, matchSets._outliers);
             _isTrackingLost = false;
             _failedTrackingCount = 0;
         }
@@ -219,7 +216,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             outputs::log_error("Caught exeption while updating map: " + std::string(ex.what()));
 
             // no valid transformation
-            _localMap->update_no_pose();
+            _localMap.update_no_pose();
 
             _isTrackingLost = (++_failedTrackingCount) > 3;
             _motionModel.reset();
@@ -229,7 +226,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     else
     {
         // no valid transformation
-        _localMap->update_no_pose();
+        _localMap.update_no_pose();
 
         // add unmatched features if not tracking could be done last call
         const matrix33& poseCovariance = predictedPose.get_position_variance();
@@ -238,7 +235,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
                     predictedPose.get_orientation_quaternion(), predictedPose.get_position());
 
-            _localMap->add_features_to_map(poseCovariance, cameraToWorld, detectedFeatures, true);
+            _localMap.add_features_to_map(poseCovariance, cameraToWorld, detectedFeatures, true);
         }
 
         if (not _isFirstTrackingCall)
@@ -271,11 +268,13 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
         const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
         // Get map points that were tracked last call, and retroproject them to screen space using
         // last pose (used for optical flow)
-        const features::keypoints::KeypointsWithIdStruct& trackedKeypointContainer =
-                _localMap->get_tracked_keypoints_features(predictedPose);
+        const auto& trackedFeaturesContainer = _localMap.get_tracked_keypoints_features(predictedPose);
+
+        // TODO: handle the other tracked features here
+
         // Detect keypoints, and match the one detected by optical flow
         return _pointDetector->compute_keypoints(
-                grayImage, depthImage, trackedKeypointContainer, shouldRecomputeKeypoints);
+                grayImage, depthImage, *(trackedFeaturesContainer.trackedPoints), shouldRecomputeKeypoints);
     });
 #else
     auto kpHandler = std::async(std::launch::async, [&depthImage]() {
@@ -338,7 +337,7 @@ void RGBD_SLAM::show_statistics(const double meanFrameTreatmentDuration) const n
         _pointDetector->show_statistics(meanFrameTreatmentDuration, _totalFrameTreated, false);
 
         // display local map update statistics (find matches, map update)
-        _localMap->show_statistics(meanFrameTreatmentDuration, _totalFrameTreated, false);
+        _localMap.show_statistics(meanFrameTreatmentDuration, _totalFrameTreated);
 
         // display pose optimization from features statistics
         pose_optimization::Pose_Optimization::show_statistics(meanFrameTreatmentDuration, _totalFrameTreated, false);

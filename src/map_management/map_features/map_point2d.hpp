@@ -9,14 +9,6 @@
 
 namespace rgbd_slam::map_management {
 
-struct UpgradedPoint2D
-{
-    WorldCoordinate _coordinates;
-    WorldCoordinateCovariance _covariance;
-    cv::Mat _descriptor;
-    int _matchIndex;
-};
-
 /**
  *  \brief The OptimizationFeature for a 2d point
  */
@@ -50,7 +42,6 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
 using DetectedPoint2DType = features::keypoints::DetectedKeyPoint;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
-using UpgradedPoint2DType = UpgradedPoint2D; // 2D points can be upgraded to 3D
 
 /**
  * \brief Classic 2D point feature in map, all 2D map points should inherit this.
@@ -58,7 +49,7 @@ using UpgradedPoint2DType = UpgradedPoint2D; // 2D points can be upgraded to 3D
  */
 class MapPoint2D :
     public tracking::PointInverseDepth,
-    public IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject, UpgradedPoint2DType>
+    public IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject>
 {
   public:
     MapPoint2D(const ScreenCoordinate2D& coordinates,
@@ -66,7 +57,7 @@ class MapPoint2D :
                const matrix33& stateCovariance,
                const cv::Mat& descriptor) :
         PointInverseDepth(coordinates, c2w, stateCovariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject, UpgradedPoint2DType>()
+        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject>()
     {
         assert(_id > 0);
         assert(not _descriptor.empty());
@@ -74,13 +65,13 @@ class MapPoint2D :
 
     MapPoint2D(const tracking::PointInverseDepth& coordinates, const size_t id) :
         tracking::PointInverseDepth(coordinates),
-        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject, UpgradedPoint2DType>(id)
+        IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject>(id)
     {
         assert(_id > 0);
         assert(not _descriptor.empty());
     }
 
-    virtual ~MapPoint2D() = default;
+    ~MapPoint2D() override = default;
 
     [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
@@ -102,7 +93,7 @@ class MapPoint2D :
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
     [[nodiscard]] bool compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
-                                        UpgradedPoint2DType& upgradeFeature) const noexcept override;
+                                        UpgradedFeature_ptr& upgradeFeature) const noexcept override;
 
     [[nodiscard]] bool is_moving() const noexcept override { return tracking::PointInverseDepth::is_moving(); }
 
@@ -148,27 +139,45 @@ class LocalMapPoint2D : public MapPoint2D, public ILocalMapFeature<StagedMapPoin
     [[nodiscard]] bool is_lost() const noexcept override;
 };
 
-class localPoint2DMap : public Feature_Map<LocalMapPoint2D,
-                                    StagedMapPoint2D,
-                                    DetectedKeypointsObject,
-                                    DetectedPoint2DType,
-                                    TrackedPointsObject,
-                                    UpgradedPoint2DType>
+class localPoint2DMap :
+    public Feature_Map<LocalMapPoint2D,
+                       StagedMapPoint2D,
+                       DetectedKeypointsObject,
+                       DetectedPoint2DType,
+                       TrackedPointsObject>
 {
   public:
+    FeatureType get_feature_type() const override { return FeatureType::Point2d; }
 
-    FeatureType get_feature_type() const override {
-      return FeatureType::Point2d;
+    std::string get_display_name() const override { return "P2D"; }
+
+    DetectedKeypointsObject get_detected_feature(const DetectedFeatureContainer& features) const override
+    {
+        return features.keypointObject;
     }
 
-    std::string get_display_name() const override
+    std::shared_ptr<TrackedPointsObject> get_tracked_features_container(
+            const TrackedFeaturesContainer& tracked) const override
     {
-      return "P2D";
+        return tracked.trackedPoints;
     }
 
-    DetectedKeypointsObject get_detected_feature(const DetectedFeatureContainer& features) const
+    size_t minimum_features_for_opti() const override
     {
-      return features.keypointObject;
+        return parameters::optimization::minimumPoint2dForOptimization;
+    }
+
+  protected:
+    void add_upgraded_to_local_map(const UpgradedFeature_ptr upgradedfeature) override
+    {
+        if (upgradedfeature->get_type() == get_feature_type())
+        {
+            outputs::log_error("Upgraded 2D points is not supported");
+        }
+        else
+        {
+            outputs::log_error("Cannot add this feature to the 2D point map");
+        }
     }
 };
 

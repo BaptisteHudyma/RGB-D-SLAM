@@ -61,11 +61,11 @@ matches_containers::feat_ptr Point2dOptimizationFeature::compute_random_variatio
                        -M_PI,
                        M_PI);
 
-    return matches_containers::feat_ptr(new Point2dOptimizationFeature(
+    return std::make_shared<Point2dOptimizationFeature>(
             _matchedPoint,
             InverseDepthWorldPoint(variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi),
             _mapPointStandardDev,
-            _idInMap));
+            _idInMap);
 }
 
 FeatureType Point2dOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point2d; }
@@ -116,11 +116,11 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.push_back(matches_containers::feat_ptr(
-                new Point2dOptimizationFeature(detectedFeatures.get_keypoint(matchIndex).get_2D(),
-                                               _coordinates,
-                                               _covariance.diagonal().cwiseSqrt(),
-                                               _id)));
+        matches.push_back(
+                std::make_shared<Point2dOptimizationFeature>(detectedFeatures.get_keypoint(matchIndex).get_2D(),
+                                                             _coordinates,
+                                                             _covariance.diagonal().cwiseSqrt(),
+                                                             _id));
     }
     return matchIndex;
 }
@@ -203,17 +203,17 @@ void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) 
 }
 
 bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
-                                  UpgradedPoint2DType& upgradedFeature) const noexcept
+                                  UpgradedFeature_ptr& upgradedFeature) const noexcept
 {
     try
     {
         if (compute_linearity_score(cameraToWorld) < 0.1) // linearity index (percentage) (TODO: add to parameters)
         {
             Eigen::Matrix<double, 3, 6> jacobian;
-            upgradedFeature._coordinates = _coordinates.to_world_coordinates(jacobian);
-            upgradedFeature._covariance = compute_cartesian_covariance(_covariance, jacobian);
-            upgradedFeature._descriptor = _descriptor;
-            upgradedFeature._matchIndex = _matchIndex;
+            const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
+
+            upgradedFeature = std::make_shared<UpgradedPoint2D>(
+                    worldCoords, compute_cartesian_covariance(_covariance, jacobian), _descriptor, _matchIndex);
             return true;
         }
     }

@@ -2,6 +2,7 @@
 
 #include "camera_transformation.hpp"
 #include "logger.hpp"
+#include "matches_containers.hpp"
 #include "parameters.hpp"
 #include "distance_utils.hpp"
 
@@ -56,8 +57,8 @@ matches_containers::feat_ptr PlaneOptimizationFeature::compute_random_variation(
 
     variatedCoordinates.d() += utils::Random::get_normal_double() * _mapPlaneStandardDev(3);
 
-    return matches_containers::feat_ptr(
-            new PlaneOptimizationFeature(_matchedPlane, variatedCoordinates, _mapPlaneStandardDev, _idInMap));
+    return std::make_shared<PlaneOptimizationFeature>(
+            _matchedPlane, variatedCoordinates, _mapPlaneStandardDev, _idInMap);
 }
 
 FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Plane; }
@@ -124,11 +125,11 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.push_back(matches_containers::feat_ptr(
-                new PlaneOptimizationFeature(detectedFeatures[selectedIndex].get_parametrization(),
-                                             get_parametrization(),
-                                             get_covariance().diagonal().cwiseSqrt(),
-                                             _id)));
+        matches.push_back(
+                std::make_shared<PlaneOptimizationFeature>(detectedFeatures[selectedIndex].get_parametrization(),
+                                                           get_parametrization(),
+                                                           get_covariance().diagonal().cwiseSqrt(),
+                                                           _id));
     }
 
     return selectedIndex;

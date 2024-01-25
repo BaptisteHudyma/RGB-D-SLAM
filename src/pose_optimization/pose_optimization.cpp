@@ -11,7 +11,6 @@
 #include "utils/camera_transformation.hpp"
 
 #include <Eigen/StdVector>
-#include <algorithm>
 #include <cmath>
 #include <exception>
 #include <opencv2/core/utility.hpp>
@@ -173,7 +172,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
 
     // TODO: check the constant: 60% inlier proportion is weak
     // matchedFeatures.size() * parameters::optimization::ransac::inlierProportion);
-    const size_t inliersToStop = matchedFeatures.size() * 0.80;
+    const size_t inliersToStop = static_cast<size_t>(static_cast<double>(matchedFeatures.size()) * 0.80);
 
     double maxScore = 1.0;
     utils::PoseBase bestPose = currentPose;
@@ -182,7 +181,6 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     std::atomic_bool canQuit = false;
     std::mutex mut;
 
-    uint iteration = 0;
 #ifndef MAKE_DETERMINISTIC
     // parallel loop to speed up the process
     // USING THIS PARALLEL LOOP BREAKS THE RANDOM SEEDING
@@ -193,7 +191,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                 if (canQuit.load())
                     return;
 #else
-    for (; iteration < maximumIterations; ++iteration)
+    for (uint iteration = 0; iteration < maximumIterations; ++iteration)
     {
         if (canQuit.load())
             break;
@@ -263,12 +261,11 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     const double inlierScore = get_feature_set_optimization_score(finalFeatureSets._inliers);
     if (inlierScore < 1.0)
     {
-        outputs::log_error(std::format(
-                "Could not find a transformation with enough inliers using RANSAC in {} over {} iterations. Final "
-                "inlier score is {}",
-                iteration,
-                maximumIterations,
-                inlierScore));
+        outputs::log_error(
+                std::format("Could not find a transformation with enough inliers using RANSAC in {} iterations. Final "
+                            "inlier score is {}",
+                            maximumIterations,
+                            inlierScore));
 
         _meanPoseRANSACDuration +=
                 (static_cast<double>(cv::getTickCount()) - computePoseRansacStartTime) / cv::getTickFrequency();
