@@ -50,8 +50,8 @@ matches_containers::feat_ptr PointOptimizationFeature::compute_random_variation(
     WorldCoordinate variatedCoordinates = _mapPoint;
     variatedCoordinates += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointStandardDev);
 
-    return matches_containers::feat_ptr(
-            new PointOptimizationFeature(_matchedPoint, variatedCoordinates, _mapPointStandardDev, _idInMap));
+    return std::make_shared<PointOptimizationFeature>(
+            _matchedPoint, variatedCoordinates, _mapPointStandardDev, _idInMap);
 }
 
 FeatureType PointOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point; }
@@ -101,11 +101,10 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.push_back(matches_containers::feat_ptr(
-                new PointOptimizationFeature(detectedFeatures.get_keypoint(matchIndex).get_2D(),
-                                             _coordinates,
-                                             _covariance.diagonal().cwiseSqrt(),
-                                             _id)));
+        matches.push_back(std::make_shared<PointOptimizationFeature>(detectedFeatures.get_keypoint(matchIndex).get_2D(),
+                                                                     _coordinates,
+                                                                     _covariance.diagonal().cwiseSqrt(),
+                                                                     _id));
     }
     return matchIndex;
 }

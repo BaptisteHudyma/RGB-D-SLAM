@@ -43,21 +43,20 @@ struct PointOptimizationFeature : public matches_containers::IOptimizationFeatur
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
 using DetectedPointType = features::keypoints::DetectedKeyPoint;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
-using UpgradedPointType = void*; // no upgrade for 3D points
 
 /**
  * \brief Classic point feature in map, all map points should inherit this
  */
 class MapPoint :
     public tracking::Point,
-    public IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject, UpgradedPointType>
+    public IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject>
 {
   public:
     MapPoint(const WorldCoordinate& coordinates,
              const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor) :
         tracking::Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject, UpgradedPointType>()
+        IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject>()
     {
         assert(_id > 0);
     }
@@ -67,12 +66,12 @@ class MapPoint :
              const cv::Mat& descriptor,
              const size_t id) :
         tracking::Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject, UpgradedPointType>(id)
+        IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject>(id)
     {
         assert(_id > 0);
     }
 
-    virtual ~MapPoint() = default;
+    ~MapPoint() override = default;
 
     [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
@@ -94,10 +93,10 @@ class MapPoint :
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
     [[nodiscard]] bool compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
-                                        UpgradedPointType& upgradeFeature) const noexcept override
+                                        UpgradedFeature_ptr& upgradeFeature) const noexcept override
     {
-        (void)cameraToWorld;
-        (void)upgradeFeature;
+        std::ignore = cameraToWorld;
+        std::ignore = upgradeFeature;
         return false;
     }
 
@@ -151,27 +150,41 @@ class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
     [[nodiscard]] bool is_lost() const noexcept override;
 };
 
-class localPointMap : public Feature_Map<LocalMapPoint,
-                                  StagedMapPoint,
-                                  DetectedKeypointsObject,
-                                  DetectedPointType,
-                                  TrackedPointsObject,
-                                  UpgradedPointType>
+class localPointMap :
+    public Feature_Map<LocalMapPoint, StagedMapPoint, DetectedKeypointsObject, DetectedPointType, TrackedPointsObject>
 {
   public:
+    FeatureType get_feature_type() const override { return FeatureType::Point; }
 
-    FeatureType get_feature_type() const override {
-      return FeatureType::Point;
+    std::string get_display_name() const override { return "Points"; }
+
+    DetectedKeypointsObject get_detected_feature(const DetectedFeatureContainer& features) const override
+    {
+        return features.keypointObject;
     }
 
-    std::string get_display_name() const override
+    std::shared_ptr<TrackedPointsObject> get_tracked_features_container(
+            const TrackedFeaturesContainer& tracked) const override
     {
-      return "Points";
+        return tracked.trackedPoints;
     }
 
-    DetectedKeypointsObject get_detected_feature(const DetectedFeatureContainer& features) const
+    size_t minimum_features_for_opti() const override { return parameters::optimization::minimumPointForOptimization; }
+
+  protected:
+    void add_upgraded_to_local_map(const UpgradedFeature_ptr upgradedfeature) override
     {
-      return features.keypointObject;
+        if (upgradedfeature->get_type() == get_feature_type())
+        {
+            const auto upgraded = dynamic_cast<UpgradedPoint2D&>(*upgradedfeature);
+
+            add_to_local_map(LocalMapPoint(
+                    upgraded._coordinates, upgraded._covariance, upgraded._descriptor, upgraded._matchIndex));
+        }
+        else
+        {
+            outputs::log_error("Cannot add this feature to the point map");
+        }
     }
 };
 

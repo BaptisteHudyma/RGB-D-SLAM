@@ -11,7 +11,7 @@
 
 namespace rgbd_slam {
 
-enum FeatureType
+enum class FeatureType
 {
     Point2d,
     Point,
@@ -22,17 +22,17 @@ inline std::string to_string(const FeatureType feat)
 {
     switch (feat)
     {
-        case FeatureType::Point:
+        using enum FeatureType;
+        case Point:
             return "point";
-        case FeatureType::Point2d:
+        case Point2d:
             return "point2d";
-        case FeatureType::Plane:
+        case Plane:
             return "plane";
         default:
             return "unsupported";
     }
 }
-
 
 namespace map_management {
 
@@ -60,8 +60,52 @@ struct DetectedFeatureContainer
     inline static size_t idAllocator = 0;
 };
 
-}
+/**
+ * \brief Contains a set of features to track on the new image, before any detection
+ */
+struct TrackedFeaturesContainer
+{
+    TrackedFeaturesContainer() : trackedPoints(std::make_shared<features::keypoints::KeypointsWithIdStruct>()) {}
 
+    std::shared_ptr<features::keypoints::KeypointsWithIdStruct> trackedPoints;
+};
+
+/**
+ * \brief Base class for upgraded features
+ */
+struct IUpgradedFeature
+{
+    IUpgradedFeature(const int matchIndex) : _matchIndex(matchIndex) {}
+    virtual ~IUpgradedFeature() = default;
+
+    virtual FeatureType get_type() const = 0;
+
+    int _matchIndex;
+};
+
+using UpgradedFeature_ptr = std::shared_ptr<IUpgradedFeature>;
+
+struct UpgradedPoint2D : IUpgradedFeature
+{
+    UpgradedPoint2D(const WorldCoordinate& coordinates,
+                    const WorldCoordinateCovariance& covariance,
+                    const cv::Mat& descriptor,
+                    const int matchId) :
+        IUpgradedFeature(matchId),
+        _coordinates(coordinates),
+        _covariance(covariance),
+        _descriptor(descriptor)
+    {
+    }
+
+    FeatureType get_type() const override { return FeatureType::Point; }
+
+    WorldCoordinate _coordinates;
+    WorldCoordinateCovariance _covariance;
+    cv::Mat _descriptor;
+};
+
+} // namespace map_management
 
 namespace matches_containers {
 
@@ -74,6 +118,9 @@ using feat_ptr = std::shared_ptr<IOptimizationFeature>;
 struct IOptimizationFeature
 {
     IOptimizationFeature(const size_t idInMap) : _idInMap(idInMap) {};
+
+    virtual ~IOptimizationFeature() = default;
+
     /**
      * \brief Return the number of distance element that this feature will return
      */

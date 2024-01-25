@@ -5,7 +5,13 @@
 #include "features/lines/line_detection.hpp"
 #include "features/primitives/depth_map_transformation.hpp"
 #include "features/primitives/primitive_detection.hpp"
+
 #include "map_management/local_map.hpp"
+// local maps
+#include "map_features/map_point2d.hpp"
+#include "map_features/map_point.hpp"
+#include "map_features/map_primitive.hpp"
+
 #include "tracking/motion_model.hpp"
 #include "utils/pose.hpp"
 #include <memory>
@@ -96,7 +102,9 @@ class RGBD_SLAM
     /* Detectors */
     std::unique_ptr<features::primitives::Primitive_Detection> _primitiveDetector = nullptr;
 
-    std::unique_ptr<map_management::Local_Map> _localMap = nullptr;
+    map_management::
+            Local_Map<map_management::localPoint2DMap, map_management::localPointMap, map_management::localPlaneMap>
+                    _localMap;
     std::unique_ptr<features::keypoints::Key_Point_Extraction> _pointDetector = nullptr;
     std::unique_ptr<features::lines::Line_Detection> _lineDetector = nullptr;
 
