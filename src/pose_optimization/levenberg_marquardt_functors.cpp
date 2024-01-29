@@ -91,7 +91,8 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
 
         assert(static_cast<int>(partCount) == distance.size());
 
-        outputScores.segment(featureScoreIndex, partCount) = distance * feature->get_alpha_reduction();
+        outputScores.segment(featureScoreIndex, partCount) =
+                distance * feature->get_alpha_reduction() / static_cast<double>(partCount);
         featureScoreIndex += static_cast<int>(partCount);
     }
     return 0;

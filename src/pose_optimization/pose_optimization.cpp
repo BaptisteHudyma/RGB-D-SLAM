@@ -58,7 +58,8 @@ constexpr size_t featureIndex2dPoint = 2;
         try
         {
             // get the feature distance to it's match
-            const double distance = match->get_distance(worldToCamera).norm();
+            const double distance =
+                    match->get_distance(worldToCamera).norm() / static_cast<double>(match->get_feature_part_count());
             // inlier
             if (distance < maxRetroprojectionError)
             {
