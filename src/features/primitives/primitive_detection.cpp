@@ -481,8 +481,7 @@ void Primitive_Detection::cylinder_fitting(const uint cellActivatedCount,
 {
     // try cylinder fitting on the activated planes
     const Cylinder_Segment& cylinderSegment = Cylinder_Segment(_planeGrid, isActivatedMap, cellActivatedCount);
-    // TODO: emplace back
-    _cylinderSegments.push_back(cylinderSegment);
+    _cylinderSegments.emplace_back(cylinderSegment);
 
     // Fit planes to subsegments
     const uint cylinderSegmentCount = cylinderSegment.get_segment_count();
@@ -655,7 +654,7 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
     std::vector<vector3> boundaryPoints;
     std::mutex mut;
 
-    const double maxBoundaryDistance = 9 * planeSegment.get_MSE();
+    const double maxBoundaryDistance = 3 * sqrt(planeSegment.get_MSE());
     static const uint pixelPerCellSide = static_cast<uint>(sqrtf(static_cast<float>(pointsPerCellCount)));
 
     auto add_point_if_in_plane =
@@ -665,7 +664,7 @@ std::vector<vector3> Primitive_Detection::compute_plane_segment_boundary(const P
                 {
                     const auto& cameraPoint = ScreenCoordinate(x, y, depth).to_camera_coordinates();
                     // if distance of this point to the plane < threshold, this point is contained in the plane
-                    if (planeSegment.get_point_distance_squared(cameraPoint) < maxBoundaryDistance)
+                    if (abs(planeSegment.get_point_distance(cameraPoint)) < maxBoundaryDistance)
                     {
                         std::scoped_lock<std::mutex> lock(mut);
                         boundaryPoints.emplace_back(cameraPoint);
