@@ -81,8 +81,8 @@ bool Plane::is_distance_similar(const Plane& plane) const noexcept
 
 bool Plane::is_distance_similar(const PlaneCameraCoordinates& planeParametrization) const noexcept
 {
-    constexpr double maximumPlanMatchDistance = parameters::matching::maximumDistanceForPlaneMatch_mm;
-    return abs(_parametrization.get_d() - planeParametrization.get_d()) < maximumPlanMatchDistance;
+    constexpr double maximumPlaneMatchDistance = parameters::matching::maximumDistanceForPlaneMatch_mm;
+    return abs(_parametrization.get_d() - planeParametrization.get_d()) < maximumPlaneMatchDistance;
 }
 
 bool Plane::is_similar(const Cylinder& cylinder) const noexcept
@@ -92,6 +92,9 @@ bool Plane::is_similar(const Cylinder& cylinder) const noexcept
     return false;
 }
 
-double Plane::get_distance(const vector3& point) const noexcept { return get_normal().dot(point - get_center()); }
+double Plane::get_distance(const vector3& point) const noexcept
+{
+    return get_parametrization().get_point_distance(point);
+}
 
 } // namespace rgbd_slam::features::primitives

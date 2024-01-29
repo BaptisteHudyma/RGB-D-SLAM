@@ -52,13 +52,8 @@ struct PlaneCoordinates
     [[nodiscard]] WorldCoordinate get_center() const noexcept { return WorldCoordinate(_normal * (-_d)); };
     [[nodiscard]] double get_point_distance(const vector3& point) const noexcept
     {
-        // distance can be negative depending on the plane
-        return abs(_normal.transpose() * point + _d);
-    }
-    [[nodiscard]] double get_point_distance_squared(const vector3& point) const noexcept
-    {
-        // distance can be negative depending on the plane
-        return SQR(_normal.transpose() * point + _d);
+        // distance can be negative if the point is under the plane
+        return _normal.dot(point) + _d;
     }
     [[nodiscard]] double get_cos_angle(const PlaneCoordinates& other) const noexcept
     {

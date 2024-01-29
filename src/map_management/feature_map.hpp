@@ -24,16 +24,8 @@ namespace rgbd_slam::map_management {
 template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedFeaturesObject> class IMapFeature
 {
   public:
-    IMapFeature() :
-        _failedTrackingCount(0),
-        _successivMatchedCount(0),
-        _id(++_idAllocator),
-        _matchIndex(FIRST_DETECTION_INDEX) {};
-    explicit IMapFeature(const size_t id) :
-        _failedTrackingCount(0),
-        _successivMatchedCount(0),
-        _id(id),
-        _matchIndex(FIRST_DETECTION_INDEX) {};
+    IMapFeature() : _id(++_idAllocator) {};
+    explicit IMapFeature(const size_t id) : _id(id) {};
 
     virtual ~IMapFeature() = default;
 
@@ -102,6 +94,11 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
             _failedTrackingCount = 0;
             ++_successivMatchedCount;
         }
+        else
+        {
+            // tracking failed, consider this match as a failure
+            update_unmatched();
+        }
     };
 
     /**
@@ -152,12 +149,14 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
     /**
      *  Members
      */
-    size_t _failedTrackingCount;
-    int _successivMatchedCount;
-    const size_t _id; // uniq id of this point in the program
-    int _matchIndex;  // index of the last matched feature id
-    static const int UNMATCHED_FEATURE_INDEX = -1;
-    static const int FIRST_DETECTION_INDEX = -2; // set for the first detection, to use tracking even if no match is set
+    static constexpr int UNMATCHED_FEATURE_INDEX = -1;
+    static constexpr int FIRST_DETECTION_INDEX =
+            -2; // set for the first detection, to use tracking even if no match is set
+
+    size_t _failedTrackingCount = 0;
+    int _successivMatchedCount = 0;
+    const size_t _id;                        // uniq id of this point in the program
+    int _matchIndex = FIRST_DETECTION_INDEX; // index of the last matched feature id
 
   protected:
     [[nodiscard]] virtual bool update_with_match(const DetectedFeatureType& matchedFeature,

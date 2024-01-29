@@ -260,7 +260,7 @@ StagedMapPlane::StagedMapPlane(const matrix33& poseCovariance,
 
 bool StagedMapPlane::should_remove_from_staged() const noexcept { return _failedTrackingCount >= 2; }
 
-bool StagedMapPlane::should_add_to_local_map() const noexcept { return _successivMatchedCount >= 2; }
+bool StagedMapPlane::should_add_to_local_map() const noexcept { return _successivMatchedCount >= 4; }
 
 /**
  *  LocalMapPlane

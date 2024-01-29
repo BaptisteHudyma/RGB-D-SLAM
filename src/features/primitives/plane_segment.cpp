@@ -318,15 +318,11 @@ double Plane_Segment::get_point_distance(const vector3& point) const noexcept
 {
     return _parametrization.get_point_distance(point);
 }
-double Plane_Segment::get_point_distance_squared(const vector3& point) const noexcept
-{
-    return _parametrization.get_point_distance_squared(point);
-}
 
 bool Plane_Segment::can_be_merged(const Plane_Segment& p, const double maxMatchDistance) const noexcept
 {
     static const double maximumMergeAngle = cos(parameters::detection::maximumPlaneAngleForMerge_d * M_PI / 180.0);
-    return get_cos_angle(p) > maximumMergeAngle and get_point_distance(p.get_centroid()) < maxMatchDistance;
+    return get_cos_angle(p) > maximumMergeAngle and abs(get_point_distance(p.get_centroid())) < maxMatchDistance;
 }
 
 } // namespace rgbd_slam::features::primitives
