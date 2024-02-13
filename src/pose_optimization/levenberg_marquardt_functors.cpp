@@ -3,36 +3,90 @@
 #include "pose.hpp"
 #include "types.hpp"
 #include "utils/camera_transformation.hpp"
+#include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/util/Meta.h>
 #include <cmath>
 #include <stdexcept>
 
 namespace rgbd_slam::pose_optimization {
 
-vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
+vector3 get_optimization_coefficients_from_quaternion(const quaternion& quat)
 {
-    return vector3(quat.x(), quat.y(), quat.z());
+    const double divider = 1.0 / (1.0 + quat.z());
+    return vector3(quat.w() * divider, quat.x() * divider, quat.y() * divider);
 }
 
-quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizationCoefficients)
+quaternion get_quaternion_from_optimization_coefficients(const vector3& optimizationCoefficients)
 {
-    const double w = sqrt(1.0 - SQR(optimizationCoefficients.x()) - SQR(optimizationCoefficients.y()) -
-                          SQR(optimizationCoefficients.z()));
-    return quaternion(w, optimizationCoefficients.x(), optimizationCoefficients.y(), optimizationCoefficients.z());
+    const double alpha = SQR(SQR(optimizationCoefficients.x()) + SQR(optimizationCoefficients.y()) +
+                             SQR(optimizationCoefficients.z()));
+    const double divider = 1.0 / (alpha + 1);
+    return quaternion(2.0 * optimizationCoefficients.x() * divider,
+                      2.0 * optimizationCoefficients.y() * divider,
+                      2.0 * optimizationCoefficients.z() * divider,
+                      (1 - alpha) * divider);
+}
+
+Eigen::Matrix<double, 4, 3> get_quaternion_from_optimization_coefficients_jacobian(const vector3& optCoeff)
+{
+    Eigen::Matrix<double, 4, 3> jacobian;
+    jacobian.setZero();
+
+    const double theta6 = SQR(optCoeff.x()) + SQR(optCoeff.y()) + SQR(optCoeff.z());
+    const double theta5 = SQR(SQR(theta6) + 1);
+
+    const double theta1 = 2.0 / (SQR(theta6) + 1);
+    const double theta2 = -(8.0 * optCoeff.y() * optCoeff.z() * theta6) / theta5;
+    const double theta3 = -(8.0 * optCoeff.x() * optCoeff.z() * theta6) / theta5;
+    const double theta4 = -(8.0 * optCoeff.x() * optCoeff.y() * theta6) / theta5;
+
+    const double multiplierDiag = -8.0 * theta6 / theta5;
+
+    jacobian(0, 0) = theta1 + SQR(optCoeff.x()) * multiplierDiag;
+    jacobian(0, 1) = theta4;
+    jacobian(0, 2) = theta3;
+
+    jacobian(1, 0) = theta4;
+    jacobian(1, 1) = theta1 + SQR(optCoeff.y()) * multiplierDiag;
+    jacobian(1, 2) = theta2;
+
+    jacobian(2, 0) = theta3;
+    jacobian(2, 1) = theta2;
+    jacobian(2, 2) = theta1 + SQR(optCoeff.z()) * multiplierDiag;
+
+    const double multiA = 4.0 * (SQR(theta6) - 1.0) * theta6 / theta5;
+    const double multiB = -4.0 * theta6 / (SQR(theta6) + 1);
+    jacobian(3, 0) = optCoeff.x() * multiA + optCoeff.x() * multiB;
+    jacobian(3, 1) = optCoeff.y() * multiA + optCoeff.y() * multiB;
+    jacobian(3, 2) = optCoeff.z() * multiA + optCoeff.z() * multiB;
+
+    return jacobian;
 }
 
 vector6 get_optimization_coefficient_from_pose(const utils::PoseBase& pose)
 {
     vector6 coeffs;
     coeffs.head<3>() = pose.get_position();
-    coeffs.tail<3>() = get_scaled_axis_coefficients_from_quaternion(pose.get_orientation_quaternion());
+    coeffs.tail<3>() = get_optimization_coefficients_from_quaternion(pose.get_orientation_quaternion());
     return coeffs;
 }
 
 utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients)
 {
     return utils::PoseBase(optimizationCoefficients.head<3>(),
-                           get_quaternion_from_scale_axis_coefficients(optimizationCoefficients.tail<3>()));
+                           get_quaternion_from_optimization_coefficients(optimizationCoefficients.tail<3>()));
+}
+
+utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients,
+                                                          Eigen::Matrix<double, 7, 6>& jacobian)
+{
+    jacobian.setZero();
+    jacobian.block<3, 3>(0, 0) = matrix33::Identity();
+
+    jacobian.block<4, 3>(3, 3) =
+            get_quaternion_from_optimization_coefficients_jacobian(optimizationCoefficients.tail<3>());
+
+    return get_pose_from_optimization_coeffiencients(optimizationCoefficients);
 }
 
 /**

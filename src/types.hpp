@@ -30,7 +30,10 @@ using matrix44 = Eigen::Matrix4d;
 using quaternion = Eigen::Quaternion<double>;
 
 using vector6 = Eigen::Matrix<double, 6, 1>;
+using vector7 = Eigen::Matrix<double, 7, 1>;
+
 using matrix66 = Eigen::Matrix<double, 6, 6>;
+using matrix77 = Eigen::Matrix<double, 7, 7>;
 
 struct ScreenCoordinate2DCovariance : public matrix22
 {

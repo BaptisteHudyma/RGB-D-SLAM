@@ -56,6 +56,8 @@ vector6 get_optimization_coefficient_from_pose(const utils::PoseBase& pose);
  * \return The pose obtained from the coefficients
  */
 utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients);
+utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients,
+                                                          Eigen::Matrix<double, 7, 6>& jacobian);
 
 /**
  * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard
