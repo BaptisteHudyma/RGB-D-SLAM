@@ -17,7 +17,7 @@ PoseBase::PoseBase(const vector3& position, const quaternion& orientation) { set
 
 void PoseBase::set_parameters(const vector3& position, const quaternion& orientation) noexcept
 {
-    _orientation = orientation;
+    _orientation = orientation.normalized();
     _position = position;
 }
 

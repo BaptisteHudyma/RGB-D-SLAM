@@ -1,6 +1,7 @@
 #ifndef RGBDSLAM_POSEOPTIMIZATION_LMFUNCTORS_HPP
 #define RGBDSLAM_POSEOPTIMIZATION_LMFUNCTORS_HPP
 
+#include "pose.hpp"
 #include "types.hpp"
 #include "matches_containers.hpp"
 
@@ -44,17 +45,17 @@ template<typename _Scalar, int NX = Eigen::Dynamic, int NY = Eigen::Dynamic> str
 
 /**
  * \brief Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation)
- * \param[in] quat The quaternion to transform
- * \return The coefficients corresponding to this quaternion
+ * \param[in] quat The pose to transform
+ * \return The coefficients corresponding to this pose
  */
-vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat);
+vector6 get_optimization_coefficient_from_pose(const utils::PoseBase& pose);
 
 /**
  * \brief Compute a quaternion from the Lie projection (Scaled Axis representation)
- * \param[in] optimizationCoefficients The coefficients to transform back to quaternion
- * \return The quaternion obtained from the coefficients
+ * \param[in] optimizationCoefficients The coefficients to transform back to pose
+ * \return The pose obtained from the coefficients
  */
-quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizationCoefficients);
+utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients);
 
 /**
  * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard
