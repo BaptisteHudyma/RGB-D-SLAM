@@ -1,5 +1,7 @@
 #include "levenberg_marquardt_functors.hpp"
 #include "matches_containers.hpp"
+#include "pose.hpp"
+#include "types.hpp"
 #include "utils/camera_transformation.hpp"
 #include <Eigen/src/Core/util/Meta.h>
 #include <cmath>
@@ -9,34 +11,28 @@ namespace rgbd_slam::pose_optimization {
 
 vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat)
 {
-    // forcing positive "w" to work from 0 to PI
-    const quaternion& q = (quat.w() >= 0) ? quat : quaternion(-quat.coeffs());
-    const vector3& qv = q.vec();
-
-    const double sinha = qv.norm();
-    if (sinha > 0.001)
-    {
-        const double angle = 2 * atan2(sinha, q.w()); // NOTE: signed
-        return (qv * (angle / sinha));
-    }
-    else
-    {
-        // if l is too small, its norm can be equal 0 but norm_inf greater than 0
-        // probably w is much bigger that vec, use it as length
-        return (qv * (2 / q.w())); ////NOTE: signed
-    }
+    return vector3(quat.x(), quat.y(), quat.z());
 }
 
 quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizationCoefficients)
 {
-    const double a = optimizationCoefficients.norm();
-    const double ha = a * 0.5;
-    const double scale = (a > 0.001) ? (sin(ha) / a) : 0.5;
-    quaternion rotation(cos(ha),
-                        optimizationCoefficients.x() * scale,
-                        optimizationCoefficients.y() * scale,
-                        optimizationCoefficients.z() * scale);
-    return rotation.normalized();
+    const double w = sqrt(1.0 - SQR(optimizationCoefficients.x()) - SQR(optimizationCoefficients.y()) -
+                          SQR(optimizationCoefficients.z()));
+    return quaternion(w, optimizationCoefficients.x(), optimizationCoefficients.y(), optimizationCoefficients.z());
+}
+
+vector6 get_optimization_coefficient_from_pose(const utils::PoseBase& pose)
+{
+    vector6 coeffs;
+    coeffs.head<3>() = pose.get_position();
+    coeffs.tail<3>() = get_scaled_axis_coefficients_from_quaternion(pose.get_orientation_quaternion());
+    return coeffs;
+}
+
+utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients)
+{
+    return utils::PoseBase(optimizationCoefficients.head<3>(),
+                           get_quaternion_from_scale_axis_coefficients(optimizationCoefficients.tail<3>()));
 }
 
 /**
@@ -75,12 +71,11 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
     assert(static_cast<size_t>(outputScores.size()) == _optimizationParts);
 
     // Get the new estimated pose
-    const quaternion& rotation = get_quaternion_from_scale_axis_coefficients(
-            vector3(optimizedParameters(3), optimizedParameters(4), optimizedParameters(5)));
-    const vector3 translation(optimizedParameters(0), optimizedParameters(1), optimizedParameters(2));
+    const utils::PoseBase& pose = get_pose_from_optimization_coeffiencients(optimizedParameters);
 
     // convert to optimization matrix
-    const WorldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(rotation, translation);
+    const WorldToCameraMatrix& transformationMatrix =
+            utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
 
     // Compute projection distances
     int featureScoreIndex = 0; // index of the match being treated

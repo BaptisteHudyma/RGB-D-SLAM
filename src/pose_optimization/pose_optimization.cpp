@@ -318,23 +318,10 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
                                                       const matches_containers::match_container& matchedFeatures,
                                                       utils::PoseBase& optimizedPose) noexcept
 {
-    const vector3& position = currentPose.get_position(); // Work in millimeters
-    const quaternion& rotation = currentPose.get_orientation_quaternion();
+    // set the input of the optimization function
+    vectorxd input = get_optimization_coefficient_from_pose(currentPose);
 
-    // Vector to optimize: (0, 1, 2) is position,
-    // Vector (3, 4, 5) is a rotation parametrization, representing a delta in rotation in the tangential hyperplane
-    // -From Using Quaternions for Parametrizing 3-D Rotation in Unconstrained Nonlinear Optimization)
-    vectorxd input(6);
-    // 3D pose
-    input[0] = position.x();
-    input[1] = position.y();
-    input[2] = position.z();
-    // X Y Z of a quaternion representation. (0, 0, 0) corresponds to the quaternion itself
-    const vector3& rotationCoefficients = get_scaled_axis_coefficients_from_quaternion(rotation);
-    input[3] = rotationCoefficients.x();
-    input[4] = rotationCoefficients.y();
-    input[5] = rotationCoefficients.z();
-
+    // get the number of distance coefficients
     size_t optiParts = 0;
     for (const auto& feat: matchedFeatures)
     {
@@ -361,11 +348,6 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
 
     // Start optimization (always use it just after the constructor, to ensure pointer validity)
     const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);
-
-    // Get result
-    const quaternion& endRotation = get_quaternion_from_scale_axis_coefficients(vector3(input[3], input[4], input[5]));
-    const vector3 endPosition(input[0], input[1], input[2]);
-
     if (endStatus <= 0)
     {
         // Error while optimizing
@@ -375,8 +357,10 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
         return false;
     }
 
+    const auto& outputPose = get_pose_from_optimization_coeffiencients(input);
+
     // Update refined pose with optimized pose
-    optimizedPose.set_parameters(endPosition, endRotation);
+    optimizedPose.set_parameters(outputPose.get_position(), outputPose.get_orientation_quaternion());
     return true;
 }
 
@@ -419,7 +403,7 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
                           }
                           else
                           {
-                              outputs::log_warning(std::format("fail iteration {}: rejected pose optimization", i));
+                              // outputs::log_warning(std::format("fail iteration {}: rejected pose optimization", i));
                           }
                       }
 #ifndef MAKE_DETERMINISTIC
