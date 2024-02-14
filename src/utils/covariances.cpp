@@ -1,6 +1,7 @@
 #include "covariances.hpp"
 
 #include "../parameters.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include "distance_utils.hpp"
 #include "types.hpp"
 #include <Eigen/src/Core/util/Constants.h>
@@ -32,9 +33,11 @@ ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, con
 }
 
 ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
-                                                       const WorldCoordinateCovariance& pointCovariance) noexcept
+                                                       const WorldCoordinateCovariance& pointCovariance,
+                                                       const WorldToCameraMatrix& worldToCamera) noexcept
 {
-    return get_screen_point_covariance(point.base(), pointCovariance.base());
+    return get_screen_point_covariance(point.to_camera_coordinates(worldToCamera),
+                                       get_camera_point_covariance(pointCovariance, worldToCamera, matrix33::Zero()));
 }
 
 ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,

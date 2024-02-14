@@ -7,6 +7,7 @@
 
 // types
 #include <unsupported/Eigen/NonLinearOptimization>
+#include <unsupported/Eigen/src/NumericalDiff/NumericalDiff.h>
 
 namespace rgbd_slam::pose_optimization {
 
@@ -55,9 +56,9 @@ vector6 get_optimization_coefficient_from_pose(const utils::PoseBase& pose);
  * \param[in] optimizationCoefficients The coefficients to transform back to pose
  * \return The pose obtained from the coefficients
  */
-utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients);
-utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients,
-                                                          Eigen::Matrix<double, 7, 6>& jacobian);
+utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizationCoefficients);
+utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizationCoefficients,
+                                                        Eigen::Matrix<double, 7, 6>& jacobian);
 
 /**
  * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard
@@ -78,7 +79,22 @@ struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
      * \param[in] optimizedParameters The vector of parameters to optimize (Size M)
      * \param[out] outputScores The vector of errors, of size N (N is optimizationParts)
      */
-    int operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const;
+    int operator()(const vector6& optimizedParameters, vectorxd& outputScores) const;
+
+    /**
+     * \brief Compute the covariance of the optimizedParameters, depending on the given features and jacobian of the
+     * transformation
+     * \param[in] features The set of features that the optimization was made on
+     * \param[in] optimizedPose The optimized pose obtained by the parameters that best fit the model
+     * \param[in] jacobian The jacobian of the optimization process
+     * \param[out] inputCovariance The covariance of the input parameters
+     *
+     * \return True if a correct covariance could be found
+     */
+    [[nodiscard]] static bool get_input_covariance(const matches_containers::match_container& features,
+                                                   const utils::PoseBase& optimizedPose,
+                                                   const matrixd& jacobian,
+                                                   matrix66& inputCovariance) noexcept;
 
   private:
     // use pointers to prevent useless copy
@@ -86,7 +102,7 @@ struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
     const matches_containers::match_container* const _features;
 };
 
-struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator>
+struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator, Eigen::Central>
 {
 };
 

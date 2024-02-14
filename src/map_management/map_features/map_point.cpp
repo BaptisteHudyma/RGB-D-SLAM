@@ -1,6 +1,7 @@
 #include "map_point.hpp"
 
 #include "coordinates/point_coordinates.hpp"
+#include "covariances.hpp"
 #include "logger.hpp"
 #include "matches_containers.hpp"
 #include "parameters.hpp"
@@ -15,12 +16,13 @@ namespace rgbd_slam::map_management {
 
 PointOptimizationFeature::PointOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                                                    const WorldCoordinate& mapPoint,
-                                                   const vector3& mapPointStandardDev,
+                                                   const matrix33& mapPointCovariance,
                                                    const size_t mapFeatureId) :
     matches_containers::IOptimizationFeature(mapFeatureId),
     _matchedPoint(matchedPoint),
     _mapPoint(mapPoint),
-    _mapPointStandardDev(mapPointStandardDev) {};
+    _mapPointCovariance(mapPointCovariance),
+    _mapPointStandardDev(mapPointCovariance.diagonal().cwiseSqrt()) {};
 
 size_t PointOptimizationFeature::get_feature_part_count() const noexcept { return 2; }
 
@@ -37,6 +39,13 @@ vectorxd PointOptimizationFeature::get_distance(const WorldToCameraMatrix& world
     return distance;
 }
 
+matrixd PointOptimizationFeature::get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const auto& r = utils::get_screen_point_covariance(
+            _mapPoint, WorldCoordinateCovariance(_mapPointCovariance), worldToCamera);
+    return r.block<2, 2>(0, 0).selfadjointView<Eigen::Lower>();
+}
+
 double PointOptimizationFeature::get_max_retroprojection_error() const noexcept
 {
     return parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px;
@@ -44,17 +53,9 @@ double PointOptimizationFeature::get_max_retroprojection_error() const noexcept
 
 double PointOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }
 
-matches_containers::feat_ptr PointOptimizationFeature::compute_random_variation() const noexcept
-{
-    // make random variation
-    WorldCoordinate variatedCoordinates = _mapPoint;
-    variatedCoordinates += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointStandardDev);
-
-    return std::make_shared<PointOptimizationFeature>(
-            _matchedPoint, variatedCoordinates, _mapPointStandardDev, _idInMap);
-}
-
 FeatureType PointOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point; }
+
+matrixd PointOptimizationFeature::get_world_covariance() const noexcept { return _mapPointCovariance; }
 
 /**
  * MapPoint
@@ -101,10 +102,8 @@ int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.push_back(std::make_shared<PointOptimizationFeature>(detectedFeatures.get_keypoint(matchIndex).get_2D(),
-                                                                     _coordinates,
-                                                                     _covariance.diagonal().cwiseSqrt(),
-                                                                     _id));
+        matches.push_back(std::make_shared<PointOptimizationFeature>(
+                detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance, _id));
     }
     return matchIndex;
 }

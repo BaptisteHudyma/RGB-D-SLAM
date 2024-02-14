@@ -1,10 +1,12 @@
 #include "pose_optimization.hpp"
 
+#include "angle_utils.hpp"
 #include "covariances.hpp"
 #include "outputs/logger.hpp"
 #include "parameters.hpp"
 #include "levenberg_marquardt_functors.hpp"
 #include "matches_containers.hpp"
+#include "pose.hpp"
 #include "ransac.hpp"
 #include "types.hpp"
 
@@ -134,9 +136,9 @@ double get_feature_set_retroprojection_score(const matches_containers::match_con
     return matchSubset;
 }
 
-bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentPose,
+bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose,
                                                  const matches_containers::match_container& matchedFeatures,
-                                                 utils::PoseBase& finalPose,
+                                                 utils::Pose& finalPose,
                                                  matches_containers::match_sets& featureSets) noexcept
 {
     const double computePoseRansacStartTime = static_cast<double>(cv::getTickCount());
@@ -176,7 +178,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     const size_t inliersToStop = static_cast<size_t>(static_cast<double>(matchedFeatures.size()) * 0.80);
 
     double maxScore = 1.0;
-    utils::PoseBase bestPose = currentPose;
+    utils::Pose bestPose = currentPose;
     matches_containers::match_sets finalFeatureSets;
 
     std::atomic_bool canQuit = false;
@@ -241,7 +243,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                 {
                     std::scoped_lock<std::mutex> lock(mut);
                     maxScore = featureInlierScore;
-                    bestPose = candidatePose;
+                    bestPose.set_parameters(candidatePose.get_position(), candidatePose.get_orientation_quaternion());
                     // save features inliers and outliers
                     finalFeatureSets.swap(potentialInliersOutliers);
                 }
@@ -274,8 +276,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     }
 
     // optimize on all inliers, starting pose is the best pose we found with RANSAC
-    const bool isPoseValid =
-            Pose_Optimization::compute_optimized_global_pose(bestPose, finalFeatureSets._inliers, finalPose);
+    const bool isPoseValid = Pose_Optimization::compute_optimized_global_pose_with_covariance(
+            bestPose, finalFeatureSets._inliers, finalPose);
     if (isPoseValid)
     {
         // store the result
@@ -297,29 +299,21 @@ bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose,
                                                utils::Pose& optimizedPose,
                                                matches_containers::match_sets& featureSets) noexcept
 {
-    if (compute_pose_with_ransac(currentPose, matchedFeatures, optimizedPose, featureSets))
-    {
-        // Compute pose variance
-        if (matrix66 estimatedPoseCovariance;
-            compute_pose_variance(optimizedPose, featureSets._inliers, estimatedPoseCovariance))
-        {
-            optimizedPose.set_position_variance(estimatedPoseCovariance);
-            return true;
-        }
-        else
-        {
-            outputs::log_warning("Could not compute pose variance after succesful optimization");
-        }
-    }
-    return false;
+    return compute_pose_with_ransac(currentPose, matchedFeatures, optimizedPose, featureSets);
 }
 
-bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& currentPose,
-                                                      const matches_containers::match_container& matchedFeatures,
-                                                      utils::PoseBase& optimizedPose) noexcept
+bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBase& currentPose,
+                                                            const matches_containers::match_container& matchedFeatures,
+                                                            vector6& optimizedCoefficients,
+                                                            matrixd& optimizationJacobian) noexcept
 {
     // set the input of the optimization function
     vectorxd input = get_optimization_coefficient_from_pose(currentPose);
+    if (input.hasNaN() or not input.allFinite())
+    {
+        outputs::log_error("Coefficient are invalid before optimization");
+        return false;
+    }
 
     // get the number of distance coefficients
     size_t optiParts = 0;
@@ -333,19 +327,6 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     // Optimization algorithm
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
 
-    // maxfev   : maximum number of function evaluation
-    poseOptimizator.parameters.maxfev = parameters::optimization::maximumIterations;
-    // epsfcn   : error precision
-    poseOptimizator.parameters.epsfcn = parameters::optimization::errorPrecision;
-    // xtol     : tolerance for the norm of the solution vector
-    poseOptimizator.parameters.xtol = parameters::optimization::toleranceOfSolutionVectorNorm;
-    // ftol     : tolerance for the norm of the vector function
-    poseOptimizator.parameters.ftol = parameters::optimization::toleranceOfVectorFunction;
-    // gtol     : tolerance for the norm of the gradient of the error function
-    poseOptimizator.parameters.gtol = parameters::optimization::toleranceOfErrorFunctionGradient;
-    // factor   : step bound for the diagonal shift
-    poseOptimizator.parameters.factor = parameters::optimization::diagonalStepBoundShift;
-
     // Start optimization (always use it just after the constructor, to ensure pointer validity)
     const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);
     if (endStatus <= 0)
@@ -357,86 +338,133 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
         return false;
     }
 
-    const auto& outputPose = get_pose_from_optimization_coeffiencients(input);
+    if (input.hasNaN() or not input.allFinite())
+    {
+        outputs::log_error("Coefficient are invalid after optimization");
+        return false;
+    }
 
-    // Update refined pose with optimized pose
+    // get the jacobian of the transformation
+    matrixd jacobian(optiParts, 6);
+    pose_optimisation_functor.df(input, jacobian);
+
+    // TODO: reactivate when the metric will make sense
+    /*
+        // Gauss newton approximation: suppose that all residuals are close to 0 (often false)
+        matrix66 inputCovariance;
+        inputCovariance = (jacobian.transpose() * jacobian).completeOrthogonalDecomposition().pseudoInverse();
+        inputCovariance = inputCovariance.selfadjointView<Eigen::Lower>(); // make it symetrical
+        inputCovariance.diagonal() += vector6::Constant(1e-4);             // add a small constant for rounding errors
+
+        std::string failureReason;
+        if (not utils::is_covariance_valid(inputCovariance, failureReason))
+        {
+            outputs::log("Initial parameter covariance is invalid: " + failureReason);
+            return false;
+        }
+
+
+        // no need to fill the upper part, the adjoint solver does not need it (check only the translation)
+        Eigen::SelfAdjointEigenSolver<matrix33> eigenPositionSolver(inputCovariance.block<3, 3>(0, 0));
+        // eigen values are sorted by ascending order
+        const auto& eigenValuesPosition = eigenPositionSolver.eigenvalues();
+
+        // check that the largest eigen value is inferior to a threshold
+        // TODO: find a better threshold principle (this just checks the biggest eigen value)
+        if (eigenValuesPosition.hasNaN() or eigenValuesPosition.tail<1>()(0) > 500.0)
+        {
+            return false;
+        }
+    */
+
+    optimizedCoefficients = input;
+    optimizationJacobian = jacobian;
+    return true;
+}
+
+bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& currentPose,
+                                                      const matches_containers::match_container& matchedFeatures,
+                                                      utils::PoseBase& optimizedPose,
+                                                      matrixd& optimizationJacobian) noexcept
+{
+    vector6 coefficients;
+    if (not compute_optimized_pose_coefficients(currentPose, matchedFeatures, coefficients, optimizationJacobian))
+    {
+        return false;
+    }
+
+    // set the pose
+    const auto& outputPose = get_pose_from_optimization_coefficients(coefficients);
     optimizedPose.set_parameters(outputPose.get_position(), outputPose.get_orientation_quaternion());
     return true;
 }
 
-bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPose,
-                                              const matches_containers::match_container& matchedFeatures,
-                                              matrix66& poseCovariance,
-                                              const uint iterations) noexcept
+bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& currentPose,
+                                                      const matches_containers::match_container& matchedFeatures,
+                                                      utils::PoseBase& optimizedPose) noexcept
 {
-    const double computePoseVarianceStartTime = static_cast<double>(cv::getTickCount());
+    matrixd jacobian;
+    return compute_optimized_global_pose(currentPose, matchedFeatures, optimizedPose, jacobian);
+}
 
-    if (iterations == 0)
+bool Pose_Optimization::compute_optimized_global_pose_with_covariance(
+        const utils::Pose& currentPose,
+        const matches_containers::match_container& matchedFeatures,
+        utils::Pose& optimizedPose) noexcept
+{
+    matrixd jacobian;
+    vector6 coefficients;
+    if (not compute_optimized_pose_coefficients(currentPose, matchedFeatures, coefficients, jacobian))
     {
-        outputs::log_error("Cannot compute pose variance with 0 iterations");
         return false;
     }
-    poseCovariance.setZero();
-    vector6 medium = vector6::Zero();
 
-    std::vector<vector6> poses;
-    poses.reserve(iterations);
-
-#ifndef MAKE_DETERMINISTIC
-    std::mutex mut;
-    tbb::parallel_for(uint(0),
-                      iterations,
-                      [&](uint i)
-#else
-    for (uint i = 0; i < iterations; ++i)
-#endif
-                      {
-                          utils::PoseBase newPose;
-                          if (compute_random_variation_of_pose(optimizedPose, matchedFeatures, newPose))
-                          {
-                              const vector6& pose6dof = newPose.get_vector();
-#ifndef MAKE_DETERMINISTIC
-                              std::scoped_lock<std::mutex> lock(mut);
-#endif
-                              medium += pose6dof;
-                              poses.emplace_back(pose6dof);
-                          }
-                          else
-                          {
-                              // outputs::log_warning(std::format("fail iteration {}: rejected pose optimization", i));
-                          }
-                      }
-#ifndef MAKE_DETERMINISTIC
-    );
-#endif
-
-    if (poses.size() < iterations / 2)
+    if (coefficients.hasNaN())
     {
-        outputs::log_error("Could not compute covariance: too many faileds iterations");
-        _meanComputePoseVarianceDuration +=
-                (static_cast<double>(cv::getTickCount()) - computePoseVarianceStartTime) / cv::getTickFrequency();
+        outputs::log_error("Coefficient are nan after optimization");
         return false;
     }
-    medium /= static_cast<double>(poses.size());
-
-    for (const vector6& pose: poses)
+    if (not coefficients.allFinite())
     {
-        const vector6 def = pose - medium;
-        poseCovariance += def * def.transpose();
-    }
-    poseCovariance /= static_cast<double>(poses.size() - 1);
-    poseCovariance.diagonal() += vector6::Constant(
-            0.001); // add small variance on diagonal in case of perfect covariance (rare but existing case)
-
-    if (not utils::is_covariance_valid(poseCovariance))
-    {
-        outputs::log_error("Could not compute covariance: final covariance is ill formed");
-        _meanComputePoseVarianceDuration +=
-                (static_cast<double>(cv::getTickCount()) - computePoseVarianceStartTime) / cv::getTickFrequency();
+        outputs::log_error("Coefficient are infinite after optimization");
         return false;
     }
-    _meanComputePoseVarianceDuration +=
-            (static_cast<double>(cv::getTickCount()) - computePoseVarianceStartTime) / cv::getTickFrequency();
+
+    Eigen::Matrix<double, 7, 6> coeffToPoseJacobian;
+    const utils::PoseBase& outputPose = get_pose_from_optimization_coefficients(coefficients, coeffToPoseJacobian);
+
+    // get real covariance
+    matrix66 inputCovariance;
+    if (not Global_Pose_Estimator::get_input_covariance(matchedFeatures, outputPose, jacobian, inputCovariance))
+    {
+        outputs::log_error("get_input_covariance failed");
+        return false;
+    }
+
+    // convert it to the covariance of the pose
+    matrix77 paramCovariance = coeffToPoseJacobian * inputCovariance * coeffToPoseJacobian.transpose();
+    paramCovariance.diagonal() += vector7::Constant(1e-4);
+    std::string failureReason;
+    if (not utils::is_covariance_valid(paramCovariance, failureReason))
+    {
+        outputs::log_error(std::format("The transformed covariance is invalid, check the jacobian: {}", failureReason));
+        return false;
+    }
+
+    // transform back to euler angle and position covariance
+    const auto& quaternionToEulerJacobian =
+            utils::get_position_quaternion_to_position_euler_jacobian(outputPose.get_orientation_quaternion());
+    const matrix66& finalPoseCovariance =
+            quaternionToEulerJacobian * paramCovariance * quaternionToEulerJacobian.transpose();
+    if (not utils::is_covariance_valid(finalPoseCovariance, failureReason))
+    {
+        outputs::log_error(
+                std::format("The optimized pose covariance is invalid, check the jacobian: {}", failureReason));
+        return false;
+    }
+
+    optimizedPose.set_position_variance(finalPoseCovariance);
+    optimizedPose.set_parameters(outputPose.get_position(), outputPose.get_orientation_quaternion());
     return true;
 }
 
@@ -475,26 +503,7 @@ void Pose_Optimization::show_statistics(const double meanFrameTreatmentDuration,
                                 meanRANSACgetInliersDuration,
                                 get_percent_of_elapsed_time(meanRANSACgetInliersDuration, meanPoseRANSACDuration)));
         }
-
-        const double meanPoseVarianceDuration = _meanComputePoseVarianceDuration / static_cast<double>(frameCount);
-        outputs::log(std::format("\tMean pose variance computation time is {:.4f} seconds ({:.2f}%)",
-                                 meanPoseVarianceDuration,
-                                 get_percent_of_elapsed_time(meanPoseVarianceDuration, meanFrameTreatmentDuration)));
     }
-}
-
-bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& currentPose,
-                                                         const matches_containers::match_container& matchedFeatures,
-                                                         utils::PoseBase& optimizedPose) noexcept
-{
-    matches_containers::match_container variatedSet;
-    for (const auto& feature: matchedFeatures)
-    {
-        // add to the new match set
-        variatedSet.emplace_back(feature->compute_random_variation());
-    }
-
-    return compute_optimized_global_pose(currentPose, variatedSet, optimizedPose);
 }
 
 } // namespace rgbd_slam::pose_optimization

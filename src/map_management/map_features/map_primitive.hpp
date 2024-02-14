@@ -15,7 +15,7 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
 {
     PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
                              const PlaneWorldCoordinates& mapPlane,
-                             const vector4& mapPlaneStandardDev,
+                             const matrix44& mapPlaneCovariance,
                              const size_t mapFeatureId);
 
     ~PlaneOptimizationFeature() override = default;
@@ -26,17 +26,22 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
 
     vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
 
+    matrixd get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
+    matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
+
     double get_max_retroprojection_error() const noexcept override;
 
     double get_alpha_reduction() const noexcept override;
 
-    matches_containers::feat_ptr compute_random_variation() const noexcept override;
-
     FeatureType get_feature_type() const noexcept override;
+
+    matrixd get_world_covariance() const noexcept override;
 
   protected:
     const PlaneCameraCoordinates _matchedPlane;
     const PlaneWorldCoordinates _mapPlane;
+
+    const matrix44 _mapPlaneCovariance;
     const vector4 _mapPlaneStandardDev;
 };
 

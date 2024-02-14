@@ -14,12 +14,13 @@ namespace rgbd_slam::map_management {
 
 PlaneOptimizationFeature::PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
                                                    const PlaneWorldCoordinates& mapPlane,
-                                                   const vector4& mapPlaneStandardDev,
+                                                   const matrix44& mapPlaneCovariance,
                                                    const size_t mapFeatureId) :
     matches_containers::IOptimizationFeature(mapFeatureId),
     _matchedPlane(matchedPlane),
     _mapPlane(mapPlane),
-    _mapPlaneStandardDev(mapPlaneStandardDev) {};
+    _mapPlaneCovariance(mapPlaneCovariance),
+    _mapPlaneStandardDev(_mapPlaneCovariance.diagonal().cwiseSqrt()) {};
 
 size_t PlaneOptimizationFeature::get_feature_part_count() const noexcept { return 3; }
 
@@ -41,6 +42,23 @@ vectorxd PlaneOptimizationFeature::get_distance(const WorldToCameraMatrix& world
     return planeProjectionError;
 }
 
+matrixd PlaneOptimizationFeature::get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const auto& jac = get_distance_jacobian(worldToCamera);
+
+    return (jac * _mapPlaneCovariance.selfadjointView<Eigen::Lower>() * jac.transpose())
+            .selfadjointView<Eigen::Lower>();
+}
+
+matrixd PlaneOptimizationFeature::get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    // TODO: combine this for all plane features somehow
+    const PlaneWorldToCameraMatrix& planeTransformationMatrix =
+            utils::compute_plane_world_to_camera_matrix(worldToCamera);
+
+    return _mapPlane.get_reduced_signed_distance_jacobian(planeTransformationMatrix);
+}
+
 double PlaneOptimizationFeature::get_max_retroprojection_error() const noexcept
 {
     return parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm;
@@ -48,20 +66,9 @@ double PlaneOptimizationFeature::get_max_retroprojection_error() const noexcept
 
 double PlaneOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }
 
-matches_containers::feat_ptr PlaneOptimizationFeature::compute_random_variation() const noexcept
-{
-    PlaneWorldCoordinates variatedCoordinates = _mapPlane;
-
-    variatedCoordinates.normal() += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPlaneStandardDev.head<3>());
-    variatedCoordinates.normal().normalize();
-
-    variatedCoordinates.d() += utils::Random::get_normal_double() * _mapPlaneStandardDev(3);
-
-    return std::make_shared<PlaneOptimizationFeature>(
-            _matchedPlane, variatedCoordinates, _mapPlaneStandardDev, _idInMap);
-}
-
 FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Plane; }
+
+matrixd PlaneOptimizationFeature::get_world_covariance() const noexcept { return _mapPlaneCovariance; }
 
 /**
  *  MapPlane
@@ -125,11 +132,8 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.push_back(
-                std::make_shared<PlaneOptimizationFeature>(detectedFeatures[selectedIndex].get_parametrization(),
-                                                           get_parametrization(),
-                                                           get_covariance().diagonal().cwiseSqrt(),
-                                                           _id));
+        matches.push_back(std::make_shared<PlaneOptimizationFeature>(
+                detectedFeatures[selectedIndex].get_parametrization(), get_parametrization(), get_covariance(), _id));
     }
 
     return selectedIndex;

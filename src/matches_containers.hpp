@@ -141,6 +141,11 @@ struct IOptimizationFeature
     virtual vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept = 0;
 
     /**
+     * \brief Return the covariance of the distance function
+     */
+    virtual matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept = 0;
+
+    /**
      * \brief Return the maximum allowed retroprojection error before rejecting this match
      */
     virtual double get_max_retroprojection_error() const noexcept = 0;
@@ -151,15 +156,14 @@ struct IOptimizationFeature
     virtual double get_alpha_reduction() const noexcept = 0;
 
     /**
-     * \brief compute a random variation of this feature.
-     * Should be based on the feature covariance
-     */
-    virtual feat_ptr compute_random_variation() const noexcept = 0;
-
-    /**
      * \brief return the feature type in this object
      */
     virtual FeatureType get_feature_type() const noexcept = 0;
+
+    /**
+     *  \brief dimention of the covariance of this feature in world space
+     */
+    virtual matrixd get_world_covariance() const noexcept = 0;
 
     /// store the id of the feature in the local map/staged features
     const size_t _idInMap;
