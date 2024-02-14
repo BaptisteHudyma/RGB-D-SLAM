@@ -10,12 +10,13 @@
 
 namespace rgbd_slam::utils {
 
-template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance) noexcept
+template<int N>
+[[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance, std::string& reason) noexcept
 {
     // no invalid values
     if (covariance.hasNaN())
     {
-        outputs::log_warning("Covariance has invalid values");
+        reason = "invalid values";
         return false;
     }
 
@@ -28,7 +29,7 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
     // covariance should be symetrical
     if (!covariance.isApprox(covariance.transpose()))
     {
-        outputs::log_warning("Covariance is not symetrical");
+        reason = "not symetrical";
         return false;
     }
 
@@ -36,10 +37,16 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
     const auto ldlt = covariance.template selfadjointView<Eigen::Upper>().ldlt();
     if (ldlt.info() == Eigen::NumericalIssue || !ldlt.isPositive())
     {
-        outputs::log_warning("Covariance is not positive semi definite");
+        reason = "not positive semi definite";
         return false;
     }
     return true;
+}
+
+template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance) noexcept
+{
+    std::string reason;
+    return is_covariance_valid(covariance, reason);
 }
 
 /**
@@ -55,8 +62,9 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
  * \param[in] point The coordinates of this 3D point (world space)
  * \param[in] pointCovariance The covariance associated with this point (world space)
  */
-[[nodiscard]] ScreenCoordinateCovariance get_screen_point_covariance(
-        const WorldCoordinate& point, const WorldCoordinateCovariance& pointCovariance) noexcept;
+[[nodiscard]] ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
+                                                                     const WorldCoordinateCovariance& pointCovariance,
+                                                                     const WorldToCameraMatrix& worldToCamera) noexcept;
 
 /**
  * \brief Compute a screen point covariance from a given point

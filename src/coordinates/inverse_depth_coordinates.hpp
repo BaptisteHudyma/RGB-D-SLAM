@@ -122,6 +122,16 @@ struct InverseDepthWorldPoint
     [[nodiscard]] double get_phi() const noexcept { return _phi_rad; };
     [[nodiscard]] vector3 get_bearing_vector() const noexcept { return _bearingVector; };
 
+    [[nodiscard]] vector6 get_vector() const
+    {
+        return vector6(_firstObservation.x(),
+                       _firstObservation.y(),
+                       _firstObservation.z(),
+                       _inverseDepth_mm,
+                       _theta_rad,
+                       _phi_rad);
+    };
+
   private:
     WorldCoordinate _firstObservation; // position of the camera for the first observation
     double _inverseDepth_mm = 0.0;     // inverse of the depth (>= 0)

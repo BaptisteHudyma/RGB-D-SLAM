@@ -39,15 +39,7 @@ constexpr uint minimumPointForOptimization = 5; // Should be >= 5, the minimum p
 constexpr uint minimumPoint2dForOptimization =
         5; // 2d points can be insufficiant for pose optimization, for now we ignore this
 constexpr uint minimumPlanesForOptimization =
-        3;                             // Should be >= 3, the minimum infinite plane count for a 3D pose estimation
-constexpr uint maximumIterations = 64; // Max iteration of the Levenberg Marquart optimisation
-constexpr float errorPrecision = 0.0f; // tolerance for the norm of the solution vector
-constexpr float toleranceOfSolutionVectorNorm = 1e-4f;   // Smallest delta of doubles
-constexpr float toleranceOfVectorFunction = 1e-3f;       // tolerance for the norm of the vector function
-constexpr float toleranceOfErrorFunctionGradient = 0.0f; // tolerance for the norm of the gradient of the error function
-constexpr float diagonalStepBoundShift = 100.0f;         // step bound for the diagonal shift
-constexpr float maximumRetroprojectionError_px =
-        3.0f; // In pixel: maximum distance after which we can consider a retroprojection as invalid
+        3; // Should be >= 3, the minimum infinite plane count for a 3D pose estimation
 } // namespace optimization
 
 namespace detection {

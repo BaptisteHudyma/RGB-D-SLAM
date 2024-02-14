@@ -16,7 +16,7 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
 {
     Point2dOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                                const InverseDepthWorldPoint& mapPoint,
-                               const vector6& mapPointStandardDev,
+                               const tracking::PointInverseDepth::Covariance& mapPointCovariance,
                                const size_t mapFeatureId);
 
     size_t get_feature_part_count() const noexcept override;
@@ -24,18 +24,22 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
     double get_score() const noexcept override;
 
     vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
+    matrixd get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
+    matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
 
     double get_max_retroprojection_error() const noexcept override;
 
     double get_alpha_reduction() const noexcept override;
 
-    matches_containers::feat_ptr compute_random_variation() const noexcept override;
-
     FeatureType get_feature_type() const noexcept override;
+
+    matrixd get_world_covariance() const noexcept override;
 
   protected:
     const ScreenCoordinate2D _matchedPoint;
     const InverseDepthWorldPoint _mapPoint;
+
+    const tracking::PointInverseDepth::Covariance _mapPointCovariance;
     const vector6 _mapPointStandardDev;
 };
 

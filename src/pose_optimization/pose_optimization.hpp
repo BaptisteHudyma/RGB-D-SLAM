@@ -29,22 +29,6 @@ class Pose_Optimization
                                                      utils::Pose& optimizedPose,
                                                      matches_containers::match_sets& featureSets) noexcept;
 
-    /**
-     * \brief Compute the variance of a given pose, using multiple iterations of the optimization process
-     *
-     * \param[in] optimizedPose The pose to compute the variance of
-     * \param[in] matchedFeatures The features used to compute this pose
-     * \param[out] poseCovariance The computed covariance, only valid if this function returns true
-     * \param[in] iterations The number of optimization iterations. The higher the better the estimation, but it gets
-     * less and less efficient
-     *
-     * \return True if the process succeded, or False
-     */
-    [[nodiscard]] static bool compute_pose_variance(const utils::PoseBase& optimizedPose,
-                                                    const matches_containers::match_container& matchedFeatures,
-                                                    matrix66& poseCovariance,
-                                                    const uint iterations = 100) noexcept;
-
     static void show_statistics(const double meanFrameTreatmentDuration,
                                 const uint frameCount,
                                 const bool shouldDisplayDetails = false) noexcept;
@@ -57,12 +41,38 @@ class Pose_Optimization
      * \param[in] matchedFeatures Object containing the match between observed screen features and reliable map features
      * \param[out] optimizedPose The estimated world translation & rotation of the camera pose, if the function returned
      * true
+     * \param[out] optimizationJacobian The jacobian of the distance to pose optimization, if the function returns true
      *
      * \return True if a valid pose was computed
      */
     [[nodiscard]] static bool compute_optimized_global_pose(const utils::PoseBase& currentPose,
                                                             const matches_containers::match_container& matchedFeatures,
+                                                            utils::PoseBase& optimizedPose,
+                                                            matrixd& optimizationJacobian) noexcept;
+    [[nodiscard]] static bool compute_optimized_global_pose(const utils::PoseBase& currentPose,
+                                                            const matches_containers::match_container& matchedFeatures,
                                                             utils::PoseBase& optimizedPose) noexcept;
+
+    [[nodiscard]] static bool compute_optimized_pose_coefficients(
+            const utils::PoseBase& currentPose,
+            const matches_containers::match_container& matchedFeatures,
+            vector6& optimizedCoefficients,
+            matrixd& optimizationJacobian) noexcept;
+
+    /**
+     * \brief Optimize a global pose (orientation/translation) of the observer, given a match set
+     *
+     * \param[in] currentPose Last observer optimized pose
+     * \param[in] matchedFeatures Object containing the match between observed screen features and reliable map
+     * features \param[out] optimizedPose The estimated world translation & rotation of the camera pose, if the
+     * function returned true. A covariance will be associated to the pose
+     *
+     * \return True if a valid pose was computed
+     */
+    [[nodiscard]] static bool compute_optimized_global_pose_with_covariance(
+            const utils::Pose& currentPose,
+            const matches_containers::match_container& matchedFeatures,
+            utils::Pose& optimizedPose) noexcept;
 
     /**
      * \brief Compute an optimized pose, using a RANSAC methodology
@@ -74,28 +84,13 @@ class Pose_Optimization
      *
      * \return True if a valid pose and inliers were found
      */
-    [[nodiscard]] static bool compute_pose_with_ransac(const utils::PoseBase& currentPose,
+    [[nodiscard]] static bool compute_pose_with_ransac(const utils::Pose& currentPose,
                                                        const matches_containers::match_container& matchedFeatures,
-                                                       utils::PoseBase& finalPose,
+                                                       utils::Pose& finalPose,
                                                        matches_containers::match_sets& featureSets) noexcept;
-
-    /**
-     * \brief
-     *
-     * \param[in] currentPose The pose to recompute
-     * \param[in] matchedFeatures the feature set to make variations of
-     * \param[out] optimizedPose The pose optimized with the variated feature set, if the functon returned true
-     *
-     * \return True if the new pose optimization is succesful, or False
-     */
-    [[nodiscard]] static bool compute_random_variation_of_pose(
-            const utils::PoseBase& currentPose,
-            const matches_containers::match_container& matchedFeatures,
-            utils::PoseBase& optimizedPose) noexcept;
 
     // perf monitoring
     inline static double _meanPoseRANSACDuration = 0.0;
-    inline static double _meanComputePoseVarianceDuration = 0.0;
 
     inline static double _meanGetRandomSubsetDuration = 0.0;
     inline static double _meanRANSACPoseOptimizationDuration = 0.0;

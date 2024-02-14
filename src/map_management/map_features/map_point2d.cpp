@@ -1,10 +1,13 @@
 #include "map_point2d.hpp"
 
+#include "coordinates/inverse_depth_coordinates.hpp"
 #include "coordinates/point_coordinates.hpp"
 #include "line.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
+#include <Eigen/src/Core/util/Constants.h>
+#include <unsupported/Eigen/src/NumericalDiff/NumericalDiff.h>
 
 namespace rgbd_slam::map_management {
 
@@ -12,14 +15,16 @@ namespace rgbd_slam::map_management {
  * Point2dOptimizationFeature
  */
 
-Point2dOptimizationFeature::Point2dOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
-                                                       const InverseDepthWorldPoint& mapPoint,
-                                                       const vector6& mapPointStandardDev,
-                                                       const size_t mapFeatureId) :
+Point2dOptimizationFeature::Point2dOptimizationFeature(
+        const ScreenCoordinate2D& matchedPoint,
+        const InverseDepthWorldPoint& mapPoint,
+        const tracking::PointInverseDepth::Covariance& mapPointCovariance,
+        const size_t mapFeatureId) :
     matches_containers::IOptimizationFeature(mapFeatureId),
     _matchedPoint(matchedPoint),
     _mapPoint(mapPoint),
-    _mapPointStandardDev(mapPointStandardDev) {};
+    _mapPointCovariance(mapPointCovariance),
+    _mapPointStandardDev(mapPointCovariance.diagonal().cwiseSqrt()) {};
 
 size_t Point2dOptimizationFeature::get_feature_part_count() const noexcept { return 2; }
 
@@ -32,8 +37,62 @@ double Point2dOptimizationFeature::get_score() const noexcept
 vectorxd Point2dOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     const vector2& distance = _mapPoint.compute_signed_screen_distance(
-            _matchedPoint, _mapPointStandardDev(InverseDepthWorldPoint::inverseDepthIndex), worldToCamera);
+            _matchedPoint, _mapPointCovariance.get_inverse_depth_variance(), worldToCamera);
     return distance;
+}
+
+matrixd Point2dOptimizationFeature::get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const auto& jac = get_distance_jacobian(worldToCamera);
+    return (jac * _mapPointCovariance.selfadjointView<Eigen::Lower>() * jac.transpose())
+            .selfadjointView<Eigen::Lower>();
+}
+
+matrixd Point2dOptimizationFeature::get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    // TODO: use a real jacobian instead of a computed one
+    struct Func
+    {
+        Func(const WorldToCameraMatrix& worldToCamera, const double iDepthStd, const ScreenCoordinate2D& matchedPoint) :
+            _worldToCamera(worldToCamera),
+            _iDepthStd(iDepthStd),
+            _matchedPoint(matchedPoint)
+        {
+        }
+
+        enum
+        {
+            InputsAtCompileTime = 6,
+            ValuesAtCompileTime = 2
+        };
+
+        uint values() const { return 2; }
+        uint inputs() const { return 6; }
+
+        // typedefs for the original functor
+        using Scalar = double;
+        using InputType = Eigen::Matrix<Scalar, InputsAtCompileTime, 1>;
+        using ValueType = Eigen::Matrix<Scalar, ValuesAtCompileTime, 1>;
+        using JacobianType = Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime>;
+
+        int operator()(const InputType& inputs, ValueType& outputs) const
+        {
+            outputs = InverseDepthWorldPoint(WorldCoordinate(inputs.head<3>()), inputs(3), inputs(4), inputs(5))
+                              .compute_signed_screen_distance(_matchedPoint, _iDepthStd, _worldToCamera);
+            return 0;
+        }
+
+        const WorldToCameraMatrix _worldToCamera;
+        const double _iDepthStd;
+        const ScreenCoordinate2D _matchedPoint;
+    };
+
+    Func distance(worldToCamera, _mapPointStandardDev(InverseDepthWorldPoint::inverseDepthIndex), _matchedPoint);
+    Eigen::NumericalDiff<Func, Eigen::Central> distanceFunctor(distance);
+
+    Func::JacobianType jacobian;
+    distanceFunctor.df(_mapPoint.get_vector(), jacobian);
+    return jacobian;
 }
 
 double Point2dOptimizationFeature::get_max_retroprojection_error() const noexcept
@@ -43,32 +102,9 @@ double Point2dOptimizationFeature::get_max_retroprojection_error() const noexcep
 
 double Point2dOptimizationFeature::get_alpha_reduction() const noexcept { return 0.3; }
 
-matches_containers::feat_ptr Point2dOptimizationFeature::compute_random_variation() const noexcept
-{
-    WorldCoordinate variatedObservationPoint = _mapPoint.get_first_observation();
-    // TODO: variate the observation point
-    // variatedObservationPoint += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointStandardDev.head<3>());
-    const double variatedInverseDepth =
-            _mapPoint.get_inverse_depth(); // do not variate the depth, the uncertainty is too great anyway
-    const double variatedTheta =
-            std::clamp(_mapPoint.get_theta() + utils::Random::get_normal_double() *
-                                                       _mapPointStandardDev(InverseDepthWorldPoint::thetaIndex),
-                       0.0,
-                       M_PI);
-    const double variatedPhi =
-            std::clamp(_mapPoint.get_phi() + utils::Random::get_normal_double() *
-                                                     _mapPointStandardDev(InverseDepthWorldPoint::phiIndex),
-                       -M_PI,
-                       M_PI);
-
-    return std::make_shared<Point2dOptimizationFeature>(
-            _matchedPoint,
-            InverseDepthWorldPoint(variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi),
-            _mapPointStandardDev,
-            _idInMap);
-}
-
 FeatureType Point2dOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point2d; }
+
+matrixd Point2dOptimizationFeature::get_world_covariance() const noexcept { return _mapPointCovariance; }
 
 /**
  * MapPoint
@@ -81,6 +117,7 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
                            const bool shouldAddToMatches,
                            const bool useAdvancedSearch) const noexcept
 {
+    return -1;
     assert(not _descriptor.empty());
     constexpr double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
     constexpr double advancedSearchSpaceRadius = parameters::matching::matchSearchRadius_px * 2;
@@ -116,11 +153,8 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.push_back(
-                std::make_shared<Point2dOptimizationFeature>(detectedFeatures.get_keypoint(matchIndex).get_2D(),
-                                                             _coordinates,
-                                                             _covariance.diagonal().cwiseSqrt(),
-                                                             _id));
+        matches.push_back(std::make_shared<Point2dOptimizationFeature>(
+                detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance, _id));
     }
     return matchIndex;
 }

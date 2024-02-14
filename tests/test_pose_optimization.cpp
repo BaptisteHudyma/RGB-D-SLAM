@@ -16,6 +16,7 @@
 #include "map_management/map_features/map_primitive.hpp"
 
 #include <gtest/gtest.h>
+#include <memory>
 #include <random>
 
 namespace rgbd_slam {
@@ -100,12 +101,12 @@ matches_containers::match_container get_matched_points(const utils::Pose& endPos
         if (isScreenCoordinatesValid)
         {
             // Dont care about the map id
-            matchedPoints.push_back(matches_containers::feat_ptr(
-                    new map_management::PointOptimizationFeature(transformedPoint, // screenPoint
-                                                                 worldPointStart,  // worldPoint
-                                                                 vector3::Ones(),
-                                                                 0 // uniq map id
-                                                                 )));
+            matchedPoints.push_back(
+                    std::make_shared<map_management::PointOptimizationFeature>(transformedPoint, // screenPoint
+                                                                               worldPointStart,  // worldPoint
+                                                                               matrix33::Identity(),
+                                                                               0 // uniq map id
+                                                                               ));
         }
         else
         {
@@ -136,8 +137,8 @@ matches_containers::match_container get_matched_planes(const utils::Pose& endPos
     for (const PlaneWorldCoordinates& worldPlane: planes)
     {
         const PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
-        matchedPlanes.push_back(matches_containers::feat_ptr(
-                new map_management::PlaneOptimizationFeature(cameraPlane, worldPlane, vector4::Ones(), 0)));
+        matchedPlanes.push_back(std::make_shared<map_management::PlaneOptimizationFeature>(
+                cameraPlane, worldPlane, matrix44::Identity(), 0));
     }
     return matchedPlanes;
 }
