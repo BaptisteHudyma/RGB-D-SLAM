@@ -146,11 +146,6 @@ struct IOptimizationFeature
     virtual matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept = 0;
 
     /**
-     * \brief Return the maximum allowed retroprojection error before rejecting this match
-     */
-    virtual double get_max_retroprojection_error() const noexcept = 0;
-
-    /**
      * \brief return this feature alpha reduction (optimization weight)
      */
     virtual double get_alpha_reduction() const noexcept = 0;

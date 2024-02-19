@@ -15,6 +15,7 @@
 #include <Eigen/StdVector>
 #include <cmath>
 #include <exception>
+#include <limits>
 #include <opencv2/core/utility.hpp>
 #include <stdexcept>
 #include <string>
@@ -38,10 +39,9 @@ constexpr size_t featureIndex2dPoint = 2;
  * \param[out] matchSets The set of inliers/outliers of this transformation
  * \return The transformation score, and the inlier feature score
  */
-[[nodiscard]] std::pair<double, double> get_features_inliers_outliers(
-        const matches_containers::match_container& featuresToEvaluate,
-        const utils::PoseBase& transformationPose,
-        matches_containers::match_sets& matchSets) noexcept
+[[nodiscard]] double get_features_inliers_outliers(const matches_containers::match_container& featuresToEvaluate,
+                                                   const utils::PoseBase& transformationPose,
+                                                   matches_containers::match_sets& matchSets) noexcept
 {
     matchSets.clear();
 
@@ -49,34 +49,25 @@ constexpr size_t featureIndex2dPoint = 2;
     const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
             transformationPose.get_orientation_quaternion(), transformationPose.get_position());
 
-    double retroprojectionScore = 0.0;
     double featureScore = 0.0;
     for (const auto& match: featuresToEvaluate)
     {
-        // TODO: handle each component separatly ?
-        const double maxRetroprojectionError = match->get_max_retroprojection_error();
-
+        const vectorxd& std = match->get_distance_covariance(worldToCamera).diagonal().cwiseSqrt();
         // Retroproject world point to screen, and compute screen distance
         try
         {
             // get the feature distance to it's match
-            const double distance =
-                    match->get_distance(worldToCamera).norm() / static_cast<double>(match->get_feature_part_count());
-            // inlier
-            if (distance < maxRetroprojectionError)
+            const vectorxd& distances = match->get_distance(worldToCamera).cwiseAbs();
+            // all inliers
+            if ((distances.array() < std.array()).all())
             {
-                // TODO: there is a bias toward feature that are numerous but low score (eg: points)
-                // Planes should be considered to be much more important than points (higher level of feature)
                 matchSets._inliers.insert(matchSets._inliers.end(), match);
-                retroprojectionScore += distance;
                 featureScore += match->get_score();
             }
             // outlier
             else
             {
                 matchSets._outliers.insert(matchSets._outliers.end(), match);
-                // outliers are still taken into account (MSAC)
-                retroprojectionScore += maxRetroprojectionError;
             }
         }
         catch (const std::exception& ex)
@@ -84,10 +75,9 @@ constexpr size_t featureIndex2dPoint = 2;
             outputs::log_error("get_features_inliers_outliers: caught exeption while computing distance: " +
                                std::string(ex.what()));
             matchSets._outliers.insert(matchSets._outliers.end(), match);
-            retroprojectionScore += maxRetroprojectionError;
         }
     }
-    return std::make_pair(retroprojectionScore, featureScore);
+    return featureScore;
 }
 
 /**
@@ -104,19 +94,6 @@ double get_feature_set_optimization_score(const matches_containers::match_contai
 }
 
 /**
- * \brief compute the score of a feature set
- */
-double get_feature_set_retroprojection_score(const matches_containers::match_container& matchedFeatures)
-{
-    double score = 0.0;
-    for (const auto& match: matchedFeatures)
-    {
-        score += match->get_max_retroprojection_error();
-    }
-    return score;
-}
-
-/**
  * \brief Return a subset of features
  */
 [[nodiscard]] matches_containers::match_container get_random_subset(
@@ -127,7 +104,6 @@ double get_feature_set_retroprojection_score(const matches_containers::match_con
     // we can have a lot of points, so use a more efficient but with potential duplicates subset
     // matchSubset._inliers = ransac::get_random_subset_with_score_with_duplicates(matchedFeatures, 1.0);
     matchSubset = ransac::get_random_subset_with_score(matchedFeatures, 1.0);
-
     if (get_feature_set_optimization_score(matchSubset) < 1.0)
     {
         throw std::logic_error("get_random_subset: the output subset should have the requested score");
@@ -136,7 +112,7 @@ double get_feature_set_retroprojection_score(const matches_containers::match_con
     return matchSubset;
 }
 
-bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose,
+bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentPose,
                                                  const matches_containers::match_container& matchedFeatures,
                                                  utils::Pose& finalPose,
                                                  matches_containers::match_sets& featureSets) noexcept
@@ -170,15 +146,12 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose,
         return false;
     }
 
-    // set the start score to the maximum score
-    const double maxFittingScore = get_feature_set_retroprojection_score(matchedFeatures);
-
     // TODO: check the constant: 60% inlier proportion is weak
     // matchedFeatures.size() * parameters::optimization::ransac::inlierProportion);
     const size_t inliersToStop = static_cast<size_t>(static_cast<double>(matchedFeatures.size()) * 0.80);
 
     double maxScore = 1.0;
-    utils::Pose bestPose = currentPose;
+    utils::PoseBase bestPose = currentPose;
     matches_containers::match_sets finalFeatureSets;
 
     std::atomic_bool canQuit = false;
@@ -220,30 +193,17 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose,
                 // get inliers and outliers for this transformation
                 const double getRANSACInliersTime = static_cast<double>(cv::getTickCount());
                 matches_containers::match_sets potentialInliersOutliers;
-                const auto& transformationScores =
+                const double featureInlierScore =
                         get_features_inliers_outliers(matchedFeatures, candidatePose, potentialInliersOutliers);
-                const double transformationScore = transformationScores.first;
-                const double featureInlierScore = transformationScores.second;
                 _meanRANSACGetInliersDuration +=
                         (static_cast<double>(cv::getTickCount()) - getRANSACInliersTime) / cv::getTickFrequency();
 
-                // safety
-                if (transformationScore > maxFittingScore)
-                {
-                    outputs::log_error("The computed score is higher than the max fitting score");
-#ifndef MAKE_DETERMINISTIC
-                    return;
-#else
-            continue;
-#endif
-                }
-
                 // We have a better score than the previous best one, and enough inliers to consider it valid
-                if (featureInlierScore > 1.0 and featureInlierScore > maxScore)
+                if (featureInlierScore > maxScore)
                 {
                     std::scoped_lock<std::mutex> lock(mut);
                     maxScore = featureInlierScore;
-                    bestPose.set_parameters(candidatePose.get_position(), candidatePose.get_orientation_quaternion());
+                    bestPose = candidatePose;
                     // save features inliers and outliers
                     finalFeatureSets.swap(potentialInliersOutliers);
                 }
@@ -294,7 +254,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::Pose& currentPose,
     return false;
 }
 
-bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose,
+bool Pose_Optimization::compute_optimized_pose(const utils::PoseBase& currentPose,
                                                const matches_containers::match_container& matchedFeatures,
                                                utils::Pose& optimizedPose,
                                                matches_containers::match_sets& featureSets) noexcept
@@ -408,7 +368,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
 }
 
 bool Pose_Optimization::compute_optimized_global_pose_with_covariance(
-        const utils::Pose& currentPose,
+        const utils::PoseBase& currentPose,
         const matches_containers::match_container& matchedFeatures,
         utils::Pose& optimizedPose) noexcept
 {

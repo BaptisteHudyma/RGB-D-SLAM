@@ -122,10 +122,6 @@ void Parameters::check_parameters_validity() noexcept
     static_assert(parameters::coreNumber >= 1, "Number of available computer cores should be >= 1");
     static_assert(parameters::depthSigmaError > 0, "Depth sigma error must be > 0");
 
-    static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px > 0,
-                  "The RANSAC maximum retroprojection distance for points must be positive");
-    static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm > 0,
-                  "The RANSAC maximum retroprojection distance for planes must be positive");
     static_assert(parameters::optimization::ransac::minimumInliersProportionForEarlyStop >= 0 and
                           parameters::optimization::ransac::minimumInliersProportionForEarlyStop <= 1,
                   "The RANSAC proportion of inliers must be between 0 and 1");

@@ -46,11 +46,6 @@ matrixd PointOptimizationFeature::get_distance_covariance(const WorldToCameraMat
     return r.block<2, 2>(0, 0).selfadjointView<Eigen::Lower>();
 }
 
-double PointOptimizationFeature::get_max_retroprojection_error() const noexcept
-{
-    return parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px;
-}
-
 double PointOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }
 
 FeatureType PointOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point; }
