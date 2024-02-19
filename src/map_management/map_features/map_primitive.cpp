@@ -59,11 +59,6 @@ matrixd PlaneOptimizationFeature::get_distance_jacobian(const WorldToCameraMatri
     return _mapPlane.get_reduced_signed_distance_jacobian(planeTransformationMatrix);
 }
 
-double PlaneOptimizationFeature::get_max_retroprojection_error() const noexcept
-{
-    return parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm;
-}
-
 double PlaneOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }
 
 FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Plane; }

@@ -95,11 +95,6 @@ matrixd Point2dOptimizationFeature::get_distance_jacobian(const WorldToCameraMat
     return jacobian;
 }
 
-double Point2dOptimizationFeature::get_max_retroprojection_error() const noexcept
-{
-    return parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px;
-}
-
 double Point2dOptimizationFeature::get_alpha_reduction() const noexcept { return 0.3; }
 
 FeatureType Point2dOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point2d; }

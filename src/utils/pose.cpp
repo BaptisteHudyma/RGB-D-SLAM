@@ -72,11 +72,10 @@ Pose::Pose(const vector3& position, const quaternion& orientation, const matrix6
 void Pose::display(std::ostream& os) const noexcept
 {
     PoseBase::display(os);
-    os << std::endl << "position standard dev (meters/degrees) : " << std::endl;
+    os << std::endl << "position standard dev (cm/degrees) : " << std::endl;
     os << "x\ty\tz\t|\troll\tpitch\tyaw" << std::endl;
     vector6 poseStd = _poseVariance.diagonal().cwiseSqrt();
-    os << poseStd.head<3>().transpose() / 1000.0 << "\t|\t" << poseStd.tail<3>().transpose() * 180.0 / M_PI
-       << std::endl;
+    os << poseStd.head<3>().transpose() / 10.0 << "\t|\t" << poseStd.tail<3>().transpose() * 180.0 / M_PI << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const Pose& pose)
