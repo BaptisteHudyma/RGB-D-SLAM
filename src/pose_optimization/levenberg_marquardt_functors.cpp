@@ -189,10 +189,18 @@ bool Relative_Pose_Estimator::get_input_covariance(const matches_containers::mat
     {
         const auto partCount = feature->get_feature_part_count();
 
-        // set covariance of this feature in world space
-        distancesCovariances.block(featureScoreIndex, featureScoreIndex, partCount, partCount) =
-                feature->get_distance_covariance(transformationMatrix).selfadjointView<Eigen::Lower>();
-
+        const matrixd& distCov = feature->get_distance_covariance(transformationMatrix).selfadjointView<Eigen::Lower>();
+        std::string failureReason;
+        if (utils::is_covariance_valid(distCov, failureReason))
+        {
+            // set covariance of this feature in world space
+            distancesCovariances.block(featureScoreIndex, featureScoreIndex, partCount, partCount) = distCov;
+        }
+        else
+        {
+            outputs::log_error("a distance covariances is invalid: " + failureReason + ": feature type " +
+                               to_string(feature->get_feature_type()));
+        }
         featureScoreIndex += static_cast<int>(partCount);
     }
     std::string failureReason;
@@ -244,11 +252,7 @@ std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Statu
             return "cosinus too small";
         case Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation:
             return "too many function evaluation";
-        case Eigen::LevenbergMarquardtSpace::Status::FtolTooSmall:
-            return "xtol too small";
-        case Eigen::LevenbergMarquardtSpace::Status::XtolTooSmall:
-            return "ftol too small";
-        case Eigen::LevenbergMarquardtSpace::Status::GtolTooSmall:
+#include <iostream>
             return "gtol too small";
         case Eigen::LevenbergMarquardtSpace::Status::UserAsked:
             return "user asked";

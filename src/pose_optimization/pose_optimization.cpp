@@ -50,28 +50,38 @@ constexpr size_t featureIndex2dPoint = 2;
     double featureScore = 0.0;
     for (const auto& match: featuresToEvaluate)
     {
-        const vectorxd& std = match->get_distance_covariance(worldToCamera).diagonal().cwiseSqrt();
+        bool isInlier = false;
         // Retroproject world point to screen, and compute screen distance
         try
         {
-            // get the feature distance to it's match
-            const vectorxd& distances = match->get_distance(worldToCamera).cwiseAbs();
-            // all inliers
-            if ((distances.array() < std.array()).all())
+            const vectorxd& std = match->get_distance_covariance(worldToCamera).diagonal().cwiseSqrt();
+            // check that the covariance is not too huge
+            if ((std.array() < vectorxd::Constant(std.size(), 1e5).array()).all())
             {
-                matchSets._inliers.insert(matchSets._inliers.end(), match);
-                featureScore += match->get_score();
-            }
-            // outlier
-            else
-            {
-                matchSets._outliers.insert(matchSets._outliers.end(), match);
+                // get the feature distance to it's match
+                const vectorxd& distances = match->get_distance(worldToCamera).cwiseAbs();
+                // all distance should be to the computed variance
+                if ((distances.array() < std.array()).all())
+                {
+                    isInlier = true;
+                }
             }
         }
         catch (const std::exception& ex)
         {
             outputs::log_error("get_features_inliers_outliers: caught exeption while computing distance: " +
                                std::string(ex.what()));
+        }
+
+        // inlier
+        if (isInlier)
+        {
+            matchSets._inliers.insert(matchSets._inliers.end(), match);
+            featureScore += match->get_score();
+        }
+        // not an inlier, add to ouliers
+        else
+        {
             matchSets._outliers.insert(matchSets._outliers.end(), match);
         }
     }
@@ -312,7 +322,8 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
         matrix66 inputCovariance;
         inputCovariance = (jacobian.transpose() * jacobian).completeOrthogonalDecomposition().pseudoInverse();
         inputCovariance = inputCovariance.selfadjointView<Eigen::Lower>(); // make it symetrical
-        inputCovariance.diagonal() += vector6::Constant(1e-4);             // add a small constant for rounding errors
+        inputCovariance.diagonal() += vector6::Constant(1e-4);             // add a small constant for rounding
+       errors
 
         std::string failureReason;
         if (not utils::is_covariance_valid(inputCovariance, failureReason))

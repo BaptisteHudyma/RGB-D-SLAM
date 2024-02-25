@@ -127,7 +127,7 @@ template<int Dim> class Segment : public ILine<Dim>
         jac(1, 2) = -theta4;
         jac(1, 3) = theta1 - theta2;
 
-        return jac * cov * jac.transpose();
+        return (jac * cov.selfadjointView<Eigen::Lower>() * jac.transpose()).selfadjointView<Eigen::Lower>();
     }
 
     /**
@@ -175,7 +175,7 @@ template<int Dim> class Segment : public ILine<Dim>
         jac(1, 2) = -(y1 - y2) * (theta11 - theta12 + theta10) / sqrt(theta17) - theta5;
         jac(1, 3) = theta13 / sqrt(theta17) - (y1 - y2) * (theta8 - theta9 + theta7) / sqrt(theta17) - theta3;
 
-        return jac * cov * jac.transpose();
+        return (jac * cov.selfadjointView<Eigen::Lower>() * jac.transpose()).selfadjointView<Eigen::Lower>();
     }
 
     [[nodiscard]] Eigen::Vector<double, Dim> get_end_point() const noexcept { return _endPoint; };
