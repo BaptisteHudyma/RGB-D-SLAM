@@ -59,7 +59,6 @@ class Plane_Segment
      * \brief Return the distance from a plane to the given point
      */
     [[nodiscard]] double get_point_distance(const vector3& point) const noexcept;
-    [[nodiscard]] double get_point_distance_squared(const vector3& point) const noexcept;
 
     /**
      * \brief Check if this plane segment and another onsatisfy the mertge conditions

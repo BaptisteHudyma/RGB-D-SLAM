@@ -122,10 +122,6 @@ void Parameters::check_parameters_validity() noexcept
     static_assert(parameters::coreNumber >= 1, "Number of available computer cores should be >= 1");
     static_assert(parameters::depthSigmaError > 0, "Depth sigma error must be > 0");
 
-    static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px > 0,
-                  "The RANSAC maximum retroprojection distance for points must be positive");
-    static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm > 0,
-                  "The RANSAC maximum retroprojection distance for planes must be positive");
     static_assert(parameters::optimization::ransac::minimumInliersProportionForEarlyStop >= 0 and
                           parameters::optimization::ransac::minimumInliersProportionForEarlyStop <= 1,
                   "The RANSAC proportion of inliers must be between 0 and 1");
@@ -138,19 +134,6 @@ void Parameters::check_parameters_validity() noexcept
 
     static_assert(parameters::optimization::minimumPointForOptimization >= 3,
                   "A pose cannot be computed with less than 3 points");
-    static_assert(parameters::optimization::maximumIterations > 0, "Optimization maximum iterations must be > 0");
-    static_assert(parameters::optimization::errorPrecision >= 0, "Optimization error precision must be >= 0");
-    static_assert(parameters::optimization::toleranceOfSolutionVectorNorm >= 0,
-                  "The optimization tolerance for the norm of the solution vector must be >= 0");
-    static_assert(parameters::optimization::toleranceOfVectorFunction >= 0,
-                  "The optimization tolerance for the vector function must be >= 0");
-    static_assert(parameters::optimization::toleranceOfErrorFunctionGradient >= 0,
-                  "The optimization tolerance for the error function gradient must be >= 0");
-    static_assert(parameters::optimization::diagonalStepBoundShift > 0,
-                  "The optimization diagonal stepbound shift must be > 0");
-
-    static_assert(parameters::optimization::maximumRetroprojectionError_px > 0,
-                  "The maximum retroprojection error  must be > 0");
 
     static_assert(parameters::detection::keypointCellDetectionHeightCount > 0,
                   "Keypoint detection height cell count must be > 0");

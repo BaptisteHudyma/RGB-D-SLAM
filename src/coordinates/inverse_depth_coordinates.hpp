@@ -46,6 +46,9 @@ struct InverseDepthWorldPoint
     [[nodiscard]] vector2 compute_signed_screen_distance(const ScreenCoordinate2D& other,
                                                          const double inverseDepthCovariance,
                                                          const WorldToCameraMatrix& w2c) const;
+    [[nodiscard]] matrix22 compute_signed_screen_distance_covariance(const ScreenCoordinate2D& other,
+                                                                     const matrix66& cov,
+                                                                     const WorldToCameraMatrix& w2c) const;
 
     /**
      * \brief Set the parameters of this instance from a cartesian point
@@ -90,6 +93,11 @@ struct InverseDepthWorldPoint
                                              const double inverseDepthCovariance,
                                              utils::Segment<2>& screenSegment) const noexcept;
 
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                             const matrix66& cov,
+                                             utils::Segment<2>& screenSegment,
+                                             matrix44& covariance) const noexcept;
+
     /**
      * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the
      * uncertainty
@@ -121,6 +129,16 @@ struct InverseDepthWorldPoint
     [[nodiscard]] double get_theta() const noexcept { return _theta_rad; };
     [[nodiscard]] double get_phi() const noexcept { return _phi_rad; };
     [[nodiscard]] vector3 get_bearing_vector() const noexcept { return _bearingVector; };
+
+    [[nodiscard]] vector6 get_vector() const
+    {
+        return vector6(_firstObservation.x(),
+                       _firstObservation.y(),
+                       _firstObservation.z(),
+                       _inverseDepth_mm,
+                       _theta_rad,
+                       _phi_rad);
+    };
 
   private:
     WorldCoordinate _firstObservation; // position of the camera for the first observation

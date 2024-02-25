@@ -1,11 +1,13 @@
 #ifndef RGBDSLAM_POSEOPTIMIZATION_LMFUNCTORS_HPP
 #define RGBDSLAM_POSEOPTIMIZATION_LMFUNCTORS_HPP
 
+#include "pose.hpp"
 #include "types.hpp"
 #include "matches_containers.hpp"
 
 // types
 #include <unsupported/Eigen/NonLinearOptimization>
+#include <unsupported/Eigen/src/NumericalDiff/NumericalDiff.h>
 
 namespace rgbd_slam::pose_optimization {
 
@@ -44,50 +46,66 @@ template<typename _Scalar, int NX = Eigen::Dynamic, int NY = Eigen::Dynamic> str
 
 /**
  * \brief Compute a Lie projection of this quaternion for optimization purposes (Scaled Axis representation)
- * \param[in] quat The quaternion to transform
- * \return The coefficients corresponding to this quaternion
+ * \param[in] quat The pose to transform
+ * \return The coefficients corresponding to this pose
  */
-vector3 get_scaled_axis_coefficients_from_quaternion(const quaternion& quat);
+vector6 get_optimization_coefficient_from_pose(const utils::PoseBase& pose);
 
 /**
  * \brief Compute a quaternion from the Lie projection (Scaled Axis representation)
- * \param[in] optimizationCoefficients The coefficients to transform back to quaternion
- * \return The quaternion obtained from the coefficients
+ * \param[in] optimizationCoefficients The coefficients to transform back to pose
+ * \return The pose obtained from the coefficients
  */
-quaternion get_quaternion_from_scale_axis_coefficients(const vector3& optimizationCoefficients);
+utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizationCoefficients);
+utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizationCoefficients,
+                                                        Eigen::Matrix<double, 7, 6>& jacobian);
 
 /**
  * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard
  * optimisator.
  */
-struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
+struct Relative_Pose_Estimator : Levenberg_Marquardt_Functor<double>
 {
     // Simple constructor
     /**
-     * \param[in] points2d Matched 2D (screen) to 2D (inverse depth) points
-     * \param[in] points Matched 2D (screen) to 3D (world) points
-     * \param[in] planes Matched camera to world planes
+     * \param[in] optimizationParts The sum of all feature parts
+     * \param[in] features The container for the matched features
      */
-    Global_Pose_Estimator(const matches_containers::match_point2D_container* const points2d,
-                          const matches_containers::match_point_container* const points,
-                          const matches_containers::match_plane_container* const planes);
+    Relative_Pose_Estimator(const vector6& startParameters,
+                            const size_t optimizationParts,
+                            const matches_containers::match_container* const features);
 
     /**
      * \brief Implementation of the objective function
      *
      * \param[in] optimizedParameters The vector of parameters to optimize (Size M)
-     * \param[out] outputScores The vector of errors, of size N (N the number of points)
+     * \param[out] outputScores The vector of errors, of size N (N is optimizationParts)
      */
-    int operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const;
+    int operator()(const vector6& optimizedParameters, vectorxd& outputScores) const;
+
+    /**
+     * \brief Compute the covariance of the optimizedParameters, depending on the given features and jacobian of the
+     * transformation
+     * \param[in] features The set of features that the optimization was made on
+     * \param[in] optimizedPose The optimized pose obtained by the parameters that best fit the model
+     * \param[in] jacobian The jacobian of the optimization process
+     * \param[out] inputCovariance The covariance of the input parameters
+     *
+     * \return True if a correct covariance could be found
+     */
+    [[nodiscard]] static bool get_input_covariance(const matches_containers::match_container& features,
+                                                   const utils::PoseBase& optimizedPose,
+                                                   const matrixd& jacobian,
+                                                   matrix66& inputCovariance) noexcept;
 
   private:
     // use pointers to prevent useless copy
-    const matches_containers::match_point2D_container* const _points2d;
-    const matches_containers::match_point_container* const _points;
-    const matches_containers::match_plane_container* const _planes;
+    const vector6 _startParameters;
+    const size_t _optimizationParts;
+    const matches_containers::match_container* const _features;
 };
 
-struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator>
+struct Relative_Pose_Functor : Eigen::NumericalDiff<Relative_Pose_Estimator, Eigen::Central>
 {
 };
 

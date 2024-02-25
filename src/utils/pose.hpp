@@ -64,8 +64,6 @@ class Pose : public PoseBase
     Pose(const vector3& position, const quaternion& orientation);
     Pose(const vector3& position, const quaternion& orientation, const matrix66& poseVariance);
 
-    virtual ~Pose() = default;
-
     void set_position_variance(const matrix66& variance) noexcept { _poseVariance = variance; };
     [[nodiscard]] matrix66 get_pose_variance() const noexcept { return _poseVariance; };
     [[nodiscard]] matrix33 get_position_variance() const noexcept { return _poseVariance.block<3, 3>(0, 0); };

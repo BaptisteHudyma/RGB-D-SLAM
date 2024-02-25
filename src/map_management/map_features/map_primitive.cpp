@@ -2,10 +2,68 @@
 
 #include "camera_transformation.hpp"
 #include "logger.hpp"
+#include "matches_containers.hpp"
 #include "parameters.hpp"
 #include "distance_utils.hpp"
 
 namespace rgbd_slam::map_management {
+
+/**
+ *  PlaneOptimizationFeature
+ */
+
+PlaneOptimizationFeature::PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
+                                                   const PlaneWorldCoordinates& mapPlane,
+                                                   const matrix44& mapPlaneCovariance,
+                                                   const size_t mapFeatureId) :
+    matches_containers::IOptimizationFeature(mapFeatureId),
+    _matchedPlane(matchedPlane),
+    _mapPlane(mapPlane),
+    _mapPlaneCovariance(mapPlaneCovariance),
+    _mapPlaneStandardDev(_mapPlaneCovariance.diagonal().cwiseSqrt()) {};
+
+size_t PlaneOptimizationFeature::get_feature_part_count() const noexcept { return 3; }
+
+double PlaneOptimizationFeature::get_score() const noexcept
+{
+    static constexpr double optiScore = 1.0 / parameters::optimization::minimumPlanesForOptimization;
+    return optiScore;
+}
+
+vectorxd PlaneOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    // TODO: combine this for all plane features somehow
+    const PlaneWorldToCameraMatrix& planeTransformationMatrix =
+            utils::compute_plane_world_to_camera_matrix(worldToCamera);
+
+    // TODO Add boundary optimization
+    const auto& planeProjectionError = _mapPlane.get_reduced_signed_distance(_matchedPlane, planeTransformationMatrix);
+
+    return planeProjectionError;
+}
+
+matrixd PlaneOptimizationFeature::get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const auto& jac = get_distance_jacobian(worldToCamera);
+
+    return (jac * _mapPlaneCovariance.selfadjointView<Eigen::Lower>() * jac.transpose())
+            .selfadjointView<Eigen::Lower>();
+}
+
+matrixd PlaneOptimizationFeature::get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    // TODO: combine this for all plane features somehow
+    const PlaneWorldToCameraMatrix& planeTransformationMatrix =
+            utils::compute_plane_world_to_camera_matrix(worldToCamera);
+
+    return _mapPlane.get_reduced_signed_distance_jacobian(planeTransformationMatrix);
+}
+
+double PlaneOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }
+
+FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Plane; }
+
+matrixd PlaneOptimizationFeature::get_world_covariance() const noexcept { return _mapPlaneCovariance; }
 
 /**
  *  MapPlane
@@ -14,7 +72,7 @@ namespace rgbd_slam::map_management {
 int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
                          const WorldToCameraMatrix& worldToCamera,
                          const vectorb& isDetectedFeatureMatched,
-                         std::list<PlaneMatchType>& matches,
+                         matches_containers::match_container& matches,
                          const bool shouldAddToMatches,
                          const bool useAdvancedSearch) const noexcept
 {
@@ -69,8 +127,8 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        const features::primitives::Plane& shapePlane = detectedFeatures[selectedIndex];
-        matches.emplace_back(shapePlane.get_parametrization(), get_parametrization(), get_covariance(), _id);
+        matches.push_back(std::make_shared<PlaneOptimizationFeature>(
+                detectedFeatures[selectedIndex].get_parametrization(), get_parametrization(), get_covariance(), _id));
     }
 
     return selectedIndex;
@@ -80,7 +138,7 @@ bool MapPlane::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPlaneObject& trackedFeatures,
                               const uint dropChance) const noexcept
 {
-    // TODO: track 2D points
+    // TODO: track primitives
     // silence warning for unused parameters
     (void)worldToCamera;
     (void)trackedFeatures;
@@ -201,7 +259,7 @@ StagedMapPlane::StagedMapPlane(const matrix33& poseCovariance,
 
 bool StagedMapPlane::should_remove_from_staged() const noexcept { return _failedTrackingCount >= 2; }
 
-bool StagedMapPlane::should_add_to_local_map() const noexcept { return _successivMatchedCount >= 2; }
+bool StagedMapPlane::should_add_to_local_map() const noexcept { return _successivMatchedCount >= 4; }
 
 /**
  *  LocalMapPlane

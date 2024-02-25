@@ -1,6 +1,7 @@
 #include "logger.hpp"
 #include <filesystem>
 #include <iostream>
+#include <mutex>
 
 namespace rgbd_slam::outputs {
 
@@ -21,6 +22,9 @@ void log(const std::string_view& message, const std::source_location& location) 
 {
     if (INFO_LEVEL <= InfoLevel::LOW)
     {
+        static std::mutex mut;
+        std::scoped_lock<std::mutex> lock(mut);
+
         // display in blue
         std::cout << "\x1B[34m[INF] " << std::filesystem::path(location.file_name()).filename().string() << "("
                   << location.line() << ":" << location.column()
@@ -33,6 +37,9 @@ void log_warning(const std::string_view& message, const std::source_location& lo
 {
     if (INFO_LEVEL <= InfoLevel::MED)
     {
+        static std::mutex mut;
+        std::scoped_lock<std::mutex> lock(mut);
+
         // display in yellow
         std::cerr << "\x1B[33m[WARN] " << std::filesystem::path(location.file_name()).filename().string() << "("
                   << location.line() << ":" << location.column()
@@ -45,6 +52,9 @@ void log_error(const std::string_view& message, const std::source_location& loca
 {
     if (INFO_LEVEL <= InfoLevel::HIGH)
     {
+        static std::mutex mut;
+        std::scoped_lock<std::mutex> lock(mut);
+
         // display in red
         std::cerr << "\x1B[31m[ERR] " << std::filesystem::path(location.file_name()).filename().string() << "("
                   << location.line() << ":" << location.column()

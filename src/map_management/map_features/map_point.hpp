@@ -10,33 +10,54 @@ namespace rgbd_slam::map_management {
 
 const size_t INVALID_POINT_UNIQ_ID = 0; // This id indicates an invalid unique id for a map point
 
+/**
+ *  \brief The OptimizationFeature for a 3d point
+ */
+struct PointOptimizationFeature : public matches_containers::IOptimizationFeature
+{
+    PointOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
+                             const WorldCoordinate& mapPoint,
+                             const matrix33& mapPointCovariance,
+                             const size_t mapFeatureId);
+
+    size_t get_feature_part_count() const noexcept override;
+
+    double get_score() const noexcept override;
+
+    vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
+    matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
+
+    double get_alpha_reduction() const noexcept override;
+
+    FeatureType get_feature_type() const noexcept override;
+
+    matrixd get_world_covariance() const noexcept override;
+
+  protected:
+    const ScreenCoordinate2D _matchedPoint;
+    const WorldCoordinate _mapPoint;
+
+    const matrix33 _mapPointCovariance;
+    const vector3 _mapPointStandardDev; // opti: sqrt of the diagonal of _mapPointCovariance
+};
+
 using DetectedKeypointsObject = features::keypoints::Keypoint_Handler;
 using DetectedPointType = features::keypoints::DetectedKeyPoint;
-using PointMatchType = matches_containers::PointMatch;
 using TrackedPointsObject = features::keypoints::KeypointsWithIdStruct;
-using UpgradedPointType = void*; // no upgrade for 3D points
 
 /**
  * \brief Classic point feature in map, all map points should inherit this
  */
 class MapPoint :
     public tracking::Point,
-    public IMapFeature<DetectedKeypointsObject,
-                       DetectedPointType,
-                       PointMatchType,
-                       TrackedPointsObject,
-                       UpgradedPointType>
+    public IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject>
 {
   public:
     MapPoint(const WorldCoordinate& coordinates,
              const WorldCoordinateCovariance& covariance,
              const cv::Mat& descriptor) :
         tracking::Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject,
-                    DetectedPointType,
-                    PointMatchType,
-                    TrackedPointsObject,
-                    UpgradedPointType>()
+        IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject>()
     {
         assert(_id > 0);
     }
@@ -46,18 +67,17 @@ class MapPoint :
              const cv::Mat& descriptor,
              const size_t id) :
         tracking::Point(coordinates, covariance, descriptor),
-        IMapFeature<DetectedKeypointsObject, DetectedPointType, PointMatchType, TrackedPointsObject, UpgradedPointType>(
-                id)
+        IMapFeature<DetectedKeypointsObject, DetectedPointType, TrackedPointsObject>(id)
     {
         assert(_id > 0);
     }
 
-    virtual ~MapPoint() = default;
+    ~MapPoint() override = default;
 
     [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
                                  const vectorb& isDetectedFeatureMatched,
-                                 std::list<PointMatchType>& matches,
+                                 matches_containers::match_container& matches,
                                  const bool shouldAddToMatches = true,
                                  const bool useAdvancedSearch = false) const noexcept override;
 
@@ -74,10 +94,10 @@ class MapPoint :
     void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
 
     [[nodiscard]] bool compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
-                                        UpgradedPointType& upgradeFeature) const noexcept override
+                                        UpgradedFeature_ptr& upgradeFeature) const noexcept override
     {
-        (void)cameraToWorld;
-        (void)upgradeFeature;
+        std::ignore = cameraToWorld;
+        std::ignore = upgradeFeature;
         return false;
     }
 
@@ -131,13 +151,43 @@ class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
     [[nodiscard]] bool is_lost() const noexcept override;
 };
 
-using localPointMap = Feature_Map<LocalMapPoint,
-                                  StagedMapPoint,
-                                  DetectedKeypointsObject,
-                                  DetectedPointType,
-                                  PointMatchType,
-                                  TrackedPointsObject,
-                                  UpgradedPointType>;
+class localPointMap :
+    public Feature_Map<LocalMapPoint, StagedMapPoint, DetectedKeypointsObject, DetectedPointType, TrackedPointsObject>
+{
+  public:
+    FeatureType get_feature_type() const override { return FeatureType::Point; }
+
+    std::string get_display_name() const override { return "Points"; }
+
+    DetectedKeypointsObject get_detected_feature(const DetectedFeatureContainer& features) const override
+    {
+        return features.keypointObject;
+    }
+
+    std::shared_ptr<TrackedPointsObject> get_tracked_features_container(
+            const TrackedFeaturesContainer& tracked) const override
+    {
+        return tracked.trackedPoints;
+    }
+
+    size_t minimum_features_for_opti() const override { return parameters::optimization::minimumPointForOptimization; }
+
+  protected:
+    void add_upgraded_to_local_map(const UpgradedFeature_ptr upgradedfeature) override
+    {
+        if (upgradedfeature->get_type() == get_feature_type())
+        {
+            const auto upgraded = dynamic_cast<UpgradedPoint2D&>(*upgradedfeature);
+
+            add_to_local_map(LocalMapPoint(
+                    upgraded._coordinates, upgraded._covariance, upgraded._descriptor, upgraded._matchIndex));
+        }
+        else
+        {
+            outputs::log_error("Cannot add this feature to the point map");
+        }
+    }
+};
 
 } // namespace rgbd_slam::map_management
 

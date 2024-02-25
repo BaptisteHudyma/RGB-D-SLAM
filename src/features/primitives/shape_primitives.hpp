@@ -103,7 +103,7 @@ class Plane : public IPrimitive
     [[nodiscard]] vector3 get_normal() const noexcept { return _parametrization.get_normal(); };
     [[nodiscard]] double get_d() const noexcept { return _parametrization.get_d(); };
     [[nodiscard]] PlaneCameraCoordinates get_parametrization() const noexcept { return _parametrization; };
-    [[nodiscard]] CameraCoordinate get_center() const noexcept { return get_normal() * (-get_d()); };
+    [[nodiscard]] CameraCoordinate get_center() const noexcept { return _parametrization.get_center(); };
     [[nodiscard]] matrix33 get_point_cloud_covariance() const noexcept { return _pointCloudCovariance; };
 
     [[nodiscard]] CameraPolygon get_boundary_polygon() const noexcept { return _boundaryPolygon; };
