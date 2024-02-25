@@ -3,6 +3,7 @@
 #include "camera_transformation.hpp"
 #include "coordinates/basis_changes.hpp"
 
+#include "coordinates/point_coordinates.hpp"
 #include "distance_utils.hpp"
 #include "parameters.hpp"
 
@@ -143,14 +144,14 @@ WorldCoordinate InverseDepthWorldPoint::get_furthest_estimation(const double inv
 {
     // 3 standard deviations (>99% of certainty in this interval)
     const double depthVariation = inverseDepthStandardDev * 3;
-    return WorldCoordinate(_firstObservation + _bearingVector / std::min(_inverseDepth_mm - depthVariation, 1e-9));
+    return WorldCoordinate(_firstObservation + _bearingVector / (_inverseDepth_mm - depthVariation));
 }
 
 WorldCoordinate InverseDepthWorldPoint::get_closest_estimation(const double inverseDepthStandardDev) const
 {
     // 3 standard deviations (>99% of certainty in this interval)
     const double depthVariation = inverseDepthStandardDev * 3;
-    return WorldCoordinate(_firstObservation + _bearingVector / std::min(_inverseDepth_mm + depthVariation, 1e-9));
+    return WorldCoordinate(_firstObservation + _bearingVector / (_inverseDepth_mm + depthVariation));
 }
 
 bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
@@ -161,14 +162,14 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
     const WorldCoordinate& firstPoint = get_furthest_estimation(depthStandardDev);
     const WorldCoordinate& endPoint = get_closest_estimation(depthStandardDev);
 
-    ScreenCoordinate firstScreenPoint;
-    ScreenCoordinate endScreenPoint;
+    ScreenCoordinate2D firstScreenPoint;
+    ScreenCoordinate2D endScreenPoint;
     if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
     {
-        screenSegment.set_points(firstScreenPoint.get_2D(), endScreenPoint.get_2D());
+        screenSegment.set_points(firstScreenPoint, endScreenPoint);
         return true;
     }
-
+    // should never happend
     return false;
 }
 

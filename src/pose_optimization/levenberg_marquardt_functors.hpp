@@ -64,14 +64,16 @@ utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizat
  * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard
  * optimisator.
  */
-struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
+struct Relative_Pose_Estimator : Levenberg_Marquardt_Functor<double>
 {
     // Simple constructor
     /**
      * \param[in] optimizationParts The sum of all feature parts
      * \param[in] features The container for the matched features
      */
-    Global_Pose_Estimator(const size_t optimizationParts, const matches_containers::match_container* const features);
+    Relative_Pose_Estimator(const vector6& startParameters,
+                            const size_t optimizationParts,
+                            const matches_containers::match_container* const features);
 
     /**
      * \brief Implementation of the objective function
@@ -98,11 +100,12 @@ struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>
 
   private:
     // use pointers to prevent useless copy
+    const vector6 _startParameters;
     const size_t _optimizationParts;
     const matches_containers::match_container* const _features;
 };
 
-struct Global_Pose_Functor : Eigen::NumericalDiff<Global_Pose_Estimator, Eigen::Central>
+struct Relative_Pose_Functor : Eigen::NumericalDiff<Relative_Pose_Estimator, Eigen::Central>
 {
 };
 

@@ -112,7 +112,6 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
                            const bool shouldAddToMatches,
                            const bool useAdvancedSearch) const noexcept
 {
-    return -1;
     assert(not _descriptor.empty());
     constexpr double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
     constexpr double advancedSearchSpaceRadius = parameters::matching::matchSearchRadius_px * 2;

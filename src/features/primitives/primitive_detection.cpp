@@ -375,6 +375,8 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
         return;
     }
 
+// TODO: reactivate the cylinder fitting
+#if 1
     // set it as plane or cylinder
     // TODO: why 100 ? seems random
     if (newPlaneSegment.get_score() > 100)
@@ -386,6 +388,9 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
     {
         cylinder_fitting(cellActivatedCount, isActivatedMap, cylinder2regionMap);
     }
+#else
+    add_plane_segment_to_features(newPlaneSegment, isActivatedMap);
+#endif
 }
 
 void Primitive_Detection::add_plane_segment_to_features(const Plane_Segment& newPlaneSegment,
