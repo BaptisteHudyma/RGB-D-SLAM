@@ -32,6 +32,14 @@ ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, con
     return screenPointCovariance;
 }
 
+ScreenCoordinate2dCovariance get_screen_2d_point_covariance(const WorldCoordinate& point,
+                                                            const WorldCoordinateCovariance& pointCovariance,
+                                                            const WorldToCameraMatrix& worldToCamera) noexcept
+{
+    return ScreenCoordinate2dCovariance(
+            get_screen_point_covariance(point, pointCovariance, worldToCamera).block<2, 2>(0, 0));
+}
+
 ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
                                                        const WorldCoordinateCovariance& pointCovariance,
                                                        const WorldToCameraMatrix& worldToCamera) noexcept

@@ -24,7 +24,6 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
     double get_score() const noexcept override;
 
     vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
-    matrixd get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
     matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
 
     double get_alpha_reduction() const noexcept override;

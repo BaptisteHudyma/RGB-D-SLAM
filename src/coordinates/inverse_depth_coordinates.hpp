@@ -46,6 +46,9 @@ struct InverseDepthWorldPoint
     [[nodiscard]] vector2 compute_signed_screen_distance(const ScreenCoordinate2D& other,
                                                          const double inverseDepthCovariance,
                                                          const WorldToCameraMatrix& w2c) const;
+    [[nodiscard]] matrix22 compute_signed_screen_distance_covariance(const ScreenCoordinate2D& other,
+                                                                     const matrix66& cov,
+                                                                     const WorldToCameraMatrix& w2c) const;
 
     /**
      * \brief Set the parameters of this instance from a cartesian point
@@ -89,6 +92,11 @@ struct InverseDepthWorldPoint
     [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
                                              const double inverseDepthCovariance,
                                              utils::Segment<2>& screenSegment) const noexcept;
+
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                             const matrix66& cov,
+                                             utils::Segment<2>& screenSegment,
+                                             matrix44& covariance) const noexcept;
 
     /**
      * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the

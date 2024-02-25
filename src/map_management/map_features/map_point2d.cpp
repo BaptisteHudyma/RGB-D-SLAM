@@ -43,56 +43,7 @@ vectorxd Point2dOptimizationFeature::get_distance(const WorldToCameraMatrix& wor
 
 matrixd Point2dOptimizationFeature::get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const auto& jac = get_distance_jacobian(worldToCamera);
-    return (jac * _mapPointCovariance.selfadjointView<Eigen::Lower>() * jac.transpose())
-            .selfadjointView<Eigen::Lower>();
-}
-
-matrixd Point2dOptimizationFeature::get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
-{
-    // TODO: use a real jacobian instead of a computed one
-    struct Func
-    {
-        Func(const WorldToCameraMatrix& worldToCamera, const double iDepthStd, const ScreenCoordinate2D& matchedPoint) :
-            _worldToCamera(worldToCamera),
-            _iDepthStd(iDepthStd),
-            _matchedPoint(matchedPoint)
-        {
-        }
-
-        enum
-        {
-            InputsAtCompileTime = 6,
-            ValuesAtCompileTime = 2
-        };
-
-        uint values() const { return 2; }
-        uint inputs() const { return 6; }
-
-        // typedefs for the original functor
-        using Scalar = double;
-        using InputType = Eigen::Matrix<Scalar, InputsAtCompileTime, 1>;
-        using ValueType = Eigen::Matrix<Scalar, ValuesAtCompileTime, 1>;
-        using JacobianType = Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime>;
-
-        int operator()(const InputType& inputs, ValueType& outputs) const
-        {
-            outputs = InverseDepthWorldPoint(WorldCoordinate(inputs.head<3>()), inputs(3), inputs(4), inputs(5))
-                              .compute_signed_screen_distance(_matchedPoint, _iDepthStd, _worldToCamera);
-            return 0;
-        }
-
-        const WorldToCameraMatrix _worldToCamera;
-        const double _iDepthStd;
-        const ScreenCoordinate2D _matchedPoint;
-    };
-
-    Func distance(worldToCamera, _mapPointStandardDev(InverseDepthWorldPoint::inverseDepthIndex), _matchedPoint);
-    Eigen::NumericalDiff<Func, Eigen::Central> distanceFunctor(distance);
-
-    Func::JacobianType jacobian;
-    distanceFunctor.df(_mapPoint.get_vector(), jacobian);
-    return jacobian;
+    return _mapPoint.compute_signed_screen_distance_covariance(_matchedPoint, _mapPointCovariance, worldToCamera);
 }
 
 double Point2dOptimizationFeature::get_alpha_reduction() const noexcept { return 0.3; }

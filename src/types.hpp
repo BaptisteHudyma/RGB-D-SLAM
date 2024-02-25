@@ -43,7 +43,7 @@ using vector7 = Eigen::Matrix<double, 7, 1>;
 using matrix66 = Eigen::Matrix<double, 6, 6>;
 using matrix77 = Eigen::Matrix<double, 7, 7>;
 
-struct ScreenCoordinate2DCovariance : public matrix22
+struct ScreenCoordinate2dCovariance : public matrix22
 {
 };
 struct ScreenCoordinateCovariance : public matrix33
