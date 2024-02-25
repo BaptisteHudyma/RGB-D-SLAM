@@ -73,8 +73,9 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
     if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
     {
         // No match: try to find match in a window around the point
-        ScreenCoordinate2D screenCoordinates;
-        if (_coordinates.to_world_coordinates().to_screen_coordinates(worldToCamera, screenCoordinates))
+        utils::Segment<2> screenCoordinates;
+        if (_coordinates.to_screen_coordinates(
+                    worldToCamera, _covariance.get_inverse_depth_variance(), screenCoordinates))
         {
             // TODO use a real match to 2D function, this one will fail for 2D points
             matchIndex = detectedFeatures.get_match_index(

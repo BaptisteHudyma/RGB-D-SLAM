@@ -3,6 +3,7 @@
 #include "../../parameters.hpp"
 #include "../../types.hpp"
 #include "coordinates/point_coordinates.hpp"
+#include "line.hpp"
 #include <cstddef>
 
 namespace rgbd_slam::features::keypoints {
@@ -188,6 +189,28 @@ void Keypoint_Handler::fill_keypoint_mask(const ScreenCoordinate2D& pointToSearc
     }
 }
 
+void Keypoint_Handler::fill_keypoint_mask(const utils::Segment<2>& pointToSearch,
+                                          const index_container& keypointIndexContainer,
+                                          const vectorb& isKeyPointMatchedContainer,
+                                          cv::Mat_<uchar>& keyPointMask) const noexcept
+{
+    // Squared search diameter, to compare distance without sqrt
+    constexpr float squaredSearchDiameter = static_cast<float>(SQR(parameters::matching::matchSearchRadius_px));
+    for (const uint keypointIndex: keypointIndexContainer)
+    {
+        // ignore this point if it is already matched (prevent multiple matches of one point)
+        if (not isKeyPointMatchedContainer[keypointIndex])
+        {
+            const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
+            const double squarredDistance = pointToSearch.distance(keypoint).squaredNorm();
+
+            // keypoint is in a circle around the target keypoints, allow a potential match
+            if (squarredDistance <= squaredSearchDiameter)
+                keyPointMask(0, static_cast<int>(keypointIndex)) = 1;
+        }
+    }
+}
+
 int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId) const noexcept
 {
     if (_keypoints.empty())
@@ -255,6 +278,66 @@ int Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoin
     const cv::Mat_<uchar>& keyPointMask =
             compute_key_point_mask(projectedMapPoint, isKeyPointMatchedContainer, searchSpaceCellRadius);
 
+    std::vector<std::vector<cv::DMatch>> knnMatches;
+    _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask);
+
+    assert(knnMatches.size() > 0);
+
+    // check the farthest neighbors
+    const std::vector<cv::DMatch>& firstMatch = knnMatches[0];
+    if (firstMatch.size() > 1)
+    {
+        // check if point is a good match by checking it's distance to the second best matched point
+        if (firstMatch[0].distance < _maxMatchDistance * firstMatch[1].distance)
+        {
+            int id = firstMatch[0].trainIdx;
+            return id; // this frame key point
+        }
+        return INVALID_MATCH_INDEX;
+    }
+    else if (firstMatch.size() == 1)
+    {
+        int id = firstMatch[0].trainIdx;
+        return id; // this frame key point
+    }
+    return INVALID_MATCH_INDEX;
+}
+
+int Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint,
+                                      const cv::Mat& mapPointDescriptor,
+                                      const vectorb& isKeyPointMatchedContainer,
+                                      const double searchSpaceRadius) const noexcept
+{
+    assert(_featuresMatcher != nullptr);
+    assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
+
+    // cannot compute matches without a match or descriptors
+    if (_keypoints.empty() or _descriptors.rows <= 0)
+        return INVALID_MATCH_INDEX;
+
+    constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
+    static_assert(cellSize > 0);
+    const uint searchSpaceCellRadius = static_cast<uint>(std::ceil(searchSpaceRadius / cellSize));
+    assert(searchSpaceCellRadius > 0);
+
+    // check descriptor dimensions
+    assert(!mapPointDescriptor.empty());
+    assert(mapPointDescriptor.cols == _descriptors.cols);
+
+    // set a mask of the size of the keypoints, with everything at zero (nothing can be matched)
+    cv::Mat_<uchar> keyPointMask = cv::Mat_<float>::zeros(1, _descriptors.rows);
+    for (uint i = 0; i < _cellCountX; ++i)
+    {
+        for (uint j = 0; j < _cellCountY; ++j)
+        {
+            const size_t searchSpaceIndex = get_search_space_index(j, i);
+            assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
+
+            // get all keypoints in this area
+            const index_container& keypointIndexContainer = _searchSpaceIndexContainer[searchSpaceIndex];
+            fill_keypoint_mask(projectedMapPoint, keypointIndexContainer, isKeyPointMatchedContainer, keyPointMask);
+        }
+    }
     std::vector<std::vector<cv::DMatch>> knnMatches;
     _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask);
 

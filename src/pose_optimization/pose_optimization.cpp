@@ -56,12 +56,13 @@ constexpr size_t featureIndex2dPoint = 2;
         {
             const vectorxd& std = match->get_distance_covariance(worldToCamera).diagonal().cwiseSqrt();
             // check that the covariance is not too huge
-            if ((std.array() < vectorxd::Constant(std.size(), 1e5).array()).all())
+            // TODO: remove this when we will make all optimizations in local space (with low variances)
+            if ((std.array() <= vectorxd::Constant(std.size(), 1e10).array()).all())
             {
                 // get the feature distance to it's match
                 const vectorxd& distances = match->get_distance(worldToCamera).cwiseAbs();
-                // all distance should be to the computed variance
-                if ((distances.array() < std.array()).all())
+                // all distance should be in the computed variance 99% range
+                if ((distances.array() <= 3 * std.array()).all())
                 {
                     isInlier = true;
                 }

@@ -2,6 +2,7 @@
 #define RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_HANDLER_HPP
 
 #include "coordinates/point_coordinates.hpp"
+#include "line.hpp"
 #include <opencv2/core/types.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include <utility>
@@ -136,6 +137,10 @@ class Keypoint_Handler
                                       const cv::Mat& mapPointDescriptor,
                                       const vectorb& isKeyPointMatchedContainer,
                                       const double searchSpaceRadius) const noexcept;
+    [[nodiscard]] int get_match_index(const utils::Segment<2>& projectedMapPoint,
+                                      const cv::Mat& mapPointDescriptor,
+                                      const vectorb& isKeyPointMatchedContainer,
+                                      const double searchSpaceRadius) const noexcept;
 
     /**
      * \brief return the keypoint associated with the index
@@ -197,6 +202,10 @@ class Keypoint_Handler
      * \param[in, out] keyPointMask The match mask for each keypoints
      */
     void fill_keypoint_mask(const ScreenCoordinate2D& pointToSearch,
+                            const index_container& keypointIndexContainer,
+                            const vectorb& isKeyPointMatchedContainer,
+                            cv::Mat_<uchar>& keyPointMask) const noexcept;
+    void fill_keypoint_mask(const utils::Segment<2>& pointToSearch,
                             const index_container& keypointIndexContainer,
                             const vectorb& isKeyPointMatchedContainer,
                             cv::Mat_<uchar>& keyPointMask) const noexcept;
