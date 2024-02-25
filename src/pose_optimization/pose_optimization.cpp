@@ -15,14 +15,12 @@
 #include <Eigen/StdVector>
 #include <cmath>
 #include <exception>
-#include <limits>
 #include <opencv2/core/utility.hpp>
 #include <stdexcept>
 #include <string>
 #include <format>
 
 #include <tbb/parallel_for.h>
-#include <utility>
 
 namespace rgbd_slam::pose_optimization {
 
@@ -283,7 +281,7 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
     }
 
     // Optimization function (ok to use pointers: optimization of copy)
-    Global_Pose_Functor pose_optimisation_functor(Global_Pose_Estimator(optiParts, &matchedFeatures));
+    Relative_Pose_Functor pose_optimisation_functor(Relative_Pose_Estimator(input, optiParts, &matchedFeatures));
     // Optimization algorithm
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
 
@@ -305,7 +303,7 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
     }
 
     // get the jacobian of the transformation
-    matrixd jacobian(optiParts, 6);
+    matrixd jacobian(optiParts + 6, 6);
     pose_optimisation_functor.df(input, jacobian);
 
     // TODO: reactivate when the metric will make sense
@@ -395,7 +393,7 @@ bool Pose_Optimization::compute_optimized_global_pose_with_covariance(
 
     // get real covariance
     matrix66 inputCovariance;
-    if (not Global_Pose_Estimator::get_input_covariance(matchedFeatures, outputPose, jacobian, inputCovariance))
+    if (not Relative_Pose_Estimator::get_input_covariance(matchedFeatures, outputPose, jacobian, inputCovariance))
     {
         outputs::log_error("get_input_covariance failed");
         return false;

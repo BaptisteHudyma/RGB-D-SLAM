@@ -103,9 +103,11 @@ utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizat
 /**
  * GLOBAL POSE ESTIMATOR members
  */
-Global_Pose_Estimator::Global_Pose_Estimator(const size_t optimizationParts,
-                                             const matches_containers::match_container* const features) :
-    Levenberg_Marquardt_Functor<double>(6, optimizationParts),
+Relative_Pose_Estimator::Relative_Pose_Estimator(const vector6& startParameters,
+                                                 const size_t optimizationParts,
+                                                 const matches_containers::match_container* const features) :
+    Levenberg_Marquardt_Functor<double>(6, optimizationParts + 6),
+    _startParameters(startParameters),
     _optimizationParts(optimizationParts),
     _features(features)
 {
@@ -128,12 +130,12 @@ Global_Pose_Estimator::Global_Pose_Estimator(const size_t optimizationParts,
 }
 
 // Implementation of the objective function
-int Global_Pose_Estimator::operator()(const vector6& optimizedParameters, vectorxd& outputScores) const
+int Relative_Pose_Estimator::operator()(const vector6& optimizedParameters, vectorxd& outputScores) const
 {
     // sanity checks
     assert(_features != nullptr);
     assert(not _features->empty());
-    assert(static_cast<size_t>(outputScores.size()) == _optimizationParts);
+    assert(static_cast<size_t>(outputScores.size()) == (_optimizationParts + 6));
 
     // Get the new estimated pose
     const utils::PoseBase& pose = get_pose_from_optimization_coefficients(optimizedParameters);
@@ -155,14 +157,26 @@ int Global_Pose_Estimator::operator()(const vector6& optimizedParameters, vector
                 distance * feature->get_alpha_reduction() / static_cast<double>(partCount);
         featureScoreIndex += static_cast<int>(partCount);
     }
+
+    // feedback, to garanty to prevent the system from going to infinity when the features are all scaless parameters
+    // (eg: inverse depth points)
+    outputScores.segment(featureScoreIndex, 6) = (_startParameters - optimizedParameters) / outputScores.size();
     return 0;
 }
 
-bool Global_Pose_Estimator::get_input_covariance(const matches_containers::match_container& features,
-                                                 const utils::PoseBase& optimizedPose,
-                                                 const matrixd& jacobian,
-                                                 matrix66& inputCovariance) noexcept
+bool Relative_Pose_Estimator::get_input_covariance(const matches_containers::match_container& features,
+                                                   const utils::PoseBase& optimizedPose,
+                                                   const matrixd& jac,
+                                                   matrix66& inputCovariance) noexcept
 {
+    // Ignore the retroactive part of the jacobian
+    const matrixd& jacobian = jac.block(0, 0, jac.rows() - 6, jac.cols());
+    if (jacobian.hasNaN() or not jacobian.allFinite() or jacobian.isConstant(0.0))
+    {
+        outputs::log_error("Input jacobian is all invalid");
+        return false;
+    }
+
     // convert to optimization matrix
     const WorldToCameraMatrix& transformationMatrix = utils::compute_world_to_camera_transform(
             optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
