@@ -57,6 +57,17 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
 [[nodiscard]] double get_depth_quantization(const double depht) noexcept;
 
 /**
+ * \brief Compute a screen 2d point covariance from a given point
+ *
+ * \param[in] point The coordinates of this 3D point (world space)
+ * \param[in] pointCovariance The covariance associated with this point (world space)
+ */
+[[nodiscard]] ScreenCoordinate2dCovariance get_screen_2d_point_covariance(
+        const WorldCoordinate& point,
+        const WorldCoordinateCovariance& pointCovariance,
+        const WorldToCameraMatrix& worldToCamera) noexcept;
+
+/**
  * \brief Compute a screen point covariance from a given point
  *
  * \param[in] point The coordinates of this 3D point (world space)

@@ -41,9 +41,9 @@ vectorxd PointOptimizationFeature::get_distance(const WorldToCameraMatrix& world
 
 matrixd PointOptimizationFeature::get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const auto& r = utils::get_screen_point_covariance(
-            _mapPoint, WorldCoordinateCovariance(_mapPointCovariance), worldToCamera);
-    return r.block<2, 2>(0, 0).selfadjointView<Eigen::Lower>();
+    return utils::get_screen_2d_point_covariance(
+                   _mapPoint, WorldCoordinateCovariance(_mapPointCovariance), worldToCamera)
+            .selfadjointView<Eigen::Lower>();
 }
 
 double PointOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }

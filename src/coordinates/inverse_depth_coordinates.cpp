@@ -4,8 +4,10 @@
 #include "coordinates/basis_changes.hpp"
 
 #include "coordinates/point_coordinates.hpp"
+#include "covariances.hpp"
 #include "distance_utils.hpp"
 #include "parameters.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam {
 
@@ -68,6 +70,19 @@ vector2 InverseDepthWorldPoint::compute_signed_screen_distance(const ScreenCoord
     return vector2::Constant(std::numeric_limits<double>::max());
 }
 
+matrix22 InverseDepthWorldPoint::compute_signed_screen_distance_covariance(const ScreenCoordinate2D& other,
+                                                                           const matrix66& cov,
+                                                                           const WorldToCameraMatrix& w2c) const
+{
+    utils::Segment<2> screenLine;
+    matrix44 covariance;
+    if (to_screen_coordinates(w2c, cov, screenLine, covariance))
+    {
+        return screenLine.get_distance_covariance(other, covariance);
+    }
+    return matrix22::Identity();
+}
+
 InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
                                                               const WorldCoordinate& origin) noexcept
 {
@@ -110,21 +125,23 @@ WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
     return WorldCoordinate(_firstObservation + _bearingVector / _inverseDepth_mm);
 }
 
-WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept
+Eigen::Matrix<double, 3, 6> to_world_coordinates_jacobian(const double inverseDepth,
+                                                          const double theta,
+                                                          const double phi)
 {
     // jacobian of _firstObservation + 1.0 / _inverseDepth_mm * _bearingVector
-    jacobian = Eigen::Matrix<double, 3, 6>::Zero();
+    matrixd jacobian = Eigen::Matrix<double, 3, 6>::Zero();
 
     // x = xo + sin(theta) cos(phi) / d
     // y = yo + sin(theta) sin(phi) / d
     // z = zo + cos(theta) / d
 
-    const double sinTheta = sin(_theta_rad);
-    const double cosTheta = cos(_theta_rad);
-    const double sinPhi = sin(_phi_rad);
-    const double cosPhi = cos(_phi_rad);
-    const double d = 1.0 / _inverseDepth_mm;
-    const double dSqr = 1.0 / SQR(_inverseDepth_mm);
+    const double sinTheta = sin(theta);
+    const double cosTheta = cos(theta);
+    const double sinPhi = sin(phi);
+    const double cosPhi = cos(phi);
+    const double d = 1.0 / inverseDepth;
+    const double dSqr = 1.0 / SQR(inverseDepth);
 
     const double theta1 = sinPhi * sinTheta;
     const double theta2 = cosPhi * sinTheta;
@@ -134,9 +151,15 @@ WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<doubl
                                     {-theta1 * dSqr, sinPhi * cosThetaOverd, theta2 * d},
                                     {-cosTheta * dSqr, -sinTheta * d, 0}});
 
-    jacobian.block<3, 3>(0, firstPoseIndex) = matrix33::Identity();
-    jacobian.block<3, 3>(0, inverseDepthIndex) = reducedJacobian;
+    jacobian.block<3, 3>(0, InverseDepthWorldPoint::firstPoseIndex) = matrix33::Identity();
+    jacobian.block<3, 3>(0, InverseDepthWorldPoint::inverseDepthIndex) = reducedJacobian;
 
+    return jacobian;
+}
+
+WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept
+{
+    jacobian = to_world_coordinates_jacobian(_inverseDepth_mm, _theta_rad, _phi_rad);
     return to_world_coordinates();
 }
 
@@ -167,6 +190,49 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
     if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
     {
         screenSegment.set_points(firstScreenPoint, endScreenPoint);
+        return true;
+    }
+    // should never happend
+    return false;
+}
+
+bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                                   const matrix66& cov,
+                                                   utils::Segment<2>& screenSegment,
+                                                   matrix44& covariance) const noexcept
+{
+    const double inverseDepthCovariance = cov.diagonal()(inverseDepthIndex);
+
+    const double depthStandardDev = sqrt(inverseDepthCovariance);
+    const WorldCoordinate& firstPoint = get_furthest_estimation(depthStandardDev);
+    const WorldCoordinate& endPoint = get_closest_estimation(depthStandardDev);
+
+    ScreenCoordinate2D firstScreenPoint;
+    ScreenCoordinate2D endScreenPoint;
+    if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
+    {
+        screenSegment.set_points(firstScreenPoint, endScreenPoint);
+
+        const Eigen::Matrix<double, 3, 6>& firstPointJacobian =
+                to_world_coordinates_jacobian(_inverseDepth_mm - 3.0 * depthStandardDev, _theta_rad, _phi_rad);
+        const Eigen::Matrix<double, 3, 6>& secondPointJacobian =
+                to_world_coordinates_jacobian(_inverseDepth_mm + 3.0 * depthStandardDev, _theta_rad, _phi_rad);
+
+        covariance.setZero();
+        covariance.block<2, 2>(0, 0) =
+                utils::get_screen_2d_point_covariance(
+                        firstPoint,
+                        WorldCoordinateCovariance(firstPointJacobian * cov.selfadjointView<Eigen::Lower>() *
+                                                  firstPointJacobian.transpose()),
+                        w2c)
+                        .selfadjointView<Eigen::Lower>();
+        covariance.block<2, 2>(2, 2) =
+                utils::get_screen_2d_point_covariance(
+                        endPoint,
+                        WorldCoordinateCovariance(secondPointJacobian * cov.selfadjointView<Eigen::Lower>() *
+                                                  secondPointJacobian.transpose()),
+                        w2c)
+                        .selfadjointView<Eigen::Lower>();
         return true;
     }
     // should never happend
