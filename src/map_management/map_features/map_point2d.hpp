@@ -6,6 +6,7 @@
 #include "features/keypoints/keypoint_handler.hpp"
 #include "tracking/inverse_depth_with_tracking.hpp"
 #include "matches_containers.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam::map_management {
 
@@ -25,6 +26,11 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
 
     vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
     matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
+
+    /**
+     * \brief Override of the original method, to provide a low cost inlier rejection, based on pixel distance
+     */
+    bool is_inlier(const WorldToCameraMatrix& worldToCamera) const override;
 
     double get_alpha_reduction() const noexcept override;
 

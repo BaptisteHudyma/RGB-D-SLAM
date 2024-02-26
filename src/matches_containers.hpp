@@ -146,6 +146,28 @@ struct IOptimizationFeature
     virtual matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept = 0;
 
     /**
+     * \brief this method is defined here only for optimization purposes.
+     * The user can override it to define it's own function
+     */
+    virtual bool is_inlier(const WorldToCameraMatrix& worldToCamera) const
+    {
+        const vectorxd& std = get_distance_covariance(worldToCamera).diagonal().cwiseSqrt();
+        // check that the covariance is not too huge
+        // TODO: this will be truly valid when we will make all optimizations in local space (with low variances)
+        if ((std.array() <= vectorxd::Constant(std.size(), 1e10).array()).all())
+        {
+            // get the feature distance to it's match
+            const vectorxd& distances = get_distance(worldToCamera).cwiseAbs();
+            // all distance should be in the computed variance 99% range
+            if ((distances.array() <= 3 * std.array()).all())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * \brief return this feature alpha reduction (optimization weight)
      */
     virtual double get_alpha_reduction() const noexcept = 0;

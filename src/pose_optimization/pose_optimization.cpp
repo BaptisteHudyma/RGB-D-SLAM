@@ -54,19 +54,8 @@ constexpr size_t featureIndex2dPoint = 2;
         // Retroproject world point to screen, and compute screen distance
         try
         {
-            const vectorxd& std = match->get_distance_covariance(worldToCamera).diagonal().cwiseSqrt();
-            // check that the covariance is not too huge
-            // TODO: remove this when we will make all optimizations in local space (with low variances)
-            if ((std.array() <= vectorxd::Constant(std.size(), 1e10).array()).all())
-            {
-                // get the feature distance to it's match
-                const vectorxd& distances = match->get_distance(worldToCamera).cwiseAbs();
-                // all distance should be in the computed variance 99% range
-                if ((distances.array() <= 3 * std.array()).all())
-                {
-                    isInlier = true;
-                }
-            }
+            // this may throw on rare occasions
+            isInlier = match->is_inlier(worldToCamera);
         }
         catch (const std::exception& ex)
         {
@@ -323,8 +312,7 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
         matrix66 inputCovariance;
         inputCovariance = (jacobian.transpose() * jacobian).completeOrthogonalDecomposition().pseudoInverse();
         inputCovariance = inputCovariance.selfadjointView<Eigen::Lower>(); // make it symetrical
-        inputCovariance.diagonal() += vector6::Constant(1e-4);             // add a small constant for rounding
-       errors
+        inputCovariance.diagonal() += vector6::Constant(1e-4);             // add a small constant for rounding errors
 
         std::string failureReason;
         if (not utils::is_covariance_valid(inputCovariance, failureReason))
@@ -332,7 +320,6 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
             outputs::log("Initial parameter covariance is invalid: " + failureReason);
             return false;
         }
-
 
         // no need to fill the upper part, the adjoint solver does not need it (check only the translation)
         Eigen::SelfAdjointEigenSolver<matrix33> eigenPositionSolver(inputCovariance.block<3, 3>(0, 0));
@@ -345,7 +332,7 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
         {
             return false;
         }
-    */
+        */
 
     optimizedCoefficients = input;
     optimizationJacobian = jacobian;

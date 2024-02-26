@@ -45,6 +45,11 @@ matrixd Point2dOptimizationFeature::get_distance_covariance(const WorldToCameraM
 {
     return _mapPoint.compute_signed_screen_distance_covariance(_matchedPoint, _mapPointCovariance, worldToCamera);
 }
+bool Point2dOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const
+{
+    const vectorxd& distances = get_distance(worldToCamera);
+    return distances.norm() <= 3.0; // error threshold in pixels
+}
 
 double Point2dOptimizationFeature::get_alpha_reduction() const noexcept { return 0.3; }
 
@@ -77,7 +82,6 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
         if (_coordinates.to_screen_coordinates(
                     worldToCamera, _covariance.get_inverse_depth_variance(), screenCoordinates))
         {
-            // TODO use a real match to 2D function, this one will fail for 2D points
             matchIndex = detectedFeatures.get_match_index(
                     screenCoordinates, _descriptor, isDetectedFeatureMatched, searchRadius);
         }

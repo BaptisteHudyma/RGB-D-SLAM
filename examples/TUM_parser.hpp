@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <iterator>
 #include <map>
 #include <sstream>
 #include <string>
@@ -158,7 +157,7 @@ class DatasetParser
                                             dataMap& depthImagesData,
                                             groundTruthMap& groundTruthData,
                                             const double depthTimeOffset = 0.0,
-                                            const double maxDifference = 0.15)
+                                            const double maxDifference = 0.02)
     {
         struct TimeStampScore
         {
