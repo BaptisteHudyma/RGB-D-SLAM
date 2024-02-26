@@ -5,6 +5,7 @@
 #include "coordinates/point_coordinates.hpp"
 #include "line.hpp"
 #include <cstddef>
+#include <opencv2/features2d.hpp>
 
 namespace rgbd_slam::features::keypoints {
 
@@ -37,7 +38,8 @@ Keypoint_Handler::Keypoint_Handler(const uint depthImageCols,
         exit(-1);
     }
     // knn matcher
-    _featuresMatcher = cv::Ptr<cv::BFMatcher>(new cv::BFMatcher(cv::NORM_HAMMING, false));
+    _featuresMatcher = cv::BFMatcher::create(cv::NORM_HAMMING, false);
+    assert(_featuresMatcher->isMaskSupported()); // TODO: find another way to handle matchers without masks
 
     constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
     static_assert(cellSize > 0);
@@ -63,7 +65,8 @@ void Keypoint_Handler::clear() noexcept
         indexContainer.clear();
     }
 
-    //_descriptors.release();
+    _featuresMatcher->clear();
+    _descriptors.release();
 }
 
 void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
@@ -73,6 +76,9 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
 {
     // clear last state
     clear();
+
+    _featuresMatcher->add(inDescriptors);
+    _featuresMatcher->train();
 
     _descriptors = inDescriptors;
 
@@ -263,7 +269,7 @@ int Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoin
     assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
 
     // cannot compute matches without a match or descriptors
-    if (_keypoints.empty() or _descriptors.rows <= 0)
+    if (_keypoints.empty() or _descriptors.empty())
         return INVALID_MATCH_INDEX;
 
     constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
@@ -279,9 +285,10 @@ int Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoin
             compute_key_point_mask(projectedMapPoint, isKeyPointMatchedContainer, searchSpaceCellRadius);
 
     std::vector<std::vector<cv::DMatch>> knnMatches;
-    _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask);
+    _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask, true);
 
-    assert(knnMatches.size() > 0);
+    if (knnMatches.empty())
+        return INVALID_MATCH_INDEX;
 
     // check the farthest neighbors
     const std::vector<cv::DMatch>& firstMatch = knnMatches[0];
@@ -312,7 +319,7 @@ int Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint
     assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
 
     // cannot compute matches without a match or descriptors
-    if (_keypoints.empty() or _descriptors.rows <= 0)
+    if (_keypoints.empty() or _descriptors.empty())
         return INVALID_MATCH_INDEX;
 
     constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
@@ -339,9 +346,10 @@ int Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint
         }
     }
     std::vector<std::vector<cv::DMatch>> knnMatches;
-    _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask);
+    _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask, true);
 
-    assert(knnMatches.size() > 0);
+    if (knnMatches.empty())
+        return INVALID_MATCH_INDEX;
 
     // check the farthest neighbors
     const std::vector<cv::DMatch>& firstMatch = knnMatches[0];

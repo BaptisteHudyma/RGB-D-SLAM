@@ -58,13 +58,13 @@ Key_Point_Extraction::Key_Point_Extraction()
 
     for (size_t i = 0; i < numberOfDetectionCells; ++i)
     {
-        _featureDetectors[i] = cv::Ptr<cv::FeatureDetector>(cv::FastFeatureDetector::create(detectorThreshold));
+        _featureDetectors[i] = cv::FastFeatureDetector::create(detectorThreshold);
         _advancedFeatureDetectors[i] = cv::FastFeatureDetector::create(advanceDetectorThreshold);
         assert(not _featureDetectors[i].empty());
         assert(not _advancedFeatureDetectors[i].empty());
     }
 
-    _featureDescriptor = cv::Ptr<cv::DescriptorExtractor>(cv::xfeatures2d::BriefDescriptorExtractor::create());
+    _featureDescriptor = cv::xfeatures2d::BriefDescriptorExtractor::create();
     assert(not _featureDescriptor.empty());
 #endif
 
@@ -239,7 +239,7 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
             detectedKeypoints.clear();
             cv::KeyPoint::convert(frameKeypoints, detectedKeypoints);
 
-            if (keypointDescriptors.rows > 0)
+            if (not keypointDescriptors.empty())
                 cv::vconcat(detectedKeypointDescriptors, keypointDescriptors, keypointDescriptors);
             else
                 keypointDescriptors = detectedKeypointDescriptors;
