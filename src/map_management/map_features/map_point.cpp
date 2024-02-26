@@ -107,17 +107,16 @@ bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPointsObject& trackedFeatures,
                               const uint dropChance) const noexcept
 {
-    const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
+    std::ignore = worldToCamera;
 
-    assert(not _coordinates.hasNaN());
-    if (shouldNotDropPoint)
+    if (_lastMatch.has_value())
     {
-        ScreenCoordinate2D screenCoordinates;
-        if (_coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
+        const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
+
+        if (shouldNotDropPoint)
         {
             // use previously known screen coordinates
-            trackedFeatures.add(_id, screenCoordinates.x(), screenCoordinates.y());
-
+            trackedFeatures.add(_id, _lastMatch->x(), _lastMatch->y());
             return true;
         }
     }
@@ -185,6 +184,9 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
         return false;
     }
 
+    // set the last match
+    _lastMatch = std::optional<ScreenCoordinate2D>(matchedFeature._coordinates.get_2D());
+
     const ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
     if (is_depth_valid(matchedScreenPoint.z()))
     {
@@ -229,10 +231,7 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     return false;
 }
 
-void MapPoint::update_no_match() noexcept
-{
-    // do nothing
-}
+void MapPoint::update_no_match() noexcept { _lastMatch.reset(); }
 
 /**
  * StagedMapPoint
@@ -245,6 +244,8 @@ StagedMapPoint::StagedMapPoint(const matrix33& poseCovariance,
              utils::get_world_point_covariance(detectedFeature._coordinates, cameraToWorld, poseCovariance),
              detectedFeature._descriptor)
 {
+    // set the last match
+    _lastMatch = std::optional<ScreenCoordinate2D>(detectedFeature._coordinates.get_2D());
 }
 
 bool StagedMapPoint::should_remove_from_staged() const noexcept { return get_confidence() <= 0; }

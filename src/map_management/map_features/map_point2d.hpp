@@ -7,6 +7,7 @@
 #include "tracking/inverse_depth_with_tracking.hpp"
 #include "matches_containers.hpp"
 #include "types.hpp"
+#include <optional>
 
 namespace rgbd_slam::map_management {
 
@@ -110,6 +111,9 @@ class MapPoint2D :
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
     void update_no_match() noexcept override;
+
+    // used for tracking of 2d points
+    std::optional<ScreenCoordinate2D> _lastMatch;
 };
 
 /**

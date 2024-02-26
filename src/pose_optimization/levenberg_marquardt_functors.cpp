@@ -101,12 +101,14 @@ utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizat
 }
 
 /**
- * GLOBAL POSE ESTIMATOR members
+ * RELATIVE POSE ESTIMATOR members
  */
+static constexpr uint feedbackOptimizationPart = 2;
+
 Relative_Pose_Estimator::Relative_Pose_Estimator(const vector6& startParameters,
                                                  const size_t optimizationParts,
                                                  const matches_containers::match_container* const features) :
-    Levenberg_Marquardt_Functor<double>(6, optimizationParts + 6),
+    Levenberg_Marquardt_Functor<double>(6, optimizationParts + feedbackOptimizationPart),
     _startParameters(startParameters),
     _optimizationParts(optimizationParts),
     _features(features)
@@ -135,7 +137,7 @@ int Relative_Pose_Estimator::operator()(const vector6& optimizedParameters, vect
     // sanity checks
     assert(_features != nullptr);
     assert(not _features->empty());
-    assert(static_cast<size_t>(outputScores.size()) == (_optimizationParts + 6));
+    assert(static_cast<size_t>(outputScores.size()) == (_optimizationParts + 2));
 
     // Get the new estimated pose
     const utils::PoseBase& pose = get_pose_from_optimization_coefficients(optimizedParameters);
@@ -160,7 +162,9 @@ int Relative_Pose_Estimator::operator()(const vector6& optimizedParameters, vect
 
     // feedback, to garanty to prevent the system from going to infinity when the features are all scaless parameters
     // (eg: inverse depth points)
-    outputScores.segment(featureScoreIndex, 6) = (_startParameters - optimizedParameters) / outputScores.size();
+    const auto res = (_startParameters - optimizedParameters);
+    outputScores.segment(featureScoreIndex, feedbackOptimizationPart) =
+            vector2(res.head<3>().norm(), res.tail<3>().norm()) / outputScores.size();
     return 0;
 }
 
@@ -169,8 +173,8 @@ bool Relative_Pose_Estimator::get_input_covariance(const matches_containers::mat
                                                    const matrixd& jac,
                                                    matrix66& inputCovariance) noexcept
 {
-    // Ignore the retroactive part of the jacobian
-    const matrixd& jacobian = jac.block(0, 0, jac.rows() - 6, jac.cols());
+    // Ignore the feedback part of the jacobian
+    const matrixd& jacobian = jac.block(0, 0, jac.rows() - feedbackOptimizationPart, jac.cols());
     if (jacobian.hasNaN() or not jacobian.allFinite() or jacobian.isConstant(0.0))
     {
         outputs::log_error("Input jacobian is all invalid");
@@ -191,15 +195,15 @@ bool Relative_Pose_Estimator::get_input_covariance(const matches_containers::mat
 
         const matrixd& distCov = feature->get_distance_covariance(transformationMatrix).selfadjointView<Eigen::Lower>();
         std::string failureReason;
-        if (utils::is_covariance_valid(distCov, failureReason))
         {
             // set covariance of this feature in world space
             distancesCovariances.block(featureScoreIndex, featureScoreIndex, partCount, partCount) = distCov;
         }
-        else
+
+        if (not utils::is_covariance_valid(distCov, failureReason))
         {
-            outputs::log_error("a distance covariances is invalid: " + failureReason + ": feature type " +
-                               to_string(feature->get_feature_type()));
+            outputs::log_warning("a distance covariance is invalid: " + failureReason + ": feature type " +
+                                 to_string(feature->get_feature_type()));
         }
         featureScoreIndex += static_cast<int>(partCount);
     }

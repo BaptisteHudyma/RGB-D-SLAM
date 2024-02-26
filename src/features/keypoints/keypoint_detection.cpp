@@ -3,9 +3,12 @@
 #include "../../parameters.hpp"
 
 // circle
+#include <Eigen/src/Core/Matrix.h>
 #include <array>
 #include <cmath>
 #include <mutex>
+#include <opencv2/calib3d.hpp>
+#include <opencv2/core/hal/interface.h>
 #include <tbb/parallel_for.h>
 #include <opencv2/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
@@ -64,7 +67,7 @@ Key_Point_Extraction::Key_Point_Extraction()
         assert(not _advancedFeatureDetectors[i].empty());
     }
 
-    _featureDescriptor = cv::xfeatures2d::BriefDescriptorExtractor::create();
+    _featureDescriptor = cv::xfeatures2d::TEBLID::create(5.00f);
     assert(not _featureDescriptor.empty());
 #endif
 
@@ -273,6 +276,9 @@ void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv:
         outputs::log_error("OpticalFlow: invalid parameters");
         return;
     }
+
+    if (lastKeypointsWithIds.get_keypoints().empty())
+        return;
 
     // Calculate optical flow
     std::vector<uchar> statusContainer;

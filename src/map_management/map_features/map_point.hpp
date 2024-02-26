@@ -109,6 +109,9 @@ class MapPoint :
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
     void update_no_match() noexcept override;
+
+    // used for tracking of 2d points
+    std::optional<ScreenCoordinate2D> _lastMatch;
 };
 
 /**

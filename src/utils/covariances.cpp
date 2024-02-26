@@ -150,10 +150,13 @@ matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const
             // add a little bit of variance on the diagonal to counter floatting points errors
             (jacobian * pointCloudCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose()) +
             matrix44::Identity() * 0.01;
-    if (not is_covariance_valid(planeParameterCovariance))
+
+    std::string failureReason;
+    if (not is_covariance_valid(planeParameterCovariance, failureReason))
     {
         throw std::logic_error(
-                "compute_plane_covariance: planeParameterCovariance is an invalid covariance matrix after process");
+                "compute_plane_covariance: planeParameterCovariance is an invalid covariance matrix after process:" +
+                failureReason);
     }
     return planeParameterCovariance;
 }
@@ -221,10 +224,13 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
     const matrix33& rotation = cameraToWorldMatrix.rotation();
     const matrix33& pointCloudWorlCovariance =
             rotation * pointCloudCovariance * rotation.transpose() + worldPoseCovariance;
-    if (not is_covariance_valid(pointCloudWorlCovariance))
+
+    std::string failureReason;
+    if (not is_covariance_valid(pointCloudWorlCovariance, failureReason))
     {
         throw std::logic_error(
-                "get_world_plane_covariance: pointCloudWorlCovariance is an invalid covariance matrix after process");
+                "get_world_plane_covariance: pointCloudWorlCovariance is an invalid covariance matrix after process:" +
+                failureReason);
     }
     // conver back to plane hessian form
     return compute_plane_covariance(planeCoordinates.to_world_coordinates(planeCameraToWorldMatrix),

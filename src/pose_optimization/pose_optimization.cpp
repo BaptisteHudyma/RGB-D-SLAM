@@ -281,7 +281,8 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
     }
 
     // Optimization function (ok to use pointers: optimization of copy)
-    Relative_Pose_Functor pose_optimisation_functor(Relative_Pose_Estimator(input, optiParts, &matchedFeatures));
+    auto relativePoseEstimator = Relative_Pose_Estimator(input, optiParts, &matchedFeatures);
+    Relative_Pose_Functor pose_optimisation_functor(relativePoseEstimator);
     // Optimization algorithm
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
 
@@ -303,36 +304,33 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
     }
 
     // get the jacobian of the transformation
-    matrixd jacobian(optiParts + 6, 6);
+    Relative_Pose_Estimator::JacobianType jacobian(relativePoseEstimator.values(), relativePoseEstimator.inputs());
     pose_optimisation_functor.df(input, jacobian);
 
-    // TODO: reactivate when the metric will make sense
-    /*
-        // Gauss newton approximation: suppose that all residuals are close to 0 (often false)
-        matrix66 inputCovariance;
-        inputCovariance = (jacobian.transpose() * jacobian).completeOrthogonalDecomposition().pseudoInverse();
-        inputCovariance = inputCovariance.selfadjointView<Eigen::Lower>(); // make it symetrical
-        inputCovariance.diagonal() += vector6::Constant(1e-4);             // add a small constant for rounding errors
+    // Gauss newton approximation: suppose that all residuals are close to 0 (often false)
+    matrix66 inputCovariance;
+    inputCovariance = (jacobian.transpose() * jacobian).completeOrthogonalDecomposition().pseudoInverse();
+    inputCovariance = inputCovariance.selfadjointView<Eigen::Lower>(); // make it symetrical
+    inputCovariance.diagonal() += vector6::Constant(1e-4);             // add a small constant for rounding errors
 
-        std::string failureReason;
-        if (not utils::is_covariance_valid(inputCovariance, failureReason))
-        {
-            outputs::log("Initial parameter covariance is invalid: " + failureReason);
-            return false;
-        }
+    std::string failureReason;
+    if (not utils::is_covariance_valid(inputCovariance, failureReason))
+    {
+        outputs::log("Initial parameter covariance is invalid: " + failureReason);
+        return false;
+    }
 
-        // no need to fill the upper part, the adjoint solver does not need it (check only the translation)
-        Eigen::SelfAdjointEigenSolver<matrix33> eigenPositionSolver(inputCovariance.block<3, 3>(0, 0));
-        // eigen values are sorted by ascending order
-        const auto& eigenValuesPosition = eigenPositionSolver.eigenvalues();
+    // no need to fill the upper part, the adjoint solver does not need it (check only the translation)
+    Eigen::SelfAdjointEigenSolver<matrix33> eigenPositionSolver(inputCovariance.block<3, 3>(0, 0));
+    // eigen values are sorted by ascending order
+    const auto& eigenValuesPosition = eigenPositionSolver.eigenvalues();
 
-        // check that the largest eigen value is inferior to a threshold
-        // TODO: find a better threshold principle (this just checks the biggest eigen value)
-        if (eigenValuesPosition.hasNaN() or eigenValuesPosition.tail<1>()(0) > 500.0)
-        {
-            return false;
-        }
-        */
+    // check that the largest eigen value is inferior to a threshold
+    // TODO: find a better threshold principle (this just checks the biggest eigen value)
+    if (eigenValuesPosition.hasNaN() or eigenValuesPosition.tail<1>()(0) > 1e10)
+    {
+        return false;
+    }
 
     optimizedCoefficients = input;
     optimizationJacobian = jacobian;

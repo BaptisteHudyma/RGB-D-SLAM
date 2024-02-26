@@ -114,8 +114,17 @@ bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                 const uint dropChance) const noexcept
 {
     std::ignore = worldToCamera;
-    std::ignore = trackedFeatures;
-    std::ignore = dropChance;
+
+    if (_lastMatch.has_value())
+    {
+        const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
+        if (shouldNotDropPoint)
+        {
+            trackedFeatures.add(_id, _lastMatch->x(), _lastMatch->y());
+            return true;
+        }
+    }
+
     // do not track inverse depth points, it gives incorrect triangulation
     return false;
 }
@@ -219,6 +228,9 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
         return false;
     }
 
+    // set the last match
+    _lastMatch = std::optional<ScreenCoordinate2D>(matchedFeature._coordinates.get_2D());
+
     if (is_depth_valid(matchedFeature._coordinates.z()))
     {
         // use the real observation, it will most likely overide the covariance inside the inverse depth point
@@ -228,10 +240,7 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
     return track(matchedFeature._coordinates.get_2D(), cameraToWorld, poseCovariance, matchedFeature._descriptor);
 }
 
-void MapPoint2D::update_no_match() noexcept
-{
-    // do nothing
-}
+void MapPoint2D::update_no_match() noexcept { _lastMatch.reset(); }
 
 /**
  * StagedMapPoint
@@ -242,6 +251,8 @@ StagedMapPoint2D::StagedMapPoint2D(const matrix33& poseCovariance,
                                    const DetectedPoint2DType& detectedFeature) :
     MapPoint2D(detectedFeature._coordinates.get_2D(), cameraToWorld, poseCovariance, detectedFeature._descriptor)
 {
+    // set the last match
+    _lastMatch = std::optional<ScreenCoordinate2D>(detectedFeature._coordinates.get_2D());
 }
 
 bool StagedMapPoint2D::should_remove_from_staged() const noexcept { return get_confidence() <= 0; }
