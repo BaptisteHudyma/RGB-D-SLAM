@@ -5,6 +5,7 @@
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/util/Macros.h>
 #include <Eigen/src/Core/util/XprHelper.h>
+#include <Eigen/src/QR/CompleteOrthogonalDecomposition.h>
 #include <vector>
 
 namespace rgbd_slam {
@@ -110,6 +111,15 @@ template<typename scalar> struct threshold_op
         return pand(pcmp_lt(pset1<packet>(threshold), pabs(a)), a);
     }
 };
+
+/**
+ * \brief Moore Penrose pseudo inverse
+ */
+template<typename MatType> auto pseudoInverse(const MatType& a)
+{
+    return a.completeOrthogonalDecomposition().pseudoInverse();
+}
+
 namespace Eigen {
 namespace internal {
 

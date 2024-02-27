@@ -77,13 +77,22 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
     int matchIndex = detectedFeatures.get_tracking_match_index(_id, isDetectedFeatureMatched);
     if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
     {
-        // No match: try to find match in a window around the point
-        utils::Segment<2> screenCoordinates;
-        if (_coordinates.to_screen_coordinates(
-                    worldToCamera, _covariance.get_inverse_depth_variance(), screenCoordinates))
+        // TODO: this is an hack, to use the last valid 2D value as input for the matching process
+        if (_lastMatch)
         {
             matchIndex = detectedFeatures.get_match_index(
-                    screenCoordinates, _descriptor, isDetectedFeatureMatched, searchRadius);
+                    _lastMatch.value(), _descriptor, isDetectedFeatureMatched, searchRadius);
+        }
+        else
+        {
+            // No match: try to find match in a window around the point
+            utils::Segment<2> screenCoordinates;
+            if (_coordinates.to_screen_coordinates(
+                        worldToCamera, _covariance.get_inverse_depth_variance(), screenCoordinates))
+            {
+                matchIndex = detectedFeatures.get_match_index(
+                        screenCoordinates, _descriptor, isDetectedFeatureMatched, searchRadius);
+            }
         }
     }
 

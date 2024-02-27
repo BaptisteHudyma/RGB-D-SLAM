@@ -11,6 +11,7 @@
 #include <Eigen/Sparse>
 #include <Eigen/src/SparseCholesky/SimplicialCholesky.h>
 #include <stdexcept>
+#include <unsupported/Eigen/src/NonLinearOptimization/LevenbergMarquardt.h>
 
 namespace rgbd_slam::pose_optimization {
 
@@ -103,7 +104,6 @@ utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizat
 /**
  * RELATIVE POSE ESTIMATOR members
  */
-static constexpr uint feedbackOptimizationPart = 2;
 
 Relative_Pose_Estimator::Relative_Pose_Estimator(const vector6& startParameters,
                                                  const size_t optimizationParts,
@@ -170,11 +170,10 @@ int Relative_Pose_Estimator::operator()(const vector6& optimizedParameters, vect
 
 bool Relative_Pose_Estimator::get_input_covariance(const matches_containers::match_container& features,
                                                    const utils::PoseBase& optimizedPose,
-                                                   const matrixd& jac,
+                                                   const matrixd& jacobian,
                                                    matrix66& inputCovariance) noexcept
 {
     // Ignore the feedback part of the jacobian
-    const matrixd& jacobian = jac.block(0, 0, jac.rows() - feedbackOptimizationPart, jac.cols());
     if (jacobian.hasNaN() or not jacobian.allFinite() or jacobian.isConstant(0.0))
     {
         outputs::log_error("Input jacobian is all invalid");
@@ -194,12 +193,10 @@ bool Relative_Pose_Estimator::get_input_covariance(const matches_containers::mat
         const auto partCount = feature->get_feature_part_count();
 
         const matrixd& distCov = feature->get_distance_covariance(transformationMatrix).selfadjointView<Eigen::Lower>();
-        std::string failureReason;
-        {
-            // set covariance of this feature in world space
-            distancesCovariances.block(featureScoreIndex, featureScoreIndex, partCount, partCount) = distCov;
-        }
+        // set covariance of this feature in world space
+        distancesCovariances.block(featureScoreIndex, featureScoreIndex, partCount, partCount) = distCov;
 
+        std::string failureReason;
         if (not utils::is_covariance_valid(distCov, failureReason))
         {
             outputs::log_warning("a distance covariance is invalid: " + failureReason + ": feature type " +
@@ -216,14 +213,10 @@ bool Relative_Pose_Estimator::get_input_covariance(const matches_containers::mat
 
     // Retrieve the covariance of the parameters
     // get the jacobian of the transformation
-    matrix66 cov =
-            (jacobian.transpose() *
-             distancesCovariances.completeOrthogonalDecomposition().pseudoInverse().selfadjointView<Eigen::Lower>() *
-             jacobian)
-                    .completeOrthogonalDecomposition()
-                    .pseudoInverse()
-                    .selfadjointView<Eigen::Lower>();
-    cov.diagonal().head<3>() += vector3::Constant(1e-4);
+    matrix66 cov = pseudoInverse(jacobian.transpose() * distancesCovariances.inverse().selfadjointView<Eigen::Lower>() *
+                                 jacobian)
+                           .selfadjointView<Eigen::Lower>(); // force symetrical
+    cov.diagonal().head<3>() += vector3::Constant(1e-6);
     if (utils::is_covariance_valid(cov, failureReason))
     {
         inputCovariance = cov;
@@ -256,7 +249,7 @@ std::string get_human_readable_end_message(Eigen::LevenbergMarquardtSpace::Statu
             return "cosinus too small";
         case Eigen::LevenbergMarquardtSpace::Status::TooManyFunctionEvaluation:
             return "too many function evaluation";
-#include <iostream>
+        case Eigen::LevenbergMarquardtSpace::Status::GtolTooSmall:
             return "gtol too small";
         case Eigen::LevenbergMarquardtSpace::Status::UserAsked:
             return "user asked";

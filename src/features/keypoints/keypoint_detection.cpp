@@ -185,9 +185,7 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     // build pyramid
     std::vector<cv::Mat> newImagePyramide;
     cv::buildOpticalFlowPyramid(grayImage, newImagePyramide, pyramidSize, pyramidDepth);
-    // TODO: when the optical flow will not show so much drift, maybe we could remove the tracked keypoint
-    // redetection
-    if (not _lastFramePyramide.empty() and not lastKeypointsWithIds.empty())
+    if (not forceKeypointDetection and not _lastFramePyramide.empty() and not lastKeypointsWithIds.empty())
     {
         const auto opticalFlowStartTime = cv::getTickCount();
         get_keypoints_from_optical_flow(_lastFramePyramide,

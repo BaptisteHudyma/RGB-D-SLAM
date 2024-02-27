@@ -19,12 +19,30 @@
 namespace rgbd_slam::map_management {
 
 /**
+ * This class manages the map feature ids
+ */
+class MapIdAllocator
+{
+  public:
+    static constexpr size_t invalidId = 0;
+
+    static size_t get_new_id()
+    {
+        _idAllocator = std::max(_idAllocator + 1, 1ul);
+        return _idAllocator;
+    }
+
+  private:
+    inline static size_t _idAllocator = invalidId;
+};
+
+/**
  * \brief Interface for a map feature. All map features should inherit this
  */
 template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedFeaturesObject> class IMapFeature
 {
   public:
-    IMapFeature() : _id(++_idAllocator) {};
+    IMapFeature() : _id(MapIdAllocator::get_new_id()) {};
     explicit IMapFeature(const size_t id) : _id(id) {};
 
     virtual ~IMapFeature() = default;
@@ -164,9 +182,6 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
                                                  const CameraToWorldMatrix& cameraToWorld) noexcept = 0;
 
     virtual void update_no_match() noexcept = 0;
-
-  private:
-    inline static uint _idAllocator = 0;
 };
 
 /**
@@ -328,7 +343,7 @@ class Feature_Map
      */
     void get_tracked_features(const WorldToCameraMatrix& worldToCamera,
                               TrackedFeaturesContainer& trackedFeatures,
-                              const uint localMapDropChance = 1000) const noexcept
+                              const uint localMapDropChance = 0) const noexcept
     {
         if (not _isActivated)
             return;

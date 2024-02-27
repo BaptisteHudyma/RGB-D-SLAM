@@ -233,7 +233,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         if (not _isFirstTrackingCall)
         {
             // add some variance to the pose (TODO: handle this differently)
-            poseCovariance.diagonal() += vector3::Constant(SQR(100)); // no tracking: augment the covariance of the pose
+            poseCovariance.diagonal() += vector3::Constant(SQR(10)); // no tracking: augment the covariance of the pose
         }
 
         if (_isTrackingLost and utils::is_covariance_valid(poseCovariance))

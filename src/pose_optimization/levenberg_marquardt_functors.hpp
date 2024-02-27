@@ -66,6 +66,8 @@ utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizat
  */
 struct Relative_Pose_Estimator : Levenberg_Marquardt_Functor<double>
 {
+    static constexpr uint feedbackOptimizationPart = 2;
+
     // Simple constructor
     /**
      * \param[in] optimizationParts The sum of all feature parts

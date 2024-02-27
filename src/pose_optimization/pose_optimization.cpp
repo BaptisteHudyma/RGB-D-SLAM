@@ -13,6 +13,7 @@
 #include "utils/camera_transformation.hpp"
 
 #include <Eigen/StdVector>
+#include <Eigen/src/Core/util/Constants.h>
 #include <cmath>
 #include <exception>
 #include <opencv2/core/utility.hpp>
@@ -306,12 +307,12 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
     // get the jacobian of the transformation
     Relative_Pose_Estimator::JacobianType jacobian(relativePoseEstimator.values(), relativePoseEstimator.inputs());
     pose_optimisation_functor.df(input, jacobian);
+    // remove the feedback part
+    jacobian = jacobian.block(0, 0, jacobian.rows() - Relative_Pose_Estimator::feedbackOptimizationPart, 6).eval();
 
     // Gauss newton approximation: suppose that all residuals are close to 0 (often false)
-    matrix66 inputCovariance;
-    inputCovariance = (jacobian.transpose() * jacobian).completeOrthogonalDecomposition().pseudoInverse();
-    inputCovariance = inputCovariance.selfadjointView<Eigen::Lower>(); // make it symetrical
-    inputCovariance.diagonal() += vector6::Constant(1e-4);             // add a small constant for rounding errors
+    matrix66 inputCovariance = pseudoInverse(jacobian.transpose() * jacobian).selfadjointView<Eigen::Lower>();
+    inputCovariance.diagonal() += vector6::Constant(1e-6); // add a small constant for rounding errors
 
     std::string failureReason;
     if (not utils::is_covariance_valid(inputCovariance, failureReason))
@@ -327,8 +328,26 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
 
     // check that the largest eigen value is inferior to a threshold
     // TODO: find a better threshold principle (this just checks the biggest eigen value)
-    if (eigenValuesPosition.hasNaN() or eigenValuesPosition.tail<1>()(0) > 1e10)
+    if (eigenPositionSolver.info() != Eigen::ComputationInfo::Success ||
+        eigenValuesPosition(eigenValuesPosition.size() - 1) > 1e5 or eigenValuesPosition.hasNaN() or
+        not eigenValuesPosition.allFinite())
     {
+        // outputs::log("Refusing pose: position variance will be too great");
+        return false;
+    }
+
+    // no need to fill the upper part, the adjoint solver does not need it (check only the translation)
+    Eigen::SelfAdjointEigenSolver<matrix33> eigenRotationSolver(inputCovariance.block<3, 3>(3, 3));
+    // eigen values are sorted by ascending order
+    const auto& eigenValuesRotation = eigenRotationSolver.eigenvalues();
+
+    // check that the largest eigen value is inferior to a threshold
+    // TODO: find a better threshold principle (this just checks the biggest eigen value)
+    if (eigenRotationSolver.info() != Eigen::ComputationInfo::Success ||
+        eigenValuesRotation(eigenValuesRotation.size() - 1) > 1e3 or eigenValuesRotation.hasNaN() or
+        not eigenValuesRotation.allFinite())
+    {
+        // outputs::log("Refusing pose: rotation variance will be too great");
         return false;
     }
 
