@@ -173,7 +173,7 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
 
     size_t _failedTrackingCount = 0;
     int _successivMatchedCount = 0;
-    const size_t _id;                        // uniq id of this point in the program
+    const size_t _id;                        // uniq id of this feature in the program (uniq id per feature type only)
     int _matchIndex = FIRST_DETECTION_INDEX; // index of the last matched feature id
 
   protected:
@@ -339,7 +339,7 @@ class Feature_Map
      * \brief Get the feature that were tracked for the last tracking step
      * \param[in] worldToCamera A matrix to convert from world to camera space
      * \param[out] trackedFeatures The object thta will contain the tracked features
-     * \param[in] localMapDropChance Chance to randomly drop a local map point and not return it
+     * \param[in] localMapDropChance Chance to randomly drop a local map feature and not return it
      */
     void get_tracked_features(const WorldToCameraMatrix& worldToCamera,
                               TrackedFeaturesContainer& trackedFeatures,
@@ -364,7 +364,7 @@ class Feature_Map
             }
         }
 
-        // do not track staged points, as they are not validated yet
+        // do not track staged features, as they are not validated yet
     }
 
     /**
@@ -428,12 +428,12 @@ class Feature_Map
 
         const auto& detected = get_detected_feature(detectedFeatures);
 
-        // Add all unmatched points to staged point container
+        // Add all unmatched features to staged feature container
         const size_t featureVectorSize = detected.size();
         assert(featureVectorSize == static_cast<size_t>(_isDetectedFeatureMatched.size()));
         for (unsigned int i = 0; i < featureVectorSize; ++i)
         {
-            // Add all features, or add only the unmatched points
+            // Add all features, or add only the unmatched features
             if (addAllFeatures or not _isDetectedFeatureMatched[i])
             {
                 const DetectedFeatureType& detectedfeature = detected.at(i);
@@ -530,7 +530,7 @@ class Feature_Map
             return true;
         }
 
-        // point associated with id was not find
+        // feature associated with id was not found
         return false;
     }
 
@@ -551,7 +551,7 @@ class Feature_Map
         {
             for (const auto& [id, mapFeature]: _stagedMap)
             {
-                // macthed staged points are orange, unmacthed are red
+                // macthed staged features are orange, unmacthed are red
                 const cv::Scalar stagedColor =
                         (mapFeature.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 0, 255);
                 mapFeature.draw(worldToCamMatrix, debugImage, stagedColor);
@@ -605,7 +605,7 @@ class Feature_Map
     }
 
   protected:
-    // shortcut to add map points
+    // shortcut to add map features
     virtual void add_upgraded_to_local_map(const UpgradedFeature_ptr upgradedfeature) = 0;
 
     /**
@@ -635,7 +635,7 @@ class Feature_Map
         for (auto& [mapId, mapFeature]: _localMap)
         {
             assert(mapId == mapFeature._id);
-            // start by reseting this point
+            // start by reseting this feature
             mapFeature.mark_unmatched();
 
             if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
@@ -659,7 +659,7 @@ class Feature_Map
         for (auto& [mapId, mapFeature]: _stagedMap)
         {
             assert(mapId == mapFeature._id);
-            // start by reseting this point
+            // start by reseting this feature
             mapFeature.mark_unmatched();
 
             if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
@@ -717,7 +717,7 @@ class Feature_Map
                     mapFeature.write_to_file(mapWriter);
                 }
 
-                // Remove useless point
+                // Remove useless feature
                 featureMapIterator = _localMap.erase(featureMapIterator);
             }
             else
@@ -734,7 +734,7 @@ class Feature_Map
         if (not utils::is_covariance_valid(poseCovariance))
             throw std::invalid_argument("update_staged_map: The given pose covariance is invalid, map wont be update");
 
-        // Add correct staged points to local map
+        // Add correct staged features to local map
         typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();
         while (stagedFeatureIterator != _stagedMap.end())
         {
@@ -760,7 +760,7 @@ class Feature_Map
             {
                 try
                 {
-                    // Add to local map, remove from staged points, with a copy of the id affected to the local map
+                    // Add to local map, remove from staged features, with a copy of the id affected to the local map
                     _localMap.emplace(stagedFeature._id, MapFeatureType(stagedFeature));
                     assert(_localMap.at(stagedFeature._id)._id == stagedFeature._id);
                     stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);
@@ -774,7 +774,7 @@ class Feature_Map
             }
             else if (stagedFeature.should_remove_from_staged())
             {
-                // Remove from staged points
+                // Remove from staged features
                 stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);
             }
             else
@@ -801,7 +801,7 @@ class Feature_Map
                 // write to file
                 mapFeature.write_to_file(mapWriter);
 
-                // Remove useless point
+                // Remove useless feature
                 featureMapIterator = _localMap.erase(featureMapIterator);
             }
             else
@@ -823,7 +823,7 @@ class Feature_Map
             stagedFeature.update_unmatched();
             if (stagedFeature.should_remove_from_staged())
             {
-                // Remove useless point
+                // Remove useless feature
                 stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);
             }
             else

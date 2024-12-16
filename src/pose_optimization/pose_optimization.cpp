@@ -416,8 +416,7 @@ bool Pose_Optimization::compute_optimized_global_pose_with_covariance(
     }
 
     // convert it to the covariance of the pose
-    matrix77 paramCovariance = coeffToPoseJacobian * inputCovariance * coeffToPoseJacobian.transpose();
-    paramCovariance.diagonal() += vector7::Constant(1e-4);
+    const matrix77& paramCovariance = utils::propagate_covariance<6, 7>(inputCovariance, coeffToPoseJacobian, 1e-6);
     std::string failureReason;
     if (not utils::is_covariance_valid(paramCovariance, failureReason))
     {
@@ -428,8 +427,7 @@ bool Pose_Optimization::compute_optimized_global_pose_with_covariance(
     // transform back to euler angle and position covariance
     const auto& quaternionToEulerJacobian =
             utils::get_position_quaternion_to_position_euler_jacobian(outputPose.get_orientation_quaternion());
-    const matrix66& finalPoseCovariance =
-            quaternionToEulerJacobian * paramCovariance * quaternionToEulerJacobian.transpose();
+    const matrix66& finalPoseCovariance = utils::propagate_covariance(paramCovariance, quaternionToEulerJacobian, 0.0);
     if (not utils::is_covariance_valid(finalPoseCovariance, failureReason))
     {
         outputs::log_error(

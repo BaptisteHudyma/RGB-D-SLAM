@@ -50,6 +50,20 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
 }
 
 /**
+ * \brief First order covariance propragation, with numerical approximation on diagonal
+ */
+template<int N, int M> Eigen::Matrix<double, M, M> propagate_covariance(const Eigen::Matrix<double, N, N>& inCovariance,
+                                                                        const Eigen::Matrix<double, M, N>& jacobian,
+                                                                        const double epsilon = 1e-9)
+{
+    Eigen::Matrix<double, M, M> res =
+            (jacobian * inCovariance.template selfadjointView<Eigen::Lower>() * jacobian.transpose())
+                    .template selfadjointView<Eigen::Lower>();
+    res.diagonal() += vectorxd::Constant(res.rows(), epsilon);
+    return res;
+}
+
+/**
  * \brief Return the expected depth quantization at this depth value.
  * \param[in] depht The measured depth value, in millimeters
  * \return The smallest possible measure in millimeters (caped at 0.5 mm)

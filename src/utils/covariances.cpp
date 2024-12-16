@@ -28,7 +28,7 @@ ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, con
                              {0.0, cameraF.y() / point.z(), -cameraF.y() * point.y() / SQR(point.z())},
                              {0.0, 0.0, 1.0}};
     ScreenCoordinateCovariance screenPointCovariance;
-    screenPointCovariance << (jacobian * pointCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose());
+    screenPointCovariance << utils::propagate_covariance(pointCovariance, jacobian, 0.0);
     return screenPointCovariance;
 }
 
@@ -61,7 +61,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCova
     const matrix33& rotation = worldToCamera.rotation();
 
     CameraCoordinateCovariance cov;
-    cov << rotation * worldPointCovariance.selfadjointView<Eigen::Lower>() * rotation.transpose() + poseCovariance;
+    cov << utils::propagate_covariance(worldPointCovariance, rotation, 0.0) + poseCovariance;
     return cov;
 }
 
@@ -72,7 +72,7 @@ WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovar
     const matrix33& rotation = cameraToWorld.rotation();
 
     WorldCoordinateCovariance cov;
-    cov << rotation * cameraPointCovariance.selfadjointView<Eigen::Lower>() * rotation.transpose() + poseCovariance;
+    cov << utils::propagate_covariance(cameraPointCovariance, rotation, 0.0) + poseCovariance;
     return cov;
 }
 
@@ -100,7 +100,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
                              {0.0, 0.0, 1.0}};
 
     CameraCoordinateCovariance cameraPointCovariance;
-    cameraPointCovariance << jacobian * screenPointCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose();
+    cameraPointCovariance << utils::propagate_covariance(screenPointCovariance, jacobian, 0.0);
     return cameraPointCovariance;
 }
 
@@ -146,11 +146,8 @@ matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const
             {-a / divider, -b / divider, -c / divider},
     });
 
-    const matrix44& planeParameterCovariance =
-            // add a little bit of variance on the diagonal to counter floatting points errors
-            (jacobian * pointCloudCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose()) +
-            matrix44::Identity() * 0.01;
-
+    // TODO: this covariance stability threshold should be lower, but it creates an outlier rejection of most planes
+    const matrix44& planeParameterCovariance = utils::propagate_covariance(pointCloudCovariance, jacobian, 1e-3);
     std::string failureReason;
     if (not is_covariance_valid(planeParameterCovariance, failureReason))
     {
@@ -192,10 +189,7 @@ matrix33 compute_reduced_plane_point_cloud_covariance(const PlaneCoordinates& pl
             {0, 0, d, normal.z()},
     });
 
-    const matrix33& pointCloudCovariance =
-            // add a little bit of variance on the diagonal to counter floatting points errors
-            (jacobian * planeCloudCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose()) +
-            matrix33::Identity() * 0.01;
+    const matrix33& pointCloudCovariance = utils::propagate_covariance(planeCloudCovariance, jacobian, 1e-2);
     if (not is_covariance_valid(pointCloudCovariance))
     {
         throw std::logic_error(
@@ -221,9 +215,9 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
             compute_reduced_plane_point_cloud_covariance(planeCoordinates, planeCovariance);
 
     // covert covariance to world
-    const matrix33& rotation = cameraToWorldMatrix.rotation();
-    const matrix33& pointCloudWorlCovariance =
-            rotation * pointCloudCovariance * rotation.transpose() + worldPoseCovariance;
+    const WorldCoordinateCovariance& pointCloudWorlCovariance = WorldCoordinateCovariance(
+            utils::propagate_covariance(pointCloudCovariance, cameraToWorldMatrix.rotation(), 0.0) +
+            worldPoseCovariance);
 
     std::string failureReason;
     if (not is_covariance_valid(pointCloudWorlCovariance, failureReason))

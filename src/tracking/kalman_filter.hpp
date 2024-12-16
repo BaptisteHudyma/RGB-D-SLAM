@@ -64,11 +64,11 @@ template<int N, int M> class SharedKalmanFilter
         // Get new raw estimate
         const Eigen::Vector<double, N>& newStateEstimate = _systemDynamics * currentState;
         const Eigen::Matrix<double, N, N>& estimateErrorCovariance =
-                _systemDynamics * stateNoiseCovariance * _systemDynamics.transpose() + _processNoiseCovariance;
+                utils::propagate_covariance(stateNoiseCovariance, _systemDynamics, 0.0) + _processNoiseCovariance;
 
         // compute inovation covariance
         const Eigen::Matrix<double, M, M>& inovationCovariance =
-                _outputMatrix * estimateErrorCovariance * _outputMatrix.transpose() + measurementNoiseCovariance;
+                utils::propagate_covariance(estimateErrorCovariance, _outputMatrix, 0.0) + measurementNoiseCovariance;
 
         // cannot inverse the inovation covariance matrix, no gain to compute (gain too small)
         if (utils::double_equal(inovationCovariance.determinant(), 0))

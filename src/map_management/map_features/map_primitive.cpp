@@ -1,6 +1,7 @@
 #include "map_primitive.hpp"
 
 #include "camera_transformation.hpp"
+#include "covariances.hpp"
 #include "logger.hpp"
 #include "matches_containers.hpp"
 #include "parameters.hpp"
@@ -46,11 +47,10 @@ matrixd PlaneOptimizationFeature::get_distance_covariance(const WorldToCameraMat
 {
     const auto& jac = get_distance_jacobian(worldToCamera);
 
-    return (jac * _mapPlaneCovariance.selfadjointView<Eigen::Lower>() * jac.transpose())
-            .selfadjointView<Eigen::Lower>();
+    return utils::propagate_covariance(_mapPlaneCovariance, jac, 0.0);
 }
 
-matrixd PlaneOptimizationFeature::get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+matrix34 PlaneOptimizationFeature::get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     // TODO: combine this for all plane features somehow
     const PlaneWorldToCameraMatrix& planeTransformationMatrix =

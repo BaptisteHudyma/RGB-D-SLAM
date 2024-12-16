@@ -131,6 +131,12 @@ Relative_Pose_Estimator::Relative_Pose_Estimator(const vector6& startParameters,
     }
 }
 
+vectorxd get_score(matches_containers::feat_ptr feature, vectorxd distance)
+{
+    const auto partCount = feature->get_feature_part_count();
+    return vectorxd(partCount).setConstant(feature->get_alpha_reduction() / static_cast<double>(partCount));
+}
+
 // Implementation of the objective function
 int Relative_Pose_Estimator::operator()(const vector6& optimizedParameters, vectorxd& outputScores) const
 {
@@ -156,7 +162,7 @@ int Relative_Pose_Estimator::operator()(const vector6& optimizedParameters, vect
         assert(static_cast<int>(partCount) == distance.size());
 
         outputScores.segment(featureScoreIndex, partCount) =
-                distance * feature->get_alpha_reduction() / static_cast<double>(partCount);
+                distance.array().colwise() * get_score(feature, distance).array();
         featureScoreIndex += static_cast<int>(partCount);
     }
 
@@ -187,10 +193,16 @@ bool Relative_Pose_Estimator::get_input_covariance(const matches_containers::mat
     matrixd distancesCovariances(jacobian.rows(), jacobian.rows());
     distancesCovariances.setZero();
 
+    matrixd newJac = jacobian;
+
     int featureScoreIndex = 0; // index of the match being treated
     for (const auto& feature: features)
     {
         const auto partCount = feature->get_feature_part_count();
+
+        // remove the score applied to this part of the jacobian
+        auto part = newJac.block(featureScoreIndex, 0, partCount, 6);
+        part = (part.array().colwise() / get_score(feature, vectorxd()).array()).eval();
 
         const matrixd& distCov = feature->get_distance_covariance(transformationMatrix).selfadjointView<Eigen::Lower>();
         // set covariance of this feature in world space
@@ -213,9 +225,9 @@ bool Relative_Pose_Estimator::get_input_covariance(const matches_containers::mat
 
     // Retrieve the covariance of the parameters
     // get the jacobian of the transformation
-    matrix66 cov = pseudoInverse(jacobian.transpose() * distancesCovariances.inverse().selfadjointView<Eigen::Lower>() *
-                                 jacobian)
-                           .selfadjointView<Eigen::Lower>(); // force symetrical
+    matrix66 cov =
+            pseudoInverse(newJac.transpose() * distancesCovariances.inverse().selfadjointView<Eigen::Lower>() * newJac)
+                    .selfadjointView<Eigen::Lower>(); // force symetrical
     cov.diagonal().head<3>() += vector3::Constant(1e-6);
     if (utils::is_covariance_valid(cov, failureReason))
     {

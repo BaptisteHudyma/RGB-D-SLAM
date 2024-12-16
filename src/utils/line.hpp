@@ -1,6 +1,7 @@
 #ifndef RGBDSLAM_UTILS_LINE_HPP
 #define RGBDSLAM_UTILS_LINE_HPP
 
+#include "covariances.hpp"
 #include "types.hpp"
 #include <Eigen/Dense>
 #include <Eigen/src/Core/ArrayWrapper.h>
@@ -127,7 +128,7 @@ template<int Dim> class Segment : public ILine<Dim>
         jac(1, 2) = -theta4;
         jac(1, 3) = theta1 - theta2;
 
-        return (jac * cov.selfadjointView<Eigen::Lower>() * jac.transpose()).selfadjointView<Eigen::Lower>();
+        return utils::propagate_covariance(cov, jac);
     }
 
     /**
@@ -175,7 +176,7 @@ template<int Dim> class Segment : public ILine<Dim>
         jac(1, 2) = -(y1 - y2) * (theta11 - theta12 + theta10) / sqrt(theta17) - theta5;
         jac(1, 3) = theta13 / sqrt(theta17) - (y1 - y2) * (theta8 - theta9 + theta7) / sqrt(theta17) - theta3;
 
-        return (jac * cov.selfadjointView<Eigen::Lower>() * jac.transpose()).selfadjointView<Eigen::Lower>();
+        return utils::propagate_covariance(cov, jac);
     }
 
     [[nodiscard]] Eigen::Vector<double, Dim> get_end_point() const noexcept { return _endPoint; };

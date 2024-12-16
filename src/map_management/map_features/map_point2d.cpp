@@ -77,7 +77,7 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
     int matchIndex = detectedFeatures.get_tracking_match_index(_id, isDetectedFeatureMatched);
     if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
     {
-        // TODO: this is an hack, to use the last valid 2D value as input for the matching process
+        // TODO: this is a hack, to use the last valid 2D value as input for the matching process
         if (_lastMatch)
         {
             matchIndex = detectedFeatures.get_match_index(

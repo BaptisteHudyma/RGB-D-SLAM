@@ -43,7 +43,7 @@ template<class... Maps> class Local_Map
      * \brief Return an object containing the tracked features in screen space (2D), with the associated global ids
      * \param[in] lastPose The last known pose of the observer
      */
-    [[nodiscard]] TrackedFeaturesContainer get_tracked_keypoints_features(const utils::Pose& lastPose) const noexcept
+    [[nodiscard]] TrackedFeaturesContainer get_tracked_features(const utils::Pose& lastPose) const noexcept
     {
         size_t numberOfFeaturesToTrack = 0;
         foreach_map([&numberOfFeaturesToTrack](const auto& map) {
@@ -87,7 +87,7 @@ template<class... Maps> class Local_Map
 
         matches_containers::match_container matchSets;
 
-        // find point matches
+        // find feature matches
         const double findMatchesStartTime = static_cast<double>(cv::getTickCount());
 
         foreach_map([&detectedFeatures, &worldToCamera, &matchSets](auto& map) {
@@ -100,7 +100,7 @@ template<class... Maps> class Local_Map
     }
 
     /**
-     * \brief Update the local and global map. Add new points to staged and map container
+     * \brief Update the local and global map. Add new features to staged and map container
      *
      * \param[in] optimizedPose The clean true pose of the observer, after optimization
      * \param[in] detectedFeatures An object that contains all the detected features
@@ -152,7 +152,7 @@ template<class... Maps> class Local_Map
         const bool addAllFeatures = false; // only add unmatched features
         add_features_to_map(poseCovariance, cameraToWorld, detectedFeatures, addAllFeatures);
 
-        // add local map points to global map
+        // add local map features to global map
         update_local_to_global();
 
         mapUpdateDuration += (static_cast<double>(cv::getTickCount()) - updateMapStartTime) / cv::getTickFrequency();
@@ -209,10 +209,10 @@ template<class... Maps> class Local_Map
     }
 
     /**
-     * \brief Compute a debug image to display the keypoints & planes
+     * \brief Compute a debug image to display the features
      *
      * \param[in] camPose Pose of the camera in world coordinates
-     * \param[in] shouldDisplayStaged If true, will also display the content of the staged keypoint map
+     * \param[in] shouldDisplayStaged If true, will also display the content of the staged features map
      * \param[in, out] debugImage Output image
      */
     void get_debug_image(const utils::Pose& camPose, const bool shouldDisplayStaged, cv::Mat& debugImage) const noexcept

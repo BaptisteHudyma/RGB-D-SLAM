@@ -219,20 +219,10 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
                 to_world_coordinates_jacobian(_inverseDepth_mm + 3.0 * depthStandardDev, _theta_rad, _phi_rad);
 
         covariance.setZero();
-        covariance.block<2, 2>(0, 0) =
-                utils::get_screen_2d_point_covariance(
-                        firstPoint,
-                        WorldCoordinateCovariance(firstPointJacobian * cov.selfadjointView<Eigen::Lower>() *
-                                                  firstPointJacobian.transpose()),
-                        w2c)
-                        .selfadjointView<Eigen::Lower>();
-        covariance.block<2, 2>(2, 2) =
-                utils::get_screen_2d_point_covariance(
-                        endPoint,
-                        WorldCoordinateCovariance(secondPointJacobian * cov.selfadjointView<Eigen::Lower>() *
-                                                  secondPointJacobian.transpose()),
-                        w2c)
-                        .selfadjointView<Eigen::Lower>();
+        covariance.block<2, 2>(0, 0) = utils::get_screen_2d_point_covariance(
+                firstPoint, WorldCoordinateCovariance(utils::propagate_covariance(cov, firstPointJacobian, 0.0)), w2c);
+        covariance.block<2, 2>(2, 2) = utils::get_screen_2d_point_covariance(
+                endPoint, WorldCoordinateCovariance(utils::propagate_covariance(cov, secondPointJacobian, 0.0)), w2c);
         return true;
     }
     // should never happend

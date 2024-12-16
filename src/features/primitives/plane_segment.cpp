@@ -169,6 +169,7 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
 
 void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) noexcept
 {
+    // TODO use lossless additions
     _Sx += planeSegment._Sx;
     _Sy += planeSegment._Sy;
     _Sz += planeSegment._Sz;
@@ -239,7 +240,7 @@ void Plane_Segment::fit_plane() noexcept
     // get the centroid of the plane
     _centroid << vector3(_Sx, _Sy, _Sz) * oneOverCount;
 
-    const matrix33 pointCloudCov = get_point_cloud_Huygen_covariance();
+    const matrix33& pointCloudCov = get_point_cloud_Huygen_covariance();
     // special case: degenerate covariance
     // if (not utils::is_covariance_valid(pointCloudCov))
     if (utils::double_equal(pointCloudCov.determinant(), 0))

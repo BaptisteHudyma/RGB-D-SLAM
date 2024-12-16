@@ -26,7 +26,7 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
 
     vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
 
-    matrixd get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
+    matrix34 get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
     matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
 
     double get_alpha_reduction() const noexcept override;

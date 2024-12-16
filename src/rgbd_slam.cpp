@@ -274,7 +274,7 @@ map_management::DetectedFeatureContainer RGBD_SLAM::detect_features(const utils:
         const bool shouldRecomputeKeypoints = _isTrackingLost or _computeKeypointCount == 1;
         // Get map points that were tracked last call, and retroproject them to screen space using
         // last pose (used for optical flow)
-        const auto& trackedFeaturesContainer = _localMap.get_tracked_keypoints_features(predictedPose);
+        const auto& trackedFeaturesContainer = _localMap.get_tracked_features(predictedPose);
 
         // TODO: handle the other tracked features here
 
