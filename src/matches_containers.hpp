@@ -182,6 +182,11 @@ struct IOptimizationFeature
      */
     virtual matrixd get_world_covariance() const noexcept = 0;
 
+    /**
+     * return a variated version of this feature object
+     */
+    virtual feat_ptr get_variated_object() const noexcept = 0;
+
     /// store the id of the feature in the local map/staged features
     const size_t _idInMap;
 };

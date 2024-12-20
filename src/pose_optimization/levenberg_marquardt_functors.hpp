@@ -75,7 +75,7 @@ struct Relative_Pose_Estimator : Levenberg_Marquardt_Functor<double>
      */
     Relative_Pose_Estimator(const vector6& startParameters,
                             const size_t optimizationParts,
-                            const matches_containers::match_container* const features);
+                            const matches_containers::match_container& features);
 
     /**
      * \brief Implementation of the objective function
@@ -104,7 +104,7 @@ struct Relative_Pose_Estimator : Levenberg_Marquardt_Functor<double>
     // use pointers to prevent useless copy
     const vector6 _startParameters;
     const size_t _optimizationParts;
-    const matches_containers::match_container* const _features;
+    const matches_containers::match_container& _features;
 };
 
 struct Relative_Pose_Functor : Eigen::NumericalDiff<Relative_Pose_Estimator, Eigen::Central>

@@ -52,6 +52,16 @@ FeatureType PointOptimizationFeature::get_feature_type() const noexcept { return
 
 matrixd PointOptimizationFeature::get_world_covariance() const noexcept { return _mapPointCovariance; }
 
+matches_containers::feat_ptr PointOptimizationFeature::get_variated_object() const noexcept
+{
+    // make random variation
+    WorldCoordinate variatedCoordinates = _mapPoint;
+    variatedCoordinates += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointStandardDev);
+
+    return std::make_shared<PointOptimizationFeature>(
+            _matchedPoint, variatedCoordinates, _mapPointCovariance, _idInMap);
+}
+
 /**
  * MapPoint
  */

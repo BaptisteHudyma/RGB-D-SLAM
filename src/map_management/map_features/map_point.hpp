@@ -33,6 +33,8 @@ struct PointOptimizationFeature : public matches_containers::IOptimizationFeatur
 
     matrixd get_world_covariance() const noexcept override;
 
+    matches_containers::feat_ptr get_variated_object() const noexcept override;
+
   protected:
     const ScreenCoordinate2D _matchedPoint;
     const WorldCoordinate _mapPoint;

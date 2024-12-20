@@ -57,6 +57,33 @@ FeatureType Point2dOptimizationFeature::get_feature_type() const noexcept { retu
 
 matrixd Point2dOptimizationFeature::get_world_covariance() const noexcept { return _mapPointCovariance; }
 
+matches_containers::feat_ptr Point2dOptimizationFeature::get_variated_object() const noexcept
+{
+    WorldCoordinate variatedObservationPoint = _mapPoint.get_first_observation();
+
+    // TODO: variate the observation point
+    // variatedObservationPoint +=
+    // utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointStandardDev.head<3>());
+    const double variatedInverseDepth =
+            _mapPoint.get_inverse_depth(); // do not variate the depth, the uncertainty is too great anyway
+    const double variatedTheta =
+            std::clamp(_mapPoint.get_theta() + utils::Random::get_normal_double() *
+                                                       _mapPointStandardDev(InverseDepthWorldPoint::thetaIndex),
+                       0.0,
+                       M_PI);
+    const double variatedPhi =
+            std::clamp(_mapPoint.get_phi() + utils::Random::get_normal_double() *
+                                                     _mapPointStandardDev(InverseDepthWorldPoint::phiIndex),
+                       -M_PI,
+                       M_PI);
+
+    InverseDepthWorldPoint variatedCoordinates(
+            variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi);
+
+    return std::make_shared<Point2dOptimizationFeature>(
+            _matchedPoint, variatedCoordinates, _mapPointCovariance, _idInMap);
+}
+
 /**
  * MapPoint
  */

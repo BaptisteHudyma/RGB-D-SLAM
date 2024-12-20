@@ -107,21 +107,21 @@ utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizat
 
 Relative_Pose_Estimator::Relative_Pose_Estimator(const vector6& startParameters,
                                                  const size_t optimizationParts,
-                                                 const matches_containers::match_container* const features) :
+                                                 const matches_containers::match_container& features) :
     Levenberg_Marquardt_Functor<double>(6, optimizationParts + feedbackOptimizationPart),
     _startParameters(startParameters),
     _optimizationParts(optimizationParts),
     _features(features)
 {
     // parameter checks
-    if (_features == nullptr or _features->empty() or _optimizationParts == 0)
+    if (_features.empty() or _optimizationParts == 0)
     {
         throw std::logic_error("cannot optimize on empty vector");
     }
 
     // sanity check
     size_t featureParts = 0;
-    for (const auto& feature: *_features)
+    for (const auto& feature: _features)
     {
         featureParts += feature->get_feature_part_count();
     }
@@ -141,8 +141,7 @@ vectorxd get_score(matches_containers::feat_ptr feature, vectorxd distance)
 int Relative_Pose_Estimator::operator()(const vector6& optimizedParameters, vectorxd& outputScores) const
 {
     // sanity checks
-    assert(_features != nullptr);
-    assert(not _features->empty());
+    assert(not _features.empty());
     assert(static_cast<size_t>(outputScores.size()) == (_optimizationParts + 2));
 
     // Get the new estimated pose
@@ -154,7 +153,7 @@ int Relative_Pose_Estimator::operator()(const vector6& optimizedParameters, vect
 
     // Compute projection distances
     int featureScoreIndex = 0; // index of the match being treated
-    for (const auto& feature: *_features)
+    for (const auto& feature: _features)
     {
         const auto& distance = feature->get_distance(transformationMatrix);
         const auto partCount = feature->get_feature_part_count();

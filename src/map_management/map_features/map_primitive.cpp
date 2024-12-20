@@ -65,6 +65,19 @@ FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return
 
 matrixd PlaneOptimizationFeature::get_world_covariance() const noexcept { return _mapPlaneCovariance; }
 
+matches_containers::feat_ptr PlaneOptimizationFeature::get_variated_object() const noexcept
+{
+    PlaneWorldCoordinates variatedCoordinates = _mapPlane;
+
+    variatedCoordinates.normal() += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPlaneStandardDev.head<3>());
+    variatedCoordinates.normal().normalize();
+
+    variatedCoordinates.d() += utils::Random::get_normal_double() * _mapPlaneStandardDev(3);
+
+    return std::make_shared<PlaneOptimizationFeature>(
+            _matchedPlane, variatedCoordinates, _mapPlaneCovariance, _idInMap);
+}
+
 /**
  *  MapPlane
  */

@@ -35,6 +35,8 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
 
     matrixd get_world_covariance() const noexcept override;
 
+    matches_containers::feat_ptr get_variated_object() const noexcept override;
+
   protected:
     const PlaneCameraCoordinates _matchedPlane;
     const PlaneWorldCoordinates _mapPlane;

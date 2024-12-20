@@ -100,8 +100,8 @@ double get_feature_set_optimization_score(const matches_containers::match_contai
 {
     matches_containers::match_container matchSubset;
 
-    // we can have a lot of points, so use a more efficient but with potential duplicates subset
-    // matchSubset._inliers = ransac::get_random_subset_with_score_with_duplicates(matchedFeatures, 1.0);
+    // we can have a lot of features, so use a more efficient but with potential duplicates subset
+    // matchSubset = ransac::get_random_subset_with_score_with_duplicates(matchedFeatures, 1.0);
     matchSubset = ransac::get_random_subset_with_score(matchedFeatures, 1.0);
     if (get_feature_set_optimization_score(matchSubset) < 1.0)
     {
@@ -133,10 +133,10 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     }
 
     // Compute maximum iteration with the original RANSAC formula
-    static const uint maximumIterations = static_cast<uint>(
-            std::ceil(std::log(1.0f - parameters::optimization::ransac::probabilityOfSuccess) /
-                      std::log(1.0f - std::pow(parameters::optimization::ransac::inlierProportion,
-                                               parameters::optimization::ransac::featureTrustCount))));
+    static constexpr uint maximumIterations =
+            (std::ceil(std::log(1.0f - parameters::optimization::ransac::probabilityOfSuccess) /
+                       std::log(1.0f - std::pow(parameters::optimization::ransac::inlierProportion,
+                                                parameters::optimization::ransac::featureTrustCount))));
     if (maximumIterations <= 0)
     {
         outputs::log_error("maximumIterations should be > 0, no pose optimization will be made");
@@ -145,13 +145,21 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         return false;
     }
 
-    // TODO: check the constant: 60% inlier proportion is weak
-    // matchedFeatures.size() * parameters::optimization::ransac::inlierProportion);
+    // stop iterating early when we have more than enought matches
     const size_t inliersToStop = static_cast<size_t>(static_cast<double>(matchedFeatures.size()) * 0.80);
 
-    double maxScore = 1.0;
+    double maxScore = 1.0; // 1.0 is the minimum score we can have for a set of matches to optimize a pose
     utils::PoseBase bestPose = currentPose;
     matches_containers::match_sets finalFeatureSets;
+
+    // I think having an iterative ransac would be more appropriate:
+    // Sort map feature by optimization score
+    // while (some feature not parsed)
+    //  Find a match for the highest score feature
+    //  if we have enough score for opti, opti !
+    //      if opti failed, or outlier or something, ignore this match
+    //  else
+    //  do nothing ?
 
     std::atomic_bool canQuit = false;
     std::mutex mut;
@@ -282,8 +290,8 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
     }
 
     // Optimization function (ok to use pointers: optimization of copy)
-    auto relativePoseEstimator = Relative_Pose_Estimator(input, optiParts, &matchedFeatures);
-    Relative_Pose_Functor pose_optimisation_functor(relativePoseEstimator);
+    auto relativePoseEstimator = Relative_Pose_Estimator(input, optiParts, matchedFeatures);
+    Relative_Pose_Functor pose_optimisation_functor {relativePoseEstimator};
     // Optimization algorithm
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
 

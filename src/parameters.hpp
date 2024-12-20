@@ -25,7 +25,7 @@ constexpr double minimumInliersProportionForEarlyStop =
 
 // RANSAC iteration parameters
 constexpr float probabilityOfSuccess = 0.8f; // probability of having at least one correct transformation
-constexpr float inlierProportion = 0.6f;     // number of inliers in data / number of points in data
+constexpr float inlierProportion = 0.65f;    // number of inliers in data / number of matched features
 constexpr float featureTrustCount = 10.0;    // number of expected features expected to pass the test
 } // namespace ransac
 
