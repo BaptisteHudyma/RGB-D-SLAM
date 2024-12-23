@@ -18,7 +18,8 @@ struct PointOptimizationFeature : public matches_containers::IOptimizationFeatur
     PointOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                              const WorldCoordinate& mapPoint,
                              const matrix33& mapPointCovariance,
-                             const size_t mapFeatureId);
+                             const size_t mapFeatureId,
+                             const size_t detectedFeatureId);
 
     size_t get_feature_part_count() const noexcept override;
 
@@ -76,12 +77,11 @@ class MapPoint :
 
     ~MapPoint() override = default;
 
-    [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
-                                 const WorldToCameraMatrix& worldToCamera,
-                                 const vectorb& isDetectedFeatureMatched,
-                                 matches_containers::match_container& matches,
-                                 const bool shouldAddToMatches = true,
-                                 const bool useAdvancedSearch = false) const noexcept override;
+    [[nodiscard]] matchIndexSet find_match(const DetectedKeypointsObject& detectedFeatures,
+                                           const WorldToCameraMatrix& worldToCamera,
+                                           matches_containers::match_container& matches,
+                                           const bool shouldAddToMatches = true,
+                                           const bool useAdvancedSearch = false) const noexcept override;
 
     [[nodiscard]] bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                       TrackedPointsObject& trackedFeatures,
@@ -105,11 +105,11 @@ class MapPoint :
 
     [[nodiscard]] bool is_moving() const noexcept override { return tracking::Point::is_moving(); }
 
-  protected:
     [[nodiscard]] bool update_with_match(const DetectedPointType& matchedFeature,
                                          const matrix33& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
+  protected:
     void update_no_match() noexcept override;
 
     // used for tracking of 2d points
@@ -151,7 +151,7 @@ class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
     LocalMapPoint(const WorldCoordinate& coordinates,
                   const WorldCoordinateCovariance& covariance,
                   const cv::Mat& descriptor,
-                  const int matchIndex);
+                  const matchIndexSet& matchIndex);
 
     [[nodiscard]] bool is_lost() const noexcept override;
 };

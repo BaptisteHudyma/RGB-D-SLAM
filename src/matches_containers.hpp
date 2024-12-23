@@ -4,6 +4,7 @@
 #include "types.hpp"
 #include <list>
 #include <memory>
+#include <unordered_set>
 
 #include "features/keypoints/keypoint_handler.hpp"
 #include "features/primitives/shape_primitives.hpp"
@@ -35,6 +36,9 @@ inline std::string to_string(const FeatureType feat)
 }
 
 namespace map_management {
+
+// type for matched index
+typedef std::unordered_set<size_t> matchIndexSet;
 
 /**
  * \brief Contains sets of detected features
@@ -75,12 +79,12 @@ struct TrackedFeaturesContainer
  */
 struct IUpgradedFeature
 {
-    IUpgradedFeature(const int matchIndex) : _matchIndex(matchIndex) {}
+    IUpgradedFeature(const matchIndexSet& matchIndex) : _matchIndex(matchIndex) {}
     virtual ~IUpgradedFeature() = default;
 
     virtual FeatureType get_type() const = 0;
 
-    int _matchIndex;
+    const matchIndexSet _matchIndex;
 };
 
 using UpgradedFeature_ptr = std::shared_ptr<IUpgradedFeature>;
@@ -90,7 +94,7 @@ struct UpgradedPoint2D : IUpgradedFeature
     UpgradedPoint2D(const WorldCoordinate& coordinates,
                     const WorldCoordinateCovariance& covariance,
                     const cv::Mat& descriptor,
-                    const int matchId) :
+                    const matchIndexSet matchId) :
         IUpgradedFeature(matchId),
         _coordinates(coordinates),
         _covariance(covariance),
@@ -117,7 +121,9 @@ using feat_ptr = std::shared_ptr<IOptimizationFeature>;
 
 struct IOptimizationFeature
 {
-    IOptimizationFeature(const size_t idInMap) : _idInMap(idInMap) {};
+    IOptimizationFeature(const size_t idInMap, const size_t detectedFeatureId) :
+        _idInMap(idInMap),
+        _detectedFeatureId(detectedFeatureId) {};
 
     virtual ~IOptimizationFeature() = default;
 
@@ -189,6 +195,8 @@ struct IOptimizationFeature
 
     /// store the id of the feature in the local map/staged features
     const size_t _idInMap;
+    /// Store the id of the matched detected feature
+    const size_t _detectedFeatureId;
 };
 
 /**

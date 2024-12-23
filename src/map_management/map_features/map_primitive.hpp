@@ -16,7 +16,8 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
     PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
                              const PlaneWorldCoordinates& mapPlane,
                              const matrix44& mapPlaneCovariance,
-                             const size_t mapFeatureId);
+                             const size_t mapFeatureId,
+                             const size_t detectedFeatureId);
 
     ~PlaneOptimizationFeature() override = default;
 
@@ -66,12 +67,11 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
 
     ~MapPlane() override = default;
 
-    [[nodiscard]] int find_match(const DetectedPlaneObject& detectedFeatures,
-                                 const WorldToCameraMatrix& worldToCamera,
-                                 const vectorb& isDetectedFeatureMatched,
-                                 matches_containers::match_container& matches,
-                                 const bool shouldAddToMatches = true,
-                                 const bool useAdvancedSearch = false) const noexcept override;
+    [[nodiscard]] matchIndexSet find_match(const DetectedPlaneObject& detectedFeatures,
+                                           const WorldToCameraMatrix& worldToCamera,
+                                           matches_containers::match_container& matches,
+                                           const bool shouldAddToMatches = true,
+                                           const bool useAdvancedSearch = false) const noexcept override;
 
     [[nodiscard]] bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                       TrackedPlaneObject& trackedFeatures,
@@ -98,12 +98,11 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
         // TODO
         return false;
     }
-
-  protected:
     [[nodiscard]] bool update_with_match(const DetectedPlaneType& matchedFeature,
                                          const matrix33& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
+  protected:
     void update_no_match() noexcept override;
 };
 

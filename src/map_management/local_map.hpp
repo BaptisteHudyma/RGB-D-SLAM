@@ -9,6 +9,7 @@
 #include "camera_transformation.hpp"
 #include "outputs/logger.hpp"
 #include "parameters.hpp"
+#include <unordered_set>
 
 namespace rgbd_slam::map_management {
 
@@ -126,10 +127,17 @@ template<class... Maps> class Local_Map
 
         // update all local maps
         foreach_map([this, &cameraToWorld, &poseCovariance, &detectedFeatures](auto& map) {
-            map.update_map(cameraToWorld, poseCovariance, detectedFeatures, _mapWriter);
+            // update matches and unmatched map features
+            const std::unordered_set<size_t>& detectedUsedIndex =
+                    map.update_map(cameraToWorld, poseCovariance, detectedFeatures, _mapWriter);
+
+            // Add unmatched features to the staged map, to unsure tracking of detected features
+            map.add_features_to_staged_map(poseCovariance, cameraToWorld, detectedFeatures, detectedUsedIndex);
+
+            // TODO Try to fuse the map features that used the same detected features as inliers
         });
 
-        // try to upgrade to new features
+        // try to upgrade to new features (AFTER all map updates)
         foreach_map([this, &cameraToWorld](auto& featureMap) {
             const auto& upgradedFeatures = featureMap.get_upgraded_features(cameraToWorld);
 
@@ -144,13 +152,10 @@ template<class... Maps> class Local_Map
             if (addedFeatures < upgradedFeatures.size())
             {
                 outputs::log_warning(
-                        "Not all upgraded features could be added to the feature maps, some features have been lost");
+                        "Not all upgraded features could be added to the feature maps, some features have been "
+                        "lost");
             }
         });
-
-        // add new features to the maps
-        const bool addAllFeatures = false; // only add unmatched features
-        add_features_to_map(poseCovariance, cameraToWorld, detectedFeatures, addAllFeatures);
 
         // add local map features to global map
         update_local_to_global();
@@ -170,17 +175,14 @@ template<class... Maps> class Local_Map
     }
 
     /**
-     * \brief Add features to staged map
+     * \brief Add all detected features to staged map
      * \param[in] poseCovariance The pose covariance of the observer, after optimization
      * \param[in] cameraToWorld The matrix to go from camera to world space
      * \param[in] detectedFeatures Contains the detected features
-     * \param[in] addAllFeatures If false, will add all non matched features, if true, add all features
-     * regardless of the match status
      */
-    void add_features_to_map(const matrix33& poseCovariance,
-                             const CameraToWorldMatrix& cameraToWorld,
-                             const DetectedFeatureContainer& detectedFeatures,
-                             const bool addAllFeatures)
+    void add_all_features_to_map(const matrix33& poseCovariance,
+                                 const CameraToWorldMatrix& cameraToWorld,
+                                 const DetectedFeatureContainer& detectedFeatures)
     {
         const double addfeaturesStartTime = static_cast<double>(cv::getTickCount());
 
@@ -190,8 +192,8 @@ template<class... Maps> class Local_Map
         assert(_detectedFeatureId == detectedFeatures.id);
 
         // Add unmatched features to the staged map, to unsure tracking of new features
-        foreach_map([&poseCovariance, &cameraToWorld, &detectedFeatures, &addAllFeatures](auto& map) {
-            map.add_features_to_staged_map(poseCovariance, cameraToWorld, detectedFeatures, addAllFeatures);
+        foreach_map([&poseCovariance, &cameraToWorld, &detectedFeatures](auto& map) {
+            map.add_all_features_to_staged_map(poseCovariance, cameraToWorld, detectedFeatures);
         });
 
         mapAddFeaturesDuration +=

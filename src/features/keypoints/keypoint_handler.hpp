@@ -5,6 +5,7 @@
 #include "line.hpp"
 #include <opencv2/core/types.hpp>
 #include <opencv2/xfeatures2d.hpp>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -118,34 +119,28 @@ class Keypoint_Handler
     /**
      * \brief Get a tracking index if it exist, or -1.
      * \param[in] mapPointId The unique id that we want to check
-     * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched
      * \return the index of the tracked point in _keypoints, or -1 if no match was found
      */
-    [[nodiscard]] int get_tracking_match_index(const size_t mapPointId,
-                                               const vectorb& isKeyPointMatchedContainer) const noexcept;
     [[nodiscard]] int get_tracking_match_index(const size_t mapPointId) const noexcept;
 
     /**
      * \brief get an index corresponding to the index of the point matches.
      * \param[in] projectedMapPoint A 2D map point to match
      * \param[in] mapPointDescriptor The descriptor of this map point
-     * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched
      * \param[in] searchSpaceRadius The radius of the search space for potential matches, in pixels
      * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
      */
-    [[nodiscard]] int get_match_index(const ScreenCoordinate2D& projectedMapPoint,
-                                      const cv::Mat& mapPointDescriptor,
-                                      const vectorb& isKeyPointMatchedContainer,
-                                      const double searchSpaceRadius) const noexcept;
-    [[nodiscard]] int get_match_index(const utils::Segment<2>& projectedMapPoint,
-                                      const cv::Mat& mapPointDescriptor,
-                                      const vectorb& isKeyPointMatchedContainer,
-                                      const double searchSpaceRadius) const noexcept;
+    [[nodiscard]] std::unordered_set<size_t> get_match_index(const ScreenCoordinate2D& projectedMapPoint,
+                                                             const cv::Mat& mapPointDescriptor,
+                                                             const double searchSpaceRadius) const noexcept;
+    [[nodiscard]] std::unordered_set<size_t> get_match_index(const utils::Segment<2>& projectedMapPoint,
+                                                             const cv::Mat& mapPointDescriptor,
+                                                             const double searchSpaceRadius) const noexcept;
 
     /**
      * \brief return the keypoint associated with the index
      */
-    [[nodiscard]] ScreenCoordinate get_keypoint(const uint index) const noexcept
+    [[nodiscard]] ScreenCoordinate get_keypoint(const size_t index) const noexcept
     {
         assert(index < _keypoints.size());
         return _keypoints[index];
@@ -184,13 +179,11 @@ class Keypoint_Handler
      * \brief Return a mask eliminating the keypoints to far from the point to match
      *
      * \param[in] pointToSearch The 2D screen coordinates of the point to match
-     * \param[in] isKeyPointMatchedContainer A vector of size _keypoints, use to flag is a keypoint is already matched
      * \param[in] searchSpaceCellRadius Radius of the match search
      *
      * \return A Mat the same size as our keypoint array, with 0 where the index is not a candidate, and 1 where it is
      */
     [[nodiscard]] cv::Mat_<uchar> compute_key_point_mask(const ScreenCoordinate2D& pointToSearch,
-                                                         const vectorb& isKeyPointMatchedContainer,
                                                          const uint searchSpaceCellRadius) const noexcept;
 
     using index_container = std::vector<uint>;
@@ -198,16 +191,13 @@ class Keypoint_Handler
      * \brief Fill the keypoint mask with the an area around the given keypoints
      * \param[in] pointToSearch The cooridnates of the point we want to match
      * \param[in] keypointIndexContainer A container with all the keypoints to draw an area around
-     * \param[in] isKeyPointMatchedContainer If a keypoint is already matched, it's index will be true
      * \param[in, out] keyPointMask The match mask for each keypoints
      */
     void fill_keypoint_mask(const ScreenCoordinate2D& pointToSearch,
                             const index_container& keypointIndexContainer,
-                            const vectorb& isKeyPointMatchedContainer,
                             cv::Mat_<uchar>& keyPointMask) const noexcept;
     void fill_keypoint_mask(const utils::Segment<2>& pointToSearch,
                             const index_container& keypointIndexContainer,
-                            const vectorb& isKeyPointMatchedContainer,
                             cv::Mat_<uchar>& keyPointMask) const noexcept;
 
     using uint_pair = std::pair<uint, uint>;

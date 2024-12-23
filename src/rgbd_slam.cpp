@@ -241,7 +241,9 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
                     predictedPose.get_orientation_quaternion(), predictedPose.get_position());
 
-            _localMap.add_features_to_map(poseCovariance, cameraToWorld, detectedFeatures, true);
+            // TODO: clear map ?
+            // add all detected features
+            _localMap.add_all_features_to_map(poseCovariance, cameraToWorld, detectedFeatures);
         }
 
         if (not _isFirstTrackingCall)

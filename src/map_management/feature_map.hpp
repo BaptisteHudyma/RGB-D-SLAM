@@ -15,6 +15,7 @@
 #include <opencv2/core/matx.hpp>
 #include <opencv2/core/types.hpp>
 #include <stdexcept>
+#include <unordered_set>
 
 namespace rgbd_slam::map_management {
 
@@ -28,7 +29,7 @@ class MapIdAllocator
 
     static size_t get_new_id()
     {
-        _idAllocator = std::max(_idAllocator + 1, 1ul);
+        _idAllocator = std::max(_idAllocator + 1, 1uL);
         return _idAllocator;
     }
 
@@ -52,19 +53,16 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
      * \param[in] detectedFeatures The object that contains the detected features for this frame
      * \param[in] worldToCamera The matrix to convert from map space to camera space. This should be an estimate of the
      * position from which detectedFeatures were observed
-     * \param[in, out] isDetectedFeatureMatched A vector of booleans indicating which detected features are already
-     * matched. should be updated if a match is found
      * \param[in, out] matches The object that contains the feature matches
      * \param[in] shouldAddToMatches If false, will mark feature as matched but wont add them to the match vector
      * \param[in] useAdvancedSearch If true, will search matches with a lesser accuracy, but further
-     * \return the index of the match if found, or UNMATCHED_FEATURE_INDEX
+     * \return the index of the match if found
      */
-    [[nodiscard]] virtual int find_match(const DetectedFeaturesObject& detectedFeatures,
-                                         const WorldToCameraMatrix& worldToCamera,
-                                         const vectorb& isDetectedFeatureMatched,
-                                         matches_containers::match_container& matches,
-                                         const bool shouldAddToMatches = true,
-                                         const bool useAdvancedSearch = false) const noexcept = 0;
+    [[nodiscard]] virtual matchIndexSet find_match(const DetectedFeaturesObject& detectedFeatures,
+                                                   const WorldToCameraMatrix& worldToCamera,
+                                                   matches_containers::match_container& matches,
+                                                   const bool shouldAddToMatches = true,
+                                                   const bool useAdvancedSearch = false) const noexcept = 0;
 
     /**
      * \brief Return true if this feature can be upgraded to UpgradedFeature_ptr
@@ -82,18 +80,19 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
     /**
      * \return True if this map feature is marked as matched
      */
-    [[nodiscard]] bool is_matched() const noexcept { return _matchIndex != UNMATCHED_FEATURE_INDEX; };
+    [[nodiscard]] bool is_matched() const noexcept { return not _matchIndex.empty(); };
 
     /**
      * \brief mark this map feature as having no match
      */
-    void mark_unmatched() noexcept { _matchIndex = UNMATCHED_FEATURE_INDEX; };
+    void mark_unmatched() noexcept { _matchIndex.clear(); };
+    void mark_unmatched(const size_t id) noexcept { _matchIndex.erase(id); };
 
     /**
      * \brief mark this map feature as having a match at the given index
      * \param[in] matchIndex The index of the match in the detected features
      */
-    void mark_matched(const int matchIndex) noexcept { _matchIndex = matchIndex; };
+    void mark_matched(const matchIndexSet& matchIndex) noexcept { _matchIndex = matchIndex; };
 
     /**
      * \brief Update the feature, with the corresponding match
@@ -102,22 +101,17 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
      * \param[in] cameraToWorld The matrix to transform from the camera pose where matchedFeature was detected to world
      * coordinates
      */
-    void update_matched(const DetectedFeatureType& matchedFeature,
-                        const matrix33& poseCovariance,
-                        const CameraToWorldMatrix& cameraToWorld) noexcept
+    [[nodiscard]] virtual bool update_with_match(const DetectedFeatureType& matchedFeature,
+                                                 const matrix33& poseCovariance,
+                                                 const CameraToWorldMatrix& cameraToWorld) noexcept = 0;
+
+    // signal the system that this feature was matched
+    void update_matched()
     {
-        if (update_with_match(matchedFeature, poseCovariance, cameraToWorld))
-        {
-            // only update if tracking succedded
-            _failedTrackingCount = 0;
-            ++_successivMatchedCount;
-        }
-        else
-        {
-            // tracking failed, consider this match as a failure
-            update_unmatched();
-        }
-    };
+        // only update if tracking succedded
+        _failedTrackingCount = 0;
+        ++_successivMatchedCount;
+    }
 
     /**
      * \brief Update the feature, with the no match status
@@ -167,20 +161,12 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
     /**
      *  Members
      */
-    static constexpr int UNMATCHED_FEATURE_INDEX = -1;
-    static constexpr int FIRST_DETECTION_INDEX =
-            -2; // set for the first detection, to use tracking even if no match is set
-
     size_t _failedTrackingCount = 0;
     int _successivMatchedCount = 0;
-    const size_t _id;                        // uniq id of this feature in the program (uniq id per feature type only)
-    int _matchIndex = FIRST_DETECTION_INDEX; // index of the last matched feature id
+    const size_t _id; // uniq id of this feature in the program
+    matchIndexSet _matchIndex;
 
   protected:
-    [[nodiscard]] virtual bool update_with_match(const DetectedFeatureType& matchedFeature,
-                                                 const matrix33& poseCovariance,
-                                                 const CameraToWorldMatrix& cameraToWorld) noexcept = 0;
-
     virtual void update_no_match() noexcept = 0;
 };
 
@@ -308,8 +294,8 @@ class Feature_Map
     }
 
     /**
-     * \brief return the object thta contains the matches between detected and map feature. Set the
-     * _isDetectedFeatureMatched flags. Will relaunch the proces if not enough matches were found
+     * \brief return the object thta contains the matches between detected and map feature. Will relaunch the proces if
+     * not enough matches were found
      * \param[in] detectedFeatures The object of detected features to match
      * \param[in] worldToCamera A matrix to convert from world to camera space
      * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
@@ -374,13 +360,14 @@ class Feature_Map
      * \param[in] detectedFeatures The object containing the detected features used for the tracking
      * \param[in] mapWriter A pointer to the map writer object
      */
-    void update_map(const CameraToWorldMatrix& cameraToWorld,
-                    const matrix33& poseCovariance,
-                    const DetectedFeatureContainer& detectedFeatures,
-                    std::shared_ptr<outputs::IMap_Writer> mapWriter)
+    std::unordered_set<size_t> update_map(const CameraToWorldMatrix& cameraToWorld,
+                                          const matrix33& poseCovariance,
+                                          const DetectedFeatureContainer& detectedFeatures,
+                                          std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
+        std::unordered_set<size_t> usedIndexSet;
         if (not _isActivated)
-            return;
+            return usedIndexSet;
         if (not utils::is_covariance_valid(poseCovariance))
             throw std::invalid_argument("update_map: The given pose covariance is invalid, map wont be update");
 
@@ -388,8 +375,9 @@ class Feature_Map
 
         const auto& detected = get_detected_feature(detectedFeatures);
 
-        update_local_map(cameraToWorld, poseCovariance, detected, mapWriter);
-        update_staged_map(cameraToWorld, poseCovariance, detected);
+        usedIndexSet.merge(update_local_map(cameraToWorld, poseCovariance, detected, mapWriter));
+        usedIndexSet.merge(update_staged_map(cameraToWorld, poseCovariance, detected));
+        return usedIndexSet;
     }
 
     /**
@@ -407,17 +395,60 @@ class Feature_Map
     }
 
     /**
+     * \brief Add all detected features to the staged features
+     * \param[in] poseCovariance Covariance of the pose where those features were detected
+     * \param[in] cameraToWorld A matrix to convert from camera to world space
+     * \param[in] detectedFeatures The object that contains the detected features to add
+     */
+    void add_all_features_to_staged_map(const matrix33& poseCovariance,
+                                        const CameraToWorldMatrix& cameraToWorld,
+                                        const DetectedFeatureContainer& detectedFeatures)
+    {
+        if (not _isActivated)
+            return;
+
+        if (not utils::is_covariance_valid(poseCovariance))
+            throw std::invalid_argument(
+                    "add_all_features_to_staged_map: The given pose covariance is invalid, map wont be update");
+
+        const auto& detected = get_detected_feature(detectedFeatures);
+
+        // Add all unmatched features to staged feature container
+        const size_t featureVectorSize = detected.size();
+        for (unsigned int i = 0; i < featureVectorSize; ++i)
+        {
+            const DetectedFeatureType& detectedfeature = detected.at(i);
+            // some features cannot be added to map
+            if (StagedFeatureType::can_add_to_map(detectedfeature))
+            {
+                try
+                {
+                    const StagedFeatureType newStagedFeature(poseCovariance, cameraToWorld, detectedfeature);
+                    assert(_stagedMap.find(newStagedFeature._id) == _stagedMap.cend());
+
+                    // add to staged map
+                    _stagedMap.emplace(newStagedFeature._id, newStagedFeature);
+                }
+                catch (const std::exception& ex)
+                {
+                    outputs::log_error(get_display_name() + ": Caught exception while creating the staged feature: " +
+                                       std::string(ex.what()));
+                }
+            }
+        }
+    }
+
+    /**
      * \brief Add a set of detected features to the staged features
      * \param[in] poseCovariance Covariance of the pose where those features were detected
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \param[in] detectedFeatures The object that contains the detected features to add
-     * \param[in] addAllFeatures If true, will add all detected features to the staged map. If false, will only add
-     * the unmatched features to staged map
+     * \param[in] usedIndices All indices matched and used in update step
      */
     void add_features_to_staged_map(const matrix33& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
                                     const DetectedFeatureContainer& detectedFeatures,
-                                    const bool addAllFeatures)
+                                    const std::unordered_set<size_t>& usedIndices)
     {
         if (not _isActivated)
             return;
@@ -430,30 +461,29 @@ class Feature_Map
 
         // Add all unmatched features to staged feature container
         const size_t featureVectorSize = detected.size();
-        assert(featureVectorSize == static_cast<size_t>(_isDetectedFeatureMatched.size()));
         for (unsigned int i = 0; i < featureVectorSize; ++i)
         {
-            // Add all features, or add only the unmatched features
-            if (addAllFeatures or not _isDetectedFeatureMatched[i])
-            {
-                const DetectedFeatureType& detectedfeature = detected.at(i);
-                // some features cannot be added to map
-                if (StagedFeatureType::can_add_to_map(detectedfeature))
-                {
-                    try
-                    {
-                        const StagedFeatureType newStagedFeature(poseCovariance, cameraToWorld, detectedfeature);
-                        assert(_stagedMap.find(newStagedFeature._id) == _stagedMap.cend());
+            // index already used, pass
+            if (usedIndices.contains(i))
+                continue;
 
-                        // add to staged map
-                        _stagedMap.emplace(newStagedFeature._id, newStagedFeature);
-                    }
-                    catch (const std::exception& ex)
-                    {
-                        outputs::log_error(
-                                get_display_name() +
-                                ": Caught exception while creating the staged feature: " + std::string(ex.what()));
-                    }
+            assert(i < featureVectorSize);
+            const DetectedFeatureType& detectedfeature = detected.at(i);
+            // some features cannot be added to map
+            if (StagedFeatureType::can_add_to_map(detectedfeature))
+            {
+                try
+                {
+                    const StagedFeatureType newStagedFeature(poseCovariance, cameraToWorld, detectedfeature);
+                    assert(_stagedMap.find(newStagedFeature._id) == _stagedMap.cend());
+
+                    // add to staged map
+                    _stagedMap.emplace(newStagedFeature._id, newStagedFeature);
+                }
+                catch (const std::exception& ex)
+                {
+                    outputs::log_error(get_display_name() + ": Caught exception while creating the staged feature: " +
+                                       std::string(ex.what()));
                 }
             }
         }
@@ -469,7 +499,8 @@ class Feature_Map
         {
             if (match->get_feature_type() == get_feature_type())
             {
-                const bool isOutlierRemoved = mark_feature_with_id_as_unmatched(match->_idInMap);
+                const bool isOutlierRemoved =
+                        mark_feature_with_id_as_unmatched(match->_idInMap, match->_detectedFeatureId);
                 // If no feature were found, this is bad. A match marked as outliers must be in the local map or
                 // staged features
                 if (not isOutlierRemoved)
@@ -484,9 +515,10 @@ class Feature_Map
     /**
      * \brief Mark the map feature with the given id as unmatched
      * \param[in] featureId The id of the feature to mark as unmatched
+     * \param[in] mapFeatureId The id of the matched detected feature
      * \return True if the feature was found, or false
      */
-    [[nodiscard]] bool mark_feature_with_id_as_unmatched(const size_t featureId) noexcept
+    [[nodiscard]] bool mark_feature_with_id_as_unmatched(const size_t featureId, const size_t mapFeatureId) noexcept
     {
         if (not _isActivated)
             return false;
@@ -505,10 +537,7 @@ class Feature_Map
 
             if (mapFeature.is_matched())
             {
-                const int matchindex = mapFeature._matchIndex;
-                assert(matchindex >= 0 and matchindex < _isDetectedFeatureMatched.size());
-                _isDetectedFeatureMatched[matchindex] = false;
-                mapFeature.mark_unmatched();
+                mapFeature.mark_unmatched(mapFeatureId);
             }
             return true;
         }
@@ -522,10 +551,7 @@ class Feature_Map
 
             if (mapFeature.is_matched())
             {
-                const int matchindex = mapFeature._matchIndex;
-                assert(matchindex >= 0 and matchindex < _isDetectedFeatureMatched.size());
-                _isDetectedFeatureMatched[matchindex] = false;
-                mapFeature.mark_unmatched();
+                mapFeature.mark_unmatched(mapFeatureId);
             }
             return true;
         }
@@ -609,8 +635,7 @@ class Feature_Map
     virtual void add_upgraded_to_local_map(const UpgradedFeature_ptr upgradedfeature) = 0;
 
     /**
-     * \brief return the object thta contains the matches between detected and map feature. Set the
-     * _isDetectedFeatureMatched flags
+     * \brief return the object thta contains the matches between detected and map feature.
      * \param[in] detectedFeatures The object of detected features to match
      * \param[in] worldToCamera A matrix to convert from world to camera space
      * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if
@@ -628,7 +653,6 @@ class Feature_Map
             return;
 
         // reset match status
-        _isDetectedFeatureMatched = vectorb::Zero(detectedFeatures.size());
         matches.clear();
 
         // search matches in local map first
@@ -641,12 +665,11 @@ class Feature_Map
             if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
                 continue;
 
-            const int matchIndex = mapFeature.find_match(
-                    detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches, true, useAdvancedMatch);
-            if (matchIndex >= 0)
+            const auto& matchIndex =
+                    mapFeature.find_match(detectedFeatures, worldToCamera, matches, true, useAdvancedMatch);
+            if (not matchIndex.empty())
             {
                 mapFeature.mark_matched(matchIndex);
-                _isDetectedFeatureMatched[matchIndex] = true;
             }
         }
 
@@ -665,27 +688,23 @@ class Feature_Map
             if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
                 continue;
 
-            const int matchIndex = mapFeature.find_match(detectedFeatures,
-                                                         worldToCamera,
-                                                         _isDetectedFeatureMatched,
-                                                         matches,
-                                                         shouldUseStagedFeatures,
-                                                         useAdvancedMatch);
-            if (matchIndex >= 0)
+            const auto& matchIndex = mapFeature.find_match(
+                    detectedFeatures, worldToCamera, matches, shouldUseStagedFeatures, useAdvancedMatch);
+            if (not matchIndex.empty())
             {
                 mapFeature.mark_matched(matchIndex);
-                _isDetectedFeatureMatched[matchIndex] = true;
             }
         }
     }
 
-    void update_local_map(const CameraToWorldMatrix& cameraToWorld,
-                          const matrix33& poseCovariance,
-                          const DetectedFeaturesObject& detectedFeatureObject,
-                          std::shared_ptr<outputs::IMap_Writer> mapWriter)
+    std::unordered_set<size_t> update_local_map(const CameraToWorldMatrix& cameraToWorld,
+                                                const matrix33& poseCovariance,
+                                                const DetectedFeaturesObject& detectedFeatureObject,
+                                                std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
         if (not utils::is_covariance_valid(poseCovariance))
             throw std::invalid_argument("update_local_map: The given pose covariance is invalid, map wont be update");
+        std::unordered_set<size_t> usedIndices;
 
         typename localMapType::iterator featureMapIterator = _localMap.begin();
         while (featureMapIterator != _localMap.end())
@@ -695,19 +714,25 @@ class Feature_Map
             assert(featureMapIterator->first == mapFeature._id);
 
             // if matched, update the features parameters
-            if (mapFeature.is_matched())
+            bool hasSuccess = false;
+            for (const auto i: mapFeature._matchIndex)
             {
-                assert(mapFeature._matchIndex >= 0);
-                const size_t matchedFeatureIndex = mapFeature._matchIndex;
-                assert(matchedFeatureIndex < detectedFeatureObject.size());
+                assert(i < detectedFeatureObject.size());
 
-                const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);
-                mapFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);
+                const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(i);
+
+                const bool res = mapFeature.update_with_match(detectedFeature, poseCovariance, cameraToWorld);
+                if (res)
+                {
+                    hasSuccess = true;
+                    usedIndices.emplace(i);
+                }
             }
+
+            if (hasSuccess)
+                mapFeature.update_matched();
             else
-            {
                 mapFeature.update_unmatched();
-            }
 
             if (mapFeature.is_lost())
             {
@@ -725,14 +750,17 @@ class Feature_Map
                 ++featureMapIterator;
             }
         }
+        return usedIndices;
     }
 
-    void update_staged_map(const CameraToWorldMatrix& cameraToWorld,
-                           const matrix33& poseCovariance,
-                           const DetectedFeaturesObject& detectedFeatureObject)
+    std::unordered_set<size_t> update_staged_map(const CameraToWorldMatrix& cameraToWorld,
+                                                 const matrix33& poseCovariance,
+                                                 const DetectedFeaturesObject& detectedFeatureObject)
     {
         if (not utils::is_covariance_valid(poseCovariance))
             throw std::invalid_argument("update_staged_map: The given pose covariance is invalid, map wont be update");
+
+        std::unordered_set<size_t> usedIndices;
 
         // Add correct staged features to local map
         typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();
@@ -742,15 +770,29 @@ class Feature_Map
             assert(stagedFeatureIterator->first == stagedFeature._id);
 
             // if matched, update the features parameters
-            if (stagedFeature.is_matched())
+            bool hasSuccess = false;
+            for (const auto i: stagedFeature._matchIndex)
             {
-                assert(stagedFeature._matchIndex >= 0);
-                const size_t matchedFeatureIndex = stagedFeature._matchIndex;
-                assert(matchedFeatureIndex < detectedFeatureObject.size());
+                assert(i < detectedFeatureObject.size());
 
-                const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);
-                stagedFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);
+                const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(i);
+
+                const bool res = stagedFeature.update_with_match(detectedFeature, poseCovariance, cameraToWorld);
+                if (res)
+                {
+                    hasSuccess = true;
+                    usedIndices.emplace(i);
+                }
+
+                usedIndices.emplace(i);
             }
+
+            // at least one match was accepted
+            if (hasSuccess)
+            {
+                stagedFeature.update_matched();
+            }
+            // all match rejected
             else
             {
                 stagedFeature.update_unmatched();
@@ -783,6 +825,7 @@ class Feature_Map
                 ++stagedFeatureIterator;
             }
         }
+        return usedIndices;
     }
 
     void update_local_map_with_no_tracking(std::shared_ptr<outputs::IMap_Writer> mapWriter) noexcept
@@ -915,7 +958,6 @@ class Feature_Map
     bool _isActivated; // if false, no updates will occur on this map object (no matches, no tracking, ...)
     localMapType _localMap;
     stagedMapType _stagedMap;
-    vectorb _isDetectedFeatureMatched; // indicates if a detected feature is macthed to a local map feature
 };
 
 } // namespace rgbd_slam::map_management

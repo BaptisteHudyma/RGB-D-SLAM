@@ -19,8 +19,9 @@ Point2dOptimizationFeature::Point2dOptimizationFeature(
         const ScreenCoordinate2D& matchedPoint,
         const InverseDepthWorldPoint& mapPoint,
         const tracking::PointInverseDepth::Covariance& mapPointCovariance,
-        const size_t mapFeatureId) :
-    matches_containers::IOptimizationFeature(mapFeatureId),
+        const size_t mapFeatureId,
+        const size_t detectedFeatureId) :
+    matches_containers::IOptimizationFeature(mapFeatureId, detectedFeatureId),
     _matchedPoint(matchedPoint),
     _mapPoint(mapPoint),
     _mapPointCovariance(mapPointCovariance),
@@ -81,19 +82,18 @@ matches_containers::feat_ptr Point2dOptimizationFeature::get_variated_object() c
             variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi);
 
     return std::make_shared<Point2dOptimizationFeature>(
-            _matchedPoint, variatedCoordinates, _mapPointCovariance, _idInMap);
+            _matchedPoint, variatedCoordinates, _mapPointCovariance, _idInMap, _detectedFeatureId);
 }
 
 /**
  * MapPoint
  */
 
-int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
-                           const WorldToCameraMatrix& worldToCamera,
-                           const vectorb& isDetectedFeatureMatched,
-                           matches_containers::match_container& matches,
-                           const bool shouldAddToMatches,
-                           const bool useAdvancedSearch) const noexcept
+matchIndexSet MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
+                                     const WorldToCameraMatrix& worldToCamera,
+                                     matches_containers::match_container& matches,
+                                     const bool shouldAddToMatches,
+                                     const bool useAdvancedSearch) const noexcept
 {
     assert(not _descriptor.empty());
     constexpr double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
@@ -101,14 +101,18 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
     const double searchRadius = useAdvancedSearch ? advancedSearchSpaceRadius : searchSpaceRadius;
 
     // try to match with tracking
-    int matchIndex = detectedFeatures.get_tracking_match_index(_id, isDetectedFeatureMatched);
-    if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
+    matchIndexSet matchIndexRes;
+    int matchIndex = detectedFeatures.get_tracking_match_index(_id);
+    if (matchIndex != features::keypoints::INVALID_MATCH_INDEX)
+    {
+        matchIndexRes.emplace(matchIndex);
+    }
+    else
     {
         // TODO: this is a hack, to use the last valid 2D value as input for the matching process
         if (_lastMatch)
         {
-            matchIndex = detectedFeatures.get_match_index(
-                    _lastMatch.value(), _descriptor, isDetectedFeatureMatched, searchRadius);
+            matchIndexRes = detectedFeatures.get_match_index(_lastMatch.value(), _descriptor, searchRadius);
         }
         else
         {
@@ -117,32 +121,20 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
             if (_coordinates.to_screen_coordinates(
                         worldToCamera, _covariance.get_inverse_depth_variance(), screenCoordinates))
             {
-                matchIndex = detectedFeatures.get_match_index(
-                        screenCoordinates, _descriptor, isDetectedFeatureMatched, searchRadius);
+                matchIndexRes = detectedFeatures.get_match_index(screenCoordinates, _descriptor, searchRadius);
             }
         }
     }
 
-    if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
-    {
-        // unmatched point
-        return UNMATCHED_FEATURE_INDEX;
-    }
-
-    assert(matchIndex >= 0);
-    assert(static_cast<Eigen::Index>(matchIndex) < isDetectedFeatureMatched.size());
-    if (isDetectedFeatureMatched[matchIndex])
-    {
-        // point was already matched
-        outputs::log_error("The requested point unique index is already matched");
-    }
-
     if (shouldAddToMatches)
     {
-        matches.push_back(std::make_shared<Point2dOptimizationFeature>(
-                detectedFeatures.get_keypoint(matchIndex).get_2D(), _coordinates, _covariance, _id));
+        for (const auto i: matchIndexRes)
+        {
+            matches.push_back(std::make_shared<Point2dOptimizationFeature>(
+                    detectedFeatures.get_keypoint(i).get_2D(), _coordinates, _covariance, _id, i));
+        }
     }
-    return matchIndex;
+    return matchIndexRes;
 }
 
 bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
@@ -258,7 +250,7 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
                                    const matrix33& poseCovariance,
                                    const CameraToWorldMatrix& cameraToWorld) noexcept
 {
-    if (_matchIndex < 0)
+    if (_matchIndex.empty())
     {
         outputs::log_error("Tries to call the function update_with_match with no associated match");
         return false;

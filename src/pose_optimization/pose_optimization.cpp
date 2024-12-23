@@ -181,6 +181,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
 #endif
                 const double getRandomSubsetStartTime = static_cast<double>(cv::getTickCount());
                 // get a random subset for this iteration
+
+                // TODO: refuse a random subset if it is hillformed, or uses the same map/detected feature id
                 const matches_containers::match_container& selectedMatches = get_random_subset(matchedFeatures);
                 _meanGetRandomSubsetDuration +=
                         (static_cast<double>(cv::getTickCount()) - getRandomSubsetStartTime) / cv::getTickFrequency();

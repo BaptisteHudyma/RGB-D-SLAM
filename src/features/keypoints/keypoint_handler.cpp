@@ -113,6 +113,7 @@ void Keypoint_Handler::set(std::vector<cv::Point2f>& inKeypoints,
         const size_t uniqueIndex = kp._id;
         const cv::Point2f& pt = kp._point;
 
+        // TODO: >= 0 ?
         if (uniqueIndex > 0)
         {
             _uniqueIdsToKeypointIndex[uniqueIndex] = newKeypointIndex;
@@ -144,7 +145,6 @@ Keypoint_Handler::uint_pair Keypoint_Handler::get_search_space_coordinates(
 }
 
 cv::Mat_<uchar> Keypoint_Handler::compute_key_point_mask(const ScreenCoordinate2D& pointToSearch,
-                                                         const vectorb& isKeyPointMatchedContainer,
                                                          const uint searchSpaceCellRadius) const noexcept
 {
     const auto [searchSpaceCoordinatesY, searchSpaceCoordinatesX] = get_search_space_coordinates(pointToSearch);
@@ -166,7 +166,7 @@ cv::Mat_<uchar> Keypoint_Handler::compute_key_point_mask(const ScreenCoordinate2
 
             // get all keypoints in this area
             const index_container& keypointIndexContainer = _searchSpaceIndexContainer[searchSpaceIndex];
-            fill_keypoint_mask(pointToSearch, keypointIndexContainer, isKeyPointMatchedContainer, keyPointMask);
+            fill_keypoint_mask(pointToSearch, keypointIndexContainer, keyPointMask);
         }
     }
 
@@ -175,45 +175,35 @@ cv::Mat_<uchar> Keypoint_Handler::compute_key_point_mask(const ScreenCoordinate2
 
 void Keypoint_Handler::fill_keypoint_mask(const ScreenCoordinate2D& pointToSearch,
                                           const index_container& keypointIndexContainer,
-                                          const vectorb& isKeyPointMatchedContainer,
                                           cv::Mat_<uchar>& keyPointMask) const noexcept
 {
     // Squared search diameter, to compare distance without sqrt
     constexpr float squaredSearchDiameter = static_cast<float>(SQR(parameters::matching::matchSearchRadius_px));
     for (const uint keypointIndex: keypointIndexContainer)
     {
-        // ignore this point if it is already matched (prevent multiple matches of one point)
-        if (not isKeyPointMatchedContainer[keypointIndex])
-        {
-            const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
-            const double squarredDistance = (keypoint - pointToSearch).squaredNorm();
+        const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
+        const double squarredDistance = (keypoint - pointToSearch).squaredNorm();
 
-            // keypoint is in a circle around the target keypoints, allow a potential match
-            if (squarredDistance <= squaredSearchDiameter)
-                keyPointMask(0, static_cast<int>(keypointIndex)) = 1;
-        }
+        // keypoint is in a circle around the target keypoints, allow a potential match
+        if (squarredDistance <= squaredSearchDiameter)
+            keyPointMask(0, static_cast<int>(keypointIndex)) = 1;
     }
 }
 
 void Keypoint_Handler::fill_keypoint_mask(const utils::Segment<2>& pointToSearch,
                                           const index_container& keypointIndexContainer,
-                                          const vectorb& isKeyPointMatchedContainer,
                                           cv::Mat_<uchar>& keyPointMask) const noexcept
 {
     // Squared search diameter, to compare distance without sqrt
     constexpr float squaredSearchDiameter = static_cast<float>(SQR(parameters::matching::matchSearchRadius_px));
     for (const uint keypointIndex: keypointIndexContainer)
     {
-        // ignore this point if it is already matched (prevent multiple matches of one point)
-        if (not isKeyPointMatchedContainer[keypointIndex])
-        {
-            const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
-            const double squarredDistance = pointToSearch.distance(keypoint).squaredNorm();
+        const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
+        const double squarredDistance = pointToSearch.distance(keypoint).squaredNorm();
 
-            // keypoint is in a circle around the target keypoints, allow a potential match
-            if (squarredDistance <= squaredSearchDiameter)
-                keyPointMask(0, static_cast<int>(keypointIndex)) = 1;
-        }
+        // keypoint is in a circle around the target keypoints, allow a potential match
+        if (squarredDistance <= squaredSearchDiameter)
+            keyPointMask(0, static_cast<int>(keypointIndex)) = 1;
     }
 }
 
@@ -235,42 +225,16 @@ int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId) const no
     return INVALID_MATCH_INDEX;
 }
 
-int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId,
-                                               const vectorb& isKeyPointMatchedContainer) const noexcept
-{
-    assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
-
-    if (mapPointId != INVALID_MAP_POINT_ID)
-    {
-        const int trackingIndex = get_tracking_match_index(mapPointId);
-        if (trackingIndex != INVALID_MATCH_INDEX)
-        {
-            assert(trackingIndex >= 0 and static_cast<Eigen::Index>(trackingIndex) < isKeyPointMatchedContainer.size());
-            if (not isKeyPointMatchedContainer[static_cast<Eigen::Index>(trackingIndex)])
-            {
-                return trackingIndex;
-            }
-            else
-            {
-                // Somehow, this unique index is already associated with another keypoint
-                outputs::log_error("The requested point unique index is already matched");
-            }
-        }
-    }
-    return INVALID_MATCH_INDEX;
-}
-
-int Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoint,
-                                      const cv::Mat& mapPointDescriptor,
-                                      const vectorb& isKeyPointMatchedContainer,
-                                      const double searchSpaceRadius) const noexcept
+std::unordered_set<size_t> Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoint,
+                                                             const cv::Mat& mapPointDescriptor,
+                                                             const double searchSpaceRadius) const noexcept
 {
     assert(_featuresMatcher != nullptr);
-    assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
+    std::unordered_set<size_t> matchSet;
 
     // cannot compute matches without a match or descriptors
     if (_keypoints.empty() or _descriptors.empty())
-        return INVALID_MATCH_INDEX;
+        return matchSet;
 
     constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
     static_assert(cellSize > 0);
@@ -281,16 +245,16 @@ int Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoin
     assert(!mapPointDescriptor.empty());
     assert(mapPointDescriptor.cols == _descriptors.cols);
 
-    const cv::Mat_<uchar>& keyPointMask =
-            compute_key_point_mask(projectedMapPoint, isKeyPointMatchedContainer, searchSpaceCellRadius);
+    const cv::Mat_<uchar>& keyPointMask = compute_key_point_mask(projectedMapPoint, searchSpaceCellRadius);
 
     std::vector<std::vector<cv::DMatch>> knnMatches;
     _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask, true);
 
     if (knnMatches.empty())
-        return INVALID_MATCH_INDEX;
+        return matchSet;
 
     // check the farthest neighbors
+    // TODO: add all matches
     const std::vector<cv::DMatch>& firstMatch = knnMatches[0];
     if (firstMatch.size() > 1)
     {
@@ -298,29 +262,27 @@ int Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoin
         if (firstMatch[0].distance < _maxMatchDistance * firstMatch[1].distance)
         {
             int id = firstMatch[0].trainIdx;
-            return id; // this frame key point
+            matchSet.emplace(id);
         }
-        return INVALID_MATCH_INDEX;
     }
     else if (firstMatch.size() == 1)
     {
         int id = firstMatch[0].trainIdx;
-        return id; // this frame key point
+        matchSet.emplace(id);
     }
-    return INVALID_MATCH_INDEX;
+    return matchSet;
 }
 
-int Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint,
-                                      const cv::Mat& mapPointDescriptor,
-                                      const vectorb& isKeyPointMatchedContainer,
-                                      const double searchSpaceRadius) const noexcept
+std::unordered_set<size_t> Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint,
+                                                             const cv::Mat& mapPointDescriptor,
+                                                             const double searchSpaceRadius) const noexcept
 {
     assert(_featuresMatcher != nullptr);
-    assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
+    std::unordered_set<size_t> matchSet;
 
     // cannot compute matches without a match or descriptors
     if (_keypoints.empty() or _descriptors.empty())
-        return INVALID_MATCH_INDEX;
+        return matchSet;
 
     constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
     static_assert(cellSize > 0);
@@ -342,16 +304,17 @@ int Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint
 
             // get all keypoints in this area
             const index_container& keypointIndexContainer = _searchSpaceIndexContainer[searchSpaceIndex];
-            fill_keypoint_mask(projectedMapPoint, keypointIndexContainer, isKeyPointMatchedContainer, keyPointMask);
+            fill_keypoint_mask(projectedMapPoint, keypointIndexContainer, keyPointMask);
         }
     }
     std::vector<std::vector<cv::DMatch>> knnMatches;
     _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask, true);
 
     if (knnMatches.empty())
-        return INVALID_MATCH_INDEX;
+        return matchSet;
 
     // check the farthest neighbors
+    // TODO: add all matches
     const std::vector<cv::DMatch>& firstMatch = knnMatches[0];
     if (firstMatch.size() > 1)
     {
@@ -359,16 +322,15 @@ int Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint
         if (firstMatch[0].distance < _maxMatchDistance * firstMatch[1].distance)
         {
             int id = firstMatch[0].trainIdx;
-            return id; // this frame key point
+            matchSet.emplace(id);
         }
-        return INVALID_MATCH_INDEX;
     }
     else if (firstMatch.size() == 1)
     {
         int id = firstMatch[0].trainIdx;
-        return id; // this frame key point
+        matchSet.emplace(id);
     }
-    return INVALID_MATCH_INDEX;
+    return matchSet;
 }
 
 } // namespace rgbd_slam::features::keypoints
