@@ -109,6 +109,8 @@ class MapPoint :
                                          const matrix33& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
+    [[nodiscard]] bool merge(const MapPoint& other) noexcept;
+
   protected:
     void update_no_match() noexcept override;
 

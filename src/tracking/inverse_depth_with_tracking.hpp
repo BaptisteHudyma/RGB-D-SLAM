@@ -63,6 +63,8 @@ struct PointInverseDepth
                              const matrix33& stateCovariance,
                              const cv::Mat& descriptor);
 
+    [[nodiscard]] bool track(const PointInverseDepth& other);
+
     /**
      * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the
      * uncertainty

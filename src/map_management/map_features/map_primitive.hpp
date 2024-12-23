@@ -102,6 +102,8 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
                                          const matrix33& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
+    [[nodiscard]] bool merge(const MapPlane& other) noexcept;
+
   protected:
     void update_no_match() noexcept override;
 };

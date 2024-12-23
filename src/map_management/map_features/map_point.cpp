@@ -234,6 +234,19 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     return false;
 }
 
+bool MapPoint::merge(const MapPoint& other) noexcept
+{
+    try
+    {
+        const double mergeScore = track(other._coordinates, other._covariance);
+        return mergeScore >= 0;
+    }
+    catch (...)
+    {
+        return false;
+    }
+}
+
 void MapPoint::update_no_match() noexcept { _lastMatch.reset(); }
 
 /**

@@ -268,6 +268,8 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
     return track(matchedFeature._coordinates.get_2D(), cameraToWorld, poseCovariance, matchedFeature._descriptor);
 }
 
+bool MapPoint2D::merge(const MapPoint2D& other) noexcept { return track(other); }
+
 void MapPoint2D::update_no_match() noexcept { _lastMatch.reset(); }
 
 /**

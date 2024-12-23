@@ -103,7 +103,7 @@ matchIndexSet MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
     matchIndexSet matchIndexRes;
     if (projectedArea <= 0.0)
         return matchIndexRes;
-    double greatestSimilarity = 0.0;
+
     // search best match score
     const int detectedPlaneSize = static_cast<int>(detectedFeatures.size());
     for (int planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
@@ -121,12 +121,9 @@ matchIndexSet MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
         const double newPlaneArea = detectedPolygon.get_area(); // max area of the two potential planes
         const double interArea = detectedPolygon.inter_area(projectedPolygon);
         // similarity is greater than the greatest similarity, and overlap is greater than threshold
-        if (interArea > greatestSimilarity and interArea / newPlaneArea >= areaSimilarityThreshold)
+        if (interArea / newPlaneArea >= areaSimilarityThreshold)
         {
-            // TODO: add multiple matches
-            matchIndexRes.clear();
             matchIndexRes.emplace(planeIndex);
-            greatestSimilarity = interArea;
         }
     }
 
@@ -224,6 +221,19 @@ bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
 
         // update this plane with the other one's parameters
         track(cameraToWorld, matchedFeature, projectedPlaneCoordinates, worldCovariance);
+        return true;
+    }
+    catch (...)
+    {
+        return false;
+    }
+}
+
+bool MapPlane::merge(const MapPlane& other) noexcept
+{
+    try
+    {
+        track(other);
         return true;
     }
     catch (...)

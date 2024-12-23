@@ -34,6 +34,8 @@ class Plane
                  const PlaneWorldCoordinates& newDetectionParameters,
                  const matrix44& newDetectionCovariance);
 
+    double track(const Plane& other);
+
     PlaneWorldCoordinates _parametrization; // parametrization of this plane in world space
     matrix44 _covariance;                   // covariance of this plane in world space
     WorldPolygon _boundaryPolygon;          // polygon describing the boundary of the plane, in plane space

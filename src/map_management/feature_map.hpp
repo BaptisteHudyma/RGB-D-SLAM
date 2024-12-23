@@ -10,6 +10,7 @@
 
 #include "types.hpp"
 
+#include <algorithm>
 #include <memory>
 
 #include <opencv2/core/matx.hpp>
@@ -100,6 +101,7 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
      * \param[in] poseCovariance The covariance of the pose where the matchedFeature was detected
      * \param[in] cameraToWorld The matrix to transform from the camera pose where matchedFeature was detected to world
      * coordinates
+     * \return True if this update succeeded.
      */
     [[nodiscard]] virtual bool update_with_match(const DetectedFeatureType& matchedFeature,
                                                  const matrix33& poseCovariance,
@@ -697,6 +699,58 @@ class Feature_Map
         }
     }
 
+    void try_merge_features(const std::map<size_t, std::vector<size_t>>& detectedIdToMapId)
+    {
+        // merge features that share the same match id
+        for (const auto& [detectedFeatureId, vecOfMapindex]: detectedIdToMapId)
+        {
+            size_t minId = MapIdAllocator::invalidId; // invalid
+            std::vector<size_t> validVecs;
+            // filter out invalid map feature index, and find min index
+            for (const size_t mapIndex: vecOfMapindex)
+            {
+                if (not _localMap.contains(mapIndex))
+                {
+                    continue;
+                }
+                validVecs.emplace_back(mapIndex);
+
+                if (minId == MapIdAllocator::invalidId)
+                {
+                    minId = mapIndex;
+                }
+                else
+                {
+                    minId = std::min(minId, mapIndex);
+                }
+            }
+
+            if (minId == MapIdAllocator::invalidId)
+                continue;
+
+            typename localMapType::iterator firstIdTokeep = _localMap.find(minId);
+            assert(firstIdTokeep != _localMap.end());
+            for (const size_t mapId: validVecs)
+            {
+                // do not merge with itself
+                if (minId == mapId)
+                    continue;
+
+                typename localMapType::iterator toMerge = _localMap.find(mapId);
+                assert(toMerge != _localMap.end());
+                // remove the merged id
+                if (firstIdTokeep->second.merge(toMerge->second))
+                {
+                    _localMap.erase(toMerge);
+                }
+                else
+                {
+                    outputs::log_error("fail to merge");
+                }
+            }
+        }
+    }
+
     std::unordered_set<size_t> update_local_map(const CameraToWorldMatrix& cameraToWorld,
                                                 const matrix33& poseCovariance,
                                                 const DetectedFeaturesObject& detectedFeatureObject,
@@ -705,6 +759,8 @@ class Feature_Map
         if (not utils::is_covariance_valid(poseCovariance))
             throw std::invalid_argument("update_local_map: The given pose covariance is invalid, map wont be update");
         std::unordered_set<size_t> usedIndices;
+
+        std::map<size_t, std::vector<size_t>> detectedIdToMapId;
 
         typename localMapType::iterator featureMapIterator = _localMap.begin();
         while (featureMapIterator != _localMap.end())
@@ -726,6 +782,16 @@ class Feature_Map
                 {
                     hasSuccess = true;
                     usedIndices.emplace(i);
+
+                    if (detectedIdToMapId.contains(i))
+                    {
+                        detectedIdToMapId[i].push_back(mapFeature._id);
+                    }
+                    else
+                    {
+                        detectedIdToMapId.emplace(i, std::vector<size_t>());
+                        detectedIdToMapId[i].push_back(mapFeature._id);
+                    }
                 }
             }
 
@@ -750,6 +816,10 @@ class Feature_Map
                 ++featureMapIterator;
             }
         }
+
+        // try to merge the features that used the same detected feature id
+        try_merge_features(detectedIdToMapId);
+
         return usedIndices;
     }
 

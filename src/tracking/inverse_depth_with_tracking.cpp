@@ -109,6 +109,24 @@ bool PointInverseDepth::track(const ScreenCoordinate& observation,
     }
 }
 
+bool PointInverseDepth::track(const PointInverseDepth& other)
+{
+    try
+    {
+        // project to cartesian
+        const WorldCoordinate& cartesianProj = other._coordinates.to_world_coordinates();
+        const WorldCoordinateCovariance& covarianceProj =
+                compute_cartesian_covariance(other._coordinates, other._covariance);
+
+        return update_with_cartesian(cartesianProj, covarianceProj, other._descriptor);
+    }
+    catch (const std::exception& ex)
+    {
+        outputs::log_error("Catch exeption: " + std::string(ex.what()));
+        return false;
+    }
+}
+
 bool PointInverseDepth::update_with_cartesian(const WorldCoordinate& point,
                                               const WorldCoordinateCovariance& covariance,
                                               const cv::Mat& descriptor)
