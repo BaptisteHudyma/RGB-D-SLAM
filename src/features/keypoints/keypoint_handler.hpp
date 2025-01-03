@@ -97,6 +97,9 @@ struct KeypointsWithIdStruct
 class Keypoint_Handler
 {
   public:
+    // type for matched index
+    typedef std::unordered_set<size_t> matchIndexSet;
+
     /**
      * \param[in] depthImageCols The number of columns of the depth image
      * \param[in] depthImageRows The number of rows of the depth image
@@ -130,12 +133,12 @@ class Keypoint_Handler
      * \param[in] searchSpaceRadius The radius of the search space for potential matches, in pixels
      * \return An index >= 0 corresponding to the matched keypoint, or -1 if no match was found
      */
-    [[nodiscard]] std::unordered_set<size_t> get_match_index(const ScreenCoordinate2D& projectedMapPoint,
-                                                             const cv::Mat& mapPointDescriptor,
-                                                             const double searchSpaceRadius) const noexcept;
-    [[nodiscard]] std::unordered_set<size_t> get_match_index(const utils::Segment<2>& projectedMapPoint,
-                                                             const cv::Mat& mapPointDescriptor,
-                                                             const double searchSpaceRadius) const noexcept;
+    [[nodiscard]] matchIndexSet get_match_index(const ScreenCoordinate2D& projectedMapPoint,
+                                                const cv::Mat& mapPointDescriptor,
+                                                const double searchSpaceRadius) const noexcept;
+    [[nodiscard]] matchIndexSet get_match_index(const utils::Segment<2>& projectedMapPoint,
+                                                const cv::Mat& mapPointDescriptor,
+                                                const double searchSpaceRadius) const noexcept;
 
     /**
      * \brief return the keypoint associated with the index

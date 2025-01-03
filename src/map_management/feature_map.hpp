@@ -130,7 +130,7 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
     /**
      * \brief should write this feature to a file, using the provided mapWriter
      */
-    virtual void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept = 0;
+    virtual void write_to_file(outputs::IMap_Writer* mapWriter) const noexcept = 0;
 
     /**
      * \brief Add the current feature to the trackedFeatures object
@@ -283,7 +283,7 @@ class Feature_Map
     /**
      * \brief empty the map, but store map features to a map file
      */
-    void destroy(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
+    void destroy(outputs::IMap_Writer* mapWriter) const noexcept
     {
         if (not _isActivated)
             return;
@@ -362,12 +362,12 @@ class Feature_Map
      * \param[in] detectedFeatures The object containing the detected features used for the tracking
      * \param[in] mapWriter A pointer to the map writer object
      */
-    std::unordered_set<size_t> update_map(const CameraToWorldMatrix& cameraToWorld,
-                                          const matrix33& poseCovariance,
-                                          const DetectedFeatureContainer& detectedFeatures,
-                                          std::shared_ptr<outputs::IMap_Writer> mapWriter)
+    matchIndexSet update_map(const CameraToWorldMatrix& cameraToWorld,
+                             const matrix33& poseCovariance,
+                             const DetectedFeatureContainer& detectedFeatures,
+                             outputs::IMap_Writer* mapWriter)
     {
-        std::unordered_set<size_t> usedIndexSet;
+        matchIndexSet usedIndexSet;
         if (not _isActivated)
             return usedIndexSet;
         if (not utils::is_covariance_valid(poseCovariance))
@@ -386,7 +386,7 @@ class Feature_Map
      * \brief Update this local map with a failed tracking
      * \param[in] mapWriter A pointer to the map writer object
      */
-    void update_with_no_tracking(std::shared_ptr<outputs::IMap_Writer> mapWriter) noexcept
+    void update_with_no_tracking(outputs::IMap_Writer* mapWriter) noexcept
     {
         if (not _isActivated)
             return;
@@ -397,45 +397,30 @@ class Feature_Map
     }
 
     /**
-     * \brief Add all detected features to the staged features
+     * \brief add a single detected feature to the staged map
      * \param[in] poseCovariance Covariance of the pose where those features were detected
      * \param[in] cameraToWorld A matrix to convert from camera to world space
-     * \param[in] detectedFeatures The object that contains the detected features to add
+     * \param[in] detectedfeature The feature to add
      */
-    void add_all_features_to_staged_map(const matrix33& poseCovariance,
-                                        const CameraToWorldMatrix& cameraToWorld,
-                                        const DetectedFeatureContainer& detectedFeatures)
+    void add_detected_feature_to_staged_map(const matrix33& poseCovariance,
+                                            const CameraToWorldMatrix& cameraToWorld,
+                                            const DetectedFeatureType& detectedfeature)
     {
-        if (not _isActivated)
-            return;
-
-        if (not utils::is_covariance_valid(poseCovariance))
-            throw std::invalid_argument(
-                    "add_all_features_to_staged_map: The given pose covariance is invalid, map wont be update");
-
-        const auto& detected = get_detected_feature(detectedFeatures);
-
-        // Add all unmatched features to staged feature container
-        const size_t featureVectorSize = detected.size();
-        for (unsigned int i = 0; i < featureVectorSize; ++i)
+        // some features cannot be added to map
+        if (StagedFeatureType::can_add_to_map(detectedfeature))
         {
-            const DetectedFeatureType& detectedfeature = detected.at(i);
-            // some features cannot be added to map
-            if (StagedFeatureType::can_add_to_map(detectedfeature))
+            try
             {
-                try
-                {
-                    const StagedFeatureType newStagedFeature(poseCovariance, cameraToWorld, detectedfeature);
-                    assert(_stagedMap.find(newStagedFeature._id) == _stagedMap.cend());
+                const StagedFeatureType newStagedFeature(poseCovariance, cameraToWorld, detectedfeature);
+                assert(_stagedMap.find(newStagedFeature._id) == _stagedMap.cend());
 
-                    // add to staged map
-                    _stagedMap.emplace(newStagedFeature._id, newStagedFeature);
-                }
-                catch (const std::exception& ex)
-                {
-                    outputs::log_error(get_display_name() + ": Caught exception while creating the staged feature: " +
-                                       std::string(ex.what()));
-                }
+                // add to staged map
+                _stagedMap.emplace(newStagedFeature._id, newStagedFeature);
+            }
+            catch (const std::exception& ex)
+            {
+                outputs::log_error(get_display_name() +
+                                   ": Caught exception while creating the staged feature: " + std::string(ex.what()));
             }
         }
     }
@@ -450,7 +435,7 @@ class Feature_Map
     void add_features_to_staged_map(const matrix33& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
                                     const DetectedFeatureContainer& detectedFeatures,
-                                    const std::unordered_set<size_t>& usedIndices)
+                                    const matchIndexSet& usedIndices)
     {
         if (not _isActivated)
             return;
@@ -471,24 +456,22 @@ class Feature_Map
 
             assert(i < featureVectorSize);
             const DetectedFeatureType& detectedfeature = detected.at(i);
-            // some features cannot be added to map
-            if (StagedFeatureType::can_add_to_map(detectedfeature))
-            {
-                try
-                {
-                    const StagedFeatureType newStagedFeature(poseCovariance, cameraToWorld, detectedfeature);
-                    assert(_stagedMap.find(newStagedFeature._id) == _stagedMap.cend());
-
-                    // add to staged map
-                    _stagedMap.emplace(newStagedFeature._id, newStagedFeature);
-                }
-                catch (const std::exception& ex)
-                {
-                    outputs::log_error(get_display_name() + ": Caught exception while creating the staged feature: " +
-                                       std::string(ex.what()));
-                }
-            }
+            add_detected_feature_to_staged_map(poseCovariance, cameraToWorld, detectedfeature);
         }
+    }
+
+    /**
+     * \brief Add all detected features to the staged features
+     * \param[in] poseCovariance Covariance of the pose where those features were detected
+     * \param[in] cameraToWorld A matrix to convert from camera to world space
+     * \param[in] detectedFeatures The object that contains the detected features to add
+     */
+    void add_all_features_to_staged_map(const matrix33& poseCovariance,
+                                        const CameraToWorldMatrix& cameraToWorld,
+                                        const DetectedFeatureContainer& detectedFeatures)
+    {
+        const matchIndexSet usedIndices; // no used indices, all feature will be added
+        add_features_to_staged_map(poseCovariance, cameraToWorld, detectedFeatures, usedIndices);
     }
 
     /**
@@ -728,8 +711,9 @@ class Feature_Map
             if (minId == MapIdAllocator::invalidId)
                 continue;
 
-            typename localMapType::iterator firstIdTokeep = _localMap.find(minId);
-            assert(firstIdTokeep != _localMap.end());
+            typename localMapType::iterator firstIdToKeepIt = _localMap.find(minId);
+            assert(firstIdToKeepIt != _localMap.end());
+            MapFeatureType& firstIdToKeep = firstIdToKeepIt->second;
             for (const size_t mapId: validVecs)
             {
                 // do not merge with itself
@@ -739,7 +723,7 @@ class Feature_Map
                 typename localMapType::iterator toMerge = _localMap.find(mapId);
                 assert(toMerge != _localMap.end());
                 // remove the merged id
-                if (firstIdTokeep->second.merge(toMerge->second))
+                if (firstIdToKeep.merge(toMerge->second))
                 {
                     _localMap.erase(toMerge);
                 }
@@ -751,14 +735,14 @@ class Feature_Map
         }
     }
 
-    std::unordered_set<size_t> update_local_map(const CameraToWorldMatrix& cameraToWorld,
-                                                const matrix33& poseCovariance,
-                                                const DetectedFeaturesObject& detectedFeatureObject,
-                                                std::shared_ptr<outputs::IMap_Writer> mapWriter)
+    matchIndexSet update_local_map(const CameraToWorldMatrix& cameraToWorld,
+                                   const matrix33& poseCovariance,
+                                   const DetectedFeaturesObject& detectedFeatureObject,
+                                   outputs::IMap_Writer* mapWriter)
     {
         if (not utils::is_covariance_valid(poseCovariance))
             throw std::invalid_argument("update_local_map: The given pose covariance is invalid, map wont be update");
-        std::unordered_set<size_t> usedIndices;
+        matchIndexSet usedIndices;
 
         std::map<size_t, std::vector<size_t>> detectedIdToMapId;
 
@@ -823,14 +807,14 @@ class Feature_Map
         return usedIndices;
     }
 
-    std::unordered_set<size_t> update_staged_map(const CameraToWorldMatrix& cameraToWorld,
-                                                 const matrix33& poseCovariance,
-                                                 const DetectedFeaturesObject& detectedFeatureObject)
+    matchIndexSet update_staged_map(const CameraToWorldMatrix& cameraToWorld,
+                                    const matrix33& poseCovariance,
+                                    const DetectedFeaturesObject& detectedFeatureObject)
     {
         if (not utils::is_covariance_valid(poseCovariance))
             throw std::invalid_argument("update_staged_map: The given pose covariance is invalid, map wont be update");
 
-        std::unordered_set<size_t> usedIndices;
+        matchIndexSet usedIndices;
 
         // Add correct staged features to local map
         typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();
@@ -898,7 +882,7 @@ class Feature_Map
         return usedIndices;
     }
 
-    void update_local_map_with_no_tracking(std::shared_ptr<outputs::IMap_Writer> mapWriter) noexcept
+    void update_local_map_with_no_tracking(outputs::IMap_Writer* mapWriter) noexcept
     {
         // update the local map with no matchs
         typename localMapType::iterator featureMapIterator = _localMap.begin();

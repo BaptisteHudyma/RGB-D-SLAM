@@ -9,6 +9,9 @@
 
 namespace rgbd_slam::features::keypoints {
 
+// max match search per keypoint
+constexpr uint MAX_POINT_MATCH = 1;
+
 bool is_in_border(const cv::Point2f& pt, const cv::Mat& im, const double borderSize) noexcept
 {
     assert(borderSize >= 0);
@@ -225,12 +228,12 @@ int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId) const no
     return INVALID_MATCH_INDEX;
 }
 
-std::unordered_set<size_t> Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoint,
-                                                             const cv::Mat& mapPointDescriptor,
-                                                             const double searchSpaceRadius) const noexcept
+Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoint,
+                                                                  const cv::Mat& mapPointDescriptor,
+                                                                  const double searchSpaceRadius) const noexcept
 {
     assert(_featuresMatcher != nullptr);
-    std::unordered_set<size_t> matchSet;
+    Keypoint_Handler::matchIndexSet matchSet;
 
     // cannot compute matches without a match or descriptors
     if (_keypoints.empty() or _descriptors.empty())
@@ -248,37 +251,27 @@ std::unordered_set<size_t> Keypoint_Handler::get_match_index(const ScreenCoordin
     const cv::Mat_<uchar>& keyPointMask = compute_key_point_mask(projectedMapPoint, searchSpaceCellRadius);
 
     std::vector<std::vector<cv::DMatch>> knnMatches;
-    _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask, true);
+    _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, MAX_POINT_MATCH, keyPointMask, true);
 
     if (knnMatches.empty())
         return matchSet;
 
-    // check the farthest neighbors
-    // TODO: add all matches
+    // check the neighbors
     const std::vector<cv::DMatch>& firstMatch = knnMatches[0];
-    if (firstMatch.size() > 1)
+    for (const auto& match: firstMatch)
     {
-        // check if point is a good match by checking it's distance to the second best matched point
-        if (firstMatch[0].distance < _maxMatchDistance * firstMatch[1].distance)
-        {
-            int id = firstMatch[0].trainIdx;
-            matchSet.emplace(id);
-        }
-    }
-    else if (firstMatch.size() == 1)
-    {
-        int id = firstMatch[0].trainIdx;
+        int id = match.trainIdx;
         matchSet.emplace(id);
     }
     return matchSet;
 }
 
-std::unordered_set<size_t> Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint,
-                                                             const cv::Mat& mapPointDescriptor,
-                                                             const double searchSpaceRadius) const noexcept
+Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint,
+                                                                  const cv::Mat& mapPointDescriptor,
+                                                                  const double searchSpaceRadius) const noexcept
 {
     assert(_featuresMatcher != nullptr);
-    std::unordered_set<size_t> matchSet;
+    Keypoint_Handler::matchIndexSet matchSet;
 
     // cannot compute matches without a match or descriptors
     if (_keypoints.empty() or _descriptors.empty())
@@ -308,26 +301,16 @@ std::unordered_set<size_t> Keypoint_Handler::get_match_index(const utils::Segmen
         }
     }
     std::vector<std::vector<cv::DMatch>> knnMatches;
-    _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, 2, keyPointMask, true);
+    _featuresMatcher->knnMatch(mapPointDescriptor, _descriptors, knnMatches, MAX_POINT_MATCH, keyPointMask, true);
 
     if (knnMatches.empty())
         return matchSet;
 
-    // check the farthest neighbors
-    // TODO: add all matches
+    // check the neighbors
     const std::vector<cv::DMatch>& firstMatch = knnMatches[0];
-    if (firstMatch.size() > 1)
+    for (const auto& match: firstMatch)
     {
-        // check if point is a good match by checking it's distance to the second best matched point
-        if (firstMatch[0].distance < _maxMatchDistance * firstMatch[1].distance)
-        {
-            int id = firstMatch[0].trainIdx;
-            matchSet.emplace(id);
-        }
-    }
-    else if (firstMatch.size() == 1)
-    {
-        int id = firstMatch[0].trainIdx;
+        int id = match.trainIdx;
         matchSet.emplace(id);
     }
     return matchSet;

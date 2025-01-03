@@ -36,7 +36,7 @@ template<class... Maps> class Local_Map
     ~Local_Map()
     {
         foreach_map([this](auto& map) {
-            map.destroy(_mapWriter);
+            map.destroy(_mapWriter.get());
         });
     }
 
@@ -127,14 +127,14 @@ template<class... Maps> class Local_Map
 
         // update all local maps
         foreach_map([this, &cameraToWorld, &poseCovariance, &detectedFeatures](auto& map) {
-            // update matches and unmatched map features
-            const std::unordered_set<size_t>& detectedUsedIndex =
-                    map.update_map(cameraToWorld, poseCovariance, detectedFeatures, _mapWriter);
+            // update matches and unmatched map features (and merge map features)
+            const auto& detectedUsedIndexSet =
+                    map.update_map(cameraToWorld, poseCovariance, detectedFeatures, _mapWriter.get());
+
+            // TODO: find a way to flag detected points & point 2D to avoid reinserting them
 
             // Add unmatched features to the staged map, to unsure tracking of detected features
-            map.add_features_to_staged_map(poseCovariance, cameraToWorld, detectedFeatures, detectedUsedIndex);
-
-            // TODO Try to fuse the map features that used the same detected features as inliers
+            map.add_features_to_staged_map(poseCovariance, cameraToWorld, detectedFeatures, detectedUsedIndexSet);
         });
 
         // try to upgrade to new features (AFTER all map updates)
@@ -170,7 +170,7 @@ template<class... Maps> class Local_Map
     {
         // update the map with no tracking : matches will be reset and features can be lost
         foreach_map([this](auto& map) {
-            map.update_with_no_tracking(_mapWriter);
+            map.update_with_no_tracking(_mapWriter.get());
         });
     }
 

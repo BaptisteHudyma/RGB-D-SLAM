@@ -25,7 +25,7 @@ class Random
      */
     [[nodiscard]] static double get_random_double()
     {
-        thread_local std::uniform_real_distribution distribution(0.0, 1.0);
+        static thread_local std::uniform_real_distribution distribution(0.0, 1.0);
         return distribution(get_random_engine());
     }
 
@@ -34,7 +34,7 @@ class Random
      */
     [[nodiscard]] static double get_normal_double()
     {
-        thread_local std::normal_distribution distribution(0.0, 1.0);
+        static thread_local std::normal_distribution distribution(0.0, 1.0);
         return distribution(get_random_engine());
     }
 

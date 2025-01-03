@@ -228,8 +228,7 @@ std::list<double> get_1D_free_fall(const double initialPosition,
                                    const double dt)
 {
     // set random
-    std::random_device randomDevice;
-    std::mt19937 randomEngine(randomDevice());
+    std::mt19937 randomEngine(0);
     std::uniform_real_distribution<double> errorDistribution(-measurementNoise, measurementNoise);
 
     std::list<double> trajectory;

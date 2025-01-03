@@ -34,7 +34,8 @@ double PlaneOptimizationFeature::get_score() const noexcept
 
 vectorxd PlaneOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    // TODO: combine this for all plane features somehow
+    // This is acceptable to recompute:
+    // Plane count is always low so this is negligeable
     const PlaneWorldToCameraMatrix& planeTransformationMatrix =
             utils::compute_plane_world_to_camera_matrix(worldToCamera);
 
@@ -53,7 +54,8 @@ matrixd PlaneOptimizationFeature::get_distance_covariance(const WorldToCameraMat
 
 matrix34 PlaneOptimizationFeature::get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    // TODO: combine this for all plane features somehow
+    // This is acceptable to recompute:
+    // Plane count is always low so this is negligeable
     const PlaneWorldToCameraMatrix& planeTransformationMatrix =
             utils::compute_plane_world_to_camera_matrix(worldToCamera);
 
@@ -167,7 +169,7 @@ bool MapPlane::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noe
     return _boundaryPolygon.to_camera_space(worldToCamMatrix).is_visible_in_screen_space();
 }
 
-void MapPlane::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
+void MapPlane::write_to_file(outputs::IMap_Writer* mapWriter) const noexcept
 {
     if (mapWriter != nullptr)
     {

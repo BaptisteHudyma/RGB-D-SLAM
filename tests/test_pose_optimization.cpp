@@ -38,10 +38,10 @@ const double BAD_GUESS = 0.1;
 
 // Error associated with each points of the cube
 const double POINTS_ERROR = 5;
+const double PLANE_ERROR = 5;
 
 // set random
-std::random_device randomDevice;
-std::mt19937 randomEngine(randomDevice());
+static std::mt19937 randomEngine(1000);
 
 struct Point_
 {
@@ -83,15 +83,20 @@ point_container get_cube_points(const uint numberOfPoints, const double error)
     return pointContainer;
 }
 
-matches_containers::match_container get_matched_points(const utils::Pose& endPose, const double error = 0.0)
+matches_containers::match_container get_matched_points(const utils::Pose& endPose,
+                                                       const double error = 0.0,
+                                                       const double outlierProp = 0.0)
 {
     assert(error >= 0);
     const WorldToCameraMatrix& worldToCamera =
             utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position());
     uint invalidPointsCounter = 0;
 
+    size_t mapId = 1;
+
+    const auto& cube = get_cube_points(NUMBER_OF_POINTS_IN_CUBE, error);
     matches_containers::match_container matchedPoints;
-    for (const auto& point: get_cube_points(NUMBER_OF_POINTS_IN_CUBE, error))
+    for (const auto& point: cube)
     {
         // world coordinates
         const WorldCoordinate worldPointStart(point.x, point.y, point.z);
@@ -100,13 +105,13 @@ matches_containers::match_container get_matched_points(const utils::Pose& endPos
         const bool isScreenCoordinatesValid = worldPointStart.to_screen_coordinates(worldToCamera, transformedPoint);
         if (isScreenCoordinatesValid)
         {
-            // Dont care about the map id
             matchedPoints.push_back(
                     std::make_shared<map_management::PointOptimizationFeature>(transformedPoint, // screenPoint
                                                                                worldPointStart,  // worldPoint
                                                                                matrix33::Identity(),
-                                                                               0, // uniq map id
+                                                                               mapId, // uniq map id
                                                                                0));
+            mapId++;
         }
         else
         {
@@ -117,29 +122,81 @@ matches_containers::match_container get_matched_points(const utils::Pose& endPos
     {
         outputs::log_error("The chosen transformation is not valid, as some points hand up behind the camera");
     }
+
+    const size_t dataSize = cube.size();
+    const size_t outliersToAdd = dataSize * outlierProp;
+
+    std::uniform_real_distribution<float> indexDistribution(0, 1.0);
+    for (size_t i = 0; i < outliersToAdd; i++)
+    {
+        const size_t choosenMapIndex = std::floor(dataSize * indexDistribution(randomEngine));
+        const auto& feat = cube[choosenMapIndex];
+
+        // world coordinates
+        const WorldCoordinate worldPointStart(feat.x, feat.y, feat.z);
+
+        ScreenCoordinate2D transformedPoint = vector2::Random();
+
+        matchedPoints.push_back(
+                std::make_shared<map_management::PointOptimizationFeature>(transformedPoint, // screenPoint
+                                                                           worldPointStart,  // worldPoint
+                                                                           matrix33::Identity(),
+                                                                           choosenMapIndex + 1, // uniq map id
+                                                                           0));
+    }
+
     return matchedPoints;
 }
 
-matches_containers::match_container get_matched_planes(const utils::Pose& endPose)
+matches_containers::match_container get_matched_planes(const utils::Pose& endPose,
+                                                       const double error = 0.0,
+                                                       const double outlierProp = 0.0)
 {
+    assert(error >= 0);
+    std::uniform_real_distribution<double> errorDistribution(-error, error);
+
     const PlaneWorldToCameraMatrix& worldToCamera = utils::compute_plane_world_to_camera_matrix(
             utils::compute_world_to_camera_transform(endPose.get_orientation_quaternion(), endPose.get_position()));
-    std::uniform_real_distribution<double> normalDistribution(-1, 1);
 
     matches_containers::match_container matchedPlanes;
 
-    const std::vector<PlaneWorldCoordinates> planes = {
-            PlaneWorldCoordinates(vector3(0.452271, -0.419436, -0.787099), 10),
-            PlaneWorldCoordinates(vector3(-0.585607, -0.43009, 0.687085), 30),
-            PlaneWorldCoordinates(vector3(-0.498271, 0.767552, -0.403223), -20),
-            PlaneWorldCoordinates(vector3(0.706067, -0.0741267, -0.704255), 150)};
+    std::vector<PlaneWorldCoordinates> planes = {PlaneWorldCoordinates(vector3(0.452271, -0.419436, -0.787099), 10),
+                                                 PlaneWorldCoordinates(vector3(-0.585607, -0.43009, 0.687085), 30),
+                                                 PlaneWorldCoordinates(vector3(-0.498271, 0.767552, -0.403223), -20),
+                                                 PlaneWorldCoordinates(vector3(0.706067, -0.0741267, -0.704255), 150)};
 
-    for (const PlaneWorldCoordinates& worldPlane: planes)
+    // good confidence for map features
+    constexpr double normalVariance = SQR(0.05);
+    constexpr double dVariance = SQR(1);
+
+    matrix44 worldFeatureCovariance(matrix44::Identity());
+    worldFeatureCovariance.diagonal() = vector4(normalVariance, normalVariance, normalVariance, dVariance);
+
+    uint8_t featureId = 1;
+    for (PlaneWorldCoordinates& worldPlane: planes)
     {
+        worldPlane.d() += errorDistribution(randomEngine);
+
         const PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
         matchedPlanes.push_back(std::make_shared<map_management::PlaneOptimizationFeature>(
-                cameraPlane, worldPlane, matrix44::Identity(), 0, 0));
+                cameraPlane, worldPlane, worldFeatureCovariance, featureId, 0));
+        featureId++;
     }
+
+    std::uniform_real_distribution<float> indexDistribution(0, 1.0);
+    std::uniform_real_distribution<double> DErrorDistribution(-100, 100);
+    const size_t outlierToAdd = planes.size() * outlierProp;
+    for (size_t i = 0; i < outlierToAdd; ++i)
+    {
+        const size_t choosenMapIndex = std::floor(planes.size() * indexDistribution(randomEngine));
+        PlaneWorldCoordinates wPlane = planes[choosenMapIndex];
+
+        PlaneCameraCoordinates cameraPlane(vector3::Random().normalized(), DErrorDistribution(randomEngine));
+
+        matchedPlanes.push_back(std::make_shared<map_management::PlaneOptimizationFeature>(
+                cameraPlane, wPlane, worldFeatureCovariance, choosenMapIndex + 1, 0));
+    }
+
     return matchedPlanes;
 }
 
@@ -179,6 +236,18 @@ void run_test_optimization(const matches_containers::match_container& matchedFea
     EXPECT_LT(get_angle_distance(trueEndEulerAngles.yaw, endEulerAngles.yaw), approxRotationError);
     EXPECT_LT(get_angle_distance(trueEndEulerAngles.pitch, endEulerAngles.pitch), approxRotationError);
     EXPECT_LT(get_angle_distance(trueEndEulerAngles.roll, endEulerAngles.roll), approxRotationError);
+}
+
+TEST(DistanceValidityCheck, testAngleDistance)
+{
+    EXPECT_NEAR(get_angle_distance(180 * EulerToRadian, 180 * EulerToRadian), 0.0 * EulerToRadian, 0.001);
+    EXPECT_NEAR(get_angle_distance(180 * EulerToRadian, 0 * EulerToRadian), 180 * EulerToRadian, 0.001);
+    EXPECT_NEAR(get_angle_distance(0 * EulerToRadian, 180 * EulerToRadian), 180 * EulerToRadian, 0.001);
+    EXPECT_NEAR(get_angle_distance(45 * EulerToRadian, 0 * EulerToRadian), 45 * EulerToRadian, 0.001);
+    EXPECT_NEAR(get_angle_distance(0 * EulerToRadian, 45 * EulerToRadian), 45 * EulerToRadian, 0.001);
+
+    EXPECT_NEAR(get_angle_distance(360 * EulerToRadian, 0 * EulerToRadian), 0.0 * EulerToRadian, 0.001);
+    EXPECT_NEAR(get_angle_distance(0 * EulerToRadian, 360 * EulerToRadian), 0.0 * EulerToRadian, 0.001);
 }
 
 /**
@@ -730,12 +799,12 @@ TEST(PlanePositionOptimizationTests, plane4PerfectGuess)
     }
 
     // True End pose
-    const vector3 truePosition(0, 0, 0);
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
     const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose);
+    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose, PLANE_ERROR);
 
     // Estimated pose base (perfect guess)
     const utils::Pose initialPoseGuess(
@@ -752,15 +821,15 @@ TEST(PlanePositionOptimizationTests, plane4GoodGuess)
     }
 
     // True End pose
-    const vector3 truePosition(0, 0, 0);
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
     const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose);
+    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose, PLANE_ERROR);
 
     // Estimated pose base
-    const vector3 initialPositionGuess(0, 0, 0);
+    const vector3 initialPositionGuess(END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS);
     const EulerAngles initialEulerAnglesGuess(
             END_ROTATION_YAW * GOOD_GUESS, END_ROTATION_PITCH * GOOD_GUESS, END_ROTATION_ROLL * GOOD_GUESS);
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
@@ -777,15 +846,16 @@ TEST(PlanePositionOptimizationTests, plane4MediumGuess)
     }
 
     // True End pose
-    const vector3 truePosition(0, 0, 0);
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
     const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose);
+    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose, PLANE_ERROR);
 
     // Estimated pose base
-    const vector3 initialPositionGuess(0, 0, 0);
+    const vector3 initialPositionGuess(
+            END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS);
     const EulerAngles initialEulerAnglesGuess(
             END_ROTATION_YAW * MEDIUM_GUESS, END_ROTATION_PITCH * MEDIUM_GUESS, END_ROTATION_ROLL * MEDIUM_GUESS);
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
@@ -802,21 +872,423 @@ TEST(PlanePositionOptimizationTests, plane4BadGuess)
     }
 
     // True End pose
-    const vector3 truePosition(0, 0, 0);
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
     const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
     const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
     const utils::Pose trueEndPose(truePosition, trueQuaternion);
 
-    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose);
+    const matches_containers::match_container& matchedPlanes = get_matched_planes(trueEndPose, PLANE_ERROR);
 
     // Estimated pose base
-    const vector3 initialPositionGuess(0, 0, 0);
+    const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
     const EulerAngles initialEulerAnglesGuess(
             END_ROTATION_YAW * BAD_GUESS, END_ROTATION_PITCH * BAD_GUESS, END_ROTATION_ROLL * BAD_GUESS);
     const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
     const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
 
     run_test_optimization(matchedPlanes, trueEndPose, initialPoseGuess);
+}
+
+/**
+ *          MultiFeature TESTS
+ */
+
+TEST(MultiFeatureTests, PerfectFirstGuess)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR));
+
+    // Estimated pose base (perfect guess)
+    const utils::Pose initialPoseGuess(
+            trueEndPose.get_position(), trueEndPose.get_orientation_quaternion(), trueEndPose.get_pose_variance());
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(MultiFeatureTests, GoodFirstGuess)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR));
+
+    // Estimated pose base
+    const vector3 initialPositionGuess(END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS, END_POSITION * GOOD_GUESS);
+    const EulerAngles initialEulerAnglesGuess(
+            END_ROTATION_YAW * GOOD_GUESS, END_ROTATION_PITCH * GOOD_GUESS, END_ROTATION_ROLL * GOOD_GUESS);
+    const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+    const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(MultiFeatureTests, MediumFirstGuess)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR));
+
+    // Estimated pose base
+    const vector3 initialPositionGuess(
+            END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS, END_POSITION * MEDIUM_GUESS);
+    const EulerAngles initialEulerAnglesGuess(
+            END_ROTATION_YAW * MEDIUM_GUESS, END_ROTATION_PITCH * MEDIUM_GUESS, END_ROTATION_ROLL * MEDIUM_GUESS);
+    const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+    const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(MultiFeatureTests, BadFirstGuess)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR));
+
+    // Estimated pose base
+    const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
+    const EulerAngles initialEulerAnglesGuess(
+            END_ROTATION_YAW * BAD_GUESS, END_ROTATION_PITCH * BAD_GUESS, END_ROTATION_ROLL * BAD_GUESS);
+    const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+    const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+/**
+ *          Planes with outliers TESTS
+ */
+
+TEST(PlanesOutliersTests, PerfectFirstGuess_10PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 0.1);
+
+    // Estimated pose base (perfect guess)
+    const utils::Pose initialPoseGuess(
+            trueEndPose.get_position(), trueEndPose.get_orientation_quaternion(), trueEndPose.get_pose_variance());
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(PlanesOutliersTests, BadFirstGuess_10PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 0.1);
+
+    // Estimated pose base
+    const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
+    const EulerAngles initialEulerAnglesGuess(
+            END_ROTATION_YAW * BAD_GUESS, END_ROTATION_PITCH * BAD_GUESS, END_ROTATION_ROLL * BAD_GUESS);
+    const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+    const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(PlanesOutliersTests, PerfectFirstGuess_50PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 0.5);
+
+    // Estimated pose base (perfect guess)
+    const utils::Pose initialPoseGuess(
+            trueEndPose.get_position(), trueEndPose.get_orientation_quaternion(), trueEndPose.get_pose_variance());
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(PlanesOutliersTests, BadFirstGuess_50PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 0.5);
+
+    // Estimated pose base
+    const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
+    const EulerAngles initialEulerAnglesGuess(
+            END_ROTATION_YAW * BAD_GUESS, END_ROTATION_PITCH * BAD_GUESS, END_ROTATION_ROLL * BAD_GUESS);
+    const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+    const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(PlanesOutliersTests, PerfectFirstGuess_100PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 1.0);
+
+    // Estimated pose base (perfect guess)
+    const utils::Pose initialPoseGuess(
+            trueEndPose.get_position(), trueEndPose.get_orientation_quaternion(), trueEndPose.get_pose_variance());
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(PlanesOutliersTests, BadFirstGuess_100PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 1.0);
+
+    // Estimated pose base
+    const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
+    const EulerAngles initialEulerAnglesGuess(
+            END_ROTATION_YAW * BAD_GUESS, END_ROTATION_PITCH * BAD_GUESS, END_ROTATION_ROLL * BAD_GUESS);
+    const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+    const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+/**
+ *          MultiFeature with outliers TESTS
+ */
+
+TEST(MultiFeatureOutliersTests, PerfectFirstGuess_10PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 0.1);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR, 0.1));
+
+    // Estimated pose base (perfect guess)
+    const utils::Pose initialPoseGuess(
+            trueEndPose.get_position(), trueEndPose.get_orientation_quaternion(), trueEndPose.get_pose_variance());
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(MultiFeatureOutliersTests, BadFirstGuess_10PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 0.1);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR, 0.1));
+
+    // Estimated pose base
+    const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
+    const EulerAngles initialEulerAnglesGuess(
+            END_ROTATION_YAW * BAD_GUESS, END_ROTATION_PITCH * BAD_GUESS, END_ROTATION_ROLL * BAD_GUESS);
+    const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+    const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(MultiFeatureOutliersTests, PerfectFirstGuess_50PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 0.5);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR, 0.5));
+
+    // Estimated pose base (perfect guess)
+    const utils::Pose initialPoseGuess(
+            trueEndPose.get_position(), trueEndPose.get_orientation_quaternion(), trueEndPose.get_pose_variance());
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(MultiFeatureOutliersTests, BadFirstGuess_50PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 0.5);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR, 0.5));
+
+    // Estimated pose base
+    const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
+    const EulerAngles initialEulerAnglesGuess(
+            END_ROTATION_YAW * BAD_GUESS, END_ROTATION_PITCH * BAD_GUESS, END_ROTATION_ROLL * BAD_GUESS);
+    const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+    const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(MultiFeatureOutliersTests, PerfectFirstGuess_100PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 1.0);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR, 1.0));
+
+    // Estimated pose base (perfect guess)
+    const utils::Pose initialPoseGuess(
+            trueEndPose.get_position(), trueEndPose.get_orientation_quaternion(), trueEndPose.get_pose_variance());
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
+}
+
+TEST(MultiFeatureOutliersTests, BadFirstGuess_100PercentOutliers)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
+
+    // True End pose
+    const vector3 truePosition(END_POSITION, END_POSITION, END_POSITION);
+    const EulerAngles trueEulerAngles(END_ROTATION_YAW, END_ROTATION_PITCH, END_ROTATION_ROLL);
+    const quaternion trueQuaternion(utils::get_quaternion_from_euler_angles(trueEulerAngles));
+    const utils::Pose trueEndPose(truePosition, trueQuaternion);
+
+    matches_containers::match_container matchedFeatures = get_matched_planes(trueEndPose, PLANE_ERROR, 1.0);
+    matchedFeatures.merge(get_matched_points(trueEndPose, POINTS_ERROR, 1.0));
+
+    // Estimated pose base
+    const vector3 initialPositionGuess(END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS, END_POSITION * BAD_GUESS);
+    const EulerAngles initialEulerAnglesGuess(
+            END_ROTATION_YAW * BAD_GUESS, END_ROTATION_PITCH * BAD_GUESS, END_ROTATION_ROLL * BAD_GUESS);
+    const quaternion initialQuaternionGuess(utils::get_quaternion_from_euler_angles(initialEulerAnglesGuess));
+    const utils::Pose initialPoseGuess(initialPositionGuess, initialQuaternionGuess);
+
+    run_test_optimization(matchedFeatures, trueEndPose, initialPoseGuess);
 }
 
 // TODO: run tests with 2D points

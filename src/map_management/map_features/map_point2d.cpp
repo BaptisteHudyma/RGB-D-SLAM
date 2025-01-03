@@ -205,7 +205,7 @@ bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const n
     return false;
 }
 
-void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
+void MapPoint2D::write_to_file(outputs::IMap_Writer* mapWriter) const noexcept
 {
     const double inverseDepthStandardDev = sqrt(_covariance.get_inverse_depth_variance());
 

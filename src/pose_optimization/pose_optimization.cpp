@@ -276,6 +276,8 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
                                                             vector6& optimizedCoefficients,
                                                             matrixd& optimizationJacobian) noexcept
 {
+    poseOptiCalls += 1;
+
     // set the input of the optimization function
     vectorxd input = get_optimization_coefficient_from_pose(currentPose);
     if (input.hasNaN() or not input.allFinite())
@@ -291,11 +293,18 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
         optiParts += feat->get_feature_part_count();
     }
 
+    const double createOptimizerObjectTime = static_cast<double>(cv::getTickCount());
+
     // Optimization function (ok to use pointers: optimization of copy)
     auto relativePoseEstimator = Relative_Pose_Estimator(input, optiParts, matchedFeatures);
     Relative_Pose_Functor pose_optimisation_functor {relativePoseEstimator};
     // Optimization algorithm
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
+
+    _meanOptiObjectCreationDuration +=
+            (static_cast<double>(cv::getTickCount()) - createOptimizerObjectTime) / cv::getTickFrequency();
+
+    const double computeOptimizedPoseTime = static_cast<double>(cv::getTickCount());
 
     // Start optimization (always use it just after the constructor, to ensure pointer validity)
     const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);
@@ -314,6 +323,11 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
         return false;
     }
 
+    _meanPoseOptiDuration +=
+            (static_cast<double>(cv::getTickCount()) - computeOptimizedPoseTime) / cv::getTickFrequency();
+
+    const double checkPoseValidityTime = static_cast<double>(cv::getTickCount());
+
     // get the jacobian of the transformation
     Relative_Pose_Estimator::JacobianType jacobian(relativePoseEstimator.values(), relativePoseEstimator.inputs());
     pose_optimisation_functor.df(input, jacobian);
@@ -328,6 +342,9 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
     if (not utils::is_covariance_valid(inputCovariance, failureReason))
     {
         outputs::log("Initial parameter covariance is invalid: " + failureReason);
+
+        _meanPoseValidityCheckDuration +=
+                (static_cast<double>(cv::getTickCount()) - checkPoseValidityTime) / cv::getTickFrequency();
         return false;
     }
 
@@ -343,6 +360,9 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
         not eigenValuesPosition.allFinite())
     {
         // outputs::log("Refusing pose: position variance will be too great");
+
+        _meanPoseValidityCheckDuration +=
+                (static_cast<double>(cv::getTickCount()) - checkPoseValidityTime) / cv::getTickFrequency();
         return false;
     }
 
@@ -358,11 +378,17 @@ bool Pose_Optimization::compute_optimized_pose_coefficients(const utils::PoseBas
         not eigenValuesRotation.allFinite())
     {
         // outputs::log("Refusing pose: rotation variance will be too great");
+
+        _meanPoseValidityCheckDuration +=
+                (static_cast<double>(cv::getTickCount()) - checkPoseValidityTime) / cv::getTickFrequency();
         return false;
     }
 
     optimizedCoefficients = input;
     optimizationJacobian = jacobian;
+
+    _meanPoseValidityCheckDuration +=
+            (static_cast<double>(cv::getTickCount()) - checkPoseValidityTime) / cv::getTickFrequency();
     return true;
 }
 
@@ -484,6 +510,28 @@ void Pose_Optimization::show_statistics(const double meanFrameTreatmentDuration,
                     std::format("\t\tMean pose RANSAC get inliers time is {:.4f} seconds ({:.2f}%)",
                                 meanRANSACgetInliersDuration,
                                 get_percent_of_elapsed_time(meanRANSACgetInliersDuration, meanPoseRANSACDuration)));
+
+            // check pose opti details
+            const double meanPoseDuration =
+                    (_meanOptiObjectCreationDuration + _meanPoseOptiDuration + _meanPoseValidityCheckDuration) /
+                    static_cast<double>(poseOptiCalls);
+
+            const double meanOptiObjectCreationDuration =
+                    _meanOptiObjectCreationDuration / static_cast<double>(poseOptiCalls);
+            outputs::log(std::format("\t\tMean pose object init is {:.4f} seconds ({:.2f}%)",
+                                     meanOptiObjectCreationDuration,
+                                     get_percent_of_elapsed_time(meanOptiObjectCreationDuration, meanPoseDuration)));
+
+            const double meanPoseOptiDuration = _meanPoseOptiDuration / static_cast<double>(poseOptiCalls);
+            outputs::log(std::format("\t\tMean pose opti is {:.4f} seconds ({:.2f}%)",
+                                     meanPoseOptiDuration,
+                                     get_percent_of_elapsed_time(meanPoseOptiDuration, meanPoseDuration)));
+
+            const double meanPoseValidityCheckDuration =
+                    _meanPoseValidityCheckDuration / static_cast<double>(poseOptiCalls);
+            outputs::log(std::format("\t\tMean pose opti validity check is {:.4f} seconds ({:.2f}%)",
+                                     meanPoseValidityCheckDuration,
+                                     get_percent_of_elapsed_time(meanPoseValidityCheckDuration, meanPoseDuration)));
         }
     }
 }

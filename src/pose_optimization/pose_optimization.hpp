@@ -3,6 +3,7 @@
 
 #include "matches_containers.hpp"
 #include "utils/pose.hpp"
+#include <cstdint>
 
 namespace rgbd_slam::pose_optimization {
 
@@ -95,6 +96,11 @@ class Pose_Optimization
     inline static double _meanGetRandomSubsetDuration = 0.0;
     inline static double _meanRANSACPoseOptimizationDuration = 0.0;
     inline static double _meanRANSACGetInliersDuration = 0.0;
+
+    inline static uint32_t poseOptiCalls;
+    inline static double _meanOptiObjectCreationDuration = 0.0;
+    inline static double _meanPoseOptiDuration = 0.0;
+    inline static double _meanPoseValidityCheckDuration = 0.0;
 };
 
 } // namespace rgbd_slam::pose_optimization

@@ -83,7 +83,7 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
 
     [[nodiscard]] bool is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noexcept override;
 
-    void write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept override;
+    void write_to_file(outputs::IMap_Writer* mapWriter) const noexcept override;
 
     [[nodiscard]] bool compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
                                         UpgradedFeature_ptr& upgradeFeature) const noexcept override

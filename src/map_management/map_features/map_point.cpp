@@ -165,7 +165,7 @@ bool MapPoint::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const noe
     return false;
 }
 
-void MapPoint::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
+void MapPoint::write_to_file(outputs::IMap_Writer* mapWriter) const noexcept
 {
     if (mapWriter != nullptr)
     {
