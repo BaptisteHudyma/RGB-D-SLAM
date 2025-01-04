@@ -146,8 +146,7 @@ matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const
             {-a / divider, -b / divider, -c / divider},
     });
 
-    // TODO: this covariance stability threshold should be lower, but it creates an outlier rejection of most planes
-    const matrix44& planeParameterCovariance = utils::propagate_covariance(pointCloudCovariance, jacobian, 1e-3);
+    const matrix44& planeParameterCovariance = utils::propagate_covariance(pointCloudCovariance, jacobian);
     std::string failureReason;
     if (not is_covariance_valid(planeParameterCovariance, failureReason))
     {
@@ -214,7 +213,7 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
     const matrix33& pointCloudCovariance =
             compute_reduced_plane_point_cloud_covariance(planeCoordinates, planeCovariance);
 
-    // covert covariance to world
+    // convert covariance to world
     const WorldCoordinateCovariance& pointCloudWorlCovariance = WorldCoordinateCovariance(
             utils::propagate_covariance(pointCloudCovariance, cameraToWorldMatrix.rotation(), 0.0) +
             worldPoseCovariance);
@@ -226,7 +225,7 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
                 "get_world_plane_covariance: pointCloudWorlCovariance is an invalid covariance matrix after process:" +
                 failureReason);
     }
-    // conver back to plane hessian form
+    // convert back to plane hessian form
     return compute_plane_covariance(planeCoordinates.to_world_coordinates(planeCameraToWorldMatrix),
                                     pointCloudWorlCovariance);
 }

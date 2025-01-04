@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <bits/ranges_algo.h>
 #include <cstddef>
+#include <exception>
 #include <limits>
 #include <mutex>
 #include <opencv2/core.hpp>
@@ -376,7 +377,7 @@ void Primitive_Detection::grow_plane_segment_at_seed(const uint seedId,
     }
 
 // TODO: reactivate the cylinder fitting
-#if 1
+#if 0
     // set it as plane or cylinder
     // TODO: why 100 ? seems random
     if (newPlaneSegment.get_score() > 100)
@@ -629,7 +630,14 @@ void Primitive_Detection::add_planes_to_primitives(const uint_vector& planeMerge
         if (polygon.is_valid(debug) and polygon.boundary_length() >= 3)
         {
             // add new plane to final shapes
-            planeContainer.emplace_back(planeSegment, polygon);
+            try
+            {
+                planeContainer.emplace_back(planeSegment, polygon);
+            }
+            catch (const std::exception& e)
+            {
+                outputs::log_error(std::format("Plane creation error {}", e.what()));
+            }
         }
         else
         {

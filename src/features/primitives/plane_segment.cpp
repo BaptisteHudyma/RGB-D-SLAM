@@ -146,8 +146,8 @@ void Plane_Segment::init_plane_segment(const matrixf& depthCloudArray, const uin
             _Sys += SQR(y);
             _Szs += SQR(z);
             _Sxy += x * y;
-            _Szx += x * z;
             _Syz += y * z;
+            _Szx += z * x;
         }
     }
 
@@ -192,6 +192,8 @@ void Plane_Segment::expand_segment(const Plane_Segment& planeSegment) noexcept
 
 matrix33 Plane_Segment::get_point_cloud_covariance() const
 {
+    // This is an approximation: this represents the covariance if the plane was fitted from least squares
+    // BUT: this program fit planes using Principal Component Analysis
     const matrix33 pointCloudHessian({{_Sxs, _Sxy, _Szx}, {_Sxy, _Sys, _Syz}, {_Szx, _Syz, _Szs}});
 
     // 0 determinant cannot be inverted
@@ -223,7 +225,7 @@ matrix33 Plane_Segment::get_point_cloud_Huygen_covariance() const noexcept
     const double xzCovariance = _Szx - _Sx * _Sz * oneOverCount;
     const double yzCovariance = _Syz - _Sy * _Sz * oneOverCount;
 
-    // Expressing covariance as E[PP^t] + E[P]*E[P^T]: König-Huygen formula
+    // Expressing covariance as E[X²] - E[X]²: König-Huygen formula
     matrix33 covariance({{xxCovariance, xyCovariance, xzCovariance},
                          {xyCovariance, yyCovariance, yzCovariance},
                          {xzCovariance, yzCovariance, zzCovariance}});

@@ -80,6 +80,8 @@ class Plane_Segment
 
     /**
      * \brief Compute the covariance of the points in the plane
+     * An approximation of the truth: this covariance matches a least square plane optimization, but in reallity we use
+     * PCA
      * \return the filled covariance matrix of the point cloud
      */
     [[nodiscard]] matrix33 get_point_cloud_covariance() const;
