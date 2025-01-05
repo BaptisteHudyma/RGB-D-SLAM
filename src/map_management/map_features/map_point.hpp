@@ -28,6 +28,8 @@ struct PointOptimizationFeature : public matches_containers::IOptimizationFeatur
     vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
     matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
 
+    bool is_inlier(const WorldToCameraMatrix& worldToCamera) const override;
+
     double get_alpha_reduction() const noexcept override;
 
     FeatureType get_feature_type() const noexcept override;

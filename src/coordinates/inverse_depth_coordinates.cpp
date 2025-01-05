@@ -167,7 +167,7 @@ WorldCoordinate InverseDepthWorldPoint::get_furthest_estimation(const double inv
 {
     // 3 standard deviations (>99% of certainty in this interval)
     const double depthVariation = inverseDepthStandardDev * 3;
-    return WorldCoordinate(_firstObservation + _bearingVector / (_inverseDepth_mm - depthVariation));
+    return WorldCoordinate(_firstObservation + _bearingVector / fmax(1e-6, (_inverseDepth_mm - depthVariation)));
 }
 
 WorldCoordinate InverseDepthWorldPoint::get_closest_estimation(const double inverseDepthStandardDev) const
@@ -213,8 +213,8 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
     {
         screenSegment.set_points(firstScreenPoint, endScreenPoint);
 
-        const Eigen::Matrix<double, 3, 6>& firstPointJacobian =
-                to_world_coordinates_jacobian(_inverseDepth_mm - 3.0 * depthStandardDev, _theta_rad, _phi_rad);
+        const Eigen::Matrix<double, 3, 6>& firstPointJacobian = to_world_coordinates_jacobian(
+                fmax(1e-6, _inverseDepth_mm - 3.0 * depthStandardDev), _theta_rad, _phi_rad);
         const Eigen::Matrix<double, 3, 6>& secondPointJacobian =
                 to_world_coordinates_jacobian(_inverseDepth_mm + 3.0 * depthStandardDev, _theta_rad, _phi_rad);
 

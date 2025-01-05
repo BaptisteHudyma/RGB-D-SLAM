@@ -166,7 +166,7 @@ matches_containers::match_container get_matched_planes(const utils::Pose& endPos
                                                  PlaneWorldCoordinates(vector3(0.706067, -0.0741267, -0.704255), 150)};
 
     // good confidence for map features
-    constexpr double normalVariance = SQR(0.05);
+    constexpr double normalVariance = SQR(0.01);
     constexpr double dVariance = SQR(1);
 
     matrix44 worldFeatureCovariance(matrix44::Identity());

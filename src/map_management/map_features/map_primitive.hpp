@@ -30,6 +30,8 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
     matrix34 get_distance_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
     matrixd get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept override;
 
+    bool is_inlier(const WorldToCameraMatrix& worldToCamera) const override;
+
     double get_alpha_reduction() const noexcept override;
 
     FeatureType get_feature_type() const noexcept override;

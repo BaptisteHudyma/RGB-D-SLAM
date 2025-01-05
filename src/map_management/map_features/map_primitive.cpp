@@ -6,6 +6,7 @@
 #include "matches_containers.hpp"
 #include "parameters.hpp"
 #include "distance_utils.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam::map_management {
 
@@ -60,6 +61,20 @@ matrix34 PlaneOptimizationFeature::get_distance_jacobian(const WorldToCameraMatr
             utils::compute_plane_world_to_camera_matrix(worldToCamera);
 
     return _mapPlane.get_reduced_signed_distance_jacobian(planeTransformationMatrix);
+}
+
+bool PlaneOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const
+{
+    // This is acceptable to recompute:
+    // Plane count is always low so this is negligeable
+    const PlaneWorldToCameraMatrix& planeTransformationMatrix =
+            utils::compute_plane_world_to_camera_matrix(worldToCamera);
+
+    // TODO Add boundary check
+    const vector4& planeProjectionError =
+            _mapPlane.get_signed_distance(_matchedPlane, planeTransformationMatrix).cwiseAbs();
+
+    return (planeProjectionError.array() <= vector4(0.1, 0.1, 0.1, 50).array()).all();
 }
 
 double PlaneOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }

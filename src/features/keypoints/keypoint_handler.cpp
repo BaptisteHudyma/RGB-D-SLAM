@@ -10,7 +10,7 @@
 namespace rgbd_slam::features::keypoints {
 
 // max match search per keypoint
-constexpr uint MAX_POINT_MATCH = 1;
+constexpr uint MAX_POINT_MATCH = 2;
 
 bool is_in_border(const cv::Point2f& pt, const cv::Mat& im, const double borderSize) noexcept
 {

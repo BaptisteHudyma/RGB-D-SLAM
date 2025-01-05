@@ -25,7 +25,8 @@ PointOptimizationFeature::PointOptimizationFeature(const ScreenCoordinate2D& mat
     _mapPointCovariance(mapPointCovariance),
     _mapPointStandardDev(mapPointCovariance.diagonal().cwiseSqrt()) {};
 
-size_t PointOptimizationFeature::get_feature_part_count() const noexcept { return 2; }
+static constexpr uint pointFeatureSize = 2;
+size_t PointOptimizationFeature::get_feature_part_count() const noexcept { return pointFeatureSize; }
 
 double PointOptimizationFeature::get_score() const noexcept
 {
@@ -36,15 +37,21 @@ double PointOptimizationFeature::get_score() const noexcept
 vectorxd PointOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     // Compute retroprojected distance
-    const auto& distance = _mapPoint.get_signed_distance_2D_px(_matchedPoint, worldToCamera);
+    const vector2& distance = _mapPoint.get_signed_distance_2D_px(_matchedPoint, worldToCamera);
     return distance;
 }
 
 matrixd PointOptimizationFeature::get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     return utils::get_screen_2d_point_covariance(
-                   _mapPoint, WorldCoordinateCovariance(_mapPointCovariance), worldToCamera)
+                   _mapPoint, WorldCoordinateCovariance {_mapPointCovariance}, worldToCamera)
             .selfadjointView<Eigen::Lower>();
+}
+
+bool PointOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const
+{
+    const double distance = _mapPoint.get_distance_px(_matchedPoint, worldToCamera);
+    return distance <= 5;
 }
 
 double PointOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }

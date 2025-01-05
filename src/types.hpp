@@ -63,6 +63,16 @@ struct TransitionMatrix : public matrix44
     using matrix44::matrix44;
     [[nodiscard]] matrix33 rotation() const noexcept { return this->block<3, 3>(0, 0); };
     [[nodiscard]] vector3 translation() const noexcept { return this->col(3).head<3>(); };
+
+    matrix33 essencial_matrix() const
+    {
+        const vector3& t = translation();
+        // skew /cross product matrix
+        matrix33 t_hat;
+        t_hat << 0, -t(2), t(1), t(2), 0, -t(0), -t(1), t(0), 0;
+
+        return t_hat * rotation();
+    }
 };
 
 struct WorldToCameraMatrix : public TransitionMatrix
