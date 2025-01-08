@@ -82,6 +82,11 @@ template<int N, int M> Eigen::Matrix<double, M, M> propagate_covariance(const Ei
         const WorldToCameraMatrix& worldToCamera) noexcept;
 
 /**
+ * \brief Compute a camera to 2D screen jacobian
+ */
+matrix23 get_camera_to_screen_jacobian(const CameraCoordinate point);
+
+/**
  * \brief Compute a screen point covariance from a given point
  *
  * \param[in] point The coordinates of this 3D point (world space)

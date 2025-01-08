@@ -19,14 +19,22 @@ double get_depth_quantization(const double depth) noexcept
     return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * SQR(depth), 0.5);
 }
 
-ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance) noexcept
+matrix23 get_camera_to_screen_jacobian(const CameraCoordinate point)
 {
     const static vector2 cameraF = Parameters::get_camera_1_focal();
+    // Jacobian of the camera to screen function
+    matrix23 jacobian {{cameraF.x() / point.z(), 0.0, -cameraF.x() * point.x() / SQR(point.z())},
+                       {0.0, cameraF.y() / point.z(), -cameraF.y() * point.y() / SQR(point.z())}};
+    return jacobian;
+}
+
+ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance) noexcept
+{
+    const matrix23& camToScreenJac = get_camera_to_screen_jacobian(point);
 
     // Jacobian of the camera to screen function
-    const matrix33 jacobian {{cameraF.x() / point.z(), 0.0, -cameraF.x() * point.x() / SQR(point.z())},
-                             {0.0, cameraF.y() / point.z(), -cameraF.y() * point.y() / SQR(point.z())},
-                             {0.0, 0.0, 1.0}};
+    matrix33 jacobian;
+    jacobian << camToScreenJac, 0.0, 0.0, 1.0;
     ScreenCoordinateCovariance screenPointCovariance;
     screenPointCovariance << utils::propagate_covariance(pointCovariance, jacobian, 0.0);
     return screenPointCovariance;
@@ -36,8 +44,8 @@ ScreenCoordinate2dCovariance get_screen_2d_point_covariance(const WorldCoordinat
                                                             const WorldCoordinateCovariance& pointCovariance,
                                                             const WorldToCameraMatrix& worldToCamera) noexcept
 {
-    return ScreenCoordinate2dCovariance(
-            get_screen_point_covariance(point, pointCovariance, worldToCamera).block<2, 2>(0, 0));
+    return ScreenCoordinate2dCovariance {
+            get_screen_point_covariance(point, pointCovariance, worldToCamera).block<2, 2>(0, 0)};
 }
 
 ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,

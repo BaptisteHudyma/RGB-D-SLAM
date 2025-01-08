@@ -47,7 +47,77 @@ template<int N, int M> class SharedKalmanFilter
             const Eigen::Vector<double, N>& currentState,
             const Eigen::Matrix<double, N, N>& stateNoiseCovariance,
             const Eigen::Vector<double, M>& newMeasurement,
-            const Eigen::Matrix<double, M, M>& measurementNoiseCovariance)
+            const Eigen::Matrix<double, M, M>& measurementNoiseCovariance,
+            const Eigen::Matrix<double, M, N>& outputMatrix,
+            const Eigen::Matrix<double, N, N>& processNoiseCovariance)
+    {
+        // check parameters
+        if (not utils::is_covariance_valid(stateNoiseCovariance))
+        {
+            throw std::invalid_argument(
+                    "SharedKalmanFilter::get_new_state: stateNoiseCovariance is an invalid covariance matrix");
+        }
+        if (not utils::is_covariance_valid(measurementNoiseCovariance))
+        {
+            throw std::invalid_argument(
+                    "SharedKalmanFilter::get_new_state: measurementNoiseCovariance is an invalid covariance matrix");
+        }
+
+        // Get new raw estimate
+        const Eigen::Vector<double, N>& newStateEstimate = _systemDynamics * currentState;
+        const Eigen::Matrix<double, N, N>& estimateErrorCovariance =
+                utils::propagate_covariance(stateNoiseCovariance, _systemDynamics, 0.0) + processNoiseCovariance;
+
+        // compute inovation covariance
+        const Eigen::Matrix<double, M, M>& inovationCovariance =
+                utils::propagate_covariance(estimateErrorCovariance, outputMatrix, 0.0) + measurementNoiseCovariance;
+
+        // cannot inverse the inovation covariance matrix, no gain to compute (gain too small)
+        if (utils::double_equal(inovationCovariance.determinant(), 0))
+        {
+            // do not update state or covariance
+            if (not utils::is_covariance_valid(estimateErrorCovariance))
+            {
+                throw std::logic_error(
+                        "SharedKalmanFilter::get_new_state: produced an invalid covariance estimateErrorCovariance");
+            }
+            return std::make_pair(newStateEstimate, estimateErrorCovariance);
+        }
+
+        // compute Kalman gain
+        const Eigen::Matrix<double, N, M>& kalmanGain =
+                (estimateErrorCovariance.template selfadjointView<Eigen::Lower>()) * outputMatrix.transpose() *
+                inovationCovariance.inverse();
+
+        const Eigen::Vector<double, N>& newState =
+                newStateEstimate + kalmanGain * (newMeasurement - outputMatrix * newStateEstimate);
+
+        Eigen::Matrix<double, N, N> newCovariance = (_identity - kalmanGain * outputMatrix) *
+                                                    (estimateErrorCovariance.template selfadjointView<Eigen::Lower>());
+        // force symetrie for covariance
+        newCovariance = newCovariance.template selfadjointView<Eigen::Lower>();
+
+        // Alternative non Joseph form
+        /*const Eigen::Matrix<double, N, N>& temp = _identity - kalmanGain * outputMatrix;
+        const Eigen::Matrix<double, N, N>& newCovariance =
+                temp * estimateErrorCovariance * temp.transpose() +
+                kalmanGain * measurementNoiseCovariance * kalmanGain.transpose();*/
+
+        if (not utils::is_covariance_valid(newCovariance))
+        {
+            throw std::logic_error("SharedKalmanFilter::get_new_state: produced an invalid covariance");
+        }
+        // return the covariance and state estimation
+        return std::make_pair(newState, newCovariance);
+    }
+
+    [[nodiscard]] std::pair<Eigen::Vector<double, N>, Eigen::Matrix<double, N, N>> get_new_state_ekf(
+            const Eigen::Vector<double, N>& currentState,
+            const Eigen::Matrix<double, N, N>& stateNoiseCovariance,
+            const Eigen::Vector<double, M>& newMeasurement,
+            const Eigen::Matrix<double, M, M>& measurementNoiseCovariance,
+            const Eigen::Matrix<double, M, N>& outputMatrix,
+            const Eigen::Vector<double, M>& newStateeMasurment)
     {
         // check parameters
         if (not utils::is_covariance_valid(stateNoiseCovariance))
@@ -66,9 +136,14 @@ template<int N, int M> class SharedKalmanFilter
         const Eigen::Matrix<double, N, N>& estimateErrorCovariance =
                 utils::propagate_covariance(stateNoiseCovariance, _systemDynamics, 0.0) + _processNoiseCovariance;
 
+        if (not utils::is_covariance_valid(estimateErrorCovariance))
+        {
+            throw std::logic_error("SharedKalmanFilter::get_new_state: produced an invalid estimateErrorCovariance");
+        }
+
         // compute inovation covariance
         const Eigen::Matrix<double, M, M>& inovationCovariance =
-                utils::propagate_covariance(estimateErrorCovariance, _outputMatrix, 0.0) + measurementNoiseCovariance;
+                utils::propagate_covariance(estimateErrorCovariance, outputMatrix, 0.0) + measurementNoiseCovariance;
 
         // cannot inverse the inovation covariance matrix, no gain to compute (gain too small)
         if (utils::double_equal(inovationCovariance.determinant(), 0))
@@ -84,19 +159,19 @@ template<int N, int M> class SharedKalmanFilter
 
         // compute Kalman gain
         const Eigen::Matrix<double, N, M>& kalmanGain =
-                (estimateErrorCovariance.template selfadjointView<Eigen::Lower>()) * _outputMatrix.transpose() *
+                (estimateErrorCovariance.template selfadjointView<Eigen::Lower>()) * outputMatrix.transpose() *
                 inovationCovariance.inverse();
 
         const Eigen::Vector<double, N>& newState =
-                newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate);
+                newStateEstimate + kalmanGain * (newMeasurement - newStateeMasurment);
 
-        Eigen::Matrix<double, N, N> newCovariance = (_identity - kalmanGain * _outputMatrix) *
+        Eigen::Matrix<double, N, N> newCovariance = (_identity - kalmanGain * outputMatrix) *
                                                     (estimateErrorCovariance.template selfadjointView<Eigen::Lower>());
         // force symetrie for covariance
         newCovariance = newCovariance.template selfadjointView<Eigen::Lower>();
 
         // Alternative non Joseph form
-        /*const Eigen::Matrix<double, N, N>& temp = _identity - kalmanGain * _outputMatrix;
+        /*const Eigen::Matrix<double, N, N>& temp = _identity - kalmanGain * outputMatrix;
         const Eigen::Matrix<double, N, N>& newCovariance =
                 temp * estimateErrorCovariance * temp.transpose() +
                 kalmanGain * measurementNoiseCovariance * kalmanGain.transpose();*/
@@ -107,6 +182,35 @@ template<int N, int M> class SharedKalmanFilter
         }
         // return the covariance and state estimation
         return std::make_pair(newState, newCovariance);
+    }
+
+    [[nodiscard]] std::pair<Eigen::Vector<double, N>, Eigen::Matrix<double, N, N>> get_new_state(
+            const Eigen::Vector<double, N>& currentState,
+            const Eigen::Matrix<double, N, N>& stateNoiseCovariance,
+            const Eigen::Vector<double, M>& newMeasurement,
+            const Eigen::Matrix<double, M, M>& measurementNoiseCovariance,
+            const Eigen::Matrix<double, M, N>& outputMatrix)
+    {
+        return get_new_state(currentState,
+                             stateNoiseCovariance,
+                             newMeasurement,
+                             measurementNoiseCovariance,
+                             outputMatrix,
+                             _processNoiseCovariance);
+    }
+
+    [[nodiscard]] std::pair<Eigen::Vector<double, N>, Eigen::Matrix<double, N, N>> get_new_state(
+            const Eigen::Vector<double, N>& currentState,
+            const Eigen::Matrix<double, N, N>& stateNoiseCovariance,
+            const Eigen::Vector<double, M>& newMeasurement,
+            const Eigen::Matrix<double, M, M>& measurementNoiseCovariance)
+    {
+        return get_new_state(currentState,
+                             stateNoiseCovariance,
+                             newMeasurement,
+                             measurementNoiseCovariance,
+                             _outputMatrix,
+                             _processNoiseCovariance);
     }
 
     // Matrices for computation

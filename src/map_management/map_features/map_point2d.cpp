@@ -49,7 +49,7 @@ matrixd Point2dOptimizationFeature::get_distance_covariance(const WorldToCameraM
 bool Point2dOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const
 {
     const vectorxd& distances = get_distance(worldToCamera);
-    return distances.norm() <= 3.0; // error threshold in pixels
+    return distances.norm() <= 3.0; // error threshold in mm
 }
 
 double Point2dOptimizationFeature::get_alpha_reduction() const noexcept { return 0.3; }
@@ -207,34 +207,27 @@ bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const n
 
 void MapPoint2D::write_to_file(outputs::IMap_Writer* mapWriter) const noexcept
 {
-    const double inverseDepthStandardDev = sqrt(_covariance.get_inverse_depth_variance());
-
     // TODO find a way to add 2D points without breaking stuff (those line can be kilometers long)
-    // Maybe reduce the furthest estimation to a maximum ?
-    if (false)
-    {
-        // convert to line
-        std::vector<vector3> pointsOnLine;
-        pointsOnLine.emplace_back(_coordinates.get_closest_estimation(inverseDepthStandardDev));
-        // pointsOnLine.emplace_back(_coordinates.to_world_coordinates());
-        pointsOnLine.emplace_back(_coordinates.get_furthest_estimation(inverseDepthStandardDev));
-
-        mapWriter->add_line(pointsOnLine);
-    }
 }
 
 bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
                                   UpgradedFeature_ptr& upgradedFeature) const noexcept
 {
+    // TODO: reactivate feature upgrade
+    return false;
+
     try
     {
-        if (compute_linearity_score(cameraToWorld) < 0.1) // linearity index (percentage) (TODO: add to parameters)
+        if (compute_linearity_score(cameraToWorld) < 0.01) // linearity index (percentage) (TODO: add to parameters)
         {
             Eigen::Matrix<double, 3, 6> jacobian;
             const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
 
-            upgradedFeature = std::make_shared<UpgradedPoint2D>(
-                    worldCoords, compute_cartesian_covariance(_covariance, jacobian), _descriptor, _matchIndex);
+            const WorldCoordinateCovariance& cartCov = compute_cartesian_covariance(_covariance, jacobian);
+            if ((cartCov.diagonal().array() > 1e6).any())
+                return false;
+
+            upgradedFeature = std::make_shared<UpgradedPoint2D>(worldCoords, cartCov, _descriptor, _matchIndex);
             return true;
         }
     }

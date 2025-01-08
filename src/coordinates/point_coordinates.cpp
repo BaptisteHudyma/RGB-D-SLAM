@@ -85,10 +85,10 @@ vector2 transform_screen_to_camera(const vector2& screenPoint)
 /**
  * \brief Transform camera coordinates to screen coordinates
  */
-vector2 transform_camera_to_screen(const vector3& screenPoint)
+vector2 transform_camera_to_screen(const vector3& cameraPoint)
 {
     const static matrix33 cameraIntrinsics = Parameters::get_camera_1_intrinsics();
-    return (cameraIntrinsics * screenPoint).head<2>();
+    return (cameraIntrinsics * cameraPoint).head<2>();
 }
 
 CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const

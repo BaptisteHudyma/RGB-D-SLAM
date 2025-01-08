@@ -22,8 +22,7 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const WorldCoordinate& firstPose,
     _firstObservation(firstPose),
     _inverseDepth_mm(inverseDepth),
     _theta_rad(theta),
-    _phi_rad(phi),
-    _bearingVector(Cartesian::from(Spherical(1.0, _theta_rad, _phi_rad)).vec())
+    _phi_rad(phi)
 {
     if (_inverseDepth_mm < 0.0)
         throw std::invalid_argument("Constructor of InverseDepthWorldPoint: Inverse depth should be >= 0");
@@ -31,6 +30,19 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const WorldCoordinate& firstPose,
         throw std::invalid_argument("Constructor of InverseDepthWorldPoint: Theta should be in [0, M_PI]");
     if (_phi_rad < -M_PI or _phi_rad > M_PI)
         throw std::invalid_argument("Constructor of InverseDepthWorldPoint: Phi should be in [-Pi, Pi]");
+
+    recompute_bearing_vector();
+    /*
+    // in the paper, defined as, but we use another referencial (standard shperical referencial)
+    _bearingVector.x() = cos(_phi_rad) * sin(_theta_rad);
+    _bearingVector.y() = -sin(_phi_rad);
+    _bearingVector.z() = cos(_phi_rad) * cos(_theta_rad);
+    */
+}
+
+void InverseDepthWorldPoint::recompute_bearing_vector() noexcept
+{
+    _bearingVector = Cartesian::from(Spherical(1.0, _theta_rad, _phi_rad)).vec();
 }
 
 InverseDepthWorldPoint::InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w) :
@@ -45,6 +57,8 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observati
     InverseDepthWorldPoint(from_cartesian(observation.to_world_coordinates(c2w), WorldCoordinate(c2w.translation())))
 {
 }
+
+InverseDepthWorldPoint::InverseDepthWorldPoint(const vector6& other) { set_vector(other); }
 
 vector3 InverseDepthWorldPoint::compute_signed_distance(const InverseDepthWorldPoint& other) const
 {
@@ -121,7 +135,6 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
 
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates() const noexcept
 {
-    assert(_inverseDepth_mm != 0.0);
     return WorldCoordinate(_firstObservation + _bearingVector / _inverseDepth_mm);
 }
 
@@ -163,18 +176,80 @@ WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<doubl
     return to_world_coordinates();
 }
 
-WorldCoordinate InverseDepthWorldPoint::get_furthest_estimation(const double inverseDepthStandardDev) const
+Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_projected_screen_estimation_jacobian(
+        const WorldToCameraMatrix& w2c, const double addedStandardDev) const noexcept
 {
-    // 3 standard deviations (>99% of certainty in this interval)
-    const double depthVariation = inverseDepthStandardDev * 3;
-    return WorldCoordinate(_firstObservation + _bearingVector / fmax(1e-6, (_inverseDepth_mm - depthVariation)));
+    const auto& c2w = utils::compute_camera_to_world_transform(w2c);
+
+    const matrix33& rotation = w2c.rotation();
+    const vector3& translation = c2w.translation();
+
+    const double inverseDepth = _inverseDepth_mm + addedStandardDev;
+    const double theta = _theta_rad;
+    const double phi = _phi_rad;
+
+    const vector3& observationPoint = _firstObservation;
+    const vector3& observationVector = _bearingVector;
+
+    const vector3 tr = observationPoint - translation;
+    const vector3 h_c_rot = rotation * (tr * inverseDepth + observationVector);
+
+    // Jacobian of the camera to screen function
+    const matrix23 screenToCameraJacobian = utils::get_camera_to_screen_jacobian(h_c_rot);
+
+    // Rot * vec jacobian
+    const matrix33 rotationToTranslationJacobian = rotation;
+
+    // iDepth * (root position - translation) + orientationVector
+    const Eigen::Matrix<double, 3, 6> inverseDepthToCamera(
+            // x0, y0, z0, iD, theta, phi
+            {{inverseDepth, 0.0, 0.0, tr.x(), cos(phi) * cos(theta), -sin(phi) * sin(theta)}, // x
+             {0.0, inverseDepth, 0.0, tr.y(), sin(phi) * cos(theta), cos(phi) * sin(theta)},  // y
+             {0.0, 0.0, inverseDepth, tr.z(), -sin(theta), 0.0}});                            // z
+
+    return (screenToCameraJacobian * (rotationToTranslationJacobian * inverseDepthToCamera)).eval();
 }
 
-WorldCoordinate InverseDepthWorldPoint::get_closest_estimation(const double inverseDepthStandardDev) const
+ScreenCoordinate2D InverseDepthWorldPoint::get_projected_screen_estimation(const WorldToCameraMatrix& w2c,
+                                                                           const double addedStandardDev) const noexcept
 {
-    // 3 standard deviations (>99% of certainty in this interval)
-    const double depthVariation = inverseDepthStandardDev * 3;
-    return WorldCoordinate(_firstObservation + _bearingVector / (_inverseDepth_mm + depthVariation));
+    const auto& c2w = utils::compute_camera_to_world_transform(w2c);
+
+    const CameraCoordinate projectedCam =
+            w2c.rotation() *
+            ((_inverseDepth_mm + addedStandardDev) * (_firstObservation - c2w.translation()) + _bearingVector);
+
+    ScreenCoordinate2D resCoords;
+    const bool res = projectedCam.to_screen_coordinates(resCoords);
+    // TODO: something better than assert...
+    assert(res);
+    return resCoords;
+}
+
+// 2 standard dev, 95% confidence interval
+// 3 standard dev, 99% confidence interval
+constexpr double standardDevIntervals = 3;
+
+Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_furthest_estimation_jacobian(
+        const WorldToCameraMatrix& w2c, const double inverseDepthStandardDev) const
+{
+    return get_projected_screen_estimation_jacobian(w2c, -standardDevIntervals * inverseDepthStandardDev);
+}
+ScreenCoordinate2D InverseDepthWorldPoint::get_furthest_estimation(const WorldToCameraMatrix& w2c,
+                                                                   const double inverseDepthStandardDev) const
+{
+    return get_projected_screen_estimation(w2c, -standardDevIntervals * inverseDepthStandardDev);
+}
+
+Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_closest_estimation_jacobian(
+        const WorldToCameraMatrix& w2c, const double inverseDepthStandardDev) const
+{
+    return get_projected_screen_estimation_jacobian(w2c, standardDevIntervals * inverseDepthStandardDev);
+}
+ScreenCoordinate2D InverseDepthWorldPoint::get_closest_estimation(const WorldToCameraMatrix& w2c,
+                                                                  const double inverseDepthStandardDev) const
+{
+    return get_projected_screen_estimation(w2c, standardDevIntervals * inverseDepthStandardDev);
 }
 
 bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
@@ -182,18 +257,11 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
                                                    utils::Segment<2>& screenSegment) const noexcept
 {
     const double depthStandardDev = sqrt(inverseDepthCovariance);
-    const WorldCoordinate& firstPoint = get_furthest_estimation(depthStandardDev);
-    const WorldCoordinate& endPoint = get_closest_estimation(depthStandardDev);
+    const ScreenCoordinate2D& firstPoint = get_furthest_estimation(w2c, depthStandardDev);
+    const ScreenCoordinate2D& endPoint = get_closest_estimation(w2c, depthStandardDev);
 
-    ScreenCoordinate2D firstScreenPoint;
-    ScreenCoordinate2D endScreenPoint;
-    if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
-    {
-        screenSegment.set_points(firstScreenPoint, endScreenPoint);
-        return true;
-    }
-    // should never happend
-    return false;
+    screenSegment.set_points(firstPoint, endPoint);
+    return true;
 }
 
 bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
@@ -204,48 +272,18 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
     const double inverseDepthCovariance = cov.diagonal()(inverseDepthIndex);
 
     const double depthStandardDev = sqrt(inverseDepthCovariance);
-    const WorldCoordinate& firstPoint = get_furthest_estimation(depthStandardDev);
-    const WorldCoordinate& endPoint = get_closest_estimation(depthStandardDev);
+    const ScreenCoordinate2D& firstPoint = get_furthest_estimation(w2c, depthStandardDev);
+    const ScreenCoordinate2D& endPoint = get_closest_estimation(w2c, depthStandardDev);
 
-    ScreenCoordinate2D firstScreenPoint;
-    ScreenCoordinate2D endScreenPoint;
-    if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
-    {
-        screenSegment.set_points(firstScreenPoint, endScreenPoint);
+    screenSegment.set_points(firstPoint, endPoint);
 
-        const Eigen::Matrix<double, 3, 6>& firstPointJacobian = to_world_coordinates_jacobian(
-                fmax(1e-6, _inverseDepth_mm - 3.0 * depthStandardDev), _theta_rad, _phi_rad);
-        const Eigen::Matrix<double, 3, 6>& secondPointJacobian =
-                to_world_coordinates_jacobian(_inverseDepth_mm + 3.0 * depthStandardDev, _theta_rad, _phi_rad);
+    const auto& firstPointJacobian = get_furthest_estimation_jacobian(w2c, depthStandardDev);
+    const auto& secondPointJacobian = get_closest_estimation_jacobian(w2c, depthStandardDev);
 
-        covariance.setZero();
-        covariance.block<2, 2>(0, 0) = utils::get_screen_2d_point_covariance(
-                firstPoint, WorldCoordinateCovariance(utils::propagate_covariance(cov, firstPointJacobian, 0.0)), w2c);
-        covariance.block<2, 2>(2, 2) = utils::get_screen_2d_point_covariance(
-                endPoint, WorldCoordinateCovariance(utils::propagate_covariance(cov, secondPointJacobian, 0.0)), w2c);
-        return true;
-    }
-    // should never happend
-    return false;
-}
-
-bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2c,
-                                                   const double inverseDepthCovariance,
-                                                   utils::Segment<3>& screenSegment) const noexcept
-{
-    const double depthStandardDev = sqrt(inverseDepthCovariance);
-    const WorldCoordinate& firstPoint = get_furthest_estimation(depthStandardDev);
-    const WorldCoordinate& endPoint = get_closest_estimation(depthStandardDev);
-
-    ScreenCoordinate firstScreenPoint;
-    ScreenCoordinate endScreenPoint;
-    if (firstPoint.to_screen_coordinates(w2c, firstScreenPoint) and endPoint.to_screen_coordinates(w2c, endScreenPoint))
-    {
-        screenSegment.set_points(firstScreenPoint, endScreenPoint);
-        return true;
-    }
-
-    return false;
+    covariance.setZero();
+    covariance.block<2, 2>(0, 0) = utils::propagate_covariance(cov, firstPointJacobian, 0.0);
+    covariance.block<2, 2>(2, 2) = utils::propagate_covariance(cov, secondPointJacobian, 0.0);
+    return true;
 }
 
 } // namespace rgbd_slam
