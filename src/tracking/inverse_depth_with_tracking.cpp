@@ -13,6 +13,36 @@
 namespace rgbd_slam::tracking {
 
 /**
+ * Define the estimator for the inverse depth fuse/tracker
+ */
+template<int N = 6, int M = 2> class InverseDepthEstimator : public StateEstimator<N, M>
+{
+  public:
+    Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept override
+    {
+        return InverseDepthWorldPoint(state).get_projected_screen_estimation(_w2c);
+    }
+
+    Eigen::Matrix<double, M, N> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
+    {
+        return InverseDepthWorldPoint(state).get_projected_screen_estimation_jacobian(_w2c, 0.0);
+    }
+
+    InverseDepthEstimator(const Eigen::Vector<double, N>& feature,
+                          const Eigen::Matrix<double, N, N>& featureCovariance,
+                          const Eigen::Vector<double, M>& measurment,
+                          const Eigen::Matrix<double, M, M>& measurmentCovariance,
+                          const WorldToCameraMatrix& w2c) :
+        StateEstimator<N, M>(feature, featureCovariance, measurment, measurmentCovariance),
+        _w2c(w2c)
+    {
+    }
+
+  private:
+    const WorldToCameraMatrix _w2c;
+};
+
+/**
  * Point Inverse Depth
  */
 
@@ -23,6 +53,7 @@ PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
     _coordinates(observation, c2w),
     _descriptor(descriptor)
 {
+    build_kalman_filter();
     if (not utils::is_covariance_valid(stateCovariance))
     {
         throw std::invalid_argument("Inverse depth stateCovariance is invalid in constructor");
@@ -51,6 +82,7 @@ PointInverseDepth::PointInverseDepth(const PointInverseDepth& other) :
     _covariance(other._covariance),
     _descriptor(other._descriptor)
 {
+    build_kalman_filter();
     if (not utils::is_covariance_valid(_covariance))
         throw std::invalid_argument("PointInverseDepth constructor: the given covariance is invalid");
 }
@@ -60,19 +92,14 @@ bool PointInverseDepth::track(const ScreenCoordinate2D& screenObservation,
                               const matrix33& stateCovariance,
                               const cv::Mat& descriptor) noexcept
 {
+    assert(_extendedKalmanFilter != nullptr);
     try
     {
-        build_kalman_filter();
-        assert(_extendedKalmanFilter != nullptr);
-
         const auto& w2c = utils::compute_world_to_camera_transform(c2w);
 
         // build the estimator
-        InverseDepthEstimator estimator(_coordinates.get_vector(),
-                                        _covariance,
-                                        screenObservation,
-                                        (matrix22::Identity() * SQR(0.5)).eval(),
-                                        w2c);
+        InverseDepthEstimator estimator(
+                _coordinates.get_vector(), _covariance, screenObservation, screenObservation.get_covariance(), w2c);
 
         const auto& [newState, newCovariance] = _extendedKalmanFilter->get_new_state(&estimator);
 

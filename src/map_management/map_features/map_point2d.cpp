@@ -48,8 +48,10 @@ matrixd Point2dOptimizationFeature::get_distance_covariance(const WorldToCameraM
 }
 bool Point2dOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const
 {
+    const auto& cov = get_distance_covariance(worldToCamera);
+
     const vectorxd& distances = get_distance(worldToCamera);
-    return distances.norm() <= 3.0; // error threshold in mm
+    return (distances.cwiseAbs().array() <= 3 * cov.diagonal().cwiseSqrt().array()).all(); // error threshold in mm
 }
 
 double Point2dOptimizationFeature::get_alpha_reduction() const noexcept { return 0.3; }
@@ -213,12 +215,9 @@ void MapPoint2D::write_to_file(outputs::IMap_Writer* mapWriter) const noexcept
 bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
                                   UpgradedFeature_ptr& upgradedFeature) const noexcept
 {
-    // TODO: reactivate feature upgrade
-    return false;
-
     try
     {
-        if (compute_linearity_score(cameraToWorld) < 0.01) // linearity index (percentage) (TODO: add to parameters)
+        if (compute_linearity_score(cameraToWorld) < 0.1) // linearity index (percentage) (TODO: add to parameters)
         {
             Eigen::Matrix<double, 3, 6> jacobian;
             const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
@@ -252,16 +251,24 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
     // set the last match
     _lastMatch = std::optional<ScreenCoordinate2D>(matchedFeature._coordinates.get_2D());
 
+    /*
+    // TODO: rreactivate this for optimization
     if (is_depth_valid(matchedFeature._coordinates.z()))
     {
         // use the real observation, it will most likely overide the covariance inside the inverse depth point
         return track(matchedFeature._coordinates, cameraToWorld, poseCovariance, matchedFeature._descriptor);
     }
+    */
     // use a 2D observation, that will be merged with the current one
     return track(matchedFeature._coordinates.get_2D(), cameraToWorld, poseCovariance, matchedFeature._descriptor);
 }
 
-bool MapPoint2D::merge(const MapPoint2D& other) noexcept { return track(other); }
+bool MapPoint2D::merge(const MapPoint2D& other) noexcept
+{
+    // TODO: merge two inverse depth features
+
+    return true;
+}
 
 void MapPoint2D::update_no_match() noexcept { _lastMatch.reset(); }
 

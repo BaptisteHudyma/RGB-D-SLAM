@@ -182,7 +182,6 @@ void Parameters::check_parameters_validity() noexcept
                   "Maximum plane match distance must be greater than zero");
 
     static_assert(parameters::matching::matchSearchRadius_px > 0, "Match search radius must be > 0");
-    static_assert(parameters::matching::maximumMatchDistance > 0, "Minimum match distance must be > 0");
 
     static_assert(parameters::mapping::pointUnmatchedCountToLoose > 0,
                   "Unmatched points to loose tracking must be > 0");

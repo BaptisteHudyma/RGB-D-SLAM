@@ -195,7 +195,7 @@ Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_projected_screen_estimat
     const vector3 h_c_rot = rotation * (tr * inverseDepth + observationVector);
 
     // Jacobian of the camera to screen function
-    const matrix23 screenToCameraJacobian = utils::get_camera_to_screen_jacobian(h_c_rot);
+    const matrix23 screenToCameraJacobian = utils::get_camera_to_screen2d_jacobian(h_c_rot);
 
     // Rot * vec jacobian
     const matrix33 rotationToTranslationJacobian = rotation;

@@ -168,12 +168,17 @@ struct WorldCoordinate : public vector3
     [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
                                              ScreenCoordinate2D& screenPoint) const noexcept;
 
+    [[nodiscard]] matrix23 to_screen2d_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
+    [[nodiscard]] matrix33 to_screen_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
+
     /**
      * \brief Transform a vector in world space to a vector in camera space
      * \param[in] worldToCamera Matrix to transform the world to a local coordinate system
      * \return The input vector transformed to camera space
      */
     [[nodiscard]] CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const noexcept;
+
+    [[nodiscard]] matrix33 to_camera_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
 
     /**
      * \brief Compute a signed 2D distance between this world point and a screen point, by retroprojecting the world

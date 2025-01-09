@@ -19,7 +19,7 @@ double get_depth_quantization(const double depth) noexcept
     return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * SQR(depth), 0.5);
 }
 
-matrix23 get_camera_to_screen_jacobian(const CameraCoordinate point)
+matrix23 get_camera_to_screen2d_jacobian(const CameraCoordinate& point)
 {
     const static vector2 cameraF = Parameters::get_camera_1_focal();
     // Jacobian of the camera to screen function
@@ -28,24 +28,22 @@ matrix23 get_camera_to_screen_jacobian(const CameraCoordinate point)
     return jacobian;
 }
 
-ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance) noexcept
+matrix33 get_camera_to_screen_jacobian(const CameraCoordinate& point)
 {
-    const matrix23& camToScreenJac = get_camera_to_screen_jacobian(point);
-
-    // Jacobian of the camera to screen function
+    const matrix23& camToScreenJac = get_camera_to_screen2d_jacobian(point);
     matrix33 jacobian;
     jacobian << camToScreenJac, 0.0, 0.0, 1.0;
+    return jacobian;
+}
+
+ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance) noexcept
+{
+    // Jacobian of the camera to screen function
+    const matrix33& jacobian = get_camera_to_screen_jacobian(point);
+
     ScreenCoordinateCovariance screenPointCovariance;
     screenPointCovariance << utils::propagate_covariance(pointCovariance, jacobian, 0.0);
     return screenPointCovariance;
-}
-
-ScreenCoordinate2dCovariance get_screen_2d_point_covariance(const WorldCoordinate& point,
-                                                            const WorldCoordinateCovariance& pointCovariance,
-                                                            const WorldToCameraMatrix& worldToCamera) noexcept
-{
-    return ScreenCoordinate2dCovariance {
-            get_screen_point_covariance(point, pointCovariance, worldToCamera).block<2, 2>(0, 0)};
 }
 
 ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,

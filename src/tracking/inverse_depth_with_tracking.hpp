@@ -14,62 +14,6 @@
 namespace rgbd_slam::tracking {
 
 /**
- * Define the estimator for the inverse depth fuse/tracker
- */
-template<int N = 6, int M = 2> class InverseDepthEstimator : public StateEstimator<N, M>
-{
-  public:
-    Eigen::Vector<double, N> state() const noexcept override { return _feature; }
-    Eigen::Matrix<double, N, N> state_covariance() const noexcept override { return _featureCovariance; }
-
-    Eigen::Vector<double, M> measurment() const noexcept override { return _measurment; }
-    Eigen::Matrix<double, M, M> measurment_covariance() const noexcept override { return _measurmentCovariance; }
-
-    Eigen::Vector<double, N> f(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        // no dynamics, just return the same state
-        return state;
-    }
-
-    Eigen::Matrix<double, N, N> f_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        std::ignore = state;
-        // no dynamic jacobian
-        return Eigen::Matrix<double, N, N>::Identity();
-    }
-
-    Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        return InverseDepthWorldPoint(state).get_projected_screen_estimation(_w2c);
-    }
-
-    Eigen::Matrix<double, M, N> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        return InverseDepthWorldPoint(state).get_projected_screen_estimation_jacobian(_w2c, 0.0);
-    }
-
-    InverseDepthEstimator(const Eigen::Vector<double, N>& feature,
-                          const Eigen::Matrix<double, N, N>& featureCovariance,
-                          const Eigen::Vector<double, M>& measurment,
-                          const Eigen::Matrix<double, M, M>& measurmentCovariance,
-                          const WorldToCameraMatrix& w2c) :
-        _feature(feature),
-        _featureCovariance(featureCovariance),
-        _measurment(measurment),
-        _measurmentCovariance(measurmentCovariance),
-        _w2c(w2c)
-    {
-    }
-
-  private:
-    const Eigen::Vector<double, N> _feature;
-    const Eigen::Matrix<double, N, N> _featureCovariance;
-    const Eigen::Vector<double, M> _measurment;
-    const Eigen::Matrix<double, M, M> _measurmentCovariance;
-    const WorldToCameraMatrix _w2c;
-};
-
-/**
  * \brief Defines a 2D point, with tracking capabilities
  */
 struct PointInverseDepth

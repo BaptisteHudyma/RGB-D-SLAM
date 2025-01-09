@@ -3,6 +3,7 @@
 #include "../../parameters.hpp"
 #include "cylinder_segment.hpp"
 #include "plane_segment.hpp"
+#include "random.hpp"
 #include "shape_primitives.hpp"
 #include "types.hpp"
 #include <Eigen/src/Core/Array.h>

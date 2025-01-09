@@ -1,5 +1,6 @@
 #include "map_point.hpp"
 
+#include "camera_transformation.hpp"
 #include "coordinates/point_coordinates.hpp"
 #include "covariances.hpp"
 #include "logger.hpp"
@@ -43,15 +44,14 @@ vectorxd PointOptimizationFeature::get_distance(const WorldToCameraMatrix& world
 
 matrixd PointOptimizationFeature::get_distance_covariance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    return utils::get_screen_2d_point_covariance(
-                   _mapPoint, WorldCoordinateCovariance {_mapPointCovariance}, worldToCamera)
-            .selfadjointView<Eigen::Lower>();
+    // propagate the covariance
+    return utils::propagate_covariance(_mapPointCovariance, _mapPoint.to_screen2d_coordinates_jacobian(worldToCamera));
 }
 
 bool PointOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const
 {
     const double distance = _mapPoint.get_distance_px(_matchedPoint, worldToCamera);
-    return distance <= 5;
+    return distance <= 3;
 }
 
 double PointOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }
@@ -198,47 +198,22 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     _lastMatch = std::optional<ScreenCoordinate2D>(matchedFeature._coordinates.get_2D());
 
     const ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
+    WorldToCameraMatrix w2c = utils::compute_world_to_camera_transform(cameraToWorld);
     if (is_depth_valid(matchedScreenPoint.z()))
     {
-        // transform screen point to world point
-        const WorldCoordinate& worldPointCoordinates = matchedScreenPoint.to_world_coordinates(cameraToWorld);
-        // get a measure of the estimated variance of the new world point
-        const matrix33& worldCovariance =
-                utils::get_world_point_covariance(matchedScreenPoint, cameraToWorld, poseCovariance);
-
-        // update this map point errors & position
-        const double mergeScore = track(worldPointCoordinates, worldCovariance);
-        if (mergeScore < 0)
+        // depth is valid, merge using the 3D model (more precise)
+        if (not track_3d(matchedScreenPoint, w2c))
             return false;
-
-        // If a new descriptor is available, update it
-        if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
-            _descriptor = descriptor;
-
-        return true;
     }
-    else
-    {
-        // Point is 2D, compute projection
-        tracking::PointInverseDepth observation(
-                ScreenCoordinate2D(matchedScreenPoint.head<2>()), cameraToWorld, poseCovariance);
-        Eigen::Matrix<double, 3, 6> inverseToWorldJacobian;
-        const auto projectedObservation = observation._coordinates.to_world_coordinates(inverseToWorldJacobian);
-        const auto observationCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-                observation._covariance, inverseToWorldJacobian);
+    // depth is invalid, merge using the 2D model (slightly faster)
+    else if (not track_2d(matchedScreenPoint.get_2D(), w2c))
+        return false;
 
-        // track the high uncertainty point
-        const double mergeScore = track(projectedObservation, observationCovariance);
-        if (mergeScore < 0)
-            return false;
+    // If a new descriptor is available, update it
+    if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
+        _descriptor = descriptor;
 
-        // If a new descriptor is available, update it
-        if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
-            _descriptor = descriptor;
-
-        return true;
-    }
-    return false;
+    return true;
 }
 
 bool MapPoint::merge(const MapPoint& other) noexcept

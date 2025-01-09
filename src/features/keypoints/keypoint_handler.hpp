@@ -103,9 +103,8 @@ class Keypoint_Handler
     /**
      * \param[in] depthImageCols The number of columns of the depth image
      * \param[in] depthImageRows The number of rows of the depth image
-     * \param[in] maxMatchDistance Maximum distance to consider that a match of two points is valid
      */
-    Keypoint_Handler(const uint depthImageCols, const uint depthImageRows, const double maxMatchDistance = 0.7);
+    Keypoint_Handler(const uint depthImageCols, const uint depthImageRows);
 
     /**
      * \brief Set the container properties
@@ -222,8 +221,6 @@ class Keypoint_Handler
 
   private:
     cv::Ptr<cv::DescriptorMatcher> _featuresMatcher;
-
-    const double _maxMatchDistance;
 
     // store current frame keypoints
     std::vector<ScreenCoordinate> _keypoints;

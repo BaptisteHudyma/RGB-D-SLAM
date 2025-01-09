@@ -175,7 +175,6 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     // load parameters
     constexpr int pyramidDepth = static_cast<int>(parameters::detection::opticalFlowPyramidDepth);
     constexpr double maxDistance = parameters::matching::matchSearchRadius_px;
-    constexpr double maximumMatchDistance = parameters::matching::maximumMatchDistance;
 
     static const cv::Size pyramidSize(static_cast<int>(Parameters::get_camera_1_image_size().x() /
                                                        parameters::detection::opticalFlowPyramidWindowSizeWidthCount),
@@ -251,7 +250,7 @@ Keypoint_Handler Key_Point_Extraction::compute_keypoints(const cv::Mat& grayImag
     }
 
     // declare static
-    static Keypoint_Handler keypointHandler(depthImage.cols, depthImage.rows, maximumMatchDistance);
+    static Keypoint_Handler keypointHandler(depthImage.cols, depthImage.rows);
 
     // Update last keypoint struct
     keypointHandler.set(detectedKeypoints, keypointDescriptors, newKeypointsObject, depthImage);

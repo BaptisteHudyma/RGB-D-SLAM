@@ -122,8 +122,7 @@ bool ScreenCoordinate2D::is_in_screen_boundaries() const noexcept
 
 ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
 {
-    const double xyVariance = SQR(0.1);
-    const matrix22 covariance2D({{xyVariance, 0.0}, {0.0, xyVariance}});
+    const matrix22& covariance2D = this->get_2D().get_covariance();
 
     const double depthQuantization = is_depth_valid(z()) ? utils::get_depth_quantization(z()) : 1000.0;
     // a zero variance will break the kalman gain
@@ -133,7 +132,7 @@ ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
     }
 
     ScreenCoordinateCovariance cov;
-    cov << covariance2D, vector2::Zero(), 0.0, 0.0, depthQuantization;
+    cov << covariance2D, vector2::Zero(), 0.0, 0.0, SQR(depthQuantization);
 
     if (not utils::is_covariance_valid(cov))
     {
@@ -242,6 +241,27 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
     return false;
 }
 
+matrix23 WorldCoordinate::to_screen2d_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const matrix33 toCameraJacobian = to_camera_coordinates_jacobian(worldToCamera);
+
+    // jacobian of a camera to screen 2D
+    const matrix23 cameraToScreenJacobian =
+            utils::get_camera_to_screen2d_jacobian(to_camera_coordinates(worldToCamera));
+
+    return cameraToScreenJacobian * toCameraJacobian;
+}
+
+matrix33 WorldCoordinate::to_screen_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const matrix33 toCameraJacobian = to_camera_coordinates_jacobian(worldToCamera);
+
+    // jacobian of a camera to screen 2D
+    const matrix33 cameraToScreenJacobian = utils::get_camera_to_screen_jacobian(to_camera_coordinates(worldToCamera));
+
+    return cameraToScreenJacobian * toCameraJacobian;
+}
+
 vector2 WorldCoordinate::get_signed_distance_2D_px(const ScreenCoordinate2D& screenPoint,
                                                    const WorldToCameraMatrix& worldToCamera) const
 {
@@ -294,6 +314,20 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
     // WorldCoordinate
     const vector4& cameraHomogenousCoordinates = worldToCamera * this->homogeneous();
     return CameraCoordinate(cameraHomogenousCoordinates);
+}
+
+matrix33 WorldCoordinate::to_camera_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    /*
+    // corresponds to this
+    const auto& c2w = CameraToWorldMatrix(worldToCamera.inverse());
+    const auto& res = CameraCoordinate(worldToCamera.rotation() * ((*this) - c2w.translation()));
+    */
+    // jacobian of the rotation op (just a rotation)
+    const matrix33 rotationToTranslationJacobian = worldToCamera.rotation();
+
+    // jacobian of a translation is identity
+    return rotationToTranslationJacobian * (-matrix33::Identity());
 }
 
 } // namespace rgbd_slam

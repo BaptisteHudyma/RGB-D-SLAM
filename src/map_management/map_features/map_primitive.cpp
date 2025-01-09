@@ -236,7 +236,7 @@ bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
         const PlaneWorldCoordinates& projectedPlaneCoordinates =
                 matchedFeatureParams.to_world_coordinates(planeCameraToWorld);
 
-        // update this plane with the other one's parameters
+        // update this plane with the other ones parameters
         track(cameraToWorld, matchedFeature, projectedPlaneCoordinates, worldCovariance);
         return true;
     }

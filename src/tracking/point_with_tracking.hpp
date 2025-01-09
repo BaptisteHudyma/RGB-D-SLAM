@@ -1,6 +1,7 @@
 #ifndef RGBDSLAM_TRACKING_POINT_WITH_TRACKING_HPP
 #define RGBDSLAM_TRACKING_POINT_WITH_TRACKING_HPP
 
+#include "extended_kalman_filter.hpp"
 #include "types.hpp"
 #include "coordinates/point_coordinates.hpp"
 #include "kalman_filter.hpp"
@@ -31,6 +32,22 @@ struct Point
      */
     double track(const WorldCoordinate& newDetectionCoordinates, const matrix33& newDetectionCovariance) noexcept;
 
+    /**
+     * \brief track this point coordinates using a new detection, with no depth infos
+     * \param[in] newDetection The new 3D detection
+     * \param[in] w2c World to camera matrix
+     * \return True if this track operation succeded
+     */
+    bool track_3d(const ScreenCoordinate& newDetection, const WorldToCameraMatrix& w2c) noexcept;
+
+    /**
+     * \brief track this point coordinates using a new detection, with no depth infos
+     * \param[in] newDetection The new 2D detection
+     * \param[in] w2c World to camera matrix
+     * \return True if this track operation succeded
+     */
+    bool track_2d(const ScreenCoordinate2D& newDetection, const WorldToCameraMatrix& w2c) noexcept;
+
     [[nodiscard]] bool is_moving() const noexcept { return _isMoving; }
 
   private:
@@ -41,6 +58,8 @@ struct Point
 
     // shared kalman filter, between all points
     inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::ExtendedKalmanFilter<3, 3>> _kalmanFuse3d = nullptr;
+    inline static std::unique_ptr<tracking::ExtendedKalmanFilter<3, 2>> _kalmanFuse2d = nullptr;
 
     bool _isMoving = false;
 };

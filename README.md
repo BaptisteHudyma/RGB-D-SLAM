@@ -62,9 +62,13 @@ make
 
 ### Run the tests
 ```
-./test_p3p
-./testPoseOptimization
+./testCoordinateSystems
 ./testKalmanFiltering
+./testMotionModel
+./testPoseOptimization
+./test_p3p
+./testPolygons
+./testTrackingAlgos
 ```
 
 When all the tests are validated, you can run the main SLAM algorithm

@@ -86,9 +86,7 @@ constexpr double maximumAngleForPlaneMatch_d =
 constexpr double maximumDistanceForPlaneMatch_mm =
         100; // Maximum distance between two plane d component to consider a match (millimeters)
 
-constexpr double matchSearchRadius_px = 30;  // Radius of the space around a point to search match points in pixels
-constexpr double maximumMatchDistance = 0.7; // Maximum distance between a point and his mach before refusing the
-                                             // match (closer to zero = more discriminating)
+constexpr double matchSearchRadius_px = 10; // Radius of the space around a point to search match points in pixels
 } // namespace matching
 
 namespace mapping {

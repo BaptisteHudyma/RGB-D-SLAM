@@ -12,18 +12,27 @@ namespace rgbd_slam::tracking {
 template<int N, int M> class StateEstimator
 {
   public:
-    virtual Eigen::Vector<double, N> state() const noexcept = 0;
-    virtual Eigen::Matrix<double, N, N> state_covariance() const noexcept = 0;
+    Eigen::Vector<double, N> state() const noexcept { return _feature; }
+    Eigen::Matrix<double, N, N> state_covariance() const noexcept { return _featureCovariance; }
 
-    virtual Eigen::Vector<double, M> measurment() const noexcept = 0;
-    virtual Eigen::Matrix<double, M, M> measurment_covariance() const noexcept = 0;
+    Eigen::Vector<double, M> measurment() const noexcept { return _measurment; }
+    Eigen::Matrix<double, M, M> measurment_covariance() const noexcept { return _measurmentCovariance; }
 
     /**
-     * Compute the new state estimate from the current state
+     * Compute the new state estimate from the current state (default is no dynamics)
      */
-    virtual Eigen::Vector<double, N> f(const Eigen::Vector<double, N>& state) const noexcept = 0;
+    virtual Eigen::Vector<double, N> f(const Eigen::Vector<double, N>& state) const noexcept
+    {
+        // no dynamics, just return the same state
+        return state;
+    }
 
-    virtual Eigen::Matrix<double, N, N> f_jacobian(const Eigen::Vector<double, N>& state) const noexcept = 0;
+    Eigen::Matrix<double, N, N> f_jacobian(const Eigen::Vector<double, N>& state) const noexcept
+    {
+        std::ignore = state;
+        // no dynamic jacobian
+        return Eigen::Matrix<double, N, N>::Identity();
+    }
 
     /**
      * Compute the measurment equation from the given state
@@ -31,6 +40,23 @@ template<int N, int M> class StateEstimator
     virtual Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept = 0;
 
     virtual Eigen::Matrix<double, M, N> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept = 0;
+
+    StateEstimator(const Eigen::Vector<double, N>& feature,
+                   const Eigen::Matrix<double, N, N>& featureCovariance,
+                   const Eigen::Vector<double, M>& measurment,
+                   const Eigen::Matrix<double, M, M>& measurmentCovariance) :
+        _feature(feature),
+        _featureCovariance(featureCovariance),
+        _measurment(measurment),
+        _measurmentCovariance(measurmentCovariance)
+    {
+    }
+
+  private:
+    const Eigen::Vector<double, N> _feature;
+    const Eigen::Matrix<double, N, N> _featureCovariance;
+    const Eigen::Vector<double, M> _measurment;
+    const Eigen::Matrix<double, M, M> _measurmentCovariance;
 };
 
 /**

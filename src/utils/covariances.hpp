@@ -71,20 +71,14 @@ template<int N, int M> Eigen::Matrix<double, M, M> propagate_covariance(const Ei
 [[nodiscard]] double get_depth_quantization(const double depht) noexcept;
 
 /**
- * \brief Compute a screen 2d point covariance from a given point
- *
- * \param[in] point The coordinates of this 3D point (world space)
- * \param[in] pointCovariance The covariance associated with this point (world space)
- */
-[[nodiscard]] ScreenCoordinate2dCovariance get_screen_2d_point_covariance(
-        const WorldCoordinate& point,
-        const WorldCoordinateCovariance& pointCovariance,
-        const WorldToCameraMatrix& worldToCamera) noexcept;
-
-/**
  * \brief Compute a camera to 2D screen jacobian
  */
-matrix23 get_camera_to_screen_jacobian(const CameraCoordinate point);
+matrix23 get_camera_to_screen2d_jacobian(const CameraCoordinate& point);
+
+/**
+ * \brief Compute a camera to 3D screen jacobian
+ */
+matrix33 get_camera_to_screen_jacobian(const CameraCoordinate& point);
 
 /**
  * \brief Compute a screen point covariance from a given point

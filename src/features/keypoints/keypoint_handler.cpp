@@ -30,16 +30,8 @@ double get_depth(const cv::Mat_<float>& depthImage, const cv::Point2f& depthCoor
     return 0.0;
 }
 
-Keypoint_Handler::Keypoint_Handler(const uint depthImageCols,
-                                   const uint depthImageRows,
-                                   const double maxMatchDistance) :
-    _maxMatchDistance(maxMatchDistance)
+Keypoint_Handler::Keypoint_Handler(const uint depthImageCols, const uint depthImageRows)
 {
-    if (_maxMatchDistance <= 0)
-    {
-        outputs::log_error("Maximum matching distance must be > 0");
-        exit(-1);
-    }
     // knn matcher
     _featuresMatcher = cv::BFMatcher::create(cv::NORM_HAMMING, false);
     assert(_featuresMatcher->isMaskSupported()); // TODO: find another way to handle matchers without masks
