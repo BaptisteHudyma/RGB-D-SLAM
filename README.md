@@ -15,6 +15,23 @@ The primitive detection is based on [Fast Cylinder and Plane Extraction from Dep
 For now, the program can do basic visual odometry with local mapping, and do not uses loop closures.
 The program runs above real time (200 - 400 FPS), the feature extraction process being the most time consumming part (50%).
 
+
+## Run example
+Here is a run example on the dataset icl_living_room_kt2, from TUM.
+
+![SLAM run example](/Medias/SLAM_run_2.gif)
+
+The left image is the input RGB image.
+It has an associated depth image, not shown here for clarity.
+
+The right image is the global map, seen from above.
+
+
+The colored lines are the map plane boundaries, and the points with a colored dot.
+The top bar indicates the average FPS (excluding the visualisation), and the map content as "FeatureType: NumberInLocalMap: NumberInGlobalMap".
+
+P2D corresponds to 2D points, and stays to zero because this dataset as almost no depth discontinuity.
+
 ## Examples
 Some examples are provided, but their datasets must be downloaded separatly.
 A configuration file must be provided for every example, based on the model given in **configuration_example.yaml**.
