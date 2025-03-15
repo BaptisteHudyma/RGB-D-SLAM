@@ -19,12 +19,30 @@
 namespace rgbd_slam::map_management {
 
 /**
+ * This class manages the map feature ids
+ */
+class MapIdAllocator
+{
+  public:
+    static constexpr size_t invalidId = 0;
+
+    static size_t get_new_id()
+    {
+        _idAllocator = std::max(_idAllocator + 1, 1uL);
+        return _idAllocator;
+    }
+
+  private:
+    inline static size_t _idAllocator = invalidId;
+};
+
+/**
  * \brief Interface for a map feature. All map features should inherit this
  */
 template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedFeaturesObject> class IMapFeature
 {
   public:
-    IMapFeature() : _id(++_idAllocator) {};
+    IMapFeature() : _id(MapIdAllocator::get_new_id()) {};
     explicit IMapFeature(const size_t id) : _id(id) {};
 
     virtual ~IMapFeature() = default;
@@ -155,7 +173,7 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
 
     size_t _failedTrackingCount = 0;
     int _successivMatchedCount = 0;
-    const size_t _id;                        // uniq id of this point in the program
+    const size_t _id;                        // uniq id of this feature in the program
     int _matchIndex = FIRST_DETECTION_INDEX; // index of the last matched feature id
 
   protected:
@@ -164,9 +182,6 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
                                                  const CameraToWorldMatrix& cameraToWorld) noexcept = 0;
 
     virtual void update_no_match() noexcept = 0;
-
-  private:
-    inline static uint _idAllocator = 0;
 };
 
 /**
@@ -324,7 +339,7 @@ class Feature_Map
      * \brief Get the feature that were tracked for the last tracking step
      * \param[in] worldToCamera A matrix to convert from world to camera space
      * \param[out] trackedFeatures The object thta will contain the tracked features
-     * \param[in] localMapDropChance Chance to randomly drop a local map point and not return it
+     * \param[in] localMapDropChance Chance to randomly drop a local map feature and not return it
      */
     void get_tracked_features(const WorldToCameraMatrix& worldToCamera,
                               TrackedFeaturesContainer& trackedFeatures,
@@ -413,7 +428,7 @@ class Feature_Map
 
         const auto& detected = get_detected_feature(detectedFeatures);
 
-        // Add all unmatched points to staged point container
+        // Add all unmatched points to staged feature container
         const size_t featureVectorSize = detected.size();
         assert(featureVectorSize == static_cast<size_t>(_isDetectedFeatureMatched.size()));
         for (unsigned int i = 0; i < featureVectorSize; ++i)
@@ -515,7 +530,7 @@ class Feature_Map
             return true;
         }
 
-        // point associated with id was not find
+        // feature associated with id was not find
         return false;
     }
 
@@ -620,7 +635,7 @@ class Feature_Map
         for (auto& [mapId, mapFeature]: _localMap)
         {
             assert(mapId == mapFeature._id);
-            // start by reseting this point
+            // start by reseting this feature
             mapFeature.mark_unmatched();
 
             if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
@@ -644,7 +659,7 @@ class Feature_Map
         for (auto& [mapId, mapFeature]: _stagedMap)
         {
             assert(mapId == mapFeature._id);
-            // start by reseting this point
+            // start by reseting this feature
             mapFeature.mark_unmatched();
 
             if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
@@ -702,7 +717,7 @@ class Feature_Map
                     mapFeature.write_to_file(mapWriter);
                 }
 
-                // Remove useless point
+                // Remove useless feature
                 featureMapIterator = _localMap.erase(featureMapIterator);
             }
             else
@@ -786,7 +801,7 @@ class Feature_Map
                 // write to file
                 mapFeature.write_to_file(mapWriter);
 
-                // Remove useless point
+                // Remove useless feature
                 featureMapIterator = _localMap.erase(featureMapIterator);
             }
             else
@@ -808,7 +823,7 @@ class Feature_Map
             stagedFeature.update_unmatched();
             if (stagedFeature.should_remove_from_staged())
             {
-                // Remove useless point
+                // Remove useless feature
                 stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);
             }
             else
