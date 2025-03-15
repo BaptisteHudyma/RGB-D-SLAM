@@ -10,12 +10,13 @@
 
 namespace rgbd_slam::utils {
 
-template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance) noexcept
+template<int N>
+[[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance, std::string& reason) noexcept
 {
     // no invalid values
     if (covariance.hasNaN())
     {
-        outputs::log_warning("Covariance has invalid values");
+        reason = "invalid values";
         return false;
     }
 
@@ -28,7 +29,7 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
     // covariance should be symetrical
     if (!covariance.isApprox(covariance.transpose()))
     {
-        outputs::log_warning("Covariance is not symetrical");
+        reason = "not symetrical";
         return false;
     }
 
@@ -36,10 +37,30 @@ template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<doubl
     const auto ldlt = covariance.template selfadjointView<Eigen::Upper>().ldlt();
     if (ldlt.info() == Eigen::NumericalIssue || !ldlt.isPositive())
     {
-        outputs::log_warning("Covariance is not positive semi definite");
+        reason = "not positive semi definite";
         return false;
     }
     return true;
+}
+
+template<int N> [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance) noexcept
+{
+    std::string reason;
+    return is_covariance_valid(covariance, reason);
+}
+
+/**
+ * \brief First order covariance propragation, with numerical approximation on diagonal
+ */
+template<int N, int M> Eigen::Matrix<double, M, M> propagate_covariance(const Eigen::Matrix<double, N, N>& inCovariance,
+                                                                        const Eigen::Matrix<double, M, N>& jacobian,
+                                                                        const double epsilon = 0.0)
+{
+    Eigen::Matrix<double, M, M> res =
+            (jacobian * inCovariance.template selfadjointView<Eigen::Lower>() * jacobian.transpose())
+                    .template selfadjointView<Eigen::Lower>();
+    res.diagonal() += vectorxd::Constant(res.rows(), epsilon);
+    return res;
 }
 
 /**

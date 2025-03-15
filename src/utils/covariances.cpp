@@ -27,7 +27,7 @@ ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, con
                              {0.0, cameraF.y() / point.z(), -cameraF.y() * point.y() / SQR(point.z())},
                              {0.0, 0.0, 1.0}};
     ScreenCoordinateCovariance screenPointCovariance;
-    screenPointCovariance << (jacobian * pointCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose());
+    screenPointCovariance << propagate_covariance(pointCovariance, jacobian);
     return screenPointCovariance;
 }
 
@@ -50,7 +50,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCova
     const matrix33& rotation = worldToCamera.rotation();
 
     CameraCoordinateCovariance cov;
-    cov << rotation * worldPointCovariance.selfadjointView<Eigen::Lower>() * rotation.transpose() + poseCovariance;
+    cov << propagate_covariance(worldPointCovariance, rotation) + poseCovariance;
     return cov;
 }
 
@@ -61,7 +61,7 @@ WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovar
     const matrix33& rotation = cameraToWorld.rotation();
 
     WorldCoordinateCovariance cov;
-    cov << rotation * cameraPointCovariance.selfadjointView<Eigen::Lower>() * rotation.transpose() + poseCovariance;
+    cov << propagate_covariance(cameraPointCovariance, rotation) + poseCovariance;
     return cov;
 }
 
@@ -89,7 +89,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
                              {0.0, 0.0, 1.0}};
 
     CameraCoordinateCovariance cameraPointCovariance;
-    cameraPointCovariance << jacobian * screenPointCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose();
+    cameraPointCovariance << propagate_covariance(screenPointCovariance, jacobian);
     return cameraPointCovariance;
 }
 
@@ -137,12 +137,14 @@ matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const
 
     const matrix44& planeParameterCovariance =
             // add a little bit of variance on the diagonal to counter floatting points errors
-            (jacobian * pointCloudCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose()) +
-            matrix44::Identity() * 0.01;
-    if (not is_covariance_valid(planeParameterCovariance))
+            propagate_covariance(pointCloudCovariance, jacobian, 0.01);
+
+    std::string failureReason;
+    if (not is_covariance_valid(planeParameterCovariance, failureReason))
     {
         throw std::logic_error(
-                "compute_plane_covariance: planeParameterCovariance is an invalid covariance matrix after process");
+                "compute_plane_covariance: planeParameterCovariance is an invalid covariance matrix after process: " +
+                failureReason);
     }
     return planeParameterCovariance;
 }
@@ -180,8 +182,7 @@ matrix33 compute_reduced_plane_point_cloud_covariance(const PlaneCoordinates& pl
 
     const matrix33& pointCloudCovariance =
             // add a little bit of variance on the diagonal to counter floatting points errors
-            (jacobian * planeCloudCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose()) +
-            matrix33::Identity() * 0.01;
+            propagate_covariance(planeCloudCovariance, jacobian, 0.01);
     if (not is_covariance_valid(pointCloudCovariance))
     {
         throw std::logic_error(
@@ -209,13 +210,16 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
     // covert covariance to world
     const matrix33& rotation = cameraToWorldMatrix.rotation();
     const matrix33& pointCloudWorlCovariance =
-            rotation * pointCloudCovariance * rotation.transpose() + worldPoseCovariance;
-    if (not is_covariance_valid(pointCloudWorlCovariance))
+            propagate_covariance(pointCloudCovariance, rotation) + worldPoseCovariance;
+
+    std::string failureReason;
+    if (not is_covariance_valid(pointCloudWorlCovariance, failureReason))
     {
         throw std::logic_error(
-                "get_world_plane_covariance: pointCloudWorlCovariance is an invalid covariance matrix after process");
+                "get_world_plane_covariance: pointCloudWorlCovariance is an invalid covariance matrix after process: " +
+                failureReason);
     }
-    // conver back to plane hessian form
+    // convert back to plane hessian form
     return compute_plane_covariance(planeCoordinates.to_world_coordinates(planeCameraToWorldMatrix),
                                     pointCloudWorlCovariance);
 }
