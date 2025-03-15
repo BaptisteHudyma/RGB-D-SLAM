@@ -104,7 +104,8 @@ matches_containers::match_container get_matched_points(const utils::Pose& endPos
                     new map_management::PointOptimizationFeature(transformedPoint, // screenPoint
                                                                  worldPointStart,  // worldPoint
                                                                  vector3::Ones(),
-                                                                 0 // uniq map id
+                                                                 0, // uniq map id
+                                                                 0  // detected feature id
                                                                  )));
         }
         else
@@ -136,8 +137,13 @@ matches_containers::match_container get_matched_planes(const utils::Pose& endPos
     for (const PlaneWorldCoordinates& worldPlane: planes)
     {
         const PlaneCameraCoordinates& cameraPlane = worldPlane.to_camera_coordinates(worldToCamera);
-        matchedPlanes.push_back(matches_containers::feat_ptr(
-                new map_management::PlaneOptimizationFeature(cameraPlane, worldPlane, vector4::Ones(), 0)));
+        matchedPlanes.push_back(
+                matches_containers::feat_ptr(new map_management::PlaneOptimizationFeature(cameraPlane,
+                                                                                          worldPlane,
+                                                                                          vector4::Ones(),
+                                                                                          0, // map feature id
+                                                                                          0  // detected feature id
+                                                                                          )));
     }
     return matchedPlanes;
 }

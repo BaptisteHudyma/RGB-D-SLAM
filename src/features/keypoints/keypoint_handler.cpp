@@ -231,17 +231,19 @@ int Keypoint_Handler::get_tracking_match_index(const size_t mapPointId,
     return INVALID_MATCH_INDEX;
 }
 
-int Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoint,
-                                      const cv::Mat& mapPointDescriptor,
-                                      const vectorb& isKeyPointMatchedContainer,
-                                      const double searchSpaceRadius) const noexcept
+Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_indexes(const ScreenCoordinate2D& projectedMapPoint,
+                                                                    const cv::Mat& mapPointDescriptor,
+                                                                    const vectorb& isKeyPointMatchedContainer,
+                                                                    const double searchSpaceRadius) const noexcept
 {
     assert(_featuresMatcher != nullptr);
+    Keypoint_Handler::matchIndexSet matchSet;
+
     assert(static_cast<size_t>(isKeyPointMatchedContainer.size()) == _keypoints.size());
 
     // cannot compute matches without a match or descriptors
-    if (_keypoints.empty() or _descriptors.rows <= 0)
-        return INVALID_MATCH_INDEX;
+    if (_keypoints.empty() or _descriptors.empty())
+        return matchSet;
 
     constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
     static_assert(cellSize > 0);
@@ -268,16 +270,15 @@ int Keypoint_Handler::get_match_index(const ScreenCoordinate2D& projectedMapPoin
         if (firstMatch[0].distance < _maxMatchDistance * firstMatch[1].distance)
         {
             int id = firstMatch[0].trainIdx;
-            return id; // this frame key point
+            matchSet.emplace(id);
         }
-        return INVALID_MATCH_INDEX;
     }
     else if (firstMatch.size() == 1)
     {
         int id = firstMatch[0].trainIdx;
-        return id; // this frame key point
+        matchSet.emplace(id);
     }
-    return INVALID_MATCH_INDEX;
+    return matchSet;
 }
 
 } // namespace rgbd_slam::features::keypoints

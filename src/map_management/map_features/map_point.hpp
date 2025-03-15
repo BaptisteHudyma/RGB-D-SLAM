@@ -18,7 +18,8 @@ struct PointOptimizationFeature : public matches_containers::IOptimizationFeatur
     PointOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                              const WorldCoordinate& mapPoint,
                              const vector3& mapPointStandardDev,
-                             const size_t mapFeatureId);
+                             const size_t mapFeatureId,
+                             const size_t detectedFeatureId);
 
     size_t get_feature_part_count() const noexcept override;
 
@@ -73,12 +74,12 @@ class MapPoint :
 
     ~MapPoint() override = default;
 
-    [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
-                                 const WorldToCameraMatrix& worldToCamera,
-                                 const vectorb& isDetectedFeatureMatched,
-                                 matches_containers::match_container& matches,
-                                 const bool shouldAddToMatches = true,
-                                 const bool useAdvancedSearch = false) const noexcept override;
+    [[nodiscard]] matchIndexSet find_matches(const DetectedKeypointsObject& detectedFeatures,
+                                             const WorldToCameraMatrix& worldToCamera,
+                                             const vectorb& isDetectedFeatureMatched,
+                                             matches_containers::match_container& matches,
+                                             const bool shouldAddToMatches = true,
+                                             const bool useAdvancedSearch = false) const noexcept override;
 
     [[nodiscard]] bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                       TrackedPointsObject& trackedFeatures,
@@ -145,7 +146,7 @@ class LocalMapPoint : public MapPoint, public ILocalMapFeature<StagedMapPoint>
     LocalMapPoint(const WorldCoordinate& coordinates,
                   const WorldCoordinateCovariance& covariance,
                   const cv::Mat& descriptor,
-                  const int matchIndex);
+                  const matchIndexSet& matchIndexes);
 
     [[nodiscard]] bool is_lost() const noexcept override;
 };
@@ -179,7 +180,7 @@ class localPointMap :
             const auto upgraded = dynamic_cast<UpgradedPoint2D&>(*upgradedfeature);
 
             add_to_local_map(LocalMapPoint(
-                    upgraded._coordinates, upgraded._covariance, upgraded._descriptor, upgraded._matchIndex));
+                    upgraded._coordinates, upgraded._covariance, upgraded._descriptor, upgraded._matchIndexes));
         }
         else
         {
