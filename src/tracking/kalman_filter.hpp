@@ -64,28 +64,23 @@ template<int N, int M> class SharedKalmanFilter
         // Get new raw estimate
         const Eigen::Vector<double, N>& newStateEstimate = _systemDynamics * currentState;
         const Eigen::Matrix<double, N, N>& estimateErrorCovariance =
-                _systemDynamics * stateNoiseCovariance * _systemDynamics.transpose() + _processNoiseCovariance;
+                utils::propagate_covariance(stateNoiseCovariance, _systemDynamics) + _processNoiseCovariance;
 
         // compute inovation covariance
-        const Eigen::Matrix<double, M, M>& inovationCovariance =
-                _outputMatrix * estimateErrorCovariance * _outputMatrix.transpose() + measurementNoiseCovariance;
-
-        // cannot inverse the inovation covariance matrix, no gain to compute (gain too small)
-        if (utils::double_equal(inovationCovariance.determinant(), 0))
-        {
-            // do not update state or covariance
-            if (not utils::is_covariance_valid(estimateErrorCovariance))
-            {
-                throw std::logic_error(
-                        "SharedKalmanFilter::get_new_state: produced an invalid covariance estimateErrorCovariance");
-            }
-            return std::make_pair(newStateEstimate, estimateErrorCovariance);
-        }
+        const Eigen::Matrix<double, M, M>& inovation =
+                utils::propagate_covariance(estimateErrorCovariance, _outputMatrix) + measurementNoiseCovariance;
+        // cannot inverse the inovation covariance matrix: use pseudoinverse.
+        // it is slower but mathematicaly stable
+        Eigen::Matrix<double, M, M> inovationInverted;
+        if (utils::double_equal(inovation.determinant(), 0))
+            inovationInverted = inovation.completeOrthogonalDecomposition().pseudoInverse();
+        else
+            inovationInverted = inovation.inverse();
 
         // compute Kalman gain
         const Eigen::Matrix<double, N, M>& kalmanGain =
                 (estimateErrorCovariance.template selfadjointView<Eigen::Lower>()) * _outputMatrix.transpose() *
-                inovationCovariance.inverse();
+                inovationInverted;
 
         const Eigen::Vector<double, N>& newState =
                 newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate);
@@ -98,8 +93,8 @@ template<int N, int M> class SharedKalmanFilter
         // Alternative non Joseph form
         /*const Eigen::Matrix<double, N, N>& temp = _identity - kalmanGain * _outputMatrix;
         const Eigen::Matrix<double, N, N>& newCovariance =
-                temp * estimateErrorCovariance * temp.transpose() +
-                kalmanGain * measurementNoiseCovariance * kalmanGain.transpose();*/
+                utils::propagate_covariance(estimateErrorCovariance, temp) +
+                utils::propagate_covariance(measurementNoiseCovariance, kalmanGain);*/
 
         if (not utils::is_covariance_valid(newCovariance))
         {
