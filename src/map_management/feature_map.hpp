@@ -101,23 +101,19 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
      * \param[in] poseCovariance The covariance of the pose where the matchedFeature was detected
      * \param[in] cameraToWorld The matrix to transform from the camera pose where matchedFeature was detected to world
      * coordinates
+     * \return True if this update succeeded.
      */
-    void update_matched(const DetectedFeatureType& matchedFeature,
-                        const matrix33& poseCovariance,
-                        const CameraToWorldMatrix& cameraToWorld) noexcept
+    [[nodiscard]] virtual bool update_with_match(const DetectedFeatureType& matchedFeature,
+                                                 const matrix33& poseCovariance,
+                                                 const CameraToWorldMatrix& cameraToWorld) noexcept = 0;
+
+    // signal the system that this feature was matched
+    void update_matched()
     {
-        if (update_with_match(matchedFeature, poseCovariance, cameraToWorld))
-        {
-            // only update if tracking succedded
-            _failedTrackingCount = 0;
-            ++_successivMatchedCount;
-        }
-        else
-        {
-            // tracking failed, consider this match as a failure
-            update_unmatched();
-        }
-    };
+        // only update if tracking succedded
+        _failedTrackingCount = 0;
+        ++_successivMatchedCount;
+    }
 
     /**
      * \brief Update the feature, with the no match status
@@ -177,10 +173,6 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
     int _matchIndex = FIRST_DETECTION_INDEX; // index of the last matched feature id
 
   protected:
-    [[nodiscard]] virtual bool update_with_match(const DetectedFeatureType& matchedFeature,
-                                                 const matrix33& poseCovariance,
-                                                 const CameraToWorldMatrix& cameraToWorld) noexcept = 0;
-
     virtual void update_no_match() noexcept = 0;
 };
 
@@ -690,6 +682,8 @@ class Feature_Map
         typename localMapType::iterator featureMapIterator = _localMap.begin();
         while (featureMapIterator != _localMap.end())
         {
+            bool hasSuccess = false;
+
             // Update the matched/unmatched status
             MapFeatureType& mapFeature = featureMapIterator->second;
             assert(featureMapIterator->first == mapFeature._id);
@@ -702,12 +696,15 @@ class Feature_Map
                 assert(matchedFeatureIndex < detectedFeatureObject.size());
 
                 const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);
-                mapFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);
+                const bool res = mapFeature.update_with_match(detectedFeature, poseCovariance, cameraToWorld);
+                if (res)
+                    hasSuccess = true;
             }
+
+            if (hasSuccess)
+                mapFeature.update_matched();
             else
-            {
                 mapFeature.update_unmatched();
-            }
 
             if (mapFeature.is_lost())
             {
@@ -738,6 +735,7 @@ class Feature_Map
         typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();
         while (stagedFeatureIterator != _stagedMap.end())
         {
+            bool hasSuccess = false;
             StagedFeatureType& stagedFeature = stagedFeatureIterator->second;
             assert(stagedFeatureIterator->first == stagedFeature._id);
 
@@ -749,12 +747,15 @@ class Feature_Map
                 assert(matchedFeatureIndex < detectedFeatureObject.size());
 
                 const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(matchedFeatureIndex);
-                stagedFeature.update_matched(detectedFeature, poseCovariance, cameraToWorld);
+                const bool res = stagedFeature.update_with_match(detectedFeature, poseCovariance, cameraToWorld);
+                if (res)
+                    hasSuccess = true;
             }
+
+            if (hasSuccess)
+                stagedFeature.update_matched();
             else
-            {
                 stagedFeature.update_unmatched();
-            }
 
             if (stagedFeature.should_add_to_local_map())
             {

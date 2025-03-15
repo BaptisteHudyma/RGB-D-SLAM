@@ -102,11 +102,11 @@ class MapPoint :
 
     [[nodiscard]] bool is_moving() const noexcept override { return tracking::Point::is_moving(); }
 
-  protected:
     [[nodiscard]] bool update_with_match(const DetectedPointType& matchedFeature,
                                          const matrix33& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
+  protected:
     void update_no_match() noexcept override;
 };
 
