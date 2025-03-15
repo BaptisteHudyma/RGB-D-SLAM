@@ -94,11 +94,11 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
         return false;
     }
 
-  protected:
     [[nodiscard]] bool update_with_match(const DetectedPlaneType& matchedFeature,
                                          const matrix33& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
+  protected:
     void update_no_match() noexcept override;
 };
 
