@@ -16,7 +16,8 @@ struct PlaneOptimizationFeature : public matches_containers::IOptimizationFeatur
     PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
                              const PlaneWorldCoordinates& mapPlane,
                              const vector4& mapPlaneStandardDev,
-                             const size_t mapFeatureId);
+                             const size_t mapFeatureId,
+                             const size_t detectedFeatureId);
 
     ~PlaneOptimizationFeature() override = default;
 
@@ -61,12 +62,12 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
 
     ~MapPlane() override = default;
 
-    [[nodiscard]] int find_match(const DetectedPlaneObject& detectedFeatures,
-                                 const WorldToCameraMatrix& worldToCamera,
-                                 const vectorb& isDetectedFeatureMatched,
-                                 matches_containers::match_container& matches,
-                                 const bool shouldAddToMatches = true,
-                                 const bool useAdvancedSearch = false) const noexcept override;
+    [[nodiscard]] matchIndexSet find_matches(const DetectedPlaneObject& detectedFeatures,
+                                             const WorldToCameraMatrix& worldToCamera,
+                                             const vectorb& isDetectedFeatureMatched,
+                                             matches_containers::match_container& matches,
+                                             const bool shouldAddToMatches = true,
+                                             const bool useAdvancedSearch = false) const noexcept override;
 
     [[nodiscard]] bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                       TrackedPlaneObject& trackedFeatures,

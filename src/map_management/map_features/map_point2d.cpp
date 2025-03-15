@@ -15,8 +15,9 @@ namespace rgbd_slam::map_management {
 Point2dOptimizationFeature::Point2dOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                                                        const InverseDepthWorldPoint& mapPoint,
                                                        const vector6& mapPointStandardDev,
-                                                       const size_t mapFeatureId) :
-    matches_containers::IOptimizationFeature(mapFeatureId),
+                                                       const size_t mapFeatureId,
+                                                       const size_t detectedFeatureId) :
+    matches_containers::IOptimizationFeature(mapFeatureId, detectedFeatureId),
     _matchedPoint(matchedPoint),
     _mapPoint(mapPoint),
     _mapPointStandardDev(mapPointStandardDev) {};
@@ -65,7 +66,8 @@ matches_containers::feat_ptr Point2dOptimizationFeature::compute_random_variatio
             _matchedPoint,
             InverseDepthWorldPoint(variatedObservationPoint, variatedInverseDepth, variatedTheta, variatedPhi),
             _mapPointStandardDev,
-            _idInMap);
+            _idInMap,
+            _detectedFeatureId);
 }
 
 FeatureType Point2dOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point2d; }
@@ -74,13 +76,15 @@ FeatureType Point2dOptimizationFeature::get_feature_type() const noexcept { retu
  * MapPoint
  */
 
-int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
-                           const WorldToCameraMatrix& worldToCamera,
-                           const vectorb& isDetectedFeatureMatched,
-                           matches_containers::match_container& matches,
-                           const bool shouldAddToMatches,
-                           const bool useAdvancedSearch) const noexcept
+matchIndexSet MapPoint2D::find_matches(const DetectedKeypointsObject& detectedFeatures,
+                                       const WorldToCameraMatrix& worldToCamera,
+                                       const vectorb& isDetectedFeatureMatched,
+                                       matches_containers::match_container& matches,
+                                       const bool shouldAddToMatches,
+                                       const bool useAdvancedSearch) const noexcept
 {
+    matchIndexSet matchIndexRes;
+
     assert(not _descriptor.empty());
     constexpr double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
     constexpr double advancedSearchSpaceRadius = parameters::matching::matchSearchRadius_px * 2;
@@ -95,7 +99,7 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
         if (_coordinates.to_world_coordinates().to_screen_coordinates(worldToCamera, screenCoordinates))
         {
             // TODO use a real match to 2D function, this one will fail for 2D points
-            matchIndex = detectedFeatures.get_match_index(
+            matchIndexRes = detectedFeatures.get_match_indexes(
                     screenCoordinates, _descriptor, isDetectedFeatureMatched, searchRadius);
         }
     }
@@ -103,7 +107,7 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
     if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
     {
         // unmatched point
-        return UNMATCHED_FEATURE_INDEX;
+        return matchIndexRes;
     }
 
     assert(matchIndex >= 0);
@@ -116,13 +120,16 @@ int MapPoint2D::find_match(const DetectedKeypointsObject& detectedFeatures,
 
     if (shouldAddToMatches)
     {
-        matches.push_back(
-                std::make_shared<Point2dOptimizationFeature>(detectedFeatures.get_keypoint(matchIndex).get_2D(),
-                                                             _coordinates,
-                                                             _covariance.diagonal().cwiseSqrt(),
-                                                             _id));
+        for (const auto i: matchIndexRes)
+        {
+            matches.push_back(std::make_shared<Point2dOptimizationFeature>(detectedFeatures.get_keypoint(i).get_2D(),
+                                                                           _coordinates,
+                                                                           _covariance.diagonal().cwiseSqrt(),
+                                                                           _id,
+                                                                           i));
+        }
     }
-    return matchIndex;
+    return matchIndexRes;
 }
 
 bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
@@ -213,7 +220,7 @@ bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
             const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
 
             upgradedFeature = std::make_shared<UpgradedPoint2D>(
-                    worldCoords, compute_cartesian_covariance(_covariance, jacobian), _descriptor, _matchIndex);
+                    worldCoords, compute_cartesian_covariance(_covariance, jacobian), _descriptor, _matchIndexes);
             return true;
         }
     }
@@ -229,7 +236,7 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
                                    const matrix33& poseCovariance,
                                    const CameraToWorldMatrix& cameraToWorld) noexcept
 {
-    if (_matchIndex < 0)
+    if (_matchIndexes.empty())
     {
         outputs::log_error("Tries to call the function update_with_match with no associated match");
         return false;
@@ -285,7 +292,7 @@ LocalMapPoint2D::LocalMapPoint2D(const StagedMapPoint2D& stagedPoint) : MapPoint
     // new map point, new color
     set_color();
 
-    _matchIndex = stagedPoint._matchIndex;
+    _matchIndexes = stagedPoint._matchIndexes;
     _successivMatchedCount = stagedPoint._successivMatchedCount;
 }
 

@@ -16,8 +16,9 @@ namespace rgbd_slam::map_management {
 PointOptimizationFeature::PointOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                                                    const WorldCoordinate& mapPoint,
                                                    const vector3& mapPointStandardDev,
-                                                   const size_t mapFeatureId) :
-    matches_containers::IOptimizationFeature(mapFeatureId),
+                                                   const size_t mapFeatureId,
+                                                   const size_t detectedFeatureId) :
+    matches_containers::IOptimizationFeature(mapFeatureId, detectedFeatureId),
     _matchedPoint(matchedPoint),
     _mapPoint(mapPoint),
     _mapPointStandardDev(mapPointStandardDev) {};
@@ -51,7 +52,7 @@ matches_containers::feat_ptr PointOptimizationFeature::compute_random_variation(
     variatedCoordinates += utils::Random::get_normal_doubles<3>().cwiseProduct(_mapPointStandardDev);
 
     return std::make_shared<PointOptimizationFeature>(
-            _matchedPoint, variatedCoordinates, _mapPointStandardDev, _idInMap);
+            _matchedPoint, variatedCoordinates, _mapPointStandardDev, _idInMap, _detectedFeatureId);
 }
 
 FeatureType PointOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point; }
@@ -60,53 +61,49 @@ FeatureType PointOptimizationFeature::get_feature_type() const noexcept { return
  * MapPoint
  */
 
-int MapPoint::find_match(const DetectedKeypointsObject& detectedFeatures,
-                         const WorldToCameraMatrix& worldToCamera,
-                         const vectorb& isDetectedFeatureMatched,
-                         matches_containers::match_container& matches,
-                         const bool shouldAddToMatches,
-                         const bool useAdvancedSearch) const noexcept
+matchIndexSet MapPoint::find_matches(const DetectedKeypointsObject& detectedFeatures,
+                                     const WorldToCameraMatrix& worldToCamera,
+                                     const vectorb& isDetectedFeatureMatched,
+                                     matches_containers::match_container& matches,
+                                     const bool shouldAddToMatches,
+                                     const bool useAdvancedSearch) const noexcept
 {
     constexpr double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
     constexpr double advancedSearchSpaceRadius = parameters::matching::matchSearchRadius_px * 2;
     const double searchRadius = useAdvancedSearch ? advancedSearchSpaceRadius : searchSpaceRadius;
 
     // try to match with tracking
-    int matchIndex = detectedFeatures.get_tracking_match_index(_id, isDetectedFeatureMatched);
-    if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
+    matchIndexSet matchIndexRes;
+    int matchIndex = detectedFeatures.get_tracking_match_index(_id);
+    if (matchIndex != features::keypoints::INVALID_MATCH_INDEX)
+    {
+        matchIndexRes.emplace(matchIndex);
+    }
+    else
     {
         // No match: try to find match in a window around the point
         ScreenCoordinate2D projectedMapPoint;
         const bool isScreenCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamera, projectedMapPoint);
         if (isScreenCoordinatesValid)
         {
-            matchIndex = detectedFeatures.get_match_index(
+            // TODO: add multiple match support
+            matchIndexRes = detectedFeatures.get_match_indexes(
                     projectedMapPoint, _descriptor, isDetectedFeatureMatched, searchRadius);
         }
     }
 
-    if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
-    {
-        // unmatched point
-        return UNMATCHED_FEATURE_INDEX;
-    }
-
-    assert(matchIndex >= 0);
-    assert(static_cast<Eigen::Index>(matchIndex) < isDetectedFeatureMatched.size());
-    if (isDetectedFeatureMatched[matchIndex])
-    {
-        // point was already matched
-        outputs::log_error("The requested point unique index is already matched");
-    }
-
     if (shouldAddToMatches)
     {
-        matches.push_back(std::make_shared<PointOptimizationFeature>(detectedFeatures.get_keypoint(matchIndex).get_2D(),
-                                                                     _coordinates,
-                                                                     _covariance.diagonal().cwiseSqrt(),
-                                                                     _id));
+        for (const auto i: matchIndexRes)
+        {
+            matches.push_back(std::make_shared<PointOptimizationFeature>(detectedFeatures.get_keypoint(i).get_2D(),
+                                                                         _coordinates,
+                                                                         _covariance.diagonal().cwiseSqrt(),
+                                                                         _id,
+                                                                         i));
+        }
     }
-    return matchIndex;
+    return matchIndexRes;
 }
 
 bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
@@ -185,7 +182,7 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
                                  const matrix33& poseCovariance,
                                  const CameraToWorldMatrix& cameraToWorld) noexcept
 {
-    if (_matchIndex < 0)
+    if (_matchIndexes.empty())
     {
         outputs::log_error("Tries to call the function update_with_match with no associated match");
         return false;
@@ -279,20 +276,20 @@ LocalMapPoint::LocalMapPoint(const StagedMapPoint& stagedPoint) :
     // new map point, new color
     set_color();
 
-    _matchIndex = stagedPoint._matchIndex;
+    _matchIndexes = stagedPoint._matchIndexes;
     _successivMatchedCount = stagedPoint._successivMatchedCount;
 }
 
 LocalMapPoint::LocalMapPoint(const WorldCoordinate& coordinates,
                              const WorldCoordinateCovariance& covariance,
                              const cv::Mat& descriptor,
-                             const int matchIndex) :
+                             const matchIndexSet& matchIndexes) :
     MapPoint(coordinates, covariance, descriptor)
 {
     // new map point, new color
     set_color();
 
-    _matchIndex = matchIndex;
+    _matchIndexes = matchIndexes;
     _successivMatchedCount = 1;
 }
 

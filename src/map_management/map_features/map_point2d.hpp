@@ -17,7 +17,8 @@ struct Point2dOptimizationFeature : public matches_containers::IOptimizationFeat
     Point2dOptimizationFeature(const ScreenCoordinate2D& matchedPoint,
                                const InverseDepthWorldPoint& mapPoint,
                                const vector6& mapPointStandardDev,
-                               const size_t mapFeatureId);
+                               const size_t mapFeatureId,
+                               const size_t detectedFeatureId);
 
     size_t get_feature_part_count() const noexcept override;
 
@@ -73,12 +74,12 @@ class MapPoint2D :
 
     ~MapPoint2D() override = default;
 
-    [[nodiscard]] int find_match(const DetectedKeypointsObject& detectedFeatures,
-                                 const WorldToCameraMatrix& worldToCamera,
-                                 const vectorb& isDetectedFeatureMatched,
-                                 matches_containers::match_container& matches,
-                                 const bool shouldAddToMatches = true,
-                                 const bool useAdvancedSearch = false) const noexcept override;
+    [[nodiscard]] matchIndexSet find_matches(const DetectedKeypointsObject& detectedFeatures,
+                                             const WorldToCameraMatrix& worldToCamera,
+                                             const vectorb& isDetectedFeatureMatched,
+                                             matches_containers::match_container& matches,
+                                             const bool shouldAddToMatches = true,
+                                             const bool useAdvancedSearch = false) const noexcept override;
 
     [[nodiscard]] bool add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                       TrackedPointsObject& trackedFeatures,
