@@ -15,8 +15,9 @@ namespace rgbd_slam::map_management {
 PlaneOptimizationFeature::PlaneOptimizationFeature(const PlaneCameraCoordinates& matchedPlane,
                                                    const PlaneWorldCoordinates& mapPlane,
                                                    const vector4& mapPlaneStandardDev,
-                                                   const size_t mapFeatureId) :
-    matches_containers::IOptimizationFeature(mapFeatureId),
+                                                   const size_t mapFeatureId,
+                                                   const size_t detectedFeatureId) :
+    matches_containers::IOptimizationFeature(mapFeatureId, detectedFeatureId),
     _matchedPlane(matchedPlane),
     _mapPlane(mapPlane),
     _mapPlaneStandardDev(mapPlaneStandardDev) {};
@@ -58,7 +59,7 @@ matches_containers::feat_ptr PlaneOptimizationFeature::compute_random_variation(
     variatedCoordinates.d() += utils::Random::get_normal_double() * _mapPlaneStandardDev(3);
 
     return std::make_shared<PlaneOptimizationFeature>(
-            _matchedPlane, variatedCoordinates, _mapPlaneStandardDev, _idInMap);
+            _matchedPlane, variatedCoordinates, _mapPlaneStandardDev, _idInMap, _detectedFeatureId);
 }
 
 FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Plane; }
@@ -67,13 +68,15 @@ FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return
  *  MapPlane
  */
 
-int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
-                         const WorldToCameraMatrix& worldToCamera,
-                         const vectorb& isDetectedFeatureMatched,
-                         matches_containers::match_container& matches,
-                         const bool shouldAddToMatches,
-                         const bool useAdvancedSearch) const noexcept
+matchIndexSet MapPlane::find_matches(const DetectedPlaneObject& detectedFeatures,
+                                     const WorldToCameraMatrix& worldToCamera,
+                                     const vectorb& isDetectedFeatureMatched,
+                                     matches_containers::match_container& matches,
+                                     const bool shouldAddToMatches,
+                                     const bool useAdvancedSearch) const noexcept
 {
+    matchIndexSet matchIndexes;
+
     const PlaneWorldToCameraMatrix& planeCameraToWorld = utils::compute_plane_world_to_camera_matrix(worldToCamera);
     // project plane in camera space
     const PlaneCameraCoordinates& projectedPlane = get_parametrization().to_camera_coordinates(planeCameraToWorld);
@@ -86,11 +89,11 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
     const double areaSimilarityThreshold = (useAdvancedSearch ? planeMinimalOverlap / 2 : planeMinimalOverlap);
 
     double greatestSimilarity = 0.0;
-    int selectedIndex = UNMATCHED_FEATURE_INDEX;
 
     if (projectedArea <= 0.0)
-        return selectedIndex;
+        return matchIndexes;
 
+    int selectedIndex = -1;
     // search best match score
     const int detectedPlaneSize = static_cast<int>(detectedFeatures.size());
     for (int planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
@@ -120,8 +123,8 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
         }
     }
 
-    if (selectedIndex == UNMATCHED_FEATURE_INDEX)
-        return UNMATCHED_FEATURE_INDEX;
+    if (selectedIndex <= 0)
+        return matchIndexes;
 
     if (shouldAddToMatches)
     {
@@ -129,10 +132,12 @@ int MapPlane::find_match(const DetectedPlaneObject& detectedFeatures,
                 std::make_shared<PlaneOptimizationFeature>(detectedFeatures[selectedIndex].get_parametrization(),
                                                            get_parametrization(),
                                                            get_covariance().diagonal().cwiseSqrt(),
-                                                           _id));
+                                                           _id,
+                                                           selectedIndex));
     }
 
-    return selectedIndex;
+    matchIndexes.emplace(selectedIndex);
+    return matchIndexes;
 }
 
 bool MapPlane::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
@@ -180,7 +185,7 @@ bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
                                  const matrix33& poseCovariance,
                                  const CameraToWorldMatrix& cameraToWorld) noexcept
 {
-    if (_matchIndex < 0)
+    if (_matchIndexes.empty())
     {
         outputs::log_error("Tries to call the function update_with_match with no associated match");
         return false;
@@ -271,7 +276,7 @@ LocalMapPlane::LocalMapPlane(const StagedMapPlane& stagedPlane) : MapPlane(stage
     // new map point, new color
     set_color();
 
-    _matchIndex = stagedPlane._matchIndex;
+    _matchIndexes = stagedPlane._matchIndexes;
     _successivMatchedCount = stagedPlane._successivMatchedCount;
 
     _parametrization = stagedPlane.get_parametrization();

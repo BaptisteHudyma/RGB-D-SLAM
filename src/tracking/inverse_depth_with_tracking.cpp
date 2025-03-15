@@ -200,8 +200,7 @@ WorldCoordinateCovariance PointInverseDepth::compute_cartesian_covariance(const 
     if (not utils::is_covariance_valid(covariance))
         throw std::invalid_argument("compute_cartesian_covariance cannot use incorrect covariance in covariance");
 
-    WorldCoordinateCovariance worldCovariance(jacobian * covariance.selfadjointView<Eigen::Lower>() *
-                                              jacobian.transpose());
+    WorldCoordinateCovariance worldCovariance(utils::propagate_covariance(covariance, jacobian));
     if (not utils::is_covariance_valid(worldCovariance))
         throw std::logic_error("compute_cartesian_covariance produced an invalid covariance");
     return worldCovariance;
@@ -219,7 +218,7 @@ PointInverseDepth::Covariance PointInverseDepth::compute_inverse_depth_covarianc
         throw std::invalid_argument(
                 "compute_inverse_depth_covariance cannot use incorrect covariance in firstPoseCovariance");
 
-    Covariance resCovariance = jacobian * pointCovariance.selfadjointView<Eigen::Lower>() * jacobian.transpose();
+    Covariance resCovariance = utils::propagate_covariance(pointCovariance, jacobian);
     resCovariance.block<3, 3>(0, 0) = firstPoseCovariance;
     if (not utils::is_covariance_valid(resCovariance))
     {

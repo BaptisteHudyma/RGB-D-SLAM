@@ -123,7 +123,7 @@ template<template<typename> class Container, typename T>
     {
         const T& picked = copyVector[utils::Random::get_random_uint(inContainer.size())];
 
-        cumulatedScore += picked.get_score();
+        cumulatedScore += picked->get_score();
         outContainer.insert(outContainer.begin(), picked);
         maxIterations--;
     }
