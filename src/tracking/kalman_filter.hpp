@@ -96,9 +96,10 @@ template<int N, int M> class SharedKalmanFilter
                 utils::propagate_covariance(estimateErrorCovariance, temp) +
                 utils::propagate_covariance(measurementNoiseCovariance, kalmanGain);*/
 
-        if (not utils::is_covariance_valid(newCovariance))
+        std::string res;
+        if (not utils::is_covariance_valid(newCovariance, res))
         {
-            throw std::logic_error("SharedKalmanFilter::get_new_state: produced an invalid covariance");
+            throw std::logic_error("SharedKalmanFilter::get_new_state: produced an invalid covariance: " + res);
         }
         // return the covariance and state estimation
         return std::make_pair(newState, newCovariance);

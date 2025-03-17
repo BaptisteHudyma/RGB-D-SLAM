@@ -143,7 +143,6 @@ ${TRACKING}/inverse_depth_with_tracking.cpp
     ${TRACKING}/motion_model.cpp
     ${TRACKING}/plane_with_tracking.cpp
     ${TRACKING}/point_with_tracking.cpp
-    ${TRACKING}/triangulation.cpp
 )
 
 add_library(utils SHARED
