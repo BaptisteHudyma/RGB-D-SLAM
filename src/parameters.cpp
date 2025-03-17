@@ -124,6 +124,8 @@ void Parameters::check_parameters_validity() noexcept
 
     static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px > 0,
                   "The RANSAC maximum retroprojection distance for points must be positive");
+    static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px > 0,
+                  "The RANSAC maximum retroprojection distance for 2D points must be positive");
     static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm > 0,
                   "The RANSAC maximum retroprojection distance for planes must be positive");
     static_assert(parameters::optimization::ransac::minimumInliersProportionForEarlyStop >= 0 and
@@ -135,28 +137,23 @@ void Parameters::check_parameters_validity() noexcept
     static_assert(parameters::optimization::ransac::inlierProportion >= 0 and
                           parameters::optimization::ransac::inlierProportion <= 1,
                   "The RANSAC expected proportion of inliers must be between 0 and 1");
+    static_assert(parameters::optimization::ransac::featureTrustCount > 0,
+                  "The RANSAC expected feature trust count should be greater than zero");
 
     static_assert(parameters::optimization::minimumPointForOptimization >= 3,
                   "A pose cannot be computed with less than 3 points");
-    static_assert(parameters::optimization::maximumIterations > 0, "Optimization maximum iterations must be > 0");
-    static_assert(parameters::optimization::errorPrecision >= 0, "Optimization error precision must be >= 0");
-    static_assert(parameters::optimization::toleranceOfSolutionVectorNorm >= 0,
-                  "The optimization tolerance for the norm of the solution vector must be >= 0");
-    static_assert(parameters::optimization::toleranceOfVectorFunction >= 0,
-                  "The optimization tolerance for the vector function must be >= 0");
-    static_assert(parameters::optimization::toleranceOfErrorFunctionGradient >= 0,
-                  "The optimization tolerance for the error function gradient must be >= 0");
-    static_assert(parameters::optimization::diagonalStepBoundShift > 0,
-                  "The optimization diagonal stepbound shift must be > 0");
+    static_assert(parameters::optimization::minimumPoint2dForOptimization >= 5,
+                  "A pose cannot be computed with less than 5 2D points");
+    static_assert(parameters::optimization::minimumPlanesForOptimization >= 3,
+                  "A pose cannot be computed with less than 3 planes");
 
-    static_assert(parameters::optimization::maximumRetroprojectionError_px > 0,
-                  "The maximum retroprojection error  must be > 0");
-
+    static_assert(parameters::detection::trackedMaskRadius_px > 0, "Keypoint detection mask radius must be > 0");
     static_assert(parameters::detection::keypointCellDetectionHeightCount > 0,
                   "Keypoint detection height cell count must be > 0");
     static_assert(parameters::detection::keypointCellDetectionWidthCount > 0,
                   "Keypoint detection width cell size must be > 0");
     static_assert(parameters::detection::keypointRefreshFrequency > 0, "Keypoint refresh frequency must be > 0");
+    static_assert(parameters::detection::maximumPointPerFrame > 0, "max keypoint per frames must be > 0");
     static_assert(parameters::detection::opticalFlowPyramidDepth > 0, "Pyramid depth must be > 0");
     static_assert(parameters::detection::opticalFlowPyramidWindowSizeHeightCount > 0,
                   "Pyramid window count vertical size must be > 0");

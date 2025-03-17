@@ -27,7 +27,7 @@ constexpr float maximumRetroprojectionErrorForPointInliers_px =
 constexpr float maximumRetroprojectionErrorForPlaneInliers_mm =
         50.0; // Max retroprojection error between two screen planes, in millimeters, before rejecting the match
 constexpr double minimumInliersProportionForEarlyStop =
-        0.90f; // proportion of inliers in total set, to stop RANSAC early
+        0.80f; // proportion of inliers in total set, to stop RANSAC early
 
 // RANSAC iteration parameters
 constexpr float probabilityOfSuccess = 0.8f; // probability of having at least one correct transformation
@@ -35,19 +35,11 @@ constexpr float inlierProportion = 0.6f;     // number of inliers in data / numb
 constexpr float featureTrustCount = 10.0;    // number of expected features expected to pass the test
 } // namespace ransac
 
-constexpr uint minimumPointForOptimization = 5; // Should be >= 5, the minimum point count for a 3D pose estimation
+constexpr uint minimumPointForOptimization = 5; // Should be >= 3, the minimum point count for a 3D pose estimation
 constexpr uint minimumPoint2dForOptimization =
         5; // 2d points can be insufficiant for pose optimization, for now we ignore this
 constexpr uint minimumPlanesForOptimization =
-        3;                             // Should be >= 3, the minimum infinite plane count for a 3D pose estimation
-constexpr uint maximumIterations = 64; // Max iteration of the Levenberg Marquart optimisation
-constexpr float errorPrecision = 0.0f; // tolerance for the norm of the solution vector
-constexpr float toleranceOfSolutionVectorNorm = 1e-4f;   // Smallest delta of doubles
-constexpr float toleranceOfVectorFunction = 1e-3f;       // tolerance for the norm of the vector function
-constexpr float toleranceOfErrorFunctionGradient = 0.0f; // tolerance for the norm of the gradient of the error function
-constexpr float diagonalStepBoundShift = 100.0f;         // step bound for the diagonal shift
-constexpr float maximumRetroprojectionError_px =
-        3.0f; // In pixel: maximum distance after which we can consider a retroprojection as invalid
+        3; // Should be >= 3, the minimum infinite plane count for a 3D pose estimation
 } // namespace optimization
 
 namespace detection {
@@ -113,8 +105,6 @@ constexpr uint planeUnmatchedCountToLoose =
         10; // consecutive unmatched frames before removing from local map (high is good, but consumes more perfs);
 constexpr uint pointStagedAgeConfidence = 3;         // Minimum age of a point in staged map to consider it good
 constexpr double pointMinimumConfidenceForMap = 0.9; // Minimum confidence of a staged point to add it to local map
-constexpr float maximumRetroprojectionErrorForTriangulatePow_px =
-        6.0; // In pixel: maximum squared distance after which we can consider a retroprojection as invalid
 } // namespace mapping
 
 } // namespace parameters

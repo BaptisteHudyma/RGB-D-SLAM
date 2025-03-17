@@ -1,6 +1,7 @@
 #include "pose_optimization.hpp"
 
 #include "covariances.hpp"
+#include "distance_utils.hpp"
 #include "outputs/logger.hpp"
 #include "parameters.hpp"
 #include "levenberg_marquardt_functors.hpp"
@@ -137,9 +138,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         return false;
     }
 
-    // TODO: check the constant: 60% inlier proportion is weak
-    // matchedFeatures.size() * parameters::optimization::ransac::inlierProportion);
-    const size_t inliersToStop = static_cast<size_t>(static_cast<double>(matchedFeatures.size()) * 0.80);
+    const size_t inliersToStop = (size_t)std::ceil(
+            matchedFeatures.size() * parameters::optimization::ransac::minimumInliersProportionForEarlyStop);
 
     double maxScore = 1.0;
     utils::PoseBase bestPose = currentPose;
@@ -189,8 +189,21 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
                 _meanRANSACGetInliersDuration +=
                         (static_cast<double>(cv::getTickCount()) - getRANSACInliersTime) / cv::getTickFrequency();
 
-                // We have a better score than the previous best one, and enough inliers to consider it valid
-                if (featureInlierScore > maxScore)
+                // optimization failed, not enough inliers
+                if (featureInlierScore < 1.0)
+                {
+#ifndef MAKE_DETERMINISTIC
+                    return;
+#else
+            continue;
+#endif
+                }
+
+                // Better score, or same score but more inliers
+                const bool canOverload = (featureInlierScore > maxScore) or
+                                         (utils::double_equal(featureInlierScore, maxScore, 0.1) and
+                                          finalFeatureSets._inliers.size() < potentialInliersOutliers._inliers.size());
+                if (canOverload)
                 {
                     std::scoped_lock<std::mutex> lock(mut);
                     maxScore = featureInlierScore;
@@ -296,15 +309,22 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
         return false;
     }
 
-    // get the number of distance coefficients
+    // get the number of distance coefficients, and optimization parts
+    double optimizationScore = 0.0;
     size_t optiParts = 0;
     for (const auto& feat: matchedFeatures)
     {
         optiParts += feat->get_feature_part_count();
+        optimizationScore += feat->get_score();
     }
     if (input.cols() > 0 and optiParts <= static_cast<size_t>(input.cols()))
     {
         outputs::log_error("Not enought feature parts to optimize for a pose");
+        return false;
+    }
+    if (optimizationScore < 1.0)
+    {
+        outputs::log_error("Not enought features to optimize for a pose: " + std::to_string(optimizationScore));
         return false;
     }
 
@@ -312,19 +332,6 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     Global_Pose_Functor pose_optimisation_functor {Global_Pose_Estimator {optiParts, matchedFeatures}};
     // Optimization algorithm
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
-
-    // maxfev   : maximum number of function evaluation
-    poseOptimizator.parameters.maxfev = parameters::optimization::maximumIterations;
-    // epsfcn   : error precision
-    poseOptimizator.parameters.epsfcn = parameters::optimization::errorPrecision;
-    // xtol     : tolerance for the norm of the solution vector
-    poseOptimizator.parameters.xtol = parameters::optimization::toleranceOfSolutionVectorNorm;
-    // ftol     : tolerance for the norm of the vector function
-    poseOptimizator.parameters.ftol = parameters::optimization::toleranceOfVectorFunction;
-    // gtol     : tolerance for the norm of the gradient of the error function
-    poseOptimizator.parameters.gtol = parameters::optimization::toleranceOfErrorFunctionGradient;
-    // factor   : step bound for the diagonal shift
-    poseOptimizator.parameters.factor = parameters::optimization::diagonalStepBoundShift;
 
     // Start optimization (always use it just after the constructor, to ensure feature object reference validity)
     const Eigen::LevenbergMarquardtSpace::Status endStatus = poseOptimizator.minimize(input);

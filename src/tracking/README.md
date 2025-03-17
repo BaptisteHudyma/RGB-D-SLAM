@@ -2,7 +2,6 @@
 
 - **kalman_filter**: Generic templatized class for Kalman filtering
 - **motion_model**: 6D motion model, with decaying velocity
-- **triangulation**: Unused. Triangulate the depht of a point feature from two 2D points.
 
 All feature with tracking capabilities
 - **inverse_depth_with_tracking**
