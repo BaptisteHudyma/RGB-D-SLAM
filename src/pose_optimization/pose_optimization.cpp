@@ -356,7 +356,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     }
 
     // Optimization function (ok to use pointers: optimization of copy)
-    Global_Pose_Functor pose_optimisation_functor(Global_Pose_Estimator(optiParts, &matchedFeatures));
+    Global_Pose_Functor pose_optimisation_functor(Global_Pose_Estimator(optiParts, matchedFeatures));
     // Optimization algorithm
     Eigen::LevenbergMarquardt poseOptimizator(pose_optimisation_functor);
 
@@ -384,7 +384,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
         return false;
     }
 
-    const auto& outputPose = get_pose_from_optimization_coeffiencients(input);
+    const auto& outputPose = get_pose_from_optimization_coefficients(input);
 
     if (outputPose.get_vector().hasNaN())
     {

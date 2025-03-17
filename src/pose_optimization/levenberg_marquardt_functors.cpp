@@ -7,7 +7,6 @@
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/util/Meta.h>
 #include <cmath>
-#include <iostream>
 #include <stdexcept>
 
 namespace rgbd_slam::pose_optimization {
@@ -80,14 +79,14 @@ vector6 get_optimization_coefficient_from_pose(const utils::PoseBase& pose)
     return coeffs;
 }
 
-utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients)
+utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizationCoefficients)
 {
     return utils::PoseBase(optimizationCoefficients.head<3>(),
                            get_quaternion_from_optimization_coefficients(optimizationCoefficients.tail<3>()));
 }
 
-utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimizationCoefficients,
-                                                          Eigen::Matrix<double, 7, 6>& jacobian)
+utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizationCoefficients,
+                                                        Eigen::Matrix<double, 7, 6>& jacobian)
 {
     jacobian.setZero();
     jacobian.block<3, 3>(0, 0) = matrix33::Identity();
@@ -95,27 +94,27 @@ utils::PoseBase get_pose_from_optimization_coeffiencients(const vector6& optimiz
     jacobian.block<4, 3>(3, 3) =
             get_quaternion_from_optimization_coefficients_jacobian(optimizationCoefficients.tail<3>());
 
-    return get_pose_from_optimization_coeffiencients(optimizationCoefficients);
+    return get_pose_from_optimization_coefficients(optimizationCoefficients);
 }
 
 /**
  * GLOBAL POSE ESTIMATOR members
  */
 Global_Pose_Estimator::Global_Pose_Estimator(const size_t optimizationParts,
-                                             const matches_containers::match_container* const features) :
+                                             const matches_containers::match_container& features) :
     Levenberg_Marquardt_Functor<double>(6, optimizationParts),
     _optimizationParts(optimizationParts),
     _features(features)
 {
     // parameter checks
-    if (_features == nullptr or _features->empty() or _optimizationParts == 0)
+    if (_features.empty() or _optimizationParts == 0)
     {
         throw std::logic_error("cannot optimize on empty vector");
     }
 
     // sanity check
     size_t featureParts = 0;
-    for (const auto& feature: *_features)
+    for (const auto& feature: _features)
     {
         featureParts += feature->get_feature_part_count();
     }
@@ -129,8 +128,7 @@ Global_Pose_Estimator::Global_Pose_Estimator(const size_t optimizationParts,
 int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedParameters, vectorxd& outputScores) const
 {
     // sanity checks
-    assert(_features != nullptr);
-    assert(not _features->empty());
+    assert(not _features.empty());
     assert(static_cast<size_t>(outputScores.size()) == _optimizationParts);
 
     if (optimizedParameters.hasNaN())
@@ -140,7 +138,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
     }
 
     // Get the new estimated pose
-    const utils::PoseBase& pose = get_pose_from_optimization_coeffiencients(optimizedParameters);
+    const utils::PoseBase& pose = get_pose_from_optimization_coefficients(optimizedParameters);
     if (pose.get_vector().hasNaN())
     {
         outputs::log_error("pose after transformation from optimization space have nan");
@@ -153,7 +151,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
 
     // Compute projection distances
     int featureScoreIndex = 0; // index of the match being treated
-    for (const auto& feature: *_features)
+    for (const auto& feature: _features)
     {
         const auto& distance = feature->get_distance(transformationMatrix);
         const auto partCount = feature->get_feature_part_count();
