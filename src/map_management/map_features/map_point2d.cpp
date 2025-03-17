@@ -30,16 +30,17 @@ double Point2dOptimizationFeature::get_score() const noexcept
     return optiScore;
 }
 
+bool Point2dOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const double distance = get_distance(worldToCamera).norm() / static_cast<double>(get_feature_part_count());
+    return distance <= parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px;
+}
+
 vectorxd Point2dOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     const vector2& distance = _mapPoint.compute_signed_screen_distance(
             _matchedPoint, _mapPointStandardDev(InverseDepthWorldPoint::inverseDepthIndex), worldToCamera);
     return distance;
-}
-
-double Point2dOptimizationFeature::get_max_retroprojection_error() const noexcept
-{
-    return parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px;
 }
 
 double Point2dOptimizationFeature::get_alpha_reduction() const noexcept { return 0.3; }
