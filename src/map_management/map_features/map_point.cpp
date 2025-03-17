@@ -31,16 +31,17 @@ double PointOptimizationFeature::get_score() const noexcept
     return optiScore;
 }
 
+bool PointOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const double distance = get_distance(worldToCamera).norm() / static_cast<double>(get_feature_part_count());
+    return distance <= parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px;
+}
+
 vectorxd PointOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     // Compute retroprojected distance
     const auto& distance = _mapPoint.get_signed_distance_2D_px(_matchedPoint, worldToCamera);
     return distance;
-}
-
-double PointOptimizationFeature::get_max_retroprojection_error() const noexcept
-{
-    return parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px;
 }
 
 double PointOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }

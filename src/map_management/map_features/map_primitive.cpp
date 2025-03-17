@@ -30,6 +30,12 @@ double PlaneOptimizationFeature::get_score() const noexcept
     return optiScore;
 }
 
+bool PlaneOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const noexcept
+{
+    const double distance = get_distance(worldToCamera).norm() / static_cast<double>(get_feature_part_count());
+    return distance <= parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm;
+}
+
 vectorxd PlaneOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
     // TODO: combine this for all plane features somehow
@@ -40,11 +46,6 @@ vectorxd PlaneOptimizationFeature::get_distance(const WorldToCameraMatrix& world
     const auto& planeProjectionError = _mapPlane.get_reduced_signed_distance(_matchedPlane, planeTransformationMatrix);
 
     return planeProjectionError;
-}
-
-double PlaneOptimizationFeature::get_max_retroprojection_error() const noexcept
-{
-    return parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm;
 }
 
 double PlaneOptimizationFeature::get_alpha_reduction() const noexcept { return 1.0; }

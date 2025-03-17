@@ -141,15 +141,15 @@ struct IOptimizationFeature
     virtual double get_score() const noexcept = 0;
 
     /**
+     * \brief check if this feature can be considered an inlier for the given transformation
+     */
+    virtual bool is_inlier(const WorldToCameraMatrix& worldToCamera) const noexcept = 0;
+
+    /**
      * \brief Compute the distance to the matched feature, given a specific transformation matrix
      * The size of the returned vector corresponds to the part count.
      */
     virtual vectorxd get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept = 0;
-
-    /**
-     * \brief Return the maximum allowed retroprojection error before rejecting this match
-     */
-    virtual double get_max_retroprojection_error() const noexcept = 0;
 
     /**
      * \brief return this feature alpha reduction (optimization weight)

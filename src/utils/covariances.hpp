@@ -14,14 +14,14 @@ template<int N>
 [[nodiscard]] bool is_covariance_valid(const Eigen::Matrix<double, N, N>& covariance, std::string& reason) noexcept
 {
     // no invalid values
-    if (covariance.hasNaN())
+    if (covariance.hasNaN() or not covariance.allFinite())
     {
         reason = "invalid values";
         return false;
     }
 
     // special case: 1 dimention covariance
-    if (N == 1)
+    if constexpr (N == 1)
     {
         return covariance(0, 0) >= 0;
     }
