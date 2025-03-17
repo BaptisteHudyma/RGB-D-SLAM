@@ -32,8 +32,9 @@ double Point2dOptimizationFeature::get_score() const noexcept
 
 bool Point2dOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const double distance = get_distance(worldToCamera).norm() / static_cast<double>(get_feature_part_count());
-    return distance <= parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px;
+    return (get_distance(worldToCamera).array() <=
+            parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px)
+            .all();
 }
 
 vectorxd Point2dOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept

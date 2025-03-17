@@ -33,7 +33,7 @@ double PointOptimizationFeature::get_score() const noexcept
 
 bool PointOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const double distance = get_distance(worldToCamera).norm() / static_cast<double>(get_feature_part_count());
+    const double distance = _mapPoint.get_distance_px(_matchedPoint, worldToCamera);
     return distance <= parameters::optimization::ransac::maximumRetroprojectionErrorForPointInliers_px;
 }
 

@@ -32,13 +32,26 @@ double PlaneOptimizationFeature::get_score() const noexcept
 
 bool PlaneOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const double distance = get_distance(worldToCamera).norm() / static_cast<double>(get_feature_part_count());
-    return distance <= parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm;
+    // This is acceptable to recompute:
+    // Plane count is always low so this is negligeable
+    const PlaneWorldToCameraMatrix& planeTransformationMatrix =
+            utils::compute_plane_world_to_camera_matrix(worldToCamera);
+
+    // TODO Add boundary check
+    const vector4& planeProjectionError =
+            _mapPlane.get_signed_distance(_matchedPlane, planeTransformationMatrix).cwiseAbs();
+
+    static const vector4 thresholds(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliersNormal,
+                                    parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliersNormal,
+                                    parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliersNormal,
+                                    parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm);
+    return (planeProjectionError.array() <= thresholds.array()).all();
 }
 
 vectorxd PlaneOptimizationFeature::get_distance(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    // TODO: combine this for all plane features somehow
+    // This is acceptable to recompute:
+    // Plane count is always low so this is negligeable
     const PlaneWorldToCameraMatrix& planeTransformationMatrix =
             utils::compute_plane_world_to_camera_matrix(worldToCamera);
 

@@ -128,6 +128,8 @@ void Parameters::check_parameters_validity() noexcept
                   "The RANSAC maximum retroprojection distance for 2D points must be positive");
     static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm > 0,
                   "The RANSAC maximum retroprojection distance for planes must be positive");
+    static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliersNormal > 0,
+                  "The RANSAC maximum retroprojection normal distance for planes must be positive");
     static_assert(parameters::optimization::ransac::minimumInliersProportionForEarlyStop >= 0 and
                           parameters::optimization::ransac::minimumInliersProportionForEarlyStop <= 1,
                   "The RANSAC proportion of inliers must be between 0 and 1");

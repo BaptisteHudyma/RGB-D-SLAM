@@ -24,7 +24,7 @@ class Pose_Optimization
      *
      * \return True if a valid pose was computed
      */
-    [[nodiscard]] static bool compute_optimized_pose(const utils::Pose& currentPose,
+    [[nodiscard]] static bool compute_optimized_pose(const utils::PoseBase& currentPose,
                                                      const matches_containers::match_container& matchedFeatures,
                                                      utils::Pose& optimizedPose,
                                                      matches_containers::match_sets& featureSets) noexcept;

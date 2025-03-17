@@ -126,10 +126,10 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     }
 
     // Compute maximum iteration with the original RANSAC formula
-    static const uint maximumIterations = static_cast<uint>(
-            std::ceil(std::log(1.0f - parameters::optimization::ransac::probabilityOfSuccess) /
-                      std::log(1.0f - std::pow(parameters::optimization::ransac::inlierProportion,
-                                               parameters::optimization::ransac::featureTrustCount))));
+    static constexpr uint maximumIterations =
+            (std::ceil(std::log(1.0f - parameters::optimization::ransac::probabilityOfSuccess) /
+                       std::log(1.0f - std::pow(parameters::optimization::ransac::inlierProportion,
+                                                parameters::optimization::ransac::featureTrustCount))));
     if (maximumIterations <= 0)
     {
         outputs::log_error("maximumIterations should be > 0, no pose optimization will be made");
@@ -141,7 +141,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     const size_t inliersToStop = (size_t)std::ceil(
             matchedFeatures.size() * parameters::optimization::ransac::minimumInliersProportionForEarlyStop);
 
-    double maxScore = 1.0;
+    double maxScore = 1.0; // 1.0 is the minimum score we can have for a set of matches to optimize a pose
     utils::PoseBase bestPose = currentPose;
     matches_containers::match_sets finalFeatureSets;
 
@@ -163,6 +163,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
         if (canQuit.load())
             break;
 #endif
+
+                // TODO: refuse a random subset if it is illformed, or uses the same map/detected feature id
                 const double getRandomSubsetStartTime = static_cast<double>(cv::getTickCount());
                 // get a random subset for this iteration
                 const matches_containers::match_container& selectedMatches = get_random_subset(matchedFeatures);
@@ -259,7 +261,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     return false;
 }
 
-bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose,
+bool Pose_Optimization::compute_optimized_pose(const utils::PoseBase& currentPose,
                                                const matches_containers::match_container& matchedFeatures,
                                                utils::Pose& optimizedPose,
                                                matches_containers::match_sets& featureSets) noexcept
