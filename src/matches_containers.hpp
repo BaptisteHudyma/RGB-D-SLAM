@@ -163,6 +163,11 @@ struct IOptimizationFeature
     virtual feat_ptr compute_random_variation() const noexcept = 0;
 
     /**
+     * \brief check the validity of the values in this structure
+     */
+    virtual bool is_valid() const noexcept = 0;
+
+    /**
      * \brief return the feature type in this object
      */
     virtual FeatureType get_feature_type() const noexcept = 0;

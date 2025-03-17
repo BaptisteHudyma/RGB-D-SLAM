@@ -62,6 +62,12 @@ matches_containers::feat_ptr PlaneOptimizationFeature::compute_random_variation(
             _matchedPlane, variatedCoordinates, _mapPlaneStandardDev, _idInMap, _detectedFeatureId);
 }
 
+bool PlaneOptimizationFeature::is_valid() const noexcept
+{
+    return (not _matchedPlane.hasNaN()) and (not _mapPlane.hasNaN()) and (not _mapPlaneStandardDev.hasNaN()) and
+           (_mapPlaneStandardDev.array() >= 0).all();
+}
+
 FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Plane; }
 
 /**

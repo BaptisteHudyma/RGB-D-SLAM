@@ -33,6 +33,8 @@ struct PointOptimizationFeature : public matches_containers::IOptimizationFeatur
 
     matches_containers::feat_ptr compute_random_variation() const noexcept override;
 
+    bool is_valid() const noexcept override;
+
     FeatureType get_feature_type() const noexcept override;
 
   protected:

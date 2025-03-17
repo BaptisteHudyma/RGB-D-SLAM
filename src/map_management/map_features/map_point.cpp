@@ -55,6 +55,12 @@ matches_containers::feat_ptr PointOptimizationFeature::compute_random_variation(
             _matchedPoint, variatedCoordinates, _mapPointStandardDev, _idInMap, _detectedFeatureId);
 }
 
+bool PointOptimizationFeature::is_valid() const noexcept
+{
+    return (not _matchedPoint.hasNaN()) and (not _mapPoint.hasNaN()) and (not _mapPointStandardDev.hasNaN()) and
+           (_mapPointStandardDev.array() >= 0).all();
+}
+
 FeatureType PointOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point; }
 
 /**
