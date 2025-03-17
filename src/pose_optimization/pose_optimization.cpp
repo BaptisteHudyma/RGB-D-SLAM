@@ -289,6 +289,7 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     outputs::log_warning("Could not compute a global pose, even when we found a valid inlier set");
     _meanPoseRANSACDuration +=
             (static_cast<double>(cv::getTickCount()) - computePoseRansacStartTime) / cv::getTickFrequency();
+    // TODO: maybe we could use a reduced result, instead of the reoptimization result
     return false;
 }
 
@@ -297,6 +298,22 @@ bool Pose_Optimization::compute_optimized_pose(const utils::Pose& currentPose,
                                                utils::Pose& optimizedPose,
                                                matches_containers::match_sets& featureSets) noexcept
 {
+    // check every feature for validity
+    bool success = true;
+    for (const auto& feature: matchedFeatures)
+    {
+        if (not feature->is_valid())
+        {
+            success = false;
+            outputs::log_error("feature is invalid: " + to_string(feature->get_feature_type()));
+        }
+    }
+    if (not success)
+    {
+        return false;
+    }
+
+    // compute an optimized pose with a random sample consensus of the feature matches
     if (compute_pose_with_ransac(currentPose, matchedFeatures, optimizedPose, featureSets))
     {
         // Compute pose variance
@@ -320,12 +337,22 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
 {
     // set the input of the optimization function
     vectorxd input = get_optimization_coefficient_from_pose(currentPose);
+    if (input.hasNaN())
+    {
+        outputs::log_error("position as invalid values after transformation in optimization space");
+        return false;
+    }
 
     // get the number of distance coefficients
     size_t optiParts = 0;
     for (const auto& feat: matchedFeatures)
     {
         optiParts += feat->get_feature_part_count();
+    }
+    if (optiParts <= input.cols())
+    {
+        outputs::log_error("Not enought feature parts to optimize for a pose");
+        return false;
     }
 
     // Optimization function (ok to use pointers: optimization of copy)
@@ -359,6 +386,12 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
 
     const auto& outputPose = get_pose_from_optimization_coeffiencients(input);
 
+    if (outputPose.get_vector().hasNaN())
+    {
+        outputs::log_error("optimized pose contains invalid values");
+
+        return false;
+    }
     // Update refined pose with optimized pose
     optimizedPose.set_parameters(outputPose.get_position(), outputPose.get_orientation_quaternion());
     return true;
@@ -428,9 +461,10 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
     poseCovariance.diagonal() += vector6::Constant(
             0.001); // add small variance on diagonal in case of perfect covariance (rare but existing case)
 
-    if (not utils::is_covariance_valid(poseCovariance))
+    std::string errorMsg;
+    if (not utils::is_covariance_valid(poseCovariance, errorMsg))
     {
-        outputs::log_error("Could not compute covariance: final covariance is ill formed");
+        outputs::log_error("Could not compute covariance: final covariance is ill formed: " + errorMsg);
         _meanComputePoseVarianceDuration +=
                 (static_cast<double>(cv::getTickCount()) - computePoseVarianceStartTime) / cv::getTickFrequency();
         return false;
@@ -492,6 +526,14 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     {
         // add to the new match set
         variatedSet.emplace_back(feature->compute_random_variation());
+        // this check gets expensive, activate it only if needed
+        /*
+        const auto& variated = variatedSet.back();
+        if (not variated->is_valid())
+        {
+            outputs::log_error("a variated coordinate became invalid: " + to_string(feature->get_feature_type()));
+        }
+        */
     }
 
     return compute_optimized_global_pose(currentPose, variatedSet, optimizedPose);

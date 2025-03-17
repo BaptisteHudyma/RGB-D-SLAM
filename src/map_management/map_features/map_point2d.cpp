@@ -70,6 +70,12 @@ matches_containers::feat_ptr Point2dOptimizationFeature::compute_random_variatio
             _detectedFeatureId);
 }
 
+bool Point2dOptimizationFeature::is_valid() const noexcept
+{
+    return (not _matchedPoint.hasNaN()) and (not _mapPoint.get_bearing_vector().hasNaN()) and
+           (not _mapPointStandardDev.hasNaN()) and (_mapPointStandardDev.array() >= 0).all();
+}
+
 FeatureType Point2dOptimizationFeature::get_feature_type() const noexcept { return FeatureType::Point2d; }
 
 /**
