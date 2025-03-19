@@ -4,6 +4,7 @@
 #include "types.hpp"
 #include "coordinates/point_coordinates.hpp"
 #include "kalman_filter.hpp"
+#include "extended_kalman_filter.hpp"
 
 #include <opencv2/opencv.hpp>
 
@@ -24,12 +25,28 @@ struct Point
     Point(const WorldCoordinate& coordinates, const WorldCoordinateCovariance& covariance, const cv::Mat& descriptor);
 
     /**
-     * \brief update this point coordinates using a new detection
-     * \param[in] newDetectionCoordinates The newly detected point
-     * \param[in] newDetectionCovariance The newly detected point covariance
+     * \brief update this point coordinates using another one
+     * \param[in] otherCoordinates The point to update with
+     * \param[in] otherCovariance The covariance of the point to update with
      * \return The distance between the updated position ans the previous one, -1 if an error occured
      */
-    double track(const WorldCoordinate& newDetectionCoordinates, const matrix33& newDetectionCovariance) noexcept;
+    double track(const WorldCoordinate& otherCoordinates, const matrix33& otherCovariance) noexcept;
+
+    /**
+     * \brief track this point coordinates using a new detection, with no depth infos
+     * \param[in] newDetection The new 3D detection
+     * \param[in] w2c World to camera matrix
+     * \return True if this track operation succeded
+     */
+    bool track_3d(const ScreenCoordinate& newDetection, const WorldToCameraMatrix& w2c) noexcept;
+
+    /**
+     * \brief track this point coordinates using a new detection, with no depth infos
+     * \param[in] newDetection The new 2D detection
+     * \param[in] w2c World to camera matrix
+     * \return True if this track operation succeded
+     */
+    bool track_2d(const ScreenCoordinate2D& newDetection, const WorldToCameraMatrix& w2c) noexcept;
 
     [[nodiscard]] bool is_moving() const noexcept { return _isMoving; }
 
@@ -41,6 +58,8 @@ struct Point
 
     // shared kalman filter, between all points
     inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::ExtendedKalmanFilter<3, 3>> _kalmanFuse3d = nullptr;
+    inline static std::unique_ptr<tracking::ExtendedKalmanFilter<3, 2>> _kalmanFuse2d = nullptr;
 
     bool _isMoving = false;
 };

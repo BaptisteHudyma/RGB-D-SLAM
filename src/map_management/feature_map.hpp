@@ -814,7 +814,7 @@ class Feature_Map
                 catch (const std::exception& ex)
                 {
                     outputs::log_error(get_display_name() +
-                                       ": Caught exeption while creating a map feature from a staged feature: " +
+                                       ": Caught exception while creating a map feature from a staged feature: " +
                                        std::string(ex.what()));
                 }
             }

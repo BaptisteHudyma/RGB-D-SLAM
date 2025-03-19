@@ -1,6 +1,8 @@
 #include "map_point.hpp"
 
+#include "camera_transformation.hpp"
 #include "coordinates/point_coordinates.hpp"
+#include "covariances.hpp"
 #include "logger.hpp"
 #include "matches_containers.hpp"
 #include "parameters.hpp"
@@ -177,6 +179,7 @@ void MapPoint::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) co
 {
     if (mapWriter != nullptr)
     {
+        // only write in confident points
         mapWriter->add_point(_coordinates);
     }
     else
@@ -196,47 +199,22 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     }
 
     const ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
+    WorldToCameraMatrix w2c = utils::compute_world_to_camera_transform(cameraToWorld);
     if (is_depth_valid(matchedScreenPoint.z()))
     {
-        // transform screen point to world point
-        const WorldCoordinate& worldPointCoordinates = matchedScreenPoint.to_world_coordinates(cameraToWorld);
-        // get a measure of the estimated variance of the new world point
-        const matrix33& worldCovariance =
-                utils::get_world_point_covariance(matchedScreenPoint, cameraToWorld, poseCovariance);
-
-        // update this map point errors & position
-        const double mergeScore = track(worldPointCoordinates, worldCovariance);
-        if (mergeScore < 0)
+        // depth is valid, merge using the 3D model (more precise)
+        if (not track_3d(matchedScreenPoint, w2c))
             return false;
-
-        // If a new descriptor is available, update it
-        if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
-            _descriptor = descriptor;
-
-        return true;
     }
-    else
-    {
-        // Point is 2D, compute projection
-        tracking::PointInverseDepth observation(
-                ScreenCoordinate2D(matchedScreenPoint.head<2>()), cameraToWorld, poseCovariance);
-        Eigen::Matrix<double, 3, 6> inverseToWorldJacobian;
-        const auto projectedObservation = observation._coordinates.to_world_coordinates(inverseToWorldJacobian);
-        const auto observationCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-                observation._covariance, inverseToWorldJacobian);
+    // depth is invalid, merge using the 2D model (slightly faster)
+    else if (not track_2d(matchedScreenPoint.get_2D(), w2c))
+        return false;
 
-        // track the high uncertainty point
-        const double mergeScore = track(projectedObservation, observationCovariance);
-        if (mergeScore < 0)
-            return false;
+    // If a new descriptor is available, update it
+    if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
+        _descriptor = descriptor;
 
-        // If a new descriptor is available, update it
-        if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
-            _descriptor = descriptor;
-
-        return true;
-    }
-    return false;
+    return true;
 }
 
 void MapPoint::update_no_match() noexcept

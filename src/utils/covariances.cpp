@@ -18,19 +18,40 @@ double get_depth_quantization(const double depth) noexcept
     return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * SQR(depth), 0.5);
 }
 
-ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance) noexcept
+matrix23 get_camera_to_screen2d_jacobian(const CameraCoordinate& point)
 {
     const static vector2 cameraF = Parameters::get_camera_1_focal();
-
     // Jacobian of the camera to screen function
-    const matrix33 jacobian {{cameraF.x() / point.z(), 0.0, -cameraF.x() * point.x() / SQR(point.z())},
-                             {0.0, cameraF.y() / point.z(), -cameraF.y() * point.y() / SQR(point.z())},
-                             {0.0, 0.0, 1.0}};
+    matrix23 jacobian {{cameraF.x() / point.z(), 0.0, -cameraF.x() * point.x() / SQR(point.z())},
+                       {0.0, cameraF.y() / point.z(), -cameraF.y() * point.y() / SQR(point.z())}};
+    return jacobian;
+}
+
+matrix33 get_camera_to_screen_jacobian(const CameraCoordinate& point)
+{
+    const matrix23& camToScreenJac = get_camera_to_screen2d_jacobian(point);
+    matrix33 jacobian;
+    jacobian << camToScreenJac, 0.0, 0.0, -1.0;
+    return jacobian;
+}
+
+ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance) noexcept
+{
+    // Jacobian of the camera to screen function
+    const matrix33& jacobian = get_camera_to_screen_jacobian(point);
+
     ScreenCoordinateCovariance screenPointCovariance;
-    screenPointCovariance << propagate_covariance(pointCovariance, jacobian);
+    screenPointCovariance << utils::propagate_covariance(pointCovariance, jacobian);
     return screenPointCovariance;
 }
 
+ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
+                                                       const WorldCoordinateCovariance& pointCovariance,
+                                                       const WorldToCameraMatrix& worldToCamera) noexcept
+{
+    return get_screen_point_covariance(point.to_camera_coordinates(worldToCamera),
+                                       get_camera_point_covariance(pointCovariance, worldToCamera, matrix33::Zero()));
+}
 ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
                                                        const WorldCoordinateCovariance& pointCovariance) noexcept
 {
