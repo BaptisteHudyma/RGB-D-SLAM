@@ -33,8 +33,15 @@ template<int N>
         return false;
     }
 
+    // check the diagonal, negative elements here may indicates that wrong jacobians have been used
+    if ((covariance.diagonal().array() < 0).any())
+    {
+        reason = "diagonal have negative components";
+        return false;
+    }
+
     // check that this covariance is positive semi definite
-    const auto ldlt = covariance.template selfadjointView<Eigen::Upper>().ldlt();
+    const auto ldlt = covariance.template selfadjointView<Eigen::Lower>().ldlt();
     if (ldlt.info() == Eigen::NumericalIssue || !ldlt.isPositive())
     {
         reason = "not positive semi definite";
@@ -71,13 +78,23 @@ template<int N, int M> Eigen::Matrix<double, M, M> propagate_covariance(const Ei
 [[nodiscard]] double get_depth_quantization(const double depht) noexcept;
 
 /**
+ * \brief Compute a camera to 2D screen jacobian
+ */
+matrix23 get_camera_to_screen2d_jacobian(const CameraCoordinate& point);
+
+/**
+ * \brief Compute a camera to 3D screen jacobian
+ */
+matrix33 get_camera_to_screen_jacobian(const CameraCoordinate& point);
+/**
  * \brief Compute a screen point covariance from a given point
  *
  * \param[in] point The coordinates of this 3D point (world space)
  * \param[in] pointCovariance The covariance associated with this point (world space)
  */
-[[nodiscard]] ScreenCoordinateCovariance get_screen_point_covariance(
-        const WorldCoordinate& point, const WorldCoordinateCovariance& pointCovariance) noexcept;
+[[nodiscard]] ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
+                                                                     const WorldCoordinateCovariance& pointCovariance,
+                                                                     const WorldToCameraMatrix& worldToCamera) noexcept;
 
 /**
  * \brief Compute a screen point covariance from a given point

@@ -201,20 +201,8 @@ bool MapPoint2D::is_visible(const WorldToCameraMatrix& worldToCamMatrix) const n
 
 void MapPoint2D::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) const noexcept
 {
-    const double inverseDepthStandardDev = sqrt(_covariance.get_inverse_depth_variance());
-
     // TODO find a way to add 2D points without breaking stuff (those line can be kilometers long)
     // Maybe reduce the furthest estimation to a maximum ?
-    if (false)
-    {
-        // convert to line
-        std::vector<vector3> pointsOnLine;
-        pointsOnLine.emplace_back(_coordinates.get_closest_estimation(inverseDepthStandardDev));
-        // pointsOnLine.emplace_back(_coordinates.to_world_coordinates());
-        pointsOnLine.emplace_back(_coordinates.get_furthest_estimation(inverseDepthStandardDev));
-
-        mapWriter->add_line(pointsOnLine);
-    }
 }
 
 bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
@@ -227,14 +215,17 @@ bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
             Eigen::Matrix<double, 3, 6> jacobian;
             const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
 
-            upgradedFeature = std::make_shared<UpgradedPoint2D>(
-                    worldCoords, compute_cartesian_covariance(_covariance, jacobian), _descriptor, _matchIndexes);
+            const WorldCoordinateCovariance& cartCov = compute_cartesian_covariance(_covariance, jacobian);
+            if ((cartCov.diagonal().array() > 1e6).any())
+                return false;
+
+            upgradedFeature = std::make_shared<UpgradedPoint2D>(worldCoords, cartCov, _descriptor, _matchIndexes);
             return true;
         }
     }
     catch (const std::exception& ex)
     {
-        outputs::log_error("Caught exeption while upgrading feature" + std::string(ex.what()));
+        outputs::log_error("Caught exception while upgrading feature" + std::string(ex.what()));
         return false;
     }
     return false;
@@ -250,13 +241,24 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
         return false;
     }
 
+    // TODO use the correct function when it will exist
+    /*
     if (is_depth_valid(matchedFeature._coordinates.z()))
     {
-        // use the real observation, it will most likely overide the covariance inside the inverse depth point
-        return track(matchedFeature._coordinates, cameraToWorld, poseCovariance, matchedFeature._descriptor);
+        // use the real observation, it will most likely override the covariance inside the inverse depth point
+        return track_3D(matchedFeature._coordinates, cameraToWorld, poseCovariance, matchedFeature._descriptor);
     }
+    */
+
+    // TODO: replace this with a model that takes the pose uncertainty
+    const matrix22 screenPointCovariance = matrix22::Identity() * SQR(3); // 3 pixels
+
     // use a 2D observation, that will be merged with the current one
-    return track(matchedFeature._coordinates.get_2D(), cameraToWorld, poseCovariance, matchedFeature._descriptor);
+    return track_2D(matchedFeature._coordinates.get_2D(),
+                    screenPointCovariance,
+                    cameraToWorld,
+                    poseCovariance,
+                    matchedFeature._descriptor);
 }
 
 void MapPoint2D::update_no_match() noexcept

@@ -61,8 +61,8 @@ constexpr uint opticalFlowPyramidWindowSizeWidthCount =
         12; // search size window count (horizontal) at each pyramid level
 
 // inverse depth
-constexpr double inverseDepthBaseline = 1.0 / 1000.0; // baseline of the inverse depth, in 1/millimeters
-constexpr double inverseDepthAngleBaseline = 0.5;     // baseline of the inverse depth measurment angles, in degrees
+constexpr double inverseDepthBaseline = 1.0 / (10.0 * 1000.0); // baseline of the inverse depth, in 1/millimeters
+constexpr double inverseDepthAngleBaseline = 0.5; // baseline of the inverse depth measurment angles, in degrees
 
 // plane detection
 constexpr double minimumPlaneSeedProportion =

@@ -1,9 +1,7 @@
-#include "angle_utils.hpp"
-#include "covariances.hpp"
+
 #include "distance_utils.hpp"
 #include "line.hpp"
 #include "parameters.hpp"
-#include "inverse_depth_with_tracking.hpp"
 #include "types.hpp"
 #include "utils/camera_transformation.hpp"
 #include "coordinates/inverse_depth_coordinates.hpp"
@@ -300,6 +298,26 @@ TEST(PointCoordinateSystemTests, ScreenToWorldToScreenRotation3)
     test_point_set_screen_to_world_to_screen(cameraToWorld);
 }
 
+void assert_inverse_point_back_proj(const CameraToWorldMatrix& c2w, const ScreenCoordinate2D& observation)
+{
+    const auto w2c = utils::compute_world_to_camera_transform(c2w);
+
+    // convert to inverse
+    const InverseDepthWorldPoint inverseDepth(observation, c2w);
+
+    const auto screenProjNoMovs = inverseDepth.get_projected_screen_estimation(w2c, 0.0);
+    // 1 px error
+    EXPECT_NEAR(screenProjNoMovs.x(), observation.x(), 0.1);
+    EXPECT_NEAR(screenProjNoMovs.y(), observation.y(), 0.1);
+
+    // retroproject to screen
+    ScreenCoordinate2D screenCoordinates;
+    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(w2c, screenCoordinates));
+    // should be the same
+    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
+    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+}
+
 TEST(InverseDepthPoint, convertBackAndForthCenter)
 {
     if (not Parameters::is_valid())
@@ -311,19 +329,7 @@ TEST(InverseDepthPoint, convertBackAndForthCenter)
     const ScreenCoordinate2D observation(Parameters::get_camera_1_center());
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthTopLeft)
@@ -337,19 +343,7 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeft)
     const ScreenCoordinate2D observation(vector2::Zero());
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), 1.2101243885134101, 0.0001); // left
-    EXPECT_NEAR(inverseDepth.get_phi(), 0.52694322718942976, 0.0001);  // top
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthBottomRight)
@@ -365,19 +359,7 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRight)
     const ScreenCoordinate2D observation(imageSize.x(), imageSize.y());
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), 1.931468265076383, 0.0001);  // right
-    EXPECT_NEAR(inverseDepth.get_phi(), -0.52694322718942932, 0.0001); // bottom
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoX)
@@ -390,21 +372,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoX)
     // observe the center of the camera
     const ScreenCoordinate2D observation(Parameters::get_camera_1_center());
     const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(250, 0.0, 0.0));
+            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(2500, 0.0, 0.0));
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoY)
@@ -417,21 +387,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoY)
     // observe the center of the camera
     const ScreenCoordinate2D observation(Parameters::get_camera_1_center());
     const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(0.0, 250, 0.0));
+            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(0.0, 2500, 0.0));
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoZ)
@@ -444,21 +402,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfoZ)
     // observe the center of the camera
     const ScreenCoordinate2D observation(Parameters::get_camera_1_center());
     const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(0.0, 0.0, 250));
+            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(0.0, 0.0, 2500));
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfo)
@@ -471,21 +417,9 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithTransfo)
     // observe the center of the camera
     const ScreenCoordinate2D observation(Parameters::get_camera_1_center());
     const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(250, 150, 300));
+            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(2500, 1500, 3000));
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), M_PI / 2.0, 0.0001);
-    EXPECT_NEAR(inverseDepth.get_phi(), 0.0, 0.0001);
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthTopLeftWithTransfo)
@@ -498,21 +432,9 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithTransfo)
     // observe the center of the camera
     const ScreenCoordinate2D observation(vector2::Zero());
     const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(250, 150, 300));
+            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(2500, 1500, 3000));
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), 0.62879628641543905, 0.0001); // left
-    EXPECT_NEAR(inverseDepth.get_phi(), -2.4980915447965168, 0.0001);   // top
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthBottomRightWithTransfo)
@@ -527,21 +449,9 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithTransfo)
     // observe the center of the camera
     const ScreenCoordinate2D observation(imageSize.x(), imageSize.y());
     const CameraToWorldMatrix& c2w =
-            utils::compute_camera_to_world_transform_no_correction(quaternion::Identity(), vector3(250, 150, 300));
+            utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(2500, 1500, 3000));
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), 0.62879628641543905, 0.0001); // right
-    EXPECT_NEAR(inverseDepth.get_phi(), 0.6435011087932766, 0.0001);    // bottom
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthCenterWithRotation)
@@ -553,22 +463,10 @@ TEST(InverseDepthPoint, convertBackAndForthCenterWithRotation)
 
     // observe the center of the camera
     const ScreenCoordinate2D observation(Parameters::get_camera_1_center());
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
             quaternion(0.246242, -0.312924, -0.896867, 0.189256), vector3::Zero());
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), 2.5088563012979175, 0.0001);
-    EXPECT_NEAR(inverseDepth.get_phi(), -2.8220093192865892, 0.001);
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthTopLeftWithRotation)
@@ -580,22 +478,10 @@ TEST(InverseDepthPoint, convertBackAndForthTopLeftWithRotation)
 
     // observe the center of the camera
     const ScreenCoordinate2D observation(vector2::Zero());
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
             quaternion(0.246242, -0.312924, -0.896867, 0.189256), vector3::Zero());
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), 2.2516929542517667, 0.0001); // left
-    EXPECT_NEAR(inverseDepth.get_phi(), -1.965061641221322, 0.0001);   // top
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthBottomRightWithRotation)
@@ -609,25 +495,13 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithRotation)
 
     // observe the center of the camera
     const ScreenCoordinate2D observation(imageSize.x(), imageSize.y());
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
             quaternion(0.246242, -0.312924, -0.896867, 0.189256), vector3::Zero());
 
-    // convert to inverse
-    const InverseDepthWorldPoint inverseDepth(observation, c2w);
-    EXPECT_NEAR(inverseDepth.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(inverseDepth.get_theta(), 2.3106902074817603, 0.0001); // right
-    EXPECT_NEAR(inverseDepth.get_phi(), 2.5408706082452479, 0.0001);   // bottom
-
-    // retroproject to screen
-    ScreenCoordinate2D screenCoordinates;
-    EXPECT_TRUE(inverseDepth.to_world_coordinates().to_screen_coordinates(utils::compute_world_to_camera_transform(c2w),
-                                                                          screenCoordinates));
-    // should be the same
-    EXPECT_NEAR(screenCoordinates.x(), imageSize.x(), 0.01);
-    EXPECT_NEAR(screenCoordinates.y(), imageSize.y(), 0.01);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
-TEST(InverseDepthPointFusion, centerPointParallelFusion)
+TEST(InverseDepthPoint, convertBackAndForthTopLeftWithRotationTranslation)
 {
     if (not Parameters::is_valid())
     {
@@ -635,55 +509,28 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     }
 
     // observe the center of the camera
-    const ScreenCoordinate2D observation(Parameters::get_camera_1_center());
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
+    const ScreenCoordinate2D observation(0.0, 0.0);
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
+            quaternion(0.246242, -0.312924, -0.896867, 0.189256), vector3(2500, 1500, 3000));
 
-    // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity(), cv::Mat());
+    assert_inverse_point_back_proj(c2w, observation);
+}
 
-    const auto beforeMergeInverseDepthCoord = inverseDepth._coordinates;
+TEST(InverseDepthPoint, convertBackAndForthBottomRightWithRotationTranslation)
+{
+    if (not Parameters::is_valid())
+    {
+        Parameters::load_defaut();
+    }
 
-    EXPECT_NEAR(beforeMergeInverseDepthCoord.get_inverse_depth(), 0.0, 0.001);
-    EXPECT_NEAR(beforeMergeInverseDepthCoord.get_theta(), 0.0, M_PI / 2.0);
-    EXPECT_NEAR(beforeMergeInverseDepthCoord.get_phi(), 0.0, 0.001);
+    const auto& imageSize = Parameters::get_camera_1_image_size();
 
-    Eigen::Matrix<double, 3, 6> toCartesianJacobian;
-    const WorldCoordinate& firstCartesian = beforeMergeInverseDepthCoord.to_world_coordinates(toCartesianJacobian);
-    EXPECT_NEAR(firstCartesian.x(), 2000, 0.1);
-    EXPECT_NEAR(firstCartesian.y(), 0.0, 0.1);
-    EXPECT_NEAR(firstCartesian.z(), 0.0, 0.1);
+    // observe the center of the camera
+    const ScreenCoordinate2D observation(imageSize.x(), imageSize.y());
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
+            quaternion(0.246242, -0.312924, -0.896867, 0.189256), vector3(2500, 1500, 3000));
 
-    // store the covariance at the start of the process
-    const tracking::PointInverseDepth::Covariance& beforeMergeInverseCov = inverseDepth._covariance;
-    const WorldCoordinateCovariance& beforeMergeCovariance =
-            tracking::PointInverseDepth::compute_cartesian_covariance(beforeMergeInverseCov, toCartesianJacobian);
-    EXPECT_TRUE(utils::is_covariance_valid(beforeMergeInverseCov));
-    EXPECT_TRUE(utils::is_covariance_valid(beforeMergeCovariance));
-
-    EXPECT_GT(beforeMergeCovariance(0, 0),
-              1e5); // high variance for x coordinate (forward) very high variance for z coordinate depth is unknown
-    EXPECT_GT(beforeMergeCovariance(1, 1), 100); // high variance for y coordinate (left) : angle theta as some variance
-    EXPECT_GT(beforeMergeCovariance(2, 2), 100); // high variance for y coordinate (left) : angle phi as some variance
-
-    /**
-     ** add a new measurment at 90 degrees on the side
-     */
-
-    const CameraToWorldMatrix& c2wSide90 = utils::compute_camera_to_world_transform(
-            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, -90 * EulerToRadian, 0.0)),
-            vector3(1000, 0.0, 1000.0));
-    // fuse the two points
-    EXPECT_TRUE(inverseDepth.track(observation, c2wSide90, matrix33::Identity(), cv::Mat()));
-
-    const auto finalPose = inverseDepth._coordinates.to_world_coordinates();
-    const auto finalPoseCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-            inverseDepth._coordinates, inverseDepth._covariance);
-    EXPECT_TRUE(utils::is_covariance_valid(finalPoseCovariance));
-
-    // final pose is close to the expected (1000, 0, 0)
-    EXPECT_NEAR(finalPose.x(), 1000.0, 10.0);
-    EXPECT_NEAR(finalPose.y(), 0.0, 1.0);
-    EXPECT_NEAR(finalPose.z(), 0.0, 1.0);
+    assert_inverse_point_back_proj(c2w, observation);
 }
 
 void estimate_plane_error(const PlaneCoordinates& planeA, const PlaneCoordinates& planeB)

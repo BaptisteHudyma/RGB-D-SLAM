@@ -112,6 +112,11 @@ struct PlaneWorldCoordinates : public PlaneCoordinates
      */
     [[nodiscard]] vector3 get_reduced_signed_distance(const PlaneCameraCoordinates& cameraPlane,
                                                       const PlaneWorldToCameraMatrix& worldToCamera) const noexcept;
+
+    /**
+     * \brief return the covariance of the reduced signed distance function
+     */
+    matrix34 get_reduced_signed_distance_jacobian(const PlaneWorldToCameraMatrix& worldToCamera) const noexcept;
 };
 
 } // namespace rgbd_slam
