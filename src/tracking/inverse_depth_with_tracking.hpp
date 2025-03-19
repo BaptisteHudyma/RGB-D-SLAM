@@ -4,7 +4,7 @@
 
 #include "types.hpp"
 #include "coordinates/inverse_depth_coordinates.hpp"
-#include "kalman_filter.hpp"
+#include "extended_kalman_filter.hpp"
 #include "../utils/line.hpp"
 
 #include <opencv2/opencv.hpp>
@@ -36,15 +36,27 @@ struct PointInverseDepth
 
     PointInverseDepth(const ScreenCoordinate2D& observation,
                       const CameraToWorldMatrix& c2w,
-                      const matrix33& stateCovariance);
-    PointInverseDepth(const ScreenCoordinate2D& observation,
-                      const CameraToWorldMatrix& c2w,
                       const matrix33& stateCovariance,
-                      const cv::Mat& descriptor);
+                      const cv::Mat& descriptor = cv::Mat());
 
     PointInverseDepth(const PointInverseDepth& other);
 
     [[nodiscard]] matrix33 get_covariance_of_observed_pose() const noexcept { return _covariance.block<3, 3>(0, 0); }
+
+    /**
+     * \brief Add an new measurment to the tracking
+     * \param[in] observation The new observation
+     * \param[in] observationCovariance
+     * \param[in] c2w The cam to world matrix
+     * \param[in] stateCovariance The covariance of the observer position
+     * \param[in] descriptor The descriptor of this point
+     * \return True if the tracking succeeded, false if something is wrong
+     */
+    [[nodiscard]] bool track_2D(const ScreenCoordinate2D& observation,
+                                const matrix22& observationCovariance,
+                                const CameraToWorldMatrix& c2w,
+                                const matrix33& stateCovariance,
+                                const cv::Mat& descriptor) noexcept;
 
     /**
      * \brief Add an new measurment to the tracking
@@ -54,14 +66,10 @@ struct PointInverseDepth
      * \param[in] descriptor The descriptor of this point
      * \return True if the tracking succeeded, false if something is wrong
      */
-    [[nodiscard]] bool track(const ScreenCoordinate2D& observation,
-                             const CameraToWorldMatrix& c2w,
-                             const matrix33& stateCovariance,
-                             const cv::Mat& descriptor);
-    [[nodiscard]] bool track(const ScreenCoordinate& observation,
-                             const CameraToWorldMatrix& c2w,
-                             const matrix33& stateCovariance,
-                             const cv::Mat& descriptor);
+    [[nodiscard]] bool track_3D(const ScreenCoordinate& observation,
+                                const CameraToWorldMatrix& c2w,
+                                const matrix33& stateCovariance,
+                                const cv::Mat& descriptor) noexcept;
 
     /**
      * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the
@@ -109,19 +117,12 @@ struct PointInverseDepth
 
   protected:
     /**
-     * \brief update the value of this point using an observation in cartesian space
-     */
-    [[nodiscard]] bool update_with_cartesian(const WorldCoordinate& point,
-                                             const WorldCoordinateCovariance& covariance,
-                                             const cv::Mat& descriptor);
-
-    /**
      * \brief Build the caracteristics of the kalman filter
      */
     static void build_kalman_filter() noexcept;
 
     // shared kalman filter, between all points
-    inline static std::unique_ptr<tracking::SharedKalmanFilter<3, 3>> _kalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::ExtendedKalmanFilter<6, 2>> _extendedKalmanFilter = nullptr;
 
   private:
     bool _isMoving = false;

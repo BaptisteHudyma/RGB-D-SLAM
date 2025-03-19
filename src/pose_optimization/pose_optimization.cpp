@@ -52,7 +52,7 @@ namespace rgbd_slam::pose_optimization {
         }
         catch (const std::exception& ex)
         {
-            outputs::log_error("get_features_inliers_outliers: caught exeption while computing distance: " +
+            outputs::log_error("get_features_inliers_outliers: caught exception while computing distance: " +
                                std::string(ex.what()));
         }
 
@@ -326,7 +326,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     }
     if (optimizationScore < 1.0)
     {
-        outputs::log_error("Not enought features to optimize for a pose: " + std::to_string(optimizationScore));
+        outputs::log_error(std::format("Not enought features to optimize for a pose: {}", optimizationScore));
         return false;
     }
 

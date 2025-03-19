@@ -20,6 +20,7 @@ struct InverseDepthWorldPoint
                            const double phi);
     InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w);
     InverseDepthWorldPoint(const CameraCoordinate& observation, const CameraToWorldMatrix& c2w);
+    InverseDepthWorldPoint(const vector6& other);
 
     /**
      * \brief signed Line to line distance
@@ -27,6 +28,10 @@ struct InverseDepthWorldPoint
      * \return The distance between the two closest points on the lines
      */
     [[nodiscard]] vector3 compute_signed_distance(const InverseDepthWorldPoint& other) const;
+
+    [[nodiscard]] matrix22 compute_signed_screen_distance_covariance(const ScreenCoordinate2D& other,
+                                                                     const matrix66& cov,
+                                                                     const WorldToCameraMatrix& w2c) const;
 
     /**
      * \brief signed Line to line distance
@@ -89,21 +94,36 @@ struct InverseDepthWorldPoint
     [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
                                              const double inverseDepthCovariance,
                                              utils::Segment<2>& screenSegment) const noexcept;
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
+                                             const matrix66& cov,
+                                             utils::Segment<2>& screenSegment,
+                                             matrix44& covariance) const noexcept;
 
     /**
-     * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the
-     * uncertainty
-     * \param[in] w2c The world to camera matrix
-     * \param[in] inverseDepthCovariance The covariance of the inverse depth
-     * \param[out] screenSegment the projection of this point as a segment (with depth !)
-     * \return true if screenSegment is valid
+     * \brief Compute a projection of this inverse point to screen space, with the given variance
+     * \param[in] w2c Matrix to go from world to camera space
+     * \param[in] addedStandardDev The value to add to the estimated depth, to variate the screen point
      */
-    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& w2c,
-                                             const double inverseDepthCovariance,
-                                             utils::Segment<3>& screenSegment) const noexcept;
+    ScreenCoordinate2D get_projected_screen_estimation(const WorldToCameraMatrix& w2c,
+                                                       const double addedStandardDev = 0.0) const noexcept;
 
-    WorldCoordinate get_closest_estimation(const double inverseDepthStandardDev) const;
-    WorldCoordinate get_furthest_estimation(const double inverseDepthStandardDev) const;
+    /**
+     * \brief Compute the jacobian of the inverse point to screen transformation
+     * \param[in] w2c Matrix to go from world to camera space
+     * \param[in] addedStandardDev The value to add to the estimated depth, to variate the screen point
+     */
+    Eigen::Matrix<double, 2, 6> get_projected_screen_estimation_jacobian(const WorldToCameraMatrix& w2c,
+                                                                         const double addedStandardDev) const noexcept;
+
+    ScreenCoordinate2D get_closest_estimation(const WorldToCameraMatrix& w2c,
+                                              const double inverseDepthStandardDev) const;
+    ScreenCoordinate2D get_furthest_estimation(const WorldToCameraMatrix& w2c,
+                                               const double inverseDepthStandardDev) const;
+
+    Eigen::Matrix<double, 2, 6> get_closest_estimation_jacobian(const WorldToCameraMatrix& w2c,
+                                                                const double inverseDepthStandardDev) const;
+    Eigen::Matrix<double, 2, 6> get_furthest_estimation_jacobian(const WorldToCameraMatrix& w2c,
+                                                                 const double inverseDepthStandardDev) const;
 
     // changing this implies that all computations should be changed, handle with care. Those should be
     // always in [0, 5]
@@ -121,6 +141,34 @@ struct InverseDepthWorldPoint
     [[nodiscard]] double get_theta() const noexcept { return _theta_rad; };
     [[nodiscard]] double get_phi() const noexcept { return _phi_rad; };
     [[nodiscard]] vector3 get_bearing_vector() const noexcept { return _bearingVector; };
+
+    [[nodiscard]] vector6 get_vector() const
+    {
+        return vector6(_firstObservation.x(),
+                       _firstObservation.y(),
+                       _firstObservation.z(),
+                       _inverseDepth_mm,
+                       _theta_rad,
+                       _phi_rad);
+    };
+    /**
+     * \brief This one should only be used to avoid recreating a new object from scratch
+     */
+    void set_vector(const vector6& other)
+    {
+        _firstObservation[0] = other[firstPoseIndex + 0];
+        _firstObservation[1] = other[firstPoseIndex + 1];
+        _firstObservation[2] = other[firstPoseIndex + 2];
+        _inverseDepth_mm = other[inverseDepthIndex];
+        _theta_rad = other[thetaIndex];
+        _phi_rad = other[phiIndex];
+
+        // update
+        recompute_bearing_vector();
+    }
+
+  protected:
+    void recompute_bearing_vector() noexcept;
 
   private:
     WorldCoordinate _firstObservation; // position of the camera for the first observation

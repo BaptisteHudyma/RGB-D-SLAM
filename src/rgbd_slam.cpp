@@ -213,7 +213,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         }
         catch (const std::exception& ex)
         {
-            outputs::log_error("Caught exeption while updating map: " + std::string(ex.what()));
+            outputs::log_error("Caught exception while updating map: " + std::string(ex.what()));
 
             // no valid transformation
             _localMap.update_no_pose();

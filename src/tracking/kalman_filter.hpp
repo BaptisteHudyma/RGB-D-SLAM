@@ -73,7 +73,7 @@ template<int N, int M> class SharedKalmanFilter
         // it is slower but mathematicaly stable
         Eigen::Matrix<double, M, M> inovationInverted;
         if (utils::double_equal(inovation.determinant(), 0))
-            inovationInverted = inovation.completeOrthogonalDecomposition().pseudoInverse();
+            inovationInverted = pseudoInverse(inovation);
         else
             inovationInverted = inovation.inverse();
 
@@ -82,19 +82,18 @@ template<int N, int M> class SharedKalmanFilter
                 (estimateErrorCovariance.template selfadjointView<Eigen::Lower>()) * _outputMatrix.transpose() *
                 inovationInverted;
 
-        const Eigen::Vector<double, N>& newState =
+        Eigen::Vector<double, N> newState =
                 newStateEstimate + kalmanGain * (newMeasurement - _outputMatrix * newStateEstimate);
 
-        Eigen::Matrix<double, N, N> newCovariance = (_identity - kalmanGain * _outputMatrix) *
-                                                    (estimateErrorCovariance.template selfadjointView<Eigen::Lower>());
-        // force symetrie for covariance
-        newCovariance = newCovariance.template selfadjointView<Eigen::Lower>();
+        // standard covariance update
+        // newCovariance = (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance
+        // force symetrie
+        // newCovariance = ((newCovariance + newCovariance.transpose()) / 2.0).eval();
 
-        // Alternative non Joseph form
-        /*const Eigen::Matrix<double, N, N>& temp = _identity - kalmanGain * _outputMatrix;
-        const Eigen::Matrix<double, N, N>& newCovariance =
-                utils::propagate_covariance(estimateErrorCovariance, temp) +
-                utils::propagate_covariance(measurementNoiseCovariance, kalmanGain);*/
+        // Alternative "Joseph stabilized" version, better with numerical accuracies (and symetrie)
+        Eigen::Matrix<double, N, N> newCovariance =
+                utils::propagate_covariance(estimateErrorCovariance, (_identity - kalmanGain * _outputMatrix).eval()) +
+                utils::propagate_covariance(measurementNoiseCovariance, kalmanGain);
 
         std::string res;
         if (not utils::is_covariance_valid(newCovariance, res))

@@ -58,6 +58,45 @@ double Plane::track(const CameraToWorldMatrix& cameraToWorld,
     return score;
 }
 
+double Plane::track(const Plane& other)
+{
+    assert(_kalmanFilter != nullptr);
+    if (not utils::is_covariance_valid(other._covariance))
+    {
+        outputs::log_error("newDetectionCovariance is an invalid covariance matrix");
+        return false;
+    }
+    if (not utils::is_covariance_valid(_covariance))
+    {
+        outputs::log_error("_covariance is an invalid covariance matrix");
+        exit(-1);
+    }
+
+    const std::pair<vector4, matrix44>& res = _kalmanFilter->get_new_state(_parametrization.get_parametrization(),
+                                                                           _covariance,
+                                                                           other._parametrization.get_parametrization(),
+                                                                           other._covariance);
+    const PlaneWorldCoordinates newEstimatedParameters(res.first);
+    const matrix44& newEstimatedCovariance = res.second;
+    const double score = (_parametrization.get_parametrization() - newEstimatedParameters.get_parametrization()).norm();
+
+    // covariance update
+    _covariance = newEstimatedCovariance;
+
+    // parameters update
+    _parametrization = PlaneWorldCoordinates(newEstimatedParameters);
+
+    // merge the boundary polygon (after optimization) with the observed polygon
+    _boundaryPolygon.merge(other._boundaryPolygon);
+
+    // static sanity checks
+    assert(utils::double_equal(_parametrization.get_normal().norm(), 1.0));
+    assert(not _covariance.hasNaN());
+    assert(utils::is_covariance_valid(_covariance));
+    assert(not _parametrization.hasNaN());
+    return score;
+}
+
 bool Plane::update_boundary_polygon(const CameraToWorldMatrix& cameraToWorld,
                                     const CameraPolygon& detectedPolygon) noexcept
 {

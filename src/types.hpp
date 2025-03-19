@@ -22,11 +22,19 @@ using vectorxd = Eigen::VectorXd;
 using vectorb = Eigen::Vector<bool, Eigen::Dynamic>;
 using vector3 = Eigen::Matrix<double, 3, 1>;
 using vector4 = Eigen::Vector4d;
+
 using matrix22 = Eigen::Matrix2d;
+using matrix23 = Eigen::Matrix<double, 2, 3>;
+using matrix24 = Eigen::Matrix<double, 2, 4>;
+
+using matrix32 = Eigen::Matrix<double, 3, 2>;
 using matrix33 = Eigen::Matrix3d;
 using matrix34 = Eigen::Matrix<double, 3, 4>;
+
+using matrix42 = Eigen::Matrix<double, 4, 2>;
 using matrix43 = Eigen::Matrix<double, 4, 3>;
 using matrix44 = Eigen::Matrix4d;
+
 using quaternion = Eigen::Quaternion<double>;
 
 using vector6 = Eigen::Matrix<double, 6, 1>;
@@ -35,7 +43,7 @@ using vector7 = Eigen::Matrix<double, 7, 1>;
 using matrix66 = Eigen::Matrix<double, 6, 6>;
 using matrix77 = Eigen::Matrix<double, 7, 7>;
 
-struct ScreenCoordinate2DCovariance : public matrix22
+struct ScreenCoordinate2dCovariance : public matrix22
 {
 };
 struct ScreenCoordinateCovariance : public matrix33
@@ -102,6 +110,15 @@ template<typename scalar> struct threshold_op
         return pand(pcmp_lt(pset1<packet>(threshold), pabs(a)), a);
     }
 };
+
+/**
+ * \brief Moore Penrose pseudo inverse
+ */
+template<typename MatType> auto pseudoInverse(const MatType& a)
+{
+    return a.completeOrthogonalDecomposition().pseudoInverse();
+}
+
 namespace Eigen {
 namespace internal {
 

@@ -14,12 +14,13 @@ static const matrix44 CameraToWorld = get_transformation_matrix(
 
 CameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position) noexcept
 {
-    return CameraToWorldMatrix(CameraToWorld * get_transformation_matrix(rotation, position));
+    return CameraToWorldMatrix {CameraToWorld * get_transformation_matrix(rotation, position)};
 }
 
 CameraToWorldMatrix compute_camera_to_world_transform(const WorldToCameraMatrix& worldToCamera) noexcept
 {
     CameraToWorldMatrix cameraToWorld;
+    // already contains the camera to world transform, no need to use CameraToWorld again
     cameraToWorld << worldToCamera.inverse();
     return cameraToWorld;
 }
@@ -28,7 +29,7 @@ CameraToWorldMatrix compute_camera_to_world_transform_no_correction(const quater
                                                                     const vector3& position) noexcept
 {
     outputs::log_error("This function should not be used in any other context than testing !");
-    return CameraToWorldMatrix(get_transformation_matrix(rotation, position));
+    return CameraToWorldMatrix {get_transformation_matrix(rotation, position)};
 }
 
 WorldToCameraMatrix compute_world_to_camera_transform(const quaternion& rotation, const vector3& position) noexcept
