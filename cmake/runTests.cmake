@@ -1,55 +1,55 @@
 
 
 # Run pose optimizations, with error tolerance
-add_executable(testCoordinateSystems
+add_executable(test_coordinate_systems
     ${TESTS}/test_coordinate_systems.cpp
     )
-add_executable(testKalmanFiltering
+add_executable(test_kalman_filtering
     ${TESTS}/test_kalman_filtering.cpp
     )
-add_executable(testMotionModel
+add_executable(test_motion_model
     ${TESTS}/test_motion_model.cpp
     )
-add_executable(testPolygons
+add_executable(test_polygons
     ${TESTS}/test_polygons.cpp
     )
-add_executable(testPoseOptimization
+add_executable(test_pose_optimization
     ${TESTS}/test_pose_optimization.cpp
     )
-add_executable(testTracking
+add_executable(test_tracking
     ${TESTS}/test_tracking.cpp
     )
 
-target_link_libraries(testCoordinateSystems
+target_link_libraries(test_coordinate_systems
     gtest_main
     ${PROJECT_NAME}
     )
-target_link_libraries(testKalmanFiltering
+target_link_libraries(test_kalman_filtering
     gtest_main
     ${PROJECT_NAME}
     )
-target_link_libraries(testMotionModel
+target_link_libraries(test_motion_model
     gtest_main
     ${PROJECT_NAME}
     )
-target_link_libraries(testPolygons
+target_link_libraries(test_polygons
     gtest_main
     ${PROJECT_NAME}
     )
-target_link_libraries(testPoseOptimization
+target_link_libraries(test_pose_optimization
     gtest_main
     ${PROJECT_NAME}
     )
-target_link_libraries(testTracking
+target_link_libraries(test_tracking
     gtest_main
     ${PROJECT_NAME}
     )
 
 
 include(GoogleTest)
-gtest_discover_tests(testCoordinateSystems)
-gtest_discover_tests(testKalmanFiltering)
-gtest_discover_tests(testMotionModel)
-gtest_discover_tests(testPolygons)
-gtest_discover_tests(testPoseOptimization)
-gtest_discover_tests(testTracking)
+gtest_discover_tests(test_coordinate_systems)
+gtest_discover_tests(test_kalman_filtering)
+gtest_discover_tests(test_motion_model)
+gtest_discover_tests(test_polygons)
+gtest_discover_tests(test_pose_optimization)
+gtest_discover_tests(test_tracking)

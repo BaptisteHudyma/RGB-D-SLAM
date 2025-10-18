@@ -18,6 +18,12 @@
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/iterator/function_output_iterator.hpp>
 
+#define BOOST_MINOR_VERSION ((BOOST_VERSION / 100) % 1000)
+
+#if BOOST_MINOR_VERSION < 88
+#    include <boost/geometry/policies/robustness/get_rescale_policy.hpp>
+#endif
+
 #include <boost/geometry/algorithms/detail/overlay/self_turn_points.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
 
@@ -135,7 +141,14 @@ static inline void dissolve_find_intersections(
     std::vector<turn_info> turns;
 
     boost::geometry::detail::self_get_turn_points::no_interrupt_policy policy;
+#if BOOST_MINOR_VERSION < 88
+    typedef boost::geometry::detail::no_rescale_policy rescale_policy_type;
+    rescale_policy_type rescale_policy;
+
+    boost::geometry::self_turns<assign_policy>(ring, strategy, rescale_policy, turns, policy);
+#else
     boost::geometry::self_turns<assign_policy>(ring, strategy, turns, policy);
+#endif
 
     for (auto const& turn: turns)
     {

@@ -55,16 +55,12 @@ fmt
 
 ## Build and Run
 ```
-mkdir build && cd build
-cmake ..
 make
 ```
 
 ### Run the tests
 ```
-./test_p3p
-./testPoseOptimization
-./testKalmanFiltering
+make run-test
 ```
 
 When all the tests are validated, you can run the main SLAM algorithm
@@ -74,7 +70,7 @@ Use the provided example programs with the dataset at your disposal.
 The dataset should be located next to the src folder, in a data folder.
 Ex: For TUM fr1_xyz, you should place it in data/TUM/fr1_xyz
 
-Running this program will produce a map file (format is .xyz for now) at the location of the executable.
+Running this program will produce a map file at the location of the executable.
 
 While the program is running, an OpenCV windows displays the current frame with the tracked features in it.
 Each feature is assigned to a random color, that will never change during the mapping process.
@@ -84,19 +80,20 @@ The top bar displays the number of points in the local map, as well as the plane
 
 
 At the end of the process, a file out.obj is produced.
-The map this program produced is in the physical convention coordinate system (x forward, y left, z up).
+The map this program produces is in the physical convention coordinate system (x forward, y left, z up).
+An start position can be given to align the map with the dataset
 
 
 #### CAPE
-CAPE provides the yoga and tunnel dataset, composed of low textured environment with cylinder primitives
+CAPE provides the yoga and tunnel dataset, composed of low textured environment with cylinder primitives, at a fixed 60 FPS.
 ```
-./slam_CAPE tunnel
+make run-cape ARGS="tunnel -r=60"
 ```
 
 #### TUM
-TUM contains many sequences, but it's best to start with the fr1_xyz and fr1_rpy (respectivly pure translations and pure rotations).
+TUM contains many sequences, but it's best to start with the fr1_xyz and fr1_rpy (respectivly pure translations and pure rotations), at a fixed 60 FPS.
 ```
-./slam_TUM fr1_xyz
+make run-tum ARGS="fr1_xyz -r=60"
 ```
 
 #### Launch parameters
@@ -125,6 +122,10 @@ The user can also choose to run the program with deterministic results, by activ
 The maping process will be a bit slower but the result will always be the same between two sequences, allowing for reproductibility and debugging.
 
 ## Detailed process
+The SLAM optimization process is designed to be feature agnostic, similar to a bundle adjustment with added outlier rejection.
+
+It can continue tracking when no depth frames are given if the local map is already initialized : if the depth frames stops after a few seconds, the map continues to be built to scale while tracking is not lost.
+
 ### feature detection & matching
 The system starts by splitting the depth image as a 2D connected graph, and run a primitive analysis on it.
 This analysis extract local planar features, that are merged into bigger planes.
@@ -147,7 +148,7 @@ Outliers are filtered out using a simple RANSAC, and the final pose is computed 
 
 The optimized pose is used to update the local map and decaying motion model, in case the features are lost for a moment.
 
-The complete systems runs in real time, between 300FPS and 600FPS for images of 640x480 pixels (depth and RGB images).
+The complete systems runs in real time, between 100FPS and 600FPS for images of 640x480 pixels (depth and RGB images).
 
 ## To be implemented soon
 - Advanced camera parameter model

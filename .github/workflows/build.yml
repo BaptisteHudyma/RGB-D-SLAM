@@ -1,0 +1,48 @@
+name: Built main branch CI
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+
+defaults: 
+  run:
+    shell: bash
+    working-directory: ./RGB-D-SLAM
+
+jobs:
+  format:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        path: RGB-D-SLAM
+        submodules: 'true'
+    - name: verify format
+      run : make format-verify
+  
+  build-all:
+    runs-on: ubuntu-20.04
+    needs: [format]
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./RGB-D-SLAM
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        path: RGB-D-SLAM
+        submodules: 'true'
+
+    - name: setup
+      run :
+        sudo apt -y install g++ cmake make git libgtk2.0-dev pkg-config &&
+        sudo apt -y install libflann-dev libopencv-dev libeigen3-dev libboost-all-dev libpugixml-dev libvtk9-dev libfmt-dev
+    - name: install gtest
+      run:
+        sudo cmake/install_gtest.sh
+    - name: test
+      run : make run-test

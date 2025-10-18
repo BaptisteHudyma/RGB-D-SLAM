@@ -250,7 +250,7 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
     */
 
     // TODO: replace this with a model that takes the pose uncertainty
-    const matrix22 screenPointCovariance = matrix22::Identity() * SQR(3); // 3 pixels
+    const matrix22 screenPointCovariance = matrix22::Identity() * SQR(5); // pixels
 
     // use a 2D observation, that will be merged with the current one
     return track_2D(matchedFeature._coordinates.get_2D(),
