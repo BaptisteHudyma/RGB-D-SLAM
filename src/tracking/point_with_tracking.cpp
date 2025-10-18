@@ -153,7 +153,10 @@ bool Point::track_3d(const ScreenCoordinate& newDetection, const WorldToCameraMa
     try
     {
         // TODO: replace this with a model that takes the pose uncertainty
-        const matrix33& screenPointCovariance = newDetection.get_covariance();
+        const double xyVariance = SQR(5);
+        matrix33 screenPointCovariance = newDetection.get_covariance();
+        screenPointCovariance(0, 0) = xyVariance;
+        screenPointCovariance(1, 1) = xyVariance;
 
         Point3dEstimator estimator(_coordinates, _covariance, newDetection, screenPointCovariance, w2c);
 
@@ -188,7 +191,9 @@ bool Point::track_2d(const ScreenCoordinate2D& newDetection, const WorldToCamera
     try
     {
         // TODO: replace this with a model that takes the pose uncertainty
-        const matrix22& screenPointCovariance = newDetection.get_covariance();
+        const double xyVariance = SQR(5);
+        matrix22 screenPointCovariance({{xyVariance, 0.0}, {0.0, xyVariance}});
+
         Point2dEstimator estimator(_coordinates, _covariance, newDetection, screenPointCovariance, w2c);
 
         const auto& [newState, newCovariance] = _kalmanFuse2d->get_new_state(&estimator);

@@ -6,6 +6,11 @@ IF(NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Debug)
 ENDIF()
 
+set(SRC_DIR $ENV{SRC_DIR} CACHE PATH "Root directory for the project")
+if(SRC_DIR STREQUAL "")
+    set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+endif()
+
 # debug symbols for programing tasks
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
@@ -50,6 +55,8 @@ FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
 )
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
 ## For Windows: Prevent overriding the parent project's compiler/linker settings
 #set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 #FetchContent_MakeAvailable(googletest)
@@ -60,8 +67,8 @@ enable_testing()
 
 
 # Compile main program
-set(SRC src)
-set(THIRD_PARTY third_party)
+set(SRC ${SRC_DIR}/src)
+set(THIRD_PARTY ${SRC_DIR}/third_party)
 
 set(COORDINATES ${SRC}/coordinates)
 
@@ -77,7 +84,7 @@ set(TRACKING    ${SRC}/tracking)
 set(OUTPUTS     ${SRC}/outputs)
 set(UTILS       ${SRC}/utils)
 
-set(EXAMPLES    examples)
+set(EXAMPLES    ${SRC_DIR}/examples)
 
 include_directories(SYSTEM
     ${INC_DIRS}
