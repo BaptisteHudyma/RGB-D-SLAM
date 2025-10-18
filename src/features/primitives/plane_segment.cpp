@@ -193,10 +193,7 @@ matrix33 Plane_Segment::get_point_cloud_covariance() const
 {
     const matrix33 pointCloudHessian({{_Sxs, _Sxy, _Szx}, {_Sxy, _Sys, _Syz}, {_Szx, _Syz, _Szs}});
 
-    // 0 determinant cannot be inverted
-    assert(not utils::double_equal(pointCloudHessian.determinant(), 0.0));
-
-    const matrix33& covariance = pointCloudHessian.inverse();
+    const matrix33& covariance = pseudoInverse(pointCloudHessian);
     if (not utils::is_covariance_valid(covariance))
         throw std::logic_error("get_point_cloud_covariance: the produced covariance is invalid");
     return covariance;

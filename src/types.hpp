@@ -89,7 +89,7 @@ struct EulerAngles
 };
 
 // define an optimized squared
-template<class T> T constexpr inline SQR(const T x) { return x * x; }
+template<class T> T constexpr SQR(const T x) { return (x * x); }
 
 using vector3_vector = std::vector<vector3, Eigen::aligned_allocator<vector3>>;
 
@@ -100,11 +100,11 @@ template<typename scalar> struct threshold_op
 {
     scalar threshold;
     threshold_op(const scalar& value) : threshold(value) {}
-    EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE const scalar operator()(const scalar& a) const
+    EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE scalar operator()(const scalar& a) const
     {
         return threshold < std::abs(a) ? a : scalar(0);
     }
-    template<typename packet> EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE const packet packetOp(const packet& a) const
+    template<typename packet> EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE packet packetOp(const packet& a) const
     {
         using namespace Eigen::internal;
         return pand(pcmp_lt(pset1<packet>(threshold), pabs(a)), a);
@@ -116,15 +116,21 @@ template<typename scalar> struct threshold_op
  */
 template<typename MatType> auto pseudoInverse(const MatType& a)
 {
-    return a.completeOrthogonalDecomposition().pseudoInverse();
+    // determinant too close to zero, use stable inverse
+    if (abs(a.determinant()) <= std::numeric_limits<double>::epsilon())
+    {
+        // cannot inverse the inovation covariance matrix: use pseudoinverse.
+        // it is slower but mathematicaly stable
+        return a.completeOrthogonalDecomposition().pseudoInverse().eval();
+    }
+    return a.inverse().eval();
 }
 
-namespace Eigen {
-namespace internal {
+namespace Eigen::internal {
 
 template<typename scalar> struct functor_traits<threshold_op<scalar>>
 {
-    enum
+    enum class Trait
     {
         Cost = 3 * NumTraits<scalar>::AddCost,
         PacketAccess = packet_traits<scalar>::HasAbs
@@ -134,7 +140,6 @@ template<typename scalar> struct functor_traits<threshold_op<scalar>>
 /// round the given eigen matrix to zero
 #define ROUND_MAT(mat) mat.unaryExpr(threshold_op<double>(1e-10))
 
-} // namespace internal
-} // namespace Eigen
+} // namespace Eigen::internal
 
 #endif

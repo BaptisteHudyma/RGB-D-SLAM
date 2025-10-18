@@ -153,8 +153,7 @@ bool Point::track_3d(const ScreenCoordinate& newDetection, const WorldToCameraMa
     try
     {
         // TODO: replace this with a model that takes the pose uncertainty
-        matrix33 screenPointCovariance = newDetection.get_covariance();
-        screenPointCovariance.diagonal().head<2>() = vector2(SQR(10), SQR(10)); // 10 pixels
+        const matrix33& screenPointCovariance = newDetection.get_covariance();
 
         Point3dEstimator estimator(_coordinates, _covariance, newDetection, screenPointCovariance, w2c);
 
@@ -162,7 +161,7 @@ bool Point::track_3d(const ScreenCoordinate& newDetection, const WorldToCameraMa
 
         if (not utils::is_covariance_valid(newCovariance))
         {
-            outputs::log_error("Inverse depth point covariance is invalid after merge");
+            outputs::log_error("New depth point covariance is invalid after merge");
             return false;
         }
 
@@ -189,16 +188,14 @@ bool Point::track_2d(const ScreenCoordinate2D& newDetection, const WorldToCamera
     try
     {
         // TODO: replace this with a model that takes the pose uncertainty
-        matrix22 screenPointCovariance = newDetection.get_covariance();
-        screenPointCovariance.diagonal() = vector2(SQR(10), SQR(10)); // 10 pixels
-
+        const matrix22& screenPointCovariance = newDetection.get_covariance();
         Point2dEstimator estimator(_coordinates, _covariance, newDetection, screenPointCovariance, w2c);
 
         const auto& [newState, newCovariance] = _kalmanFuse2d->get_new_state(&estimator);
 
         if (not utils::is_covariance_valid(newCovariance))
         {
-            outputs::log_error("Inverse depth point covariance is invalid after merge");
+            outputs::log_error("New depth point covariance is invalid after merge");
             return false;
         }
 

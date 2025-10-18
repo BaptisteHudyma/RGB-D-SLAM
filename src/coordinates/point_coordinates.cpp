@@ -323,16 +323,9 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
 
 matrix33 WorldCoordinate::to_camera_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    /*
-    // corresponds to this
-    const auto& c2w = CameraToWorldMatrix(worldToCamera.inverse());
-    const auto& res = CameraCoordinate(worldToCamera.rotation() * ((*this) - c2w.translation()));
-    */
     // jacobian of the rotation op (just a rotation)
     const matrix33 rotationToTranslationJacobian = worldToCamera.rotation();
-
-    // jacobian of a translation is identity
-    return rotationToTranslationJacobian * (-matrix33::Identity());
+    return rotationToTranslationJacobian;
 }
 
 } // namespace rgbd_slam

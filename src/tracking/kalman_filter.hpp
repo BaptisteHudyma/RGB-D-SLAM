@@ -69,13 +69,8 @@ template<int N, int M> class SharedKalmanFilter
         // compute inovation covariance
         const Eigen::Matrix<double, M, M>& inovation =
                 utils::propagate_covariance(estimateErrorCovariance, _outputMatrix) + measurementNoiseCovariance;
-        // cannot inverse the inovation covariance matrix: use pseudoinverse.
-        // it is slower but mathematicaly stable
-        Eigen::Matrix<double, M, M> inovationInverted;
-        if (utils::double_equal(inovation.determinant(), 0))
-            inovationInverted = pseudoInverse(inovation);
-        else
-            inovationInverted = inovation.inverse();
+
+        const Eigen::Matrix<double, M, M>& inovationInverted = pseudoInverse(inovation);
 
         // compute Kalman gain
         const Eigen::Matrix<double, N, M>& kalmanGain =
@@ -87,10 +82,10 @@ template<int N, int M> class SharedKalmanFilter
 
         // standard covariance update
         // newCovariance = (_identity - kalmanGain * _outputMatrix) * estimateErrorCovariance
-        // force symetrie
+        // force symmetry
         // newCovariance = ((newCovariance + newCovariance.transpose()) / 2.0).eval();
 
-        // Alternative "Joseph stabilized" version, better with numerical accuracies (and symetrie)
+        // Alternative "Joseph stabilized" version, better with numerical accuracies (and symmetry)
         Eigen::Matrix<double, N, N> newCovariance =
                 utils::propagate_covariance(estimateErrorCovariance, (_identity - kalmanGain * _outputMatrix).eval()) +
                 utils::propagate_covariance(measurementNoiseCovariance, kalmanGain);

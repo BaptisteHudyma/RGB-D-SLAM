@@ -26,10 +26,10 @@ template<int N>
         return covariance(0, 0) >= 0;
     }
 
-    // covariance should be symetrical
+    // covariance should be symmetrical
     if (!covariance.isApprox(covariance.transpose()))
     {
-        reason = "not symetrical";
+        reason = "not symmetrical";
         return false;
     }
 

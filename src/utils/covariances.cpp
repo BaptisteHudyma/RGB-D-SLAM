@@ -31,11 +31,12 @@ matrix33 get_camera_to_screen_jacobian(const CameraCoordinate& point)
 {
     const matrix23& camToScreenJac = get_camera_to_screen2d_jacobian(point);
     matrix33 jacobian;
-    jacobian << camToScreenJac, 0.0, 0.0, -1.0;
+    jacobian << camToScreenJac, 0.0, 0.0, 1.0;
     return jacobian;
 }
 
-ScreenCoordinateCovariance get_screen_point_covariance(const vector3& point, const matrix33& pointCovariance) noexcept
+ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,
+                                                       const matrix33& pointCovariance) noexcept
 {
     // Jacobian of the camera to screen function
     const matrix33& jacobian = get_camera_to_screen_jacobian(point);
@@ -51,11 +52,6 @@ ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& po
 {
     return get_screen_point_covariance(point.to_camera_coordinates(worldToCamera),
                                        get_camera_point_covariance(pointCovariance, worldToCamera, matrix33::Zero()));
-}
-ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
-                                                       const WorldCoordinateCovariance& pointCovariance) noexcept
-{
-    return get_screen_point_covariance(point.base(), pointCovariance.base());
 }
 
 ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,
