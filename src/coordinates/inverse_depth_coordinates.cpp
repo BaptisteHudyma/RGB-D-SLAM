@@ -178,22 +178,19 @@ Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_projected_screen_estimat
     const vector3& observationVector = _bearingVector;
 
     const vector3 tr = observationPoint - translation;
-    const vector3 h_c_rot = rotation * (tr * inverseDepth + observationVector);
-
-    // Jacobian of the camera to screen function
-    const matrix23 screenToCameraJacobian = utils::get_camera_to_screen2d_jacobian(h_c_rot);
-
-    // Rot * vec jacobian
-    const matrix33 rotationToTranslationJacobian = rotation;
+    const vector3 cameraNoRotationPoint = (inverseDepth * tr + observationVector);
 
     // iDepth * (root position - translation) + orientationVector
-    const Eigen::Matrix<double, 3, 6> inverseDepthToCamera(
+    const Eigen::Matrix<double, 3, 6> inverseDepthToCameraNoRotation(
             // x0, y0, z0, iD, theta, phi
             {{inverseDepth, 0.0, 0.0, tr.x(), cos(phi) * cos(theta), -sin(phi) * sin(theta)}, // x
              {0.0, inverseDepth, 0.0, tr.y(), sin(phi) * cos(theta), cos(phi) * sin(theta)},  // y
              {0.0, 0.0, inverseDepth, tr.z(), -sin(theta), 0.0}});                            // z
 
-    return (screenToCameraJacobian * (rotationToTranslationJacobian * inverseDepthToCamera)).eval();
+    // Jacobian of the camera to screen function
+    const matrix23 cameraToScreenJacobian = utils::get_camera_to_screen2d_jacobian(rotation * cameraNoRotationPoint);
+
+    return (cameraToScreenJacobian * rotation * inverseDepthToCameraNoRotation).eval();
 }
 
 ScreenCoordinate2D InverseDepthWorldPoint::get_projected_screen_estimation(const WorldToCameraMatrix& w2c,

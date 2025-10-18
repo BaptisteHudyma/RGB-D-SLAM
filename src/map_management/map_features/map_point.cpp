@@ -199,7 +199,7 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     }
 
     const ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
-    WorldToCameraMatrix w2c = utils::compute_world_to_camera_transform(cameraToWorld);
+    const WorldToCameraMatrix& w2c = utils::compute_world_to_camera_transform(cameraToWorld);
     if (is_depth_valid(matchedScreenPoint.z()))
     {
         // depth is valid, merge using the 3D model (more precise)

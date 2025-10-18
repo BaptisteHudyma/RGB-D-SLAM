@@ -64,7 +64,12 @@ TEST(PointFusion3d, centerPointFusion)
 
     auto pointScreenCovariance3d = utils::propagate_covariance(
             trackPoint._covariance, trackPoint._coordinates.to_screen_coordinates_jacobian(w2c));
+    auto pointStandardDev = pointScreenCovariance3d.diagonal().cwiseSqrt();
+    EXPECT_LE(pointStandardDev.x(), 0.1);
+    EXPECT_LE(pointStandardDev.y(), 0.1);
+    EXPECT_LE(pointStandardDev.z(), 0.1);
 
+    // track point, observe by the side
     const WorldToCameraMatrix& w2cSideA =
             utils::compute_world_to_camera_transform(utils::compute_camera_to_world_transform_no_correction(
                     utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 90 * EulerToRadian, 0.0)),
@@ -79,7 +84,11 @@ TEST(PointFusion3d, centerPointFusion)
 
     pointScreenCovariance3d = utils::propagate_covariance(
             trackPoint._covariance, trackPoint._coordinates.to_screen_coordinates_jacobian(w2cSideA));
+    EXPECT_LE(pointStandardDev.x(), 0.05);
+    EXPECT_LE(pointStandardDev.y(), 0.05);
+    EXPECT_LE(pointStandardDev.z(), 0.09);
 
+    // track point, observe by the other side
     const WorldToCameraMatrix& w2cSideB =
             utils::compute_world_to_camera_transform(utils::compute_camera_to_world_transform_no_correction(
                     utils::get_quaternion_from_euler_angles(EulerAngles(0.0, -90 * EulerToRadian, 0.0)),
@@ -94,6 +103,9 @@ TEST(PointFusion3d, centerPointFusion)
 
     pointScreenCovariance3d = utils::propagate_covariance(
             trackPoint._covariance, trackPoint._coordinates.to_screen_coordinates_jacobian(w2cSideB));
+    EXPECT_LE(pointStandardDev.x(), 0.045);
+    EXPECT_LE(pointStandardDev.y(), 0.045);
+    EXPECT_LE(pointStandardDev.z(), 0.09);
 }
 
 /**
