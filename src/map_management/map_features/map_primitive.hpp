@@ -98,7 +98,7 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
     }
 
     [[nodiscard]] bool update_with_match(const DetectedPlaneType& matchedFeature,
-                                         const matrix33& poseCovariance,
+                                         const matrix66& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
   protected:
@@ -111,7 +111,7 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
 class StagedMapPlane : public MapPlane, public IStagedMapFeature<DetectedPlaneType>
 {
   public:
-    StagedMapPlane(const matrix33& poseCovariance,
+    StagedMapPlane(const matrix66& poseCovariance,
                    const CameraToWorldMatrix& cameraToWorld,
                    const DetectedPlaneType& detectedFeature);
 

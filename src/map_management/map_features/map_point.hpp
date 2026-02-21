@@ -106,7 +106,7 @@ class MapPoint :
     [[nodiscard]] bool is_moving() const noexcept override { return tracking::Point::is_moving(); }
 
     [[nodiscard]] bool update_with_match(const DetectedPointType& matchedFeature,
-                                         const matrix33& poseCovariance,
+                                         const matrix66& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
   protected:
@@ -119,7 +119,7 @@ class MapPoint :
 class StagedMapPoint : public MapPoint, public IStagedMapFeature<DetectedPointType>
 {
   public:
-    StagedMapPoint(const matrix33& poseCovariance,
+    StagedMapPoint(const matrix66& poseCovariance,
                    const CameraToWorldMatrix& cameraToWorld,
                    const DetectedPointType& detectedFeature);
 

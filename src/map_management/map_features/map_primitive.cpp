@@ -202,7 +202,7 @@ void MapPlane::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) co
 }
 
 bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
-                                 const matrix33& poseCovariance,
+                                 const matrix66& poseCovariance,
                                  const CameraToWorldMatrix& cameraToWorld) noexcept
 {
     if (_matchIndexes.empty())
@@ -259,7 +259,7 @@ void MapPlane::update_no_match() noexcept
  *  StagedMapPlane
  */
 
-StagedMapPlane::StagedMapPlane(const matrix33& poseCovariance,
+StagedMapPlane::StagedMapPlane(const matrix66& poseCovariance,
                                const CameraToWorldMatrix& cameraToWorld,
                                const DetectedPlaneType& detectedFeature) :
     MapPlane()

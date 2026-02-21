@@ -113,7 +113,7 @@ matrix33 get_camera_to_screen_jacobian(const CameraCoordinate& point);
  */
 CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCovariance& worldPointCovariance,
                                                        const WorldToCameraMatrix& worldToCamera,
-                                                       const matrix33& poseCovariance) noexcept;
+                                                       const matrix66& poseCovariance) noexcept;
 
 /**
  * \brief Compute the covariance of a world point
@@ -121,14 +121,14 @@ CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCova
 [[nodiscard]] WorldCoordinateCovariance get_world_point_covariance(
         const CameraCoordinateCovariance& cameraPointCovariance,
         const CameraToWorldMatrix& cameraToWorld,
-        const matrix33& poseCovariance) noexcept;
+        const matrix66& poseCovariance) noexcept;
 
 /**
  * \brief Compute covariance of a screen point in world state
  */
 [[nodiscard]] WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
                                                                    const CameraToWorldMatrix& cameraToWorld,
-                                                                   const matrix33& poseCovariance) noexcept;
+                                                                   const matrix66& poseCovariance) noexcept;
 
 /**
  * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point. This
@@ -178,7 +178,7 @@ CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCova
                                                   const CameraToWorldMatrix& cameraToWorldMatrix,
                                                   const PlaneCameraToWorldMatrix& planeCameraToWorldMatrix,
                                                   const matrix44& planeCovariance,
-                                                  const matrix33& worldPoseCovariance);
+                                                  const matrix66& worldPoseCovariance);
 
 } // namespace rgbd_slam::utils
 

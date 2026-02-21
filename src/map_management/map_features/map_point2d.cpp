@@ -231,7 +231,7 @@ bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
 }
 
 bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
-                                   const matrix33& poseCovariance,
+                                   const matrix66& poseCovariance,
                                    const CameraToWorldMatrix& cameraToWorld) noexcept
 {
     if (_matchIndexes.empty())
@@ -269,7 +269,7 @@ void MapPoint2D::update_no_match() noexcept
  * StagedMapPoint
  */
 
-StagedMapPoint2D::StagedMapPoint2D(const matrix33& poseCovariance,
+StagedMapPoint2D::StagedMapPoint2D(const matrix66& poseCovariance,
                                    const CameraToWorldMatrix& cameraToWorld,
                                    const DetectedPoint2DType& detectedFeature) :
     MapPoint2D(detectedFeature._coordinates.get_2D(), cameraToWorld, poseCovariance, detectedFeature._descriptor)

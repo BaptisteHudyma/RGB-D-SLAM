@@ -51,7 +51,7 @@ ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& po
                                                        const WorldToCameraMatrix& worldToCamera) noexcept
 {
     return get_screen_point_covariance(point.to_camera_coordinates(worldToCamera),
-                                       get_camera_point_covariance(pointCovariance, worldToCamera, matrix33::Zero()));
+                                       get_camera_point_covariance(pointCovariance, worldToCamera, matrix66::Zero()));
 }
 
 ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& point,
@@ -62,29 +62,31 @@ ScreenCoordinateCovariance get_screen_point_covariance(const CameraCoordinate& p
 
 CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCovariance& worldPointCovariance,
                                                        const WorldToCameraMatrix& worldToCamera,
-                                                       const matrix33& poseCovariance) noexcept
+                                                       const matrix66& poseCovariance) noexcept
 {
     const matrix33& rotation = worldToCamera.rotation();
 
     CameraCoordinateCovariance cov;
-    cov << propagate_covariance(worldPointCovariance, rotation) + poseCovariance;
+    // TODO: correct covariance with pose
+    cov << propagate_covariance(worldPointCovariance, rotation) + poseCovariance.block<3, 3>(0, 0);
     return cov;
 }
 
 WorldCoordinateCovariance get_world_point_covariance(const CameraCoordinateCovariance& cameraPointCovariance,
                                                      const CameraToWorldMatrix& cameraToWorld,
-                                                     const matrix33& poseCovariance) noexcept
+                                                     const matrix66& poseCovariance) noexcept
 {
     const matrix33& rotation = cameraToWorld.rotation();
 
     WorldCoordinateCovariance cov;
-    cov << propagate_covariance(cameraPointCovariance, rotation) + poseCovariance;
+    // TODO: correct covariance with pose
+    cov << propagate_covariance(cameraPointCovariance, rotation) + poseCovariance.block<3, 3>(0, 0);
     return cov;
 }
 
 WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
                                                      const CameraToWorldMatrix& cameraToWorld,
-                                                     const matrix33& poseCovariance) noexcept
+                                                     const matrix66& poseCovariance) noexcept
 {
     return get_world_point_covariance(utils::get_camera_point_covariance(screenPoint), cameraToWorld, poseCovariance);
 }
@@ -213,7 +215,7 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
                                     const CameraToWorldMatrix& cameraToWorldMatrix,
                                     const PlaneCameraToWorldMatrix& planeCameraToWorldMatrix,
                                     const matrix44& planeCovariance,
-                                    const matrix33& worldPoseCovariance)
+                                    const matrix66& worldPoseCovariance)
 {
     if (not is_covariance_valid(planeCovariance))
     {
@@ -227,7 +229,8 @@ matrix44 get_world_plane_covariance(const PlaneCameraCoordinates& planeCoordinat
     // covert covariance to world
     const matrix33& rotation = cameraToWorldMatrix.rotation();
     const matrix33& pointCloudWorlCovariance =
-            propagate_covariance(pointCloudCovariance, rotation) + worldPoseCovariance;
+            // TODO: resolve true world covariance
+            propagate_covariance(pointCloudCovariance, rotation) + worldPoseCovariance.block<3, 3>(0, 0);
 
     std::string failureReason;
     if (not is_covariance_valid(pointCloudWorlCovariance, failureReason))

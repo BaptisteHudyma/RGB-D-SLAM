@@ -105,7 +105,7 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
      * \return True if this update succeeded.
      */
     [[nodiscard]] virtual bool update_with_match(const DetectedFeatureType& matchedFeature,
-                                                 const matrix33& poseCovariance,
+                                                 const matrix66& poseCovariance,
                                                  const CameraToWorldMatrix& cameraToWorld) noexcept = 0;
 
     // signal the system that this feature was matched
@@ -365,7 +365,7 @@ class Feature_Map
      * \param[in] mapWriter A pointer to the map writer object
      */
     matchIndexSet update_map(const CameraToWorldMatrix& cameraToWorld,
-                             const matrix33& poseCovariance,
+                             const matrix66& poseCovariance,
                              const DetectedFeatureContainer& detectedFeatures,
                              std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
@@ -404,7 +404,7 @@ class Feature_Map
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \param[in] detectedfeature The feature to add
      */
-    void add_detected_feature_to_staged_map(const matrix33& poseCovariance,
+    void add_detected_feature_to_staged_map(const matrix66& poseCovariance,
                                             const CameraToWorldMatrix& cameraToWorld,
                                             const DetectedFeatureType& detectedfeature)
     {
@@ -434,7 +434,7 @@ class Feature_Map
      * \param[in] detectedFeatures The object that contains the detected features to add
      * \param[in] usedIndices All indices matched and used in update step
      */
-    void add_features_to_staged_map(const matrix33& poseCovariance,
+    void add_features_to_staged_map(const matrix66& poseCovariance,
                                     const CameraToWorldMatrix& cameraToWorld,
                                     const DetectedFeatureContainer& detectedFeatures,
                                     const matchIndexSet& usedIndices)
@@ -469,7 +469,7 @@ class Feature_Map
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \param[in] detectedFeatures The object that contains the detected features to add
      */
-    void add_all_features_to_staged_map(const matrix33& poseCovariance,
+    void add_all_features_to_staged_map(const matrix66& poseCovariance,
                                         const CameraToWorldMatrix& cameraToWorld,
                                         const DetectedFeatureContainer& detectedFeatures)
     {
@@ -699,7 +699,7 @@ class Feature_Map
     }
 
     matchIndexSet update_local_map(const CameraToWorldMatrix& cameraToWorld,
-                                   const matrix33& poseCovariance,
+                                   const matrix66& poseCovariance,
                                    const DetectedFeaturesObject& detectedFeatureObject,
                                    std::shared_ptr<outputs::IMap_Writer> mapWriter)
     {
@@ -765,7 +765,7 @@ class Feature_Map
     }
 
     matchIndexSet update_staged_map(const CameraToWorldMatrix& cameraToWorld,
-                                    const matrix33& poseCovariance,
+                                    const matrix66& poseCovariance,
                                     const DetectedFeaturesObject& detectedFeatureObject)
     {
         if (not utils::is_covariance_valid(poseCovariance))

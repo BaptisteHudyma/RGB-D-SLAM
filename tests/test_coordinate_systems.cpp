@@ -1,4 +1,5 @@
 
+#include "angle_utils.hpp"
 #include "distance_utils.hpp"
 #include "line.hpp"
 #include "parameters.hpp"
@@ -7,6 +8,7 @@
 #include "coordinates/inverse_depth_coordinates.hpp"
 #include "coordinates/point_coordinates.hpp"
 #include "coordinates/plane_coordinates.hpp"
+#include "coordinates/basis_changes.hpp"
 #include <gtest/gtest.h>
 
 namespace rgbd_slam {
@@ -16,6 +18,162 @@ void estimate_point_error(const vector3& pointA, const vector3& pointB)
     EXPECT_NEAR(pointA.x(), pointB.x(), 0.001);
     EXPECT_NEAR(pointA.y(), pointB.y(), 0.001);
     EXPECT_NEAR(pointA.z(), pointB.z(), 0.001);
+}
+
+TEST(QuaternionFromEuler, BasicRotationsFromEuler)
+{
+    quaternion quat;
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 1.0, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 180.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 1.0, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.0, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, 180.0 * EulerToRadian, 0.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.y(), 1.0, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.0, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(180.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.z(), 1.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.0, 1e-5);
+
+    // inverse rotations
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, -180.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), -1.0, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.0, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, -180.0 * EulerToRadian, 0.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.y(), -1.0, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.0, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(-180.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.z(), -1.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.0, 1e-5);
+
+    // half rotations
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 90.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.7071068, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.7071068, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, 90.0 * EulerToRadian, 0.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.7071068, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.7071068, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.7071068, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.7071068, 1e-5);
+
+    // inverse half rotations
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, -90.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), -0.7071068, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.7071068, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, -90.0 * EulerToRadian, 0.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.y(), -0.7071068, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.7071068, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(-90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.0, 1e-5);
+    EXPECT_NEAR(quat.z(), -0.7071068, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.7071068, 1e-5);
+}
+
+TEST(QuaternionFromEuler, DoubleRotationsFromEuler)
+{
+    quaternion quat;
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, 90.0 * EulerToRadian, 90.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.5, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, -90.0 * EulerToRadian, 90.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.y(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.z(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.5, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(0.0 * EulerToRadian, -90.0 * EulerToRadian, -90.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.y(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.5, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(90.0 * EulerToRadian, 0.0 * EulerToRadian, 90.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.y(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.5, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(90.0 * EulerToRadian, 0.0 * EulerToRadian, -90.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.z(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.5, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(-90.0 * EulerToRadian, 0.0 * EulerToRadian, 90.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.y(), 0.5, 1e-5);
+    EXPECT_NEAR(quat.z(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.5, 1e-5);
+
+    quat = utils::get_quaternion_from_euler_angles(
+            EulerAngles(-90.0 * EulerToRadian, 0.0 * EulerToRadian, -90.0 * EulerToRadian));
+    EXPECT_NEAR(quat.x(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.y(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.z(), -0.5, 1e-5);
+    EXPECT_NEAR(quat.w(), 0.5, 1e-5);
 }
 
 TEST(CoordinateSystemChangeTests, CameraToWorldAtOrigin)
@@ -155,6 +313,458 @@ TEST(CoordinateSystemChangeTests, CameraToWorldFarFromOriginSameWithRotation)
                                                    vector3(-100, 100, 200));
     EXPECT_TRUE(cameraToWorld.isApprox(tr));
 }
+
+/**
+ *
+ * CHECK CAMERA TO WORLD AND WORLD TO CAMERA BASIS CHANGES
+ *
+ */
+
+TEST(CoordinateCameraToWorld, CenterToWorld)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+    /*
+        ASSERT_NEAR(c2w.translation().x(), 0.0, 1e-10);
+        ASSERT_NEAR(c2w.translation().y(), 0.0, 1e-10);
+        ASSERT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+        ASSERT_NEAR(c2w.rotation().eulerAngles(0, 1, 2).x(), M_PI / 2.0, 1e-10);
+        ASSERT_NEAR(c2w.rotation().eulerAngles(0, 1, 2).y(), M_PI / 2.0, 1e-10);
+        ASSERT_NEAR(c2w.rotation().eulerAngles(0, 1, 2).z(), -M_PI, 1e-10);
+    */
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+
+    CameraCoordinate c2(1.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), -1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), -1.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check inverse
+
+    CameraCoordinate c3(-1.0, 0.0, 0.0);
+    wc = c3.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c5(0.0, -1.0, 0.0);
+    wc = c5.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 1.0, 1e-10);
+
+    CameraCoordinate c7(0.0, 0.0, -1.0);
+    wc = c7.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), -1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+}
+
+TEST(CoordinateWorldToCamera, CenterToCamera)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+
+    const WorldToCameraMatrix& w2c = utils::compute_world_to_camera_transform(c2w);
+    /*
+        ASSERT_NEAR(w2c.translation().x(), 0.0, 1e-10);
+        ASSERT_NEAR(w2c.translation().y(), 0.0, 1e-10);
+        ASSERT_NEAR(w2c.translation().z(), 0.0, 1e-10);
+        ASSERT_NEAR(w2c.rotation().eulerAngles(0, 1, 2).x(), M_PI / 2.0, 1e-10);
+        ASSERT_NEAR(w2c.rotation().eulerAngles(0, 1, 2).y(), 0.0, 1e-10);
+        ASSERT_NEAR(w2c.rotation().eulerAngles(0, 1, 2).z(), M_PI / 2.0, 1e-10);
+    */
+    CameraCoordinate cc;
+
+    WorldCoordinate w1(0.0, 0.0, 0.0);
+    cc = w1.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
+
+    // check axis
+
+    WorldCoordinate w2(1.0, 0.0, 0.0);
+    cc = w2.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 1.0, 1e-10);
+
+    WorldCoordinate w4(0.0, 1.0, 0.0);
+    cc = w4.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), -1.0, 1e-10);
+    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
+
+    WorldCoordinate w6(0.0, 0.0, 1.0);
+    cc = w6.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.y(), -1.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
+
+    // check inverse
+
+    WorldCoordinate w3(-1.0, 0.0, 0.0);
+    cc = w3.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.z(), -1.0, 1e-10);
+
+    WorldCoordinate w5(0.0, -1.0, 0.0);
+    cc = w5.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), 1.0, 1e-10);
+    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
+
+    WorldCoordinate w7(0.0, 0.0, -1.0);
+    cc = w7.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.y(), 1.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
+}
+
+// check raw axis (sanity)
+
+TEST(CoordinateCameraToWorld, RawPoseRotatedYawRight)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+
+    EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+    CameraCoordinate c2(1.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), -1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 1.0, 1e-10);
+}
+
+TEST(CoordinateCameraToWorld, RawPoseRotatedYawLeft)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(-90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+
+    EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+    CameraCoordinate c2(1.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), -1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 1.0, 1e-10);
+}
+
+TEST(CoordinateCameraToWorld, RawPoseRotatedPitchRight)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
+            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 90.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+
+    EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+    CameraCoordinate c2(1.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), -1.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+}
+
+TEST(CoordinateCameraToWorld, RawPoseRotatedPitchLeft)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
+            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, -90.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+
+    EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+    CameraCoordinate c2(1.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 1.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), -1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+}
+
+TEST(CoordinateCameraToWorld, RawPoseRotatedRollRight)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
+            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, 90.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+
+    EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+    CameraCoordinate c2(1.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 1.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), -1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+}
+
+TEST(CoordinateCameraToWorld, RawPoseRotatedRollLeft)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform_no_correction(
+            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, -90.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+
+    EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+    CameraCoordinate c2(1.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), .0, 1e-10);
+    EXPECT_NEAR(wc.z(), -1.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+}
+
+// check axis in camera space
+
+TEST(CoordinateCameraToWorld, poseRotatedYawLeft)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+
+    EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+    CameraCoordinate c2(1.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), -1.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+}
+
+TEST(CoordinateCameraToWorld, poseRotatedYawRight)
+{
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(-90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0));
+
+    EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
+    EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+    CameraCoordinate c2(1.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 1.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), -1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+}
+
+/**
+ *
+ * TEST CAMERA PROJECTIONS
+ *
+ */
 
 TEST(PointCoordinateSystemTests, ScreenToCameraToScreen)
 {
@@ -916,6 +1526,191 @@ TEST(LineToLineDistances, LineDistances)
     ASSERT_NEAR(utils::signed_line_distance<3>(point1, normal1, point3, -normal3).norm(), 1000.0, 0.0001);
     ASSERT_NEAR(utils::signed_line_distance<3>(point1, -normal1, point3, -normal3).norm(), 1000.0, 0.0001);
     ASSERT_NEAR(utils::signed_line_distance<3>(point1, -normal1, point3, normal3).norm(), 1000.0, 0.0001);
+}
+
+/**
+ * Changes the base computations
+ */
+
+TEST(BasisChange, CartesianToSphericalZero)
+{
+    Cartesian c(0, 0, 0);
+
+    ASSERT_NEAR(c.x, 0.0, 1e-10);
+    ASSERT_NEAR(c.y, 0.0, 1e-10);
+    ASSERT_NEAR(c.z, 0.0, 1e-10);
+
+    const auto& s = Spherical::from(c);
+    ASSERT_NEAR(s.p, 0.0, 1e-10);
+    ASSERT_NEAR(s.polar_rad, 0.0, 1e-10);
+    ASSERT_NEAR(s.azimuth_rad, 0.0, 1e-10);
+}
+
+TEST(BasisChange, CartesianToSphericalUnitX)
+{
+    Cartesian c(1.0, 0.0, 0.0);
+
+    ASSERT_NEAR(c.x, 1.0, 1e-10);
+    ASSERT_NEAR(c.y, 0.0, 1e-10);
+    ASSERT_NEAR(c.z, 0.0, 1e-10);
+
+    const auto& s = Spherical::from(c);
+    ASSERT_NEAR(s.p, 1.0, 1e-10);
+    ASSERT_NEAR(s.polar_rad, M_PI / 2.0, 1e-10);
+    ASSERT_NEAR(s.azimuth_rad, 0.0, 1e-10);
+
+    // inverse
+    Cartesian c2(-1.0, 0.0, 0.0);
+    ASSERT_NEAR(c2.x, -1.0, 1e-10);
+    ASSERT_NEAR(c2.y, 0.0, 1e-10);
+    ASSERT_NEAR(c2.z, 0.0, 1e-10);
+
+    const auto& s2 = Spherical::from(c2);
+    ASSERT_NEAR(s2.p, 1.0, 1e-10);
+    ASSERT_NEAR(s2.polar_rad, M_PI / 2.0, 1e-10);
+    ASSERT_NEAR(s2.azimuth_rad, M_PI, 1e-10);
+}
+
+TEST(BasisChange, CartesianToSphericalUnitY)
+{
+    Cartesian c(0.0, 1.0, 0.0);
+
+    ASSERT_NEAR(c.x, 0.0, 1e-10);
+    ASSERT_NEAR(c.y, 1.0, 1e-10);
+    ASSERT_NEAR(c.z, 0.0, 1e-10);
+
+    const auto& s = Spherical::from(c);
+    ASSERT_NEAR(s.p, 1.0, 1e-10);
+    ASSERT_NEAR(s.polar_rad, M_PI / 2.0, 1e-10);
+    ASSERT_NEAR(s.azimuth_rad, M_PI / 2.0, 1e-10);
+
+    Cartesian c2(0.0, -1.0, 0.0);
+
+    ASSERT_NEAR(c2.x, 0.0, 1e-10);
+    ASSERT_NEAR(c2.y, -1.0, 1e-10);
+    ASSERT_NEAR(c2.z, 0.0, 1e-10);
+
+    const auto& s2 = Spherical::from(c2);
+    ASSERT_NEAR(s2.p, 1.0, 1e-10);
+    ASSERT_NEAR(s2.polar_rad, M_PI / 2.0, 1e-10);
+    ASSERT_NEAR(s2.azimuth_rad, -M_PI / 2.0, 1e-10);
+}
+
+TEST(BasisChange, CartesianToSphericalUnitZ)
+{
+    Cartesian c(0.0, 0.0, 1.0);
+
+    ASSERT_NEAR(c.x, 0.0, 1e-10);
+    ASSERT_NEAR(c.y, 0.0, 1e-10);
+    ASSERT_NEAR(c.z, 1.0, 1e-10);
+
+    const auto& s = Spherical::from(c);
+    ASSERT_NEAR(s.p, 1.0, 1e-10);
+    ASSERT_NEAR(s.polar_rad, 0.0, 1e-10);
+    ASSERT_NEAR(s.azimuth_rad, 0.0, 1e-10);
+
+    Cartesian c2(0.0, 0.0, -1.0);
+
+    ASSERT_NEAR(c2.x, 0.0, 1e-10);
+    ASSERT_NEAR(c2.y, 0.0, 1e-10);
+    ASSERT_NEAR(c2.z, -1.0, 1e-10);
+
+    const auto& s2 = Spherical::from(c2);
+    ASSERT_NEAR(s2.p, 1.0, 1e-10);
+    ASSERT_NEAR(s2.polar_rad, M_PI, 1e-10);
+    ASSERT_NEAR(s2.azimuth_rad, 0.0, 1e-10);
+}
+
+TEST(BasisChange, SphericalToCartesianZero)
+{
+    Spherical s(0, 0, 0);
+
+    ASSERT_NEAR(s.p, 0.0, 1e-10);
+    ASSERT_NEAR(s.polar_rad, 0.0, 1e-10);
+    ASSERT_NEAR(s.azimuth_rad, 0.0, 1e-10);
+
+    const auto& c = Cartesian::from(s);
+    ASSERT_NEAR(c.x, 0.0, 1e-10);
+    ASSERT_NEAR(c.y, 0.0, 1e-10);
+    ASSERT_NEAR(c.z, 0.0, 1e-10);
+}
+
+TEST(BasisChange, SphericalToCartesianUnitX)
+{
+    Spherical s(1.0, M_PI / 2.0, 0.0);
+
+    ASSERT_NEAR(s.p, 1.0, 1e-10);
+    ASSERT_NEAR(s.polar_rad, M_PI / 2.0, 1e-10);
+    ASSERT_NEAR(s.azimuth_rad, 0.0, 1e-10);
+
+    const auto& c = Cartesian::from(s);
+    ASSERT_NEAR(c.x, 1.0, 1e-10);
+    ASSERT_NEAR(c.y, 0.0, 1e-10);
+    ASSERT_NEAR(c.z, 0.0, 1e-10);
+
+    // inverse
+    Spherical s2(1.0, M_PI / 2.0, M_PI);
+
+    ASSERT_NEAR(s2.p, 1.0, 1e-10);
+    ASSERT_NEAR(s2.polar_rad, M_PI / 2.0, 1e-10);
+    ASSERT_NEAR(s2.azimuth_rad, M_PI, 1e-10);
+
+    const auto& c2 = Cartesian::from(s2);
+    ASSERT_NEAR(c2.x, -1.0, 1e-10);
+    ASSERT_NEAR(c2.y, 0.0, 1e-10);
+    ASSERT_NEAR(c2.z, 0.0, 1e-10);
+}
+
+TEST(BasisChange, SphericalToCartesianUnitY)
+{
+    Spherical s(1.0, M_PI / 2.0, M_PI / 2.0);
+
+    ASSERT_NEAR(s.p, 1.0, 1e-10);
+    ASSERT_NEAR(s.polar_rad, M_PI / 2.0, 1e-10);
+    ASSERT_NEAR(s.azimuth_rad, M_PI / 2.0, 1e-10);
+
+    const auto& c = Cartesian::from(s);
+    ASSERT_NEAR(c.x, 0.0, 1e-10);
+    ASSERT_NEAR(c.y, 1.0, 1e-10);
+    ASSERT_NEAR(c.z, 0.0, 1e-10);
+
+    // inverse
+    Spherical s2(1.0, M_PI / 2.0, -M_PI / 2.0);
+
+    ASSERT_NEAR(s2.p, 1.0, 1e-10);
+    ASSERT_NEAR(s2.polar_rad, M_PI / 2.0, 1e-10);
+    ASSERT_NEAR(s2.azimuth_rad, -M_PI / 2.0, 1e-10);
+
+    const auto& c2 = Cartesian::from(s2);
+    ASSERT_NEAR(c2.x, 0.0, 1e-10);
+    ASSERT_NEAR(c2.y, -1.0, 1e-10);
+    ASSERT_NEAR(c2.z, 0.0, 1e-10);
+}
+
+TEST(BasisChange, SphericalToCartesianUnitZ)
+{
+    Spherical s(1.0, 0.0, 0.0);
+
+    ASSERT_NEAR(s.p, 1.0, 1e-10);
+    ASSERT_NEAR(s.polar_rad, 0.0, 1e-10);
+    ASSERT_NEAR(s.azimuth_rad, 0.0, 1e-10);
+
+    const auto& c = Cartesian::from(s);
+    ASSERT_NEAR(c.x, 0.0, 1e-10);
+    ASSERT_NEAR(c.y, 0.0, 1e-10);
+    ASSERT_NEAR(c.z, 1.0, 1e-10);
+
+    // inverse
+    Spherical s2(1.0, M_PI, 0.0);
+
+    ASSERT_NEAR(s2.p, 1.0, 1e-10);
+    ASSERT_NEAR(s2.polar_rad, M_PI, 1e-10);
+    ASSERT_NEAR(s2.azimuth_rad, 0.0, 1e-10);
+
+    const auto& c2 = Cartesian::from(s2);
+    ASSERT_NEAR(c2.x, 0.0, 1e-10);
+    ASSERT_NEAR(c2.y, 0.0, 1e-10);
+    ASSERT_NEAR(c2.z, -1.0, 1e-10);
 }
 
 } // namespace rgbd_slam

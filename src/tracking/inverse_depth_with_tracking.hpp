@@ -36,7 +36,7 @@ struct PointInverseDepth
 
     PointInverseDepth(const ScreenCoordinate2D& observation,
                       const CameraToWorldMatrix& c2w,
-                      const matrix33& stateCovariance,
+                      const matrix66& stateCovariance,
                       const cv::Mat& descriptor = cv::Mat());
 
     PointInverseDepth(const PointInverseDepth& other);
@@ -55,7 +55,7 @@ struct PointInverseDepth
     [[nodiscard]] bool track_2D(const ScreenCoordinate2D& observation,
                                 const matrix22& observationCovariance,
                                 const CameraToWorldMatrix& c2w,
-                                const matrix33& stateCovariance,
+                                const matrix66& stateCovariance,
                                 const cv::Mat& descriptor) noexcept;
 
     /**
@@ -68,7 +68,7 @@ struct PointInverseDepth
      */
     [[nodiscard]] bool track_3D(const ScreenCoordinate& observation,
                                 const CameraToWorldMatrix& c2w,
-                                const matrix33& stateCovariance,
+                                const matrix66& stateCovariance,
                                 const cv::Mat& descriptor) noexcept;
 
     /**

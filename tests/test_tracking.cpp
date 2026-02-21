@@ -123,7 +123,7 @@ void assert_inverse_point_back_proj(const CameraToWorldMatrix& c2w, const Screen
     // convert to inverse
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
 
-    const auto screenProjNoMovs = inverseDepth.get_projected_screen_estimation(w2c, 0.0);
+    const auto screenProjNoMovs = inverseDepth.get_projected_screen_estimation(w2c);
     // 1 px error
     EXPECT_NEAR(screenProjNoMovs.x(), observation.x(), 0.1);
     EXPECT_NEAR(screenProjNoMovs.y(), observation.y(), 0.1);
@@ -148,7 +148,7 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -161,7 +161,7 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
 
     // fuse the two points
-    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2w, matrix33::Identity(), cv::Mat()));
+    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2w, matrix66::Identity(), cv::Mat()));
 }
 
 TEST(InverseDepthPointFusion, centerPointForwardParallelFusion)
@@ -176,7 +176,7 @@ TEST(InverseDepthPointFusion, centerPointForwardParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -192,7 +192,7 @@ TEST(InverseDepthPointFusion, centerPointForwardParallelFusion)
 
     // fuse the two points
     EXPECT_TRUE(inverseDepth.track_2D(
-            observation, observation.get_covariance(), c2wForward, matrix33::Identity(), cv::Mat()));
+            observation, observation.get_covariance(), c2wForward, matrix66::Identity(), cv::Mat()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -213,7 +213,7 @@ TEST(InverseDepthPointFusion, centerPointBackwardParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -229,7 +229,7 @@ TEST(InverseDepthPointFusion, centerPointBackwardParallelFusion)
 
     // fuse the two points
     EXPECT_TRUE(inverseDepth.track_2D(
-            observation, observation.get_covariance(), c2wForward, matrix33::Identity(), cv::Mat()));
+            observation, observation.get_covariance(), c2wForward, matrix66::Identity(), cv::Mat()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -250,7 +250,7 @@ TEST(InverseDepthPointFusion, topLeftPointForwardParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -266,7 +266,7 @@ TEST(InverseDepthPointFusion, topLeftPointForwardParallelFusion)
 
     // fuse the two points
     EXPECT_TRUE(inverseDepth.track_2D(
-            observation, observation.get_covariance(), c2wForward, matrix33::Identity(), cv::Mat()));
+            observation, observation.get_covariance(), c2wForward, matrix66::Identity(), cv::Mat()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -287,7 +287,7 @@ TEST(InverseDepthPointFusion, topLeftPointBackwardParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -303,7 +303,7 @@ TEST(InverseDepthPointFusion, topLeftPointBackwardParallelFusion)
 
     // fuse the two points
     EXPECT_TRUE(inverseDepth.track_2D(
-            observation, observation.get_covariance(), c2wForward, matrix33::Identity(), cv::Mat()));
+            observation, observation.get_covariance(), c2wForward, matrix66::Identity(), cv::Mat()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -324,7 +324,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity() * 0.01, cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity() * 0.01, cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -353,7 +353,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
     for (uint i = 0; i < 100; i++)
     {
         EXPECT_TRUE(inverseDepth.track_2D(
-                observation, observation.get_covariance(), c2wSide90, matrix33::Identity(), cv::Mat()));
+                observation, observation.get_covariance(), c2wSide90, matrix66::Identity(), cv::Mat()));
 
         utils::Segment<2> screenSegment;
         EXPECT_TRUE(
@@ -410,7 +410,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix33::Identity() * 0.01, cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity() * 0.01, cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -439,7 +439,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
     for (uint i = 0; i < 10; i++)
     {
         EXPECT_TRUE(inverseDepth.track_2D(
-                observation, observation.get_covariance(), c2wSide90, matrix33::Identity(), cv::Mat()));
+                observation, observation.get_covariance(), c2wSide90, matrix66::Identity(), cv::Mat()));
 
         utils::Segment<2> screenSegment;
         EXPECT_TRUE(

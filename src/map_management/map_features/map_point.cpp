@@ -189,7 +189,7 @@ void MapPoint::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) co
 }
 
 bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
-                                 const matrix33& poseCovariance,
+                                 const matrix66& poseCovariance,
                                  const CameraToWorldMatrix& cameraToWorld) noexcept
 {
     if (_matchIndexes.empty())
@@ -226,7 +226,7 @@ void MapPoint::update_no_match() noexcept
  * StagedMapPoint
  */
 
-StagedMapPoint::StagedMapPoint(const matrix33& poseCovariance,
+StagedMapPoint::StagedMapPoint(const matrix66& poseCovariance,
                                const CameraToWorldMatrix& cameraToWorld,
                                const DetectedPointType& detectedFeature) :
     MapPoint(detectedFeature._coordinates.to_world_coordinates(cameraToWorld),
