@@ -2,37 +2,43 @@
 
 namespace rgbd_slam {
 
-Cartesian Cartesian::from(Spherical coord)
+Cartesian Cartesian::from(const Spherical& coord)
 {
-    const double sinTheta = sin(coord.theta);
-    return Cartesian(
-            coord.p * sinTheta * cos(coord.phi), coord.p * sinTheta * sin(coord.phi), coord.p * cos(coord.theta));
+    const double sinTheta = sin(coord.polar_rad);
+    return Cartesian(coord.p * sinTheta * cos(coord.azimuth_rad),
+                     coord.p * sinTheta * sin(coord.azimuth_rad),
+                     coord.p * cos(coord.polar_rad));
 }
 
-Cartesian Cartesian::from(Spherical coord, matrix33& jacobian)
+Cartesian Cartesian::from(const Spherical& coord, matrix33& jacobian)
 {
-    const double sinTheta = sin(coord.theta);
-    const double cosTheta = cos(coord.theta);
-    const double sinPhi = sin(coord.phi);
-    const double cosPhi = cos(coord.phi);
+    const double sinTheta = sin(coord.polar_rad);
+    const double cosTheta = cos(coord.polar_rad);
+    const double sinPhi = sin(coord.azimuth_rad);
+    const double cosPhi = cos(coord.azimuth_rad);
     const double d = coord.p;
 
     const double theta1 = sinPhi * sinTheta;
     const double theta2 = cosPhi * sinTheta;
 
-    jacobian = matrix33({{theta2, d * cosTheta * cosPhi, -d * theta1},
-                         {theta1, d * cosTheta * sinPhi, d * theta2},
-                         {cosTheta, -d * sinTheta, 0}});
+    //
+    jacobian = matrix33({
+            //
+            // radius              polar            azimuth
+            {theta2, d * cosTheta * cosPhi, -d * theta1}, // x
+            {theta1, d * cosTheta * sinPhi, d * theta2},  // y
+            {cosTheta, -d * sinTheta, 0}                  // z
+    });
 
     return from(coord);
 }
 
-Spherical Spherical::from(Cartesian coord)
+Spherical Spherical::from(const Cartesian& coord)
 {
     return Spherical(coord.vec().norm(), atan2(sqrt(SQR(coord.x) + SQR(coord.y)), coord.z), atan2(coord.y, coord.x));
 }
 
-Spherical Spherical::from(Cartesian coord, matrix33& jacobian)
+Spherical Spherical::from(const Cartesian& coord, matrix33& jacobian)
 {
     const double x = coord.x;
     const double y = coord.y;

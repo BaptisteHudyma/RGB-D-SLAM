@@ -48,7 +48,7 @@ template<int N = 6, int M = 2> class InverseDepthEstimator : public StateEstimat
 
 PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
                                      const CameraToWorldMatrix& c2w,
-                                     const matrix33& stateCovariance,
+                                     const matrix66& stateCovariance,
                                      const cv::Mat& descriptor) :
     _coordinates(observation, c2w),
     _descriptor(descriptor)
@@ -64,7 +64,7 @@ PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
     _covariance.setZero();
 
     // new mesurment always as the same uncertainty in depth (and another one in position)
-    _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance;
+    _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance.block<3, 3>(0, 0);
 
     // span from variance from 0 to 1:
     constexpr double inverseDepthVar = parameters::detection::inverseDepthBaseline / 4.0;
@@ -94,7 +94,7 @@ PointInverseDepth::PointInverseDepth(const PointInverseDepth& other) :
 bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
                                  const matrix22& observationCovariance,
                                  const CameraToWorldMatrix& c2w,
-                                 const matrix33& stateCovariance,
+                                 const matrix66& stateCovariance,
                                  const cv::Mat& descriptor) noexcept
 {
     assert(_extendedKalmanFilter != nullptr);
@@ -138,7 +138,7 @@ bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
 
 bool PointInverseDepth::track_3D(const ScreenCoordinate& observation,
                                  const CameraToWorldMatrix& c2w,
-                                 const matrix33& stateCovariance,
+                                 const matrix66& stateCovariance,
                                  const cv::Mat& descriptor) noexcept
 {
     if (not is_depth_valid(observation.z()))
@@ -161,11 +161,12 @@ bool PointInverseDepth::track_3D(const ScreenCoordinate& observation,
 
 CameraCoordinateCovariance PointInverseDepth::get_camera_coordinate_variance(const WorldToCameraMatrix& w2c) const
 {
+    matrix66 cov = matrix66::Zero();
+    cov.block<3, 3>(0, 0) = get_covariance_of_observed_pose();
+
     // get world coordinates covariance, transform it to camera
     return utils::get_camera_point_covariance(
-            PointInverseDepth::compute_cartesian_covariance(_coordinates, _covariance),
-            w2c,
-            get_covariance_of_observed_pose());
+            PointInverseDepth::compute_cartesian_covariance(_coordinates, _covariance), w2c, cov);
 }
 
 ScreenCoordinateCovariance PointInverseDepth::get_screen_coordinate_variance(const WorldToCameraMatrix& w2c) const

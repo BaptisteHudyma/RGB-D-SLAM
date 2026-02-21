@@ -57,7 +57,7 @@ class MapPoint2D :
   public:
     MapPoint2D(const ScreenCoordinate2D& coordinates,
                const CameraToWorldMatrix& c2w,
-               const matrix33& stateCovariance,
+               const matrix66& stateCovariance,
                const cv::Mat& descriptor) :
         PointInverseDepth(coordinates, c2w, stateCovariance, descriptor),
         IMapFeature<DetectedKeypointsObject, DetectedPoint2DType, TrackedPointsObject>()
@@ -101,7 +101,7 @@ class MapPoint2D :
     [[nodiscard]] bool is_moving() const noexcept override { return tracking::PointInverseDepth::is_moving(); }
 
     [[nodiscard]] bool update_with_match(const DetectedPoint2DType& matchedFeature,
-                                         const matrix33& poseCovariance,
+                                         const matrix66& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
   protected:
@@ -114,7 +114,7 @@ class MapPoint2D :
 class StagedMapPoint2D : public MapPoint2D, public IStagedMapFeature<DetectedPoint2DType>
 {
   public:
-    StagedMapPoint2D(const matrix33& poseCovariance,
+    StagedMapPoint2D(const matrix66& poseCovariance,
                      const CameraToWorldMatrix& cameraToWorld,
                      const DetectedPoint2DType& detectedFeature);
 

@@ -114,7 +114,7 @@ template<class... Maps> class Local_Map
         const double updateMapStartTime = static_cast<double>(cv::getTickCount());
         assert(_detectedFeatureId == detectedFeatures.id);
 
-        const matrix33& poseCovariance = optimizedPose.get_position_variance();
+        const matrix66& poseCovariance = optimizedPose.get_pose_variance();
         if (not utils::is_covariance_valid(poseCovariance))
             throw std::invalid_argument("update: The given pose covariance is invalid, map wont be update");
 
@@ -178,7 +178,7 @@ template<class... Maps> class Local_Map
      * \param[in] cameraToWorld The matrix to go from camera to world space
      * \param[in] detectedFeatures Contains the detected features
      */
-    void add_all_features_to_map(const matrix33& poseCovariance,
+    void add_all_features_to_map(const matrix66& poseCovariance,
                                  const CameraToWorldMatrix& cameraToWorld,
                                  const DetectedFeatureContainer& detectedFeatures)
     {

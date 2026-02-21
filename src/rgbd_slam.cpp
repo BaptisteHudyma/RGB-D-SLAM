@@ -229,7 +229,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         _localMap.update_no_pose();
 
         // add unmatched features if not tracking could be done last call
-        const matrix33& poseCovariance = predictedPose.get_position_variance();
+        const matrix66& poseCovariance = predictedPose.get_pose_variance();
         if (_isTrackingLost and utils::is_covariance_valid(poseCovariance))
         {
             const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(

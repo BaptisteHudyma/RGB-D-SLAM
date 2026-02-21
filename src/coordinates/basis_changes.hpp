@@ -10,6 +10,7 @@ struct Spherical;
 
 /**
  * \brief Contain a cartesian point, with methods to convert between representations
+ * ALL IS DEFINED IN A ROBOTIC COORDINATE SYSTEM : X forward, Y left, Z up
  */
 struct Cartesian
 {
@@ -26,14 +27,14 @@ struct Cartesian
      * \brief Transform a given coordinate from shperical to cartesian space.
      * \param[in] coord
      */
-    static Cartesian from(Spherical coord);
+    static Cartesian from(const Spherical& coord);
 
     /**
      * \brief Transform a given coordinate from shperical to cartesian space.
      * \param[in] coord
      * \param[out] jacobian the jacobian of this transformation
      */
-    static Cartesian from(Spherical coord, matrix33& jacobian);
+    static Cartesian from(const Spherical& coord, matrix33& jacobian);
 };
 
 /**
@@ -41,26 +42,31 @@ struct Cartesian
  */
 struct Spherical
 {
-    double p;
-    double theta;
-    double phi;
+    double p;           // radius
+    double polar_rad;   // polar angle
+    double azimuth_rad; // azimuth angle
 
-    Spherical(const double radius, const double theta, const double phi) : p(radius), theta(theta), phi(phi) {}
+    Spherical(const double radius, const double polar, const double azimuth) :
+        p(radius),
+        polar_rad(polar),
+        azimuth_rad(azimuth)
+    {
+    }
     Spherical(const vector3& vec) : Spherical(vec.x(), vec.y(), vec.z()) {};
 
-    vector3 vec() const { return vector3(p, theta, phi); }
+    vector3 vec() const { return vector3(p, polar_rad, azimuth_rad); }
 
     /**
      * \brief Transform a given coordinate from cartesian to spherical space.
      */
-    static Spherical from(Cartesian coord);
+    static Spherical from(const Cartesian& coord);
 
     /**
      * \brief Transform a given coordinate from cartesian to spherical space.
      * \param[in] coord
      * \param[out] jacobian the jacobian of this transformation
      */
-    static Spherical from(Cartesian coord, matrix33& jacobian);
+    static Spherical from(const Cartesian& coord, matrix33& jacobian);
 };
 
 } // namespace rgbd_slam

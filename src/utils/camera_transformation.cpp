@@ -8,9 +8,13 @@ namespace rgbd_slam::utils {
  * \brief This is used to go from a camera based coordinate system (x right, z forward, y down) to the world
  * coordinate system (x forward, y left, z up) and inverse
  */
-static const matrix44 CameraToWorld = get_transformation_matrix(
-        get_quaternion_from_euler_angles(EulerAngles(0.0, 90.0 * EulerToRadian, -90.0 * EulerToRadian)),
-        vector3::Zero());
+static const matrix44 CameraToWorld = get_transformation_matrix(get_quaternion_from_euler_angles(EulerAngles(
+                                                                        //
+                                                                        0.0,                  //
+                                                                        90.0 * EulerToRadian, //
+                                                                        -90.0 * EulerToRadian //
+                                                                        )),
+                                                                vector3::Zero());
 
 CameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position) noexcept
 {

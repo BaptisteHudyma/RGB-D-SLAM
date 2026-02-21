@@ -34,7 +34,7 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const WorldCoordinate& firstPose,
     _bearingVector.x() = cos(_phi_rad) * sin(_theta_rad);
     _bearingVector.y() = -sin(_phi_rad);
     _bearingVector.z() = cos(_phi_rad) * cos(_theta_rad);
-    // but we use another referencial (standard shperical referencial)
+    // but we use another referencial (standard spherical referencial)
     */
 }
 
@@ -48,7 +48,7 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const ScreenCoordinate2D& observa
     InverseDepthWorldPoint(CameraCoordinate(observation.to_camera_coordinates().homogeneous()), c2w)
 {
     // no known depth, so set the baseline
-    _inverseDepth_mm = parameters::detection::inverseDepthBaseline / 2.0;
+    _inverseDepth_mm = parameters::detection::inverseDepthBaseline;
 }
 
 InverseDepthWorldPoint::InverseDepthWorldPoint(const CameraCoordinate& observation, const CameraToWorldMatrix& c2w) :
@@ -101,7 +101,7 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
     const vector3 directionalVector(point - origin);
 
     const Spherical& s = Spherical::from(Cartesian(directionalVector));
-    return InverseDepthWorldPoint(origin, 1.0 / s.p, s.theta, s.phi);
+    return InverseDepthWorldPoint(origin, 1.0 / s.p, s.polar_rad, s.azimuth_rad);
 }
 
 InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordinate& point,
@@ -109,6 +109,7 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
                                                               Eigen::Matrix<double, 6, 3>& jacobian) noexcept
 {
     jacobian.setZero();
+    // TODO: should be Identity ?
     jacobian.block<3, 3>(firstPoseIndex, firstPoseIndex) = matrix33::Zero();
 
     // jacobian of the [xo, yo, zo, x, y, z] =>
@@ -147,7 +148,7 @@ Eigen::Matrix<double, 3, 6> to_world_coordinates_jacobian(const double inverseDe
     Cartesian::from(Spherical(1.0 / inverseDepth, theta, phi), bearingJacobian);
 
     // derivation of 1/d is -1/(d*d)
-    bearingJacobian.subVector<Eigen::Vertical>(0) *= -1.0 / SQR(inverseDepth);
+    bearingJacobian.col(0) *= -1.0 / SQR(inverseDepth);
 
     Eigen::Matrix<double, 3, 6> jacobian = Eigen::Matrix<double, 3, 6>::Zero();
     jacobian.block<3, 3>(0, InverseDepthWorldPoint::firstPoseIndex) = matrix33::Identity();
@@ -171,8 +172,6 @@ Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_projected_screen_estimat
     const vector3& translation = c2w.translation();
 
     const double inverseDepth = _inverseDepth_mm + addedStandardDev;
-    const double theta = _theta_rad;
-    const double phi = _phi_rad;
 
     const vector3& observationPoint = _firstObservation;
     const vector3& observationVector = _bearingVector;
@@ -180,12 +179,14 @@ Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_projected_screen_estimat
     const vector3 tr = observationPoint - translation;
     const vector3 cameraNoRotationPoint = (inverseDepth * tr + observationVector);
 
+    matrix33 bearingJacobian;
+    Cartesian::from(Spherical(1.0, _theta_rad, _phi_rad), bearingJacobian);
+    bearingJacobian.col(0) = tr;
+
     // iDepth * (root position - translation) + orientationVector
-    const Eigen::Matrix<double, 3, 6> inverseDepthToCameraNoRotation(
-            // x0, y0, z0, iD, theta, phi
-            {{inverseDepth, 0.0, 0.0, tr.x(), cos(phi) * cos(theta), -sin(phi) * sin(theta)}, // x
-             {0.0, inverseDepth, 0.0, tr.y(), sin(phi) * cos(theta), cos(phi) * sin(theta)},  // y
-             {0.0, 0.0, inverseDepth, tr.z(), -sin(theta), 0.0}});                            // z
+    Eigen::Matrix<double, 3, 6> inverseDepthToCameraNoRotation;
+    inverseDepthToCameraNoRotation.block<3, 3>(0, 0) = vector3(inverseDepth, inverseDepth, inverseDepth).asDiagonal();
+    inverseDepthToCameraNoRotation.block<3, 3>(0, 3) = bearingJacobian;
 
     // Jacobian of the camera to screen function
     const matrix23 cameraToScreenJacobian = utils::get_camera_to_screen2d_jacobian(rotation * cameraNoRotationPoint);
