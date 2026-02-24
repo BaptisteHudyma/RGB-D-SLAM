@@ -162,7 +162,7 @@ void Parameters::check_parameters_validity() noexcept
     static_assert(parameters::detection::opticalFlowPyramidWindowSizeWidthCount > 0,
                   "Pyramid window count horizontal size must be > 0");
 
-    static_assert(parameters::detection::inverseDepthBaseline > 0, "inverseDepthBaseline should be > 0");
+    static_assert(parameters::detection::inverseDepthBaseline_m > 0, "inverseDepthBaseline_m should be > 0");
     static_assert(parameters::detection::inverseDepthAngleBaseline > 0, "inverseDepthAngleBaseline should be > 0");
 
     static_assert(parameters::detection::minimumPlaneSeedProportion >= 0 and

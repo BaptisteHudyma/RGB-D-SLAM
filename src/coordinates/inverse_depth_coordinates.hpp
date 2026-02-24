@@ -74,14 +74,15 @@ struct InverseDepthWorldPoint
      * \brief compute the cartesian projection of this point in world space.
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
-    [[nodiscard]] WorldCoordinate to_world_coordinates() const noexcept;
+    [[nodiscard]] WorldCoordinate to_world_coordinates(const double addedStandardDev = 0.0) const noexcept;
 
     /**
      * \brief compute the cartesian projection of this point in world space.
      * \param[out] jacobian The jacobian of this transformation
      * \return The point in camera coordinates (the associated covariance can be huge)
      */
-    [[nodiscard]] WorldCoordinate to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian) const noexcept;
+    [[nodiscard]] WorldCoordinate to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian,
+                                                       const double addedStandardDev = 0.0) const noexcept;
 
     /**
      * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the
@@ -120,10 +121,21 @@ struct InverseDepthWorldPoint
     ScreenCoordinate2D get_furthest_estimation(const WorldToCameraMatrix& w2c,
                                                const double inverseDepthStandardDev) const;
 
+    /**
+     * \brief Return the start point of the observation line, corresponding to the extreme of the inverse depth variance
+     * \param[in] w2c World to camera transformation matrix
+     * \param[in] inverseDepthStandardDev_m Inverse depth (in meters) standard devitation to add to the inverse depth
+     */
     Eigen::Matrix<double, 2, 6> get_closest_estimation_jacobian(const WorldToCameraMatrix& w2c,
-                                                                const double inverseDepthStandardDev) const;
+                                                                const double inverseDepthStandardDev_m) const;
+
+    /**
+     * \brief Return the end point of the observation line, corresponding to the extreme of the inverse depth variance
+     * \param[in] w2c World to camera transformation matrix
+     * \param[in] inverseDepthStandardDev_m Inverse depth (in meters) standard devitation to add to the inverse depth
+     */
     Eigen::Matrix<double, 2, 6> get_furthest_estimation_jacobian(const WorldToCameraMatrix& w2c,
-                                                                 const double inverseDepthStandardDev) const;
+                                                                 const double inverseDepthStandardDev_m) const;
 
     // changing this implies that all computations should be changed, handle with care. Those should be
     // always in [0, 5]
@@ -136,8 +148,8 @@ struct InverseDepthWorldPoint
      * GETTERS
      */
 
-    [[nodiscard]] WorldCoordinate get_first_observation() const noexcept { return _firstObservation; };
-    [[nodiscard]] double get_inverse_depth() const noexcept { return _inverseDepth_mm; };
+    [[nodiscard]] WorldCoordinate get_first_observation() const noexcept { return _firstObservation * 1000.0; };
+    [[nodiscard]] double get_inverse_depth() const noexcept { return _inverseDepth_m; };
     [[nodiscard]] double get_theta() const noexcept { return _theta_rad; };
     [[nodiscard]] double get_phi() const noexcept { return _phi_rad; };
     [[nodiscard]] vector3 get_bearing_vector() const noexcept { return _bearingVector; };
@@ -147,7 +159,7 @@ struct InverseDepthWorldPoint
         return vector6(_firstObservation.x(),
                        _firstObservation.y(),
                        _firstObservation.z(),
-                       _inverseDepth_mm,
+                       _inverseDepth_m,
                        _theta_rad,
                        _phi_rad);
     };
@@ -159,7 +171,7 @@ struct InverseDepthWorldPoint
         _firstObservation[0] = other[firstPoseIndex + 0];
         _firstObservation[1] = other[firstPoseIndex + 1];
         _firstObservation[2] = other[firstPoseIndex + 2];
-        _inverseDepth_mm = other[inverseDepthIndex];
+        _inverseDepth_m = other[inverseDepthIndex];
         _theta_rad = other[thetaIndex];
         _phi_rad = other[phiIndex];
 
@@ -171,8 +183,8 @@ struct InverseDepthWorldPoint
     void recompute_bearing_vector() noexcept;
 
   private:
-    WorldCoordinate _firstObservation; // position of the camera for the first observation
-    double _inverseDepth_mm = 0.0;     // inverse of the depth (>= 0)
+    WorldCoordinate _firstObservation; // position of the camera for the first observation, in meters
+    double _inverseDepth_m = 0.0;      // inverse of the depth (>= 0)
     double _theta_rad = 0.0;           // elevation angle of the first observation, in world space
     double _phi_rad = 0.0;             // heading angle of the first observation, in world space
 

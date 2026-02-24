@@ -64,11 +64,11 @@ PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
     _covariance.setZero();
 
     // new mesurment always as the same uncertainty in depth (and another one in position)
-    _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance.block<3, 3>(0, 0);
+    _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance.block<3, 3>(0, 0) / SQR(1000.0);
 
     // span from variance from 0 to 1:
-    constexpr double inverseDepthVar = parameters::detection::inverseDepthBaseline / 4.0;
-    _covariance(inverseDepthIndex, inverseDepthIndex) = SQR(inverseDepthVar);
+    constexpr double depthbaseline = 1.0 / parameters::detection::inverseDepthBaseline_m;
+    _covariance(inverseDepthIndex, inverseDepthIndex) = SQR(1.0 / (depthbaseline / 5.0));
 
     constexpr double anglevariance =
             SQR(parameters::detection::inverseDepthAngleBaseline * EulerToRadian); // angle uncertainty
@@ -232,9 +232,8 @@ double PointInverseDepth::compute_linearity_score(const CameraToWorldMatrix& cam
 
     const vector3 hc((cartesian - cameraToWorld.translation()) / 1000.0);
     const double cosAlpha = static_cast<double>(_coordinates.get_bearing_vector().transpose() * hc) / hc.norm();
-    const double thetad_meters = (sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) /
-                                  SQR(_coordinates.get_inverse_depth())) /
-                                 1000.0;
+    const double thetad_meters =
+            sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) / SQR(_coordinates.get_inverse_depth());
     const double d1_meters = hc.norm();
 
     return 4.0 * thetad_meters / d1_meters * abs(cosAlpha);

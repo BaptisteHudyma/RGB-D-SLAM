@@ -326,14 +326,6 @@ TEST(CoordinateCameraToWorld, CenterToWorld)
             utils::get_quaternion_from_euler_angles(
                     EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
             vector3(0.0, 0.0, 0.0));
-    /*
-        ASSERT_NEAR(c2w.translation().x(), 0.0, 1e-10);
-        ASSERT_NEAR(c2w.translation().y(), 0.0, 1e-10);
-        ASSERT_NEAR(c2w.translation().z(), 0.0, 1e-10);
-        ASSERT_NEAR(c2w.rotation().eulerAngles(0, 1, 2).x(), M_PI / 2.0, 1e-10);
-        ASSERT_NEAR(c2w.rotation().eulerAngles(0, 1, 2).y(), M_PI / 2.0, 1e-10);
-        ASSERT_NEAR(c2w.rotation().eulerAngles(0, 1, 2).z(), -M_PI, 1e-10);
-    */
     WorldCoordinate wc;
 
     CameraCoordinate c1(0.0, 0.0, 0.0);
@@ -361,26 +353,6 @@ TEST(CoordinateCameraToWorld, CenterToWorld)
     EXPECT_NEAR(wc.x(), 1.0, 1e-10);
     EXPECT_NEAR(wc.y(), 0.0, 1e-10);
     EXPECT_NEAR(wc.z(), 0.0, 1e-10);
-
-    // check inverse
-
-    CameraCoordinate c3(-1.0, 0.0, 0.0);
-    wc = c3.to_world_coordinates(c2w);
-    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
-    EXPECT_NEAR(wc.y(), 1.0, 1e-10);
-    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
-
-    CameraCoordinate c5(0.0, -1.0, 0.0);
-    wc = c5.to_world_coordinates(c2w);
-    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
-    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
-    EXPECT_NEAR(wc.z(), 1.0, 1e-10);
-
-    CameraCoordinate c7(0.0, 0.0, -1.0);
-    wc = c7.to_world_coordinates(c2w);
-    EXPECT_NEAR(wc.x(), -1.0, 1e-10);
-    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
-    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
 }
 
 TEST(CoordinateWorldToCamera, CenterToCamera)
@@ -391,14 +363,6 @@ TEST(CoordinateWorldToCamera, CenterToCamera)
             vector3(0.0, 0.0, 0.0));
 
     const WorldToCameraMatrix& w2c = utils::compute_world_to_camera_transform(c2w);
-    /*
-        ASSERT_NEAR(w2c.translation().x(), 0.0, 1e-10);
-        ASSERT_NEAR(w2c.translation().y(), 0.0, 1e-10);
-        ASSERT_NEAR(w2c.translation().z(), 0.0, 1e-10);
-        ASSERT_NEAR(w2c.rotation().eulerAngles(0, 1, 2).x(), M_PI / 2.0, 1e-10);
-        ASSERT_NEAR(w2c.rotation().eulerAngles(0, 1, 2).y(), 0.0, 1e-10);
-        ASSERT_NEAR(w2c.rotation().eulerAngles(0, 1, 2).z(), M_PI / 2.0, 1e-10);
-    */
     CameraCoordinate cc;
 
     WorldCoordinate w1(0.0, 0.0, 0.0);
@@ -425,26 +389,6 @@ TEST(CoordinateWorldToCamera, CenterToCamera)
     cc = w6.to_camera_coordinates(w2c);
     EXPECT_NEAR(cc.x(), 0.0, 1e-10);
     EXPECT_NEAR(cc.y(), -1.0, 1e-10);
-    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
-
-    // check inverse
-
-    WorldCoordinate w3(-1.0, 0.0, 0.0);
-    cc = w3.to_camera_coordinates(w2c);
-    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
-    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
-    EXPECT_NEAR(cc.z(), -1.0, 1e-10);
-
-    WorldCoordinate w5(0.0, -1.0, 0.0);
-    cc = w5.to_camera_coordinates(w2c);
-    EXPECT_NEAR(cc.x(), 1.0, 1e-10);
-    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
-    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
-
-    WorldCoordinate w7(0.0, 0.0, -1.0);
-    cc = w7.to_camera_coordinates(w2c);
-    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
-    EXPECT_NEAR(cc.y(), 1.0, 1e-10);
     EXPECT_NEAR(cc.z(), 0.0, 1e-10);
 }
 
@@ -682,16 +626,116 @@ TEST(CoordinateCameraToWorld, RawPoseRotatedRollLeft)
 
 // check axis in camera space
 
-TEST(CoordinateCameraToWorld, poseRotatedYawLeft)
+TEST(CoordinateCameraToWorld, poseStraightAxis)
 {
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
             utils::get_quaternion_from_euler_angles(
-                    EulerAngles(90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+                    EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
             vector3(0.0, 0.0, 0.0));
 
+    WorldCoordinate wc;
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // check axis
+    CameraCoordinate c2(1000.0, 0.0, 0.0);
+    wc = c2.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), -1000.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    CameraCoordinate c4(0.0, 1000.0, 0.0);
+    wc = c4.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), -1000.0, 1e-10);
+
+    CameraCoordinate c6(0.0, 0.0, 1000.0);
+    wc = c6.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 1000.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+}
+
+TEST(CoordinateWorldToCamera, poseStraightAxis)
+{
+    const WorldToCameraMatrix& w2c = utils::compute_world_to_camera_transform(utils::compute_camera_to_world_transform(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0.0, 0.0)));
+
+    CameraCoordinate cc;
+
+    WorldCoordinate w1(0.0, 0.0, 0.0);
+    cc = w1.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
+
+    // check axis
+    WorldCoordinate w2(1000.0, 0.0, 0.0);
+    cc = w2.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 1000.0, 1e-10);
+
+    WorldCoordinate w4(0.0, 1000.0, 0.0);
+    cc = w4.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), -1000.0, 1e-10);
+    EXPECT_NEAR(cc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
+
+    WorldCoordinate w6(0.0, 0.0, 1000.0);
+    cc = w6.to_camera_coordinates(w2c);
+    EXPECT_NEAR(cc.x(), 0.0, 1e-10);
+    EXPECT_NEAR(cc.y(), -1000.0, 1e-10);
+    EXPECT_NEAR(cc.z(), 0.0, 1e-10);
+}
+
+TEST(CoordinateCameraToWorld, poseRotatedYawLeft)
+{
+    const auto& rot = utils::get_quaternion_from_euler_angles(
+            EulerAngles(90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian));
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(rot, vector3(0.0, 0.0, 0.0));
+
+    auto rotMat = rot.toRotationMatrix();
+
+    // col 1
+    EXPECT_NEAR(rotMat(0, 0), 0, 1e-10);
+    EXPECT_NEAR(rotMat(1, 0), 1, 1e-10);
+    EXPECT_NEAR(rotMat(2, 0), 0, 1e-10);
+    // col 2
+    EXPECT_NEAR(rotMat(0, 1), -1, 1e-10);
+    EXPECT_NEAR(rotMat(1, 1), 0, 1e-10);
+    EXPECT_NEAR(rotMat(2, 1), 0, 1e-10);
+    // col 3
+    EXPECT_NEAR(rotMat(0, 2), 0, 1e-10);
+    EXPECT_NEAR(rotMat(1, 2), 0, 1e-10);
+    EXPECT_NEAR(rotMat(2, 2), 1, 1e-10);
+
+    // check translation
     EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
     EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
     EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    // check rotation
+    rotMat = c2w.rotation();
+
+    EXPECT_NEAR(rotMat(0, 0), 0, 1e-10);
+    EXPECT_NEAR(rotMat(1, 0), 0, 1e-10);
+    EXPECT_NEAR(rotMat(2, 0), -1, 1e-10);
+    // col 2
+    EXPECT_NEAR(rotMat(0, 1), 0, 1e-10);
+    EXPECT_NEAR(rotMat(1, 1), 1, 1e-10);
+    EXPECT_NEAR(rotMat(2, 1), 0, 1e-10);
+    // col 3
+    EXPECT_NEAR(rotMat(0, 2), 1, 1e-10);
+    EXPECT_NEAR(rotMat(1, 2), 0, 1e-10);
+    EXPECT_NEAR(rotMat(2, 2), 0, 1e-10);
 
     WorldCoordinate wc;
 
@@ -723,14 +767,44 @@ TEST(CoordinateCameraToWorld, poseRotatedYawLeft)
 
 TEST(CoordinateCameraToWorld, poseRotatedYawRight)
 {
-    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
-            utils::get_quaternion_from_euler_angles(
-                    EulerAngles(-90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
-            vector3(0.0, 0.0, 0.0));
+    const auto& rot = utils::get_quaternion_from_euler_angles(
+            EulerAngles(-90.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian));
+    const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(rot, vector3(0.0, 0.0, 0.0));
 
+    auto rotMat = rot.toRotationMatrix();
+
+    // col 1
+    EXPECT_NEAR(rotMat(0, 0), 0, 1e-10);
+    EXPECT_NEAR(rotMat(1, 0), -1, 1e-10);
+    EXPECT_NEAR(rotMat(2, 0), 0, 1e-10);
+    // col 2
+    EXPECT_NEAR(rotMat(0, 1), 1, 1e-10);
+    EXPECT_NEAR(rotMat(1, 1), 0, 1e-10);
+    EXPECT_NEAR(rotMat(2, 1), 0, 1e-10);
+    // col 3
+    EXPECT_NEAR(rotMat(0, 2), 0, 1e-10);
+    EXPECT_NEAR(rotMat(1, 2), 0, 1e-10);
+    EXPECT_NEAR(rotMat(2, 2), 1, 1e-10);
+
+    // check translation
     EXPECT_NEAR(c2w.translation().x(), 0.0, 1e-10);
     EXPECT_NEAR(c2w.translation().y(), 0.0, 1e-10);
     EXPECT_NEAR(c2w.translation().z(), 0.0, 1e-10);
+
+    // check rotation
+    rotMat = c2w.rotation();
+
+    EXPECT_NEAR(rotMat(0, 0), 0, 1e-10);
+    EXPECT_NEAR(rotMat(1, 0), 0, 1e-10);
+    EXPECT_NEAR(rotMat(2, 0), 1, 1e-10);
+    // col 2
+    EXPECT_NEAR(rotMat(0, 1), 0, 1e-10);
+    EXPECT_NEAR(rotMat(1, 1), -1, 1e-10);
+    EXPECT_NEAR(rotMat(2, 1), 0, 1e-10);
+    // col 3
+    EXPECT_NEAR(rotMat(0, 2), 1, 1e-10);
+    EXPECT_NEAR(rotMat(1, 2), 0, 1e-10);
+    EXPECT_NEAR(rotMat(2, 2), 0, 1e-10);
 
     WorldCoordinate wc;
 
@@ -750,14 +824,66 @@ TEST(CoordinateCameraToWorld, poseRotatedYawRight)
     CameraCoordinate c4(0.0, 1.0, 0.0);
     wc = c4.to_world_coordinates(c2w);
     EXPECT_NEAR(wc.x(), 0.0, 1e-10);
-    EXPECT_NEAR(wc.y(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), -1.0, 1e-10);
     EXPECT_NEAR(wc.z(), 0.0, 1e-10);
 
     CameraCoordinate c6(0.0, 0.0, 1.0);
     wc = c6.to_world_coordinates(c2w);
-    EXPECT_NEAR(wc.x(), -1.0, 1e-10);
+    EXPECT_NEAR(wc.x(), 1.0, 1e-10);
     EXPECT_NEAR(wc.y(), 0.0, 1e-10);
     EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+}
+
+TEST(CoordinateCameraToWorld, offsets)
+{
+    CameraToWorldMatrix c2w;
+    WorldCoordinate wc;
+
+    c2w = utils::compute_camera_to_world_transform(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(100.0, 0.0, -100.0));
+
+    CameraCoordinate c1(0.0, 0.0, 0.0);
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), -100.0, 1e-10);
+    EXPECT_NEAR(wc.y(), -100.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    // test other configurations
+
+    c2w = utils::compute_camera_to_world_transform(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(100.0, 200, 300.0));
+
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 300.0, 1e-10);
+    EXPECT_NEAR(wc.y(), -100.0, 1e-10);
+    EXPECT_NEAR(wc.z(), -200.0, 1e-10);
+
+    //
+    c1 = CameraCoordinate(1.0, 0.0, 0.0);
+    c2w = utils::compute_camera_to_world_transform(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0, 1.0));
+
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), -1.0, 1e-10);
+    EXPECT_NEAR(wc.z(), 0.0, 1e-10);
+
+    c1 = CameraCoordinate(0.0, 1.0, 0.0);
+    c2w = utils::compute_camera_to_world_transform(
+            utils::get_quaternion_from_euler_angles(
+                    EulerAngles(0.0 * EulerToRadian, 0.0 * EulerToRadian, 0.0 * EulerToRadian)),
+            vector3(0.0, 0, 1.0));
+
+    wc = c1.to_world_coordinates(c2w);
+    EXPECT_NEAR(wc.x(), 1.0, 1e-10);
+    EXPECT_NEAR(wc.y(), 0.0, 1e-10);
+    EXPECT_NEAR(wc.z(), -1.0, 1e-10);
 }
 
 /**
@@ -916,7 +1042,7 @@ void assert_inverse_point_back_proj(const CameraToWorldMatrix& c2w, const Screen
     const InverseDepthWorldPoint inverseDepth(observation, c2w);
 
     const auto screenProjNoMovs = inverseDepth.get_projected_screen_estimation(w2c, 0.0);
-    // 1 px error
+    // 0.1 px error
     EXPECT_NEAR(screenProjNoMovs.x(), observation.x(), 0.1);
     EXPECT_NEAR(screenProjNoMovs.y(), observation.y(), 0.1);
 
@@ -926,6 +1052,15 @@ void assert_inverse_point_back_proj(const CameraToWorldMatrix& c2w, const Screen
     // should be the same
     EXPECT_NEAR(screenCoordinates.x(), observation.x(), 0.01);
     EXPECT_NEAR(screenCoordinates.y(), observation.y(), 0.01);
+
+    // retroproject to screen: segment will become a point
+    utils::Segment<2> screenSegment;
+    EXPECT_TRUE(inverseDepth.to_screen_coordinates(w2c, 0.0, screenSegment));
+
+    EXPECT_NEAR(screenSegment.get_start_point().x(), observation.x(), 0.01);
+    EXPECT_NEAR(screenSegment.get_start_point().y(), observation.y(), 0.01);
+    EXPECT_NEAR(screenSegment.get_end_point().x(), observation.x(), 0.01);
+    EXPECT_NEAR(screenSegment.get_end_point().y(), observation.y(), 0.01);
 }
 
 TEST(InverseDepthPoint, convertBackAndForthCenter)
@@ -1138,7 +1273,7 @@ TEST(InverseDepthPoint, convertBackAndForthBottomRightWithRotationTranslation)
     // observe the center of the camera
     const ScreenCoordinate2D observation(imageSize.x(), imageSize.y());
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(
-            quaternion(0.246242, -0.312924, -0.896867, 0.189256), vector3(2500, 1500, 3000));
+            quaternion(0.246242, -0.312924, -0.896867, 0.189256).normalized(), vector3(2500, 1500, 3000));
 
     assert_inverse_point_back_proj(c2w, observation);
 }
