@@ -18,16 +18,13 @@ Cartesian Cartesian::from(const Spherical& coord, matrix33& jacobian)
     const double cosPhi = cos(coord.azimuth_rad);
     const double d = coord.p;
 
-    const double theta1 = sinPhi * sinTheta;
-    const double theta2 = cosPhi * sinTheta;
-
     //
     jacobian = matrix33({
             //
-            // radius              polar            azimuth
-            {theta2, d * cosTheta * cosPhi, -d * theta1}, // x
-            {theta1, d * cosTheta * sinPhi, d * theta2},  // y
-            {cosTheta, -d * sinTheta, 0}                  // z
+            // radius                           polar            azimuth
+            {sinTheta * cosPhi, d * cosTheta * cosPhi, -d * sinTheta * sinPhi}, // x
+            {sinTheta * sinPhi, d * cosTheta * sinPhi, d * sinTheta * cosPhi},  // y
+            {cosTheta, -d * sinTheta, 0}                                        // z
     });
 
     return from(coord);
@@ -47,15 +44,20 @@ Spherical Spherical::from(const Cartesian& coord, matrix33& jacobian)
     const double yy = SQR(y);
     const double zz = SQR(z);
 
-    const double theta1 = xx + yy + zz;
+    const double radiusSqr = xx + yy + zz;
     const double theta2 = xx + yy;
-    const double SqrtTheta1 = sqrt(theta1);
+    const double radius = sqrt(radiusSqr);
     const double SqrtTheta2 = sqrt(theta2);
-    const double inverseTheta1Theta2 = 1.0 / (SqrtTheta2 * theta1);
-
-    jacobian = matrix33({{x / SqrtTheta1, y / SqrtTheta1, z / SqrtTheta1},
-                         {x * z * inverseTheta1Theta2, y * z * inverseTheta1Theta2, -SqrtTheta2 / theta1},
-                         {-y / theta2, x / theta2, 0}});
+    const double inverseTheta1Theta2 = 1.0 / (SqrtTheta2 * radiusSqr);
+    jacobian = matrix33({
+            //
+            //           X                        Y                   Z
+            {x / radius, y / radius, z / radius}, // p (radius)
+            {x * z * inverseTheta1Theta2,
+             y * z * inverseTheta1Theta2,
+             -theta2 * inverseTheta1Theta2}, // polarAngle (elevation)
+            {-y / theta2, x / theta2, 0}     // azimuth
+    });
     return from(coord);
 }
 

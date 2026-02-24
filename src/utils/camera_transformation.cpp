@@ -5,16 +5,17 @@
 namespace rgbd_slam::utils {
 
 /**
- * \brief This is used to go from a camera based coordinate system (x right, z forward, y down) to the world
+ * \brief This is used to go from a camera based coordinate system (x right, y down, z forward) to the world
  * coordinate system (x forward, y left, z up) and inverse
  */
-static const matrix44 CameraToWorld = get_transformation_matrix(get_quaternion_from_euler_angles(EulerAngles(
-                                                                        //
-                                                                        0.0,                  //
-                                                                        90.0 * EulerToRadian, //
-                                                                        -90.0 * EulerToRadian //
-                                                                        )),
-                                                                vector3::Zero());
+const matrix33 cameraToWorldRotation({
+        // vertically maps axis of origin toward target axis
+        // x        y      z
+        {0.0, 0.0, 1.0},  // x
+        {-1.0, 0.0, 0.0}, // y
+        {0.0, -1.0, 0.0}, // z
+});
+const matrix44 CameraToWorld = get_transformation_matrix(cameraToWorldRotation, vector3::Zero());
 
 CameraToWorldMatrix compute_camera_to_world_transform(const quaternion& rotation, const vector3& position) noexcept
 {
@@ -25,6 +26,7 @@ CameraToWorldMatrix compute_camera_to_world_transform(const WorldToCameraMatrix&
 {
     CameraToWorldMatrix cameraToWorld;
     // already contains the camera to world transform, no need to use CameraToWorld again
+    // TODO: use standard pose inverse : R.t(), -R.t() * p
     cameraToWorld << worldToCamera.inverse();
     return cameraToWorld;
 }
@@ -43,9 +45,8 @@ WorldToCameraMatrix compute_world_to_camera_transform(const quaternion& rotation
 
 WorldToCameraMatrix compute_world_to_camera_transform(const CameraToWorldMatrix& cameraToWorld) noexcept
 {
-    WorldToCameraMatrix worldToCamera;
-    worldToCamera << cameraToWorld.inverse();
-    return worldToCamera;
+    // TODO: use standard pose inverse : R.T, -R.T * p
+    return WorldToCameraMatrix {cameraToWorld.inverse().eval()};
 }
 
 WorldToCameraMatrix compute_world_to_camera_transform_no_correction(const quaternion& rotation,

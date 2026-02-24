@@ -103,8 +103,8 @@ CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& s
     const static vector2 cameraC = Parameters::get_camera_1_center();
 
     // Jacobian of the screen to camera function. Use absolutes to prevent negative variances
-    const matrix33 jacobian {{screenPoint.z() / cameraF.x(), 0.0, abs(screenPoint.x() - cameraC.x()) / cameraF.x()},
-                             {0.0, screenPoint.z() / cameraF.y(), abs(screenPoint.y() - cameraC.y()) / cameraF.y()},
+    const matrix33 jacobian {{screenPoint.z() / cameraF.x(), 0.0, (screenPoint.x() - cameraC.x()) / cameraF.x()},
+                             {0.0, screenPoint.z() / cameraF.y(), (screenPoint.y() - cameraC.y()) / cameraF.y()},
                              {0.0, 0.0, 1.0}};
 
     CameraCoordinateCovariance cameraPointCovariance;
