@@ -139,7 +139,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
 
     // Get the new estimated pose
     const utils::PoseBase& pose = get_pose_from_optimization_coefficients(optimizedParameters);
-    if (pose.get_vector().hasNaN())
+    if (pose.get_vector_euler().hasNaN())
     {
         outputs::log_error("pose after transformation from optimization space have nan");
         return 0;

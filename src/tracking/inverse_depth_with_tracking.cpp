@@ -67,9 +67,12 @@ PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
     _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance.block<3, 3>(0, 0) / SQR(1000.0);
 
     // span from variance from 0 to 1:
-    constexpr double depthbaseline = 1.0 / parameters::detection::inverseDepthBaseline_m;
-    _covariance(inverseDepthIndex, inverseDepthIndex) = SQR(1.0 / (depthbaseline / 5.0));
+    const double pMin = 1.0 / 0.1;
+    const double pMax = 1.0 / 1000.0;
+    const double standardDevSpan = (pMin - pMax) / 2.0;
+    _covariance(inverseDepthIndex, inverseDepthIndex) = SQR(standardDevSpan);
 
+    // TODO: integrate pose rotation variance here
     constexpr double anglevariance =
             SQR(parameters::detection::inverseDepthAngleBaseline * EulerToRadian); // angle uncertainty
     _covariance(thetaIndex, thetaIndex) = anglevariance;                           // theta angle covariance
@@ -226,9 +229,7 @@ double PointInverseDepth::compute_linearity_score(const CameraToWorldMatrix& cam
 {
     // gaussian linearity index, taken from:
     // "Inverse Depth Parametrization for Monocular SLAM"
-
-    Eigen::Matrix<double, 3, 6> jacobian;
-    const WorldCoordinate& cartesian = _coordinates.to_world_coordinates(jacobian);
+    const WorldCoordinate& cartesian = _coordinates.to_world_coordinates();
 
     const vector3 hc((cartesian - cameraToWorld.translation()) / 1000.0);
     const double cosAlpha = static_cast<double>(_coordinates.get_bearing_vector().transpose() * hc) / hc.norm();

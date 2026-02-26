@@ -25,7 +25,7 @@ IMap_Writer::~IMap_Writer()
  */
 XYZ_Map_Writer::XYZ_Map_Writer(const std::string& filename) : IMap_Writer(filename + ".xyz") {}
 
-void XYZ_Map_Writer::add_point(const vector3& pointCoordinates) noexcept
+void XYZ_Map_Writer::add_point(const vector3& pointCoordinates, const vector3& color) noexcept
 {
     if (not _file.is_open())
     {
@@ -59,7 +59,7 @@ PCD_Map_Writer::PCD_Map_Writer(const std::string& filename) : IMap_Writer(filena
     _file << "DATA ascii\n";
 }
 
-void PCD_Map_Writer::add_point(const vector3& pointCoordinates) noexcept
+void PCD_Map_Writer::add_point(const vector3& pointCoordinates, const vector3& color) noexcept
 {
     if (not _file.is_open())
     {
@@ -93,7 +93,7 @@ void PCD_Map_Writer::add_line(const std::vector<vector3>& coordinates) noexcept 
 
 OBJ_Map_Writer::OBJ_Map_Writer(const std::string& filename) : IMap_Writer(filename + ".obj") {}
 
-void OBJ_Map_Writer::add_point(const vector3& point) noexcept
+void OBJ_Map_Writer::add_point(const vector3& point, const vector3& color) noexcept
 {
     if (not _file.is_open())
     {
@@ -102,7 +102,9 @@ void OBJ_Map_Writer::add_point(const vector3& point) noexcept
     }
 
     // points are not really visible
-    _file << "v " << point.x() << " " << point.y() << " " << point.z() << "\n";
+    _file << "v " << point.x() << " " << point.y() << " " << point.z() << " "                               //
+          << round(color.x()) / 255.0 << " " << round(color.y()) / 255.0 << " " << round(color.z()) / 255.0 //
+          << "\n";
     _vertexIndex++;
     _file << "p " << _vertexIndex << "\n";
 }

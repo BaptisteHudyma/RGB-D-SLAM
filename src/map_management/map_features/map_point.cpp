@@ -180,7 +180,7 @@ void MapPoint::write_to_file(std::shared_ptr<outputs::IMap_Writer> mapWriter) co
     if (mapWriter != nullptr)
     {
         // only write in confident points
-        mapWriter->add_point(_coordinates);
+        mapWriter->add_point(_coordinates, vector3 {120, 120, 120});
     }
     else
     {
