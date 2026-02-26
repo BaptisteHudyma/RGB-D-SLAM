@@ -135,14 +135,8 @@ int main(int argc, char* argv[])
     uint jumpFrames = 0;
     uint fpsTarget;
 
-    if (not parse_parameters(argc,
-                             argv,
-                             dataset,
-shouldDisplayStagedFeatures,
-                             startIndex,
-                             jumpFrames,
-                             fpsTarget,
-                             shouldSavePoses))
+    if (not parse_parameters(
+                argc, argv, dataset, shouldDisplayStagedFeatures, startIndex, jumpFrames, fpsTarget, shouldSavePoses))
     {
         return 0; // could not parse parameters correctly
     }
@@ -270,11 +264,10 @@ shouldDisplayStagedFeatures,
         }
 
         // display masks on image
-        const cv::Mat& segRgb = RGBD_Slam.get_debug_image(pose,
-                                                          rgbImage,
-                                                          trackingDuration,
-                                                          shouldDisplayStagedFeatures);
+        const cv::Mat& segRgb =
+                RGBD_Slam.get_debug_image(pose, rgbImage, trackingDuration, shouldDisplayStagedFeatures);
         cv::imshow("RGBD-SLAM", segRgb);
+        cv::resizeWindow("RGBD-SLAM", width, height);
 
         // check user inputs
         check_user_inputs(shouldStop);

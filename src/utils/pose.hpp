@@ -28,7 +28,7 @@ class PoseBase
     /**
      * \return a 6 element vector of the position followed by the rotation in radians
      */
-    [[nodiscard]] vector6 get_vector() const noexcept
+    [[nodiscard]] vector6 get_vector_euler() const noexcept
     {
         vector6 t;
         t << _position, _orientation.toRotationMatrix().eulerAngles(0, 1, 2);

@@ -15,7 +15,7 @@ class IMap_Writer
     IMap_Writer(const std::string& filename);
     virtual ~IMap_Writer();
 
-    virtual void add_point(const vector3& pointCoordinates) noexcept = 0;
+    virtual void add_point(const vector3& pointCoordinates, const vector3& color = vector3::Zero()) noexcept = 0;
 
     virtual void add_line(const std::vector<vector3>& coordinates) noexcept = 0;
 
@@ -34,7 +34,7 @@ class XYZ_Map_Writer : public IMap_Writer
   public:
     XYZ_Map_Writer(const std::string& filename);
 
-    void add_point(const vector3& pointCoordinates) noexcept override;
+    void add_point(const vector3& pointCoordinates, const vector3& color = vector3::Zero()) noexcept override;
 
     void add_line(const std::vector<vector3>& coordinates) noexcept override;
 
@@ -50,7 +50,7 @@ class PCD_Map_Writer : public IMap_Writer
   public:
     PCD_Map_Writer(const std::string& filename);
 
-    void add_point(const vector3& pointCoordinates) noexcept override;
+    void add_point(const vector3& pointCoordinates, const vector3& color) noexcept override;
 
     void add_line(const std::vector<vector3>& coordinates) noexcept override;
 
@@ -66,7 +66,7 @@ class OBJ_Map_Writer : public IMap_Writer
   public:
     OBJ_Map_Writer(const std::string& filename);
 
-    void add_point(const vector3& pointCoordinates) noexcept override;
+    void add_point(const vector3& pointCoordinates, const vector3& color) noexcept override;
 
     void add_line(const std::vector<vector3>& coordinates) noexcept override;
 

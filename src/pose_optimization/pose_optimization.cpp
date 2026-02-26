@@ -347,7 +347,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
     }
 
     const auto& outputPose = get_pose_from_optimization_coefficients(input);
-    if (outputPose.get_vector().hasNaN())
+    if (outputPose.get_vector_euler().hasNaN())
     {
         outputs::log_error("optimized pose contains invalid values");
 
@@ -389,7 +389,7 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
                           utils::PoseBase newPose;
                           if (compute_random_variation_of_pose(optimizedPose, matchedFeatures, newPose))
                           {
-                              const vector6& pose6dof = newPose.get_vector();
+                              const vector6& pose6dof = newPose.get_vector_euler();
 #ifndef MAKE_DETERMINISTIC
                               std::scoped_lock<std::mutex> lock(mut);
 #endif

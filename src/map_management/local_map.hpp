@@ -136,6 +136,9 @@ template<class... Maps> class Local_Map
             map.add_features_to_staged_map(poseCovariance, cameraToWorld, detectedFeatures, detectedUsedIndexSet);
         });
 
+        // use red points for the trajectory
+        _mapWriter->add_point(cameraToWorld.translation(), vector3 {255, 0, 0});
+
         // try to upgrade to new features (AFTER all map updates)
         foreach_map([this, &cameraToWorld](auto& featureMap) {
             const auto& upgradedFeatures = featureMap.get_upgraded_features(cameraToWorld);

@@ -107,7 +107,10 @@ matchIndexSet MapPoint2D::find_matches(const DetectedKeypointsObject& detectedFe
         if (_coordinates.to_screen_coordinates(
                     worldToCamera, _covariance.get_inverse_depth_variance(), screenCoordinates))
         {
-            matchIndexRes = detectedFeatures.get_match_index(screenCoordinates, _descriptor, searchRadius);
+            utils::Segment<2> screenCoordinatesClamped;
+            assert(utils::clamp_to_screen(screenCoordinates, screenCoordinatesClamped));
+
+            matchIndexRes = detectedFeatures.get_match_index(screenCoordinatesClamped, _descriptor, searchRadius);
         }
     }
 

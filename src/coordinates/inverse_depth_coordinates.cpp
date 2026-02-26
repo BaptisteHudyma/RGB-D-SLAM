@@ -8,6 +8,8 @@
 
 namespace rgbd_slam {
 
+static constexpr double maximumAllowedDepth_m = 100;
+
 /**
  *      INVERSE DEPTH COORDINATES
  */
@@ -178,7 +180,7 @@ ScreenCoordinate2D InverseDepthWorldPoint::get_projected_screen_estimation(
 {
     const auto& c2w = utils::compute_camera_to_world_transform(w2c);
     // limit a maximum distance of 100 meters, the depth cannot be observed behind the camera
-    const double realDepthvalue = std::max(1.0 / 100.0, _inverseDepth_m + addedStandardDev_m);
+    const double realDepthvalue = std::max(1.0 / maximumAllowedDepth_m, _inverseDepth_m + addedStandardDev_m);
 
     const CameraCoordinate projectedCam =
             w2c.rotation() * 1000.0 *
@@ -193,7 +195,7 @@ ScreenCoordinate2D InverseDepthWorldPoint::get_projected_screen_estimation(
 
 // 2 standard dev, 95% confidence interval
 // 3 standard dev, 99% confidence interval
-constexpr double standardDevIntervals = 3;
+constexpr double standardDevIntervals = 2;
 
 Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_furthest_estimation_jacobian(
         const WorldToCameraMatrix& w2c, const double inverseDepthStandardDev_m) const
