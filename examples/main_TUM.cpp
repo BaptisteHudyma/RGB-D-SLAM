@@ -150,10 +150,17 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    double positionError = 0;
+    double rotationError = 0;
+
     rgbd_slam::utils::Pose pose;
     if (const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth; initialGroundTruth.isValid)
     {
         pose.set_parameters(initialGroundTruth.position, initialGroundTruth.rotation);
+
+        rgbd_slam::utils::PoseBase groundTruthPose(initialGroundTruth.position, initialGroundTruth.rotation);
+        positionError = pose.get_position_error(groundTruthPose);
+        rotationError = pose.get_rotation_error(groundTruthPose);
     }
 
     // Load a default set of parameters
@@ -187,9 +194,6 @@ int main(int argc, char* argv[])
         trajectoryFile.open("traj_TUM_" + dataset + "_" + dateAndTime + ".txt");
         trajectoryFile << "x,y,z,yaw,pitch,roll" << std::endl;
     }
-
-    double positionError = 0;
-    double rotationError = 0;
 
     // stop condition
     bool shouldStop = true;

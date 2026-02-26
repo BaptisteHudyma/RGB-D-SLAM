@@ -46,6 +46,10 @@ struct Spherical
     double polar_rad;   // polar angle
     double azimuth_rad; // azimuth angle
 
+    static constexpr uint RadiusIndex = 0;
+    static constexpr uint PolarIndex = 1;
+    static constexpr uint AzimuthIndex = 2;
+
     Spherical(const double radius, const double polar, const double azimuth) :
         p(radius),
         polar_rad(polar),
@@ -54,7 +58,14 @@ struct Spherical
     }
     Spherical(const vector3& vec) : Spherical(vec.x(), vec.y(), vec.z()) {};
 
-    vector3 vec() const { return vector3(p, polar_rad, azimuth_rad); }
+    vector3 vec() const
+    {
+        vector3 vec;
+        vec(RadiusIndex) = p;
+        vec(PolarIndex) = polar_rad;
+        vec(AzimuthIndex) = azimuth_rad;
+        return vec;
+    }
 
     /**
      * \brief Transform a given coordinate from cartesian to spherical space.

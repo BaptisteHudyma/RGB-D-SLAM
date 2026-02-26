@@ -96,10 +96,16 @@ CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates() const
     return CameraCoordinate2D(transform_screen_to_camera(this->base()));
 }
 
+CameraCoordinate ScreenCoordinate2D::to_camera_coordinates_baseline(const double baseline) const
+{
+    ScreenCoordinate sc {this->x(), this->y(), baseline};
+    return sc.to_camera_coordinates();
+}
+
 matrix22 ScreenCoordinate2D::get_covariance() const
 {
     // TODO xy variance should also depend on the placement of the pixel in x and y
-    const double xyVariance = SQR(0.1);
+    const double xyVariance = SQR(0.5);
     matrix22 cov({{xyVariance, 0.0}, {0.0, xyVariance}});
 
     if (not utils::is_covariance_valid(cov))
@@ -153,14 +159,6 @@ WorldCoordinate ScreenCoordinate::to_world_coordinates(const CameraToWorldMatrix
 
 CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
 {
-    if (x() < 0)
-    {
-        throw std::invalid_argument("ScreenCoordinate::to_camera_coordinates: x should be >= 0");
-    }
-    if (y() < 0)
-    {
-        throw std::invalid_argument("ScreenCoordinate::to_camera_coordinates: y should be >= 0");
-    }
     if (utils::double_equal(z(), 0.0))
     {
         throw std::invalid_argument("ScreenCoordinate::to_camera_coordinates: z should not be 0");

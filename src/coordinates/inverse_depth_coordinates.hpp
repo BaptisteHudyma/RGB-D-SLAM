@@ -107,14 +107,18 @@ struct InverseDepthWorldPoint
      */
     ScreenCoordinate2D get_projected_screen_estimation(const WorldToCameraMatrix& w2c,
                                                        const double addedStandardDev = 0.0) const noexcept;
+    ScreenCoordinate get_projected_screen3d_estimation(const WorldToCameraMatrix& w2c,
+                                                       const double addedStandardDev = 0.0) const noexcept;
 
     /**
      * \brief Compute the jacobian of the inverse point to screen transformation
      * \param[in] w2c Matrix to go from world to camera space
      * \param[in] addedStandardDev The value to add to the estimated depth, to variate the screen point
      */
-    Eigen::Matrix<double, 2, 6> get_projected_screen_estimation_jacobian(const WorldToCameraMatrix& w2c,
-                                                                         const double addedStandardDev) const noexcept;
+    Eigen::Matrix<double, 2, 6> get_projected_screen_estimation_jacobian(
+            const WorldToCameraMatrix& w2c, const double addedStandardDev = 0.0) const noexcept;
+    Eigen::Matrix<double, 3, 6> get_projected_screen3d_estimation_jacobian(
+            const WorldToCameraMatrix& w2c, const double addedStandardDev = 0.0) const noexcept;
 
     ScreenCoordinate2D get_closest_estimation(const WorldToCameraMatrix& w2c,
                                               const double inverseDepthStandardDev) const;
@@ -156,12 +160,12 @@ struct InverseDepthWorldPoint
 
     [[nodiscard]] vector6 get_vector() const
     {
-        return vector6(_firstObservation.x(),
-                       _firstObservation.y(),
-                       _firstObservation.z(),
-                       _inverseDepth_m,
-                       _theta_rad,
-                       _phi_rad);
+        vector6 vec;
+        vec.head<3>() = _firstObservation;
+        vec(inverseDepthIndex) = _inverseDepth_m;
+        vec(thetaIndex) = _theta_rad;
+        vec(phiIndex) = _phi_rad;
+        return vec;
     };
     /**
      * \brief This one should only be used to avoid recreating a new object from scratch
@@ -182,11 +186,17 @@ struct InverseDepthWorldPoint
   protected:
     void recompute_bearing_vector() noexcept;
 
+    /**
+     * \brief Return a projection of this feature in camera space
+     */
+    CameraCoordinate get_projected_camera_estimation(const WorldToCameraMatrix& w2c,
+                                                     const double addedStandardDev = 0.0) const noexcept;
+
   private:
-    WorldCoordinate _firstObservation; // position of the camera for the first observation, in meters
-    double _inverseDepth_m = 0.0;      // inverse of the depth (>= 0)
-    double _theta_rad = 0.0;           // elevation angle of the first observation, in world space
-    double _phi_rad = 0.0;             // heading angle of the first observation, in world space
+    vector3 _firstObservation;    // position of the camera for the first observation, in meters
+    double _inverseDepth_m = 0.0; // inverse of the depth (>= 0)
+    double _theta_rad = 0.0;      // elevation angle of the first observation, in world space
+    double _phi_rad = 0.0;        // heading angle of the first observation, in world space
 
     vector3 _bearingVector; // get the bearing vector that point from _firstObservation to the point
 };

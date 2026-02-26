@@ -32,19 +32,37 @@ template<int N = 3, int M = 2> class Point2dEstimator : public StateEstimator<N,
         return WorldCoordinate(state).to_screen2d_coordinates_jacobian(_w2c);
     }
 
+    inline Eigen::Matrix<double, M, M> h_innovation(
+            const Eigen::Vector<double, N>& state,
+            const Eigen::Matrix<double, N, N>& estimateErrorCovariance,
+            const Eigen::Matrix<double, M, N>& hJacobian) const noexcept override
+    {
+        const Eigen::Matrix<double, 2, 6>& hPoseJacobian =
+                utils::world_transform_of_2d_point_jacobian(WorldCoordinate(state), _w2c);
+
+        const matrix22& cov = utils::propagate_covariance(estimateErrorCovariance, hJacobian) +
+                              utils::propagate_covariance(_poseCovariance, hPoseJacobian);
+        // std::cout << cov.diagonal().cwiseSqrt().transpose() << std::endl;
+        return cov;
+    }
+
     Point2dEstimator(const Eigen::Vector<double, N>& feature,
                      const Eigen::Matrix<double, N, N>& featureCovariance,
                      const Eigen::Vector<double, M>& measurment,
                      const Eigen::Matrix<double, M, M>& measurmentCovariance,
-                     const WorldToCameraMatrix& w2c) :
+                     const WorldToCameraMatrix& w2c,
+                     const matrix66& poseCovariance) :
 
         StateEstimator<N, M>(feature, featureCovariance, measurment, measurmentCovariance),
-        _w2c(w2c)
+        _w2c(w2c),
+        _poseCovariance(poseCovariance)
     {
     }
 
   private:
     const WorldToCameraMatrix _w2c;
+    // pose covariance is represented a pose matrix and the rotation part as a delta theta rotation error
+    const matrix66 _poseCovariance;
 };
 
 template<int N = 3, int M = 3> class Point3dEstimator : public StateEstimator<N, M>
@@ -67,19 +85,35 @@ template<int N = 3, int M = 3> class Point3dEstimator : public StateEstimator<N,
         return WorldCoordinate(state).to_screen_coordinates_jacobian(_w2c);
     }
 
+    inline Eigen::Matrix<double, M, M> h_innovation(
+            const Eigen::Vector<double, N>& state,
+            const Eigen::Matrix<double, N, N>& estimateErrorCovariance,
+            const Eigen::Matrix<double, M, N>& hJacobian) const noexcept override
+    {
+        const Eigen::Matrix<double, 3, 6>& hPoseJacobian =
+                utils::world_transform_of_point_jacobian(WorldCoordinate(state), _w2c);
+        const matrix33& cov = utils::propagate_covariance(estimateErrorCovariance, hJacobian) +
+                              utils::propagate_covariance(_poseCovariance, hPoseJacobian);
+        // std::cout << cov.diagonal().cwiseSqrt().transpose() << std::endl;
+        return cov;
+    }
+
     Point3dEstimator(const Eigen::Vector<double, N>& feature,
                      const Eigen::Matrix<double, N, N>& featureCovariance,
                      const Eigen::Vector<double, M>& measurment,
                      const Eigen::Matrix<double, M, M>& measurmentCovariance,
-                     const WorldToCameraMatrix& w2c) :
+                     const WorldToCameraMatrix& w2c,
+                     const matrix66& poseCovariance) :
 
         StateEstimator<N, M>(feature, featureCovariance, measurment, measurmentCovariance),
-        _w2c(w2c)
+        _w2c(w2c),
+        _poseCovariance(poseCovariance)
     {
     }
 
   private:
     const WorldToCameraMatrix _w2c;
+    const matrix66 _poseCovariance;
 };
 
 /**
@@ -93,7 +127,7 @@ Point::Point(const WorldCoordinate& coordinates,
     _descriptor(descriptor),
     _covariance(covariance)
 {
-    if (_kalmanFilter == nullptr or _kalmanFuse3d == nullptr or _kalmanFuse2d == nullptr)
+    if (_kalmanFuse3d == nullptr or _kalmanFuse2d == nullptr)
     {
         build_kalman_filter();
     }
@@ -106,42 +140,9 @@ Point::Point(const WorldCoordinate& coordinates,
         throw std::invalid_argument("Point constructor: covariance in invalid");
 };
 
-double Point::track(const WorldCoordinate& otherCoordinates, const matrix33& otherCovariance) noexcept
-{
-    assert(_kalmanFilter != nullptr);
-    if (not utils::is_covariance_valid(otherCovariance))
-    {
-        outputs::log_error("otherCovariance: the covariance is invalid");
-        return -1;
-    }
-    if (not utils::is_covariance_valid(_covariance))
-    {
-        outputs::log_error("_covariance : the covariance is invalid");
-        exit(-1);
-    }
-
-    try
-    {
-        const auto& [newCoordinates, newCovariance] =
-                _kalmanFilter->get_new_state(_coordinates, _covariance, otherCoordinates, otherCovariance);
-
-        // moved above the uncertainty of this point
-        _isMoving = ((_coordinates - otherCoordinates).array() > otherCovariance.diagonal().cwiseSqrt().array()).any();
-
-        const double score = (_coordinates - newCoordinates).norm();
-
-        _coordinates << newCoordinates;
-        _covariance << newCovariance;
-        return score;
-    }
-    catch (const std::exception& ex)
-    {
-        outputs::log_error("Catch exception: " + std::string(ex.what()));
-        return -1;
-    }
-}
-
-bool Point::track_3d(const ScreenCoordinate& newDetection, const WorldToCameraMatrix& w2c) noexcept
+bool Point::track_3d(const ScreenCoordinate& newDetection,
+                     const WorldToCameraMatrix& w2c,
+                     const matrix66& poseCovariance) noexcept
 {
     assert(_kalmanFuse3d != nullptr);
     if (not utils::is_covariance_valid(_covariance))
@@ -152,13 +153,8 @@ bool Point::track_3d(const ScreenCoordinate& newDetection, const WorldToCameraMa
 
     try
     {
-        // TODO: replace this with a model that takes the pose uncertainty
-        const double xyVariance = SQR(5);
-        matrix33 screenPointCovariance = newDetection.get_covariance();
-        screenPointCovariance(0, 0) = xyVariance;
-        screenPointCovariance(1, 1) = xyVariance;
-
-        Point3dEstimator estimator(_coordinates, _covariance, newDetection, screenPointCovariance, w2c);
+        Point3dEstimator estimator(
+                _coordinates, _covariance, newDetection, newDetection.get_covariance(), w2c, poseCovariance);
 
         const auto& [newState, newCovariance] = _kalmanFuse3d->get_new_state(&estimator);
 
@@ -179,7 +175,9 @@ bool Point::track_3d(const ScreenCoordinate& newDetection, const WorldToCameraMa
     return false;
 }
 
-bool Point::track_2d(const ScreenCoordinate2D& newDetection, const WorldToCameraMatrix& w2c) noexcept
+bool Point::track_2d(const ScreenCoordinate2D& newDetection,
+                     const WorldToCameraMatrix& w2c,
+                     const matrix66& poseCovariance) noexcept
 {
     assert(_kalmanFuse2d != nullptr);
     if (not utils::is_covariance_valid(_covariance))
@@ -190,11 +188,8 @@ bool Point::track_2d(const ScreenCoordinate2D& newDetection, const WorldToCamera
 
     try
     {
-        // TODO: replace this with a model that takes the pose uncertainty
-        const double xyVariance = SQR(5);
-        matrix22 screenPointCovariance({{xyVariance, 0.0}, {0.0, xyVariance}});
-
-        Point2dEstimator estimator(_coordinates, _covariance, newDetection, screenPointCovariance, w2c);
+        Point2dEstimator estimator(
+                _coordinates, _covariance, newDetection, newDetection.get_covariance(), w2c, poseCovariance);
 
         const auto& [newState, newCovariance] = _kalmanFuse2d->get_new_state(&estimator);
 
@@ -218,17 +213,6 @@ bool Point::track_2d(const ScreenCoordinate2D& newDetection, const WorldToCamera
 
 void Point::build_kalman_filter() noexcept
 {
-    const matrix33 systemDynamics = matrix33::Identity(); // points are not supposed to move, so no dynamics
-    const matrix33 outputMatrix = matrix33::Identity();   // we need all positions
-
-    const double parametersProcessNoise = SQR(0.01);                                       // TODO set in parameters
-    const matrix33 processNoiseCovariance = matrix33::Identity() * parametersProcessNoise; // Process noise covariance
-
-    _kalmanFilter =
-            std::make_unique<tracking::SharedKalmanFilter<3, 3>>(systemDynamics, outputMatrix, processNoiseCovariance);
-
-    // TODO: make a more correct process noise, this one is too high to compensate for the lack of pose noise in the
-    // estimation
     _kalmanFuse3d = std::make_unique<tracking::ExtendedKalmanFilter<3, 3>>(matrix33::Zero());
     _kalmanFuse2d = std::make_unique<tracking::ExtendedKalmanFilter<3, 2>>(matrix33::Zero());
 }

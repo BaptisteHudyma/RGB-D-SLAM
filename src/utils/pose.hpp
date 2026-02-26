@@ -35,6 +35,9 @@ class PoseBase
         return t;
     }
 
+    [[nodiscard]] vector3 get_rotation_lie_error() const;
+    [[nodiscard]] vector6 get_error_vector() const noexcept;
+
     /**
      * \brief compute a position error (Units are the same as the position units)
      */

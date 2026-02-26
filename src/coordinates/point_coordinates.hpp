@@ -50,6 +50,7 @@ struct ScreenCoordinate2D : public vector2
      * \return A 3D point in camera coordinates
      */
     [[nodiscard]] CameraCoordinate2D to_camera_coordinates() const;
+    [[nodiscard]] CameraCoordinate to_camera_coordinates_baseline(const double baseline = 1.0) const;
 
     /**
      * \brief Compute a covariance in screen space

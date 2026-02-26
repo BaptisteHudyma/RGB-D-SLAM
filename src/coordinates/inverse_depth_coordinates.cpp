@@ -47,8 +47,9 @@ void InverseDepthWorldPoint::recompute_bearing_vector() noexcept
 }
 
 InverseDepthWorldPoint::InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w) :
-    // use homogenous to create a vector from the camera center outward
-    InverseDepthWorldPoint(CameraCoordinate(observation.to_camera_coordinates().homogeneous()), c2w)
+    // use a baseline to project a ray from start point to observed point
+    InverseDepthWorldPoint(
+            observation.to_camera_coordinates_baseline(1000.0 / parameters::detection::inverseDepthBaseline_m), c2w)
 {
     // no known depth, so set the baseline
     _inverseDepth_m = parameters::detection::inverseDepthBaseline_m;
@@ -112,7 +113,7 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
                                                               Eigen::Matrix<double, 6, 3>& jacobian) noexcept
 {
     jacobian.setZero();
-    // TODO: should be Identity ?
+    // initial pose block
     jacobian.block<3, 3>(firstPoseIndex, firstPoseIndex) = matrix33::Zero();
 
     // jacobian of the [xo, yo, zo, x, y, z] =>
@@ -123,17 +124,23 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
     matrix33 toCartesianJacobian;
     const auto& s = Spherical::from(Cartesian(directionalVector / 1000.0), toCartesianJacobian);
 
-    // add the 1/d part
-    toCartesianJacobian.row(0) *= -1.0 / s.p;
+    matrix33 toIDepthJacobian;
+    // add the derivative of 1/d part to have -1/pow(d, 3/2) instead of 1/pow(d, 1/2)
+    toIDepthJacobian.row(InverseDepthWorldPoint::inverseDepthIndex - 3) =
+            -1.0 / SQR(s.p) * toCartesianJacobian.row(Spherical::RadiusIndex);
+    toIDepthJacobian.row(InverseDepthWorldPoint::thetaIndex - 3) = toCartesianJacobian.row(Spherical::PolarIndex);
+    toIDepthJacobian.row(InverseDepthWorldPoint::phiIndex - 3) = toCartesianJacobian.row(Spherical::AzimuthIndex);
 
-    jacobian.block<3, 3>(inverseDepthIndex, 0) = toCartesianJacobian;
+    jacobian.block<3, 3>(firstPoseIndex + 3, 0) = toIDepthJacobian;
     return from_cartesian(point, origin);
 }
 
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(const double addedStandardDev_m) const noexcept
 {
     assert(_inverseDepth_m != 0.0);
-    return WorldCoordinate(1000.0 * (_firstObservation + _bearingVector / (_inverseDepth_m + addedStandardDev_m)));
+    // limit the projection to infinity
+    const double addedDepth = std::max(1.0 / maximumAllowedDepth_m, _inverseDepth_m + addedStandardDev_m);
+    return WorldCoordinate(1000.0 * (_firstObservation + _bearingVector / addedDepth));
 }
 
 Eigen::Matrix<double, 3, 6> to_world_coordinates_jacobian(const double inverseDepth,
@@ -145,16 +152,19 @@ Eigen::Matrix<double, 3, 6> to_world_coordinates_jacobian(const double inverseDe
     matrix33 bearingJacobian;
     Cartesian::from(Spherical(1.0, theta, phi), bearingJacobian);
 
-    // Add derivation of 1/d
-    bearingJacobian.col(0) *= -1.0 / SQR(inverseDepth);
-    bearingJacobian.col(1) *= 1.0 / inverseDepth;
-    bearingJacobian.col(2) *= 1.0 / inverseDepth;
+    matrix33 iDeptJacobian;
+    iDeptJacobian.col(InverseDepthWorldPoint::inverseDepthIndex - 3) =
+            -1.0 / SQR(inverseDepth) * bearingJacobian.col(Spherical::RadiusIndex);
+    iDeptJacobian.col(InverseDepthWorldPoint::thetaIndex - 3) =
+            1.0 / inverseDepth * bearingJacobian.col(Spherical::PolarIndex);
+    iDeptJacobian.col(InverseDepthWorldPoint::phiIndex - 3) =
+            1.0 / inverseDepth * bearingJacobian.col(Spherical::AzimuthIndex);
 
-    Eigen::Matrix<double, 3, 6> jacobian = Eigen::Matrix<double, 3, 6>::Zero();
-    jacobian.block<3, 3>(0, InverseDepthWorldPoint::firstPoseIndex) = 1000.0 * matrix33::Identity();
-    jacobian.block<3, 3>(0, InverseDepthWorldPoint::inverseDepthIndex) = 1000.0 * bearingJacobian;
+    Eigen::Matrix<double, 3, 6> jacobian;
+    jacobian.block<3, 3>(0, InverseDepthWorldPoint::firstPoseIndex) = matrix33::Identity();
+    jacobian.block<3, 3>(0, InverseDepthWorldPoint::firstPoseIndex + 3) = iDeptJacobian;
 
-    return jacobian;
+    return 1000.0 * jacobian;
 }
 
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian,
@@ -178,15 +188,32 @@ Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_projected_screen_estimat
 ScreenCoordinate2D InverseDepthWorldPoint::get_projected_screen_estimation(
         const WorldToCameraMatrix& w2c, const double addedStandardDev_m) const noexcept
 {
-    const auto& c2w = utils::compute_camera_to_world_transform(w2c);
-    // limit a maximum distance of 100 meters, the depth cannot be observed behind the camera
-    const double realDepthvalue = std::max(1.0 / maximumAllowedDepth_m, _inverseDepth_m + addedStandardDev_m);
-
-    const CameraCoordinate projectedCam =
-            w2c.rotation() * 1000.0 *
-            (realDepthvalue * (_firstObservation - c2w.translation() / 1000.0) + _bearingVector);
+    const CameraCoordinate& projectedCam = get_projected_camera_estimation(w2c, addedStandardDev_m);
 
     ScreenCoordinate2D resCoords;
+    const bool res = projectedCam.to_screen_coordinates(resCoords);
+    // TODO: something better than assert...
+    assert(res);
+    return resCoords;
+}
+
+Eigen::Matrix<double, 3, 6> InverseDepthWorldPoint::get_projected_screen3d_estimation_jacobian(
+        const WorldToCameraMatrix& w2c, const double addedStandardDev) const noexcept
+{
+    Eigen::Matrix<double, 3, 6> inverseDepthToWorldJacobian;
+    const WorldCoordinate& worldPoint = to_world_coordinates(inverseDepthToWorldJacobian, addedStandardDev);
+
+    const matrix33& toScreenJacobian = worldPoint.to_screen_coordinates_jacobian(w2c);
+
+    return (toScreenJacobian * inverseDepthToWorldJacobian).eval();
+}
+
+ScreenCoordinate InverseDepthWorldPoint::get_projected_screen3d_estimation(
+        const WorldToCameraMatrix& w2c, const double addedStandardDev_m) const noexcept
+{
+    const CameraCoordinate& projectedCam = get_projected_camera_estimation(w2c, addedStandardDev_m);
+
+    ScreenCoordinate resCoords;
     const bool res = projectedCam.to_screen_coordinates(resCoords);
     // TODO: something better than assert...
     assert(res);
@@ -251,6 +278,12 @@ bool InverseDepthWorldPoint::to_screen_coordinates(const WorldToCameraMatrix& w2
     covariance.block<2, 2>(0, 0) = utils::propagate_covariance(cov, firstPointJacobian);
     covariance.block<2, 2>(2, 2) = utils::propagate_covariance(cov, secondPointJacobian);
     return true;
+}
+
+CameraCoordinate InverseDepthWorldPoint::get_projected_camera_estimation(const WorldToCameraMatrix& w2c,
+                                                                         const double addedStandardDev_m) const noexcept
+{
+    return to_world_coordinates(addedStandardDev_m).to_camera_coordinates(w2c);
 }
 
 } // namespace rgbd_slam

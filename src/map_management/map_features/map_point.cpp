@@ -203,11 +203,11 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     if (is_depth_valid(matchedScreenPoint.z()))
     {
         // depth is valid, merge using the 3D model (more precise)
-        if (not track_3d(matchedScreenPoint, w2c))
+        if (not track_3d(matchedScreenPoint, w2c, poseCovariance))
             return false;
     }
     // depth is invalid, merge using the 2D model (slightly faster)
-    else if (not track_2d(matchedScreenPoint.get_2D(), w2c))
+    else if (not track_2d(matchedScreenPoint.get_2D(), w2c, poseCovariance))
         return false;
 
     // If a new descriptor is available, update it

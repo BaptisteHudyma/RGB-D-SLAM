@@ -371,10 +371,10 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
         return false;
     }
     poseCovariance.setZero();
-    vector6 medium = vector6::Zero();
 
-    std::vector<vector6> poses;
-    poses.reserve(iterations);
+    std::vector<vector6> posesError;
+    posesError.reserve(iterations);
+    vector6 poseMedium = vector6::Zero();
 
 #ifndef MAKE_DETERMINISTIC
     std::mutex mut;
@@ -389,12 +389,12 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
                           utils::PoseBase newPose;
                           if (compute_random_variation_of_pose(optimizedPose, matchedFeatures, newPose))
                           {
-                              const vector6& pose6dof = newPose.get_vector_euler();
+                              const vector6& pose6dof = newPose.get_error_vector();
 #ifndef MAKE_DETERMINISTIC
                               std::scoped_lock<std::mutex> lock(mut);
 #endif
-                              medium += pose6dof;
-                              poses.emplace_back(pose6dof);
+                              posesError.emplace_back(pose6dof);
+                              poseMedium += pose6dof;
                           }
                           else
                           {
@@ -405,23 +405,22 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
     );
 #endif
 
-    if (poses.size() < iterations / 2)
+    if (posesError.size() < iterations / 2)
     {
         outputs::log_error("Could not compute covariance: too many faileds iterations");
         _meanComputePoseVarianceDuration +=
                 (static_cast<double>(cv::getTickCount()) - computePoseVarianceStartTime) / cv::getTickFrequency();
         return false;
     }
-    medium /= static_cast<double>(poses.size());
 
-    for (const vector6& pose: poses)
+    poseMedium /= static_cast<double>(posesError.size());
+
+    for (const vector6& poseErrs: posesError)
     {
-        const vector6 def = pose - medium;
-        poseCovariance += def * def.transpose();
+        const auto& d = poseErrs - poseMedium;
+        poseCovariance += d * d.transpose();
     }
-    poseCovariance /= static_cast<double>(poses.size() - 1);
-    poseCovariance.diagonal() += vector6::Constant(
-            0.001); // add small variance on diagonal in case of perfect covariance (rare but existing case)
+    poseCovariance /= static_cast<double>(posesError.size() - 1);
 
     std::string errorMsg;
     if (not utils::is_covariance_valid(poseCovariance, errorMsg))
