@@ -180,6 +180,18 @@ CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCova
                                                   const matrix44& planeCovariance,
                                                   const matrix66& worldPoseCovariance);
 
+/**
+ * \brief jacobian of the pose covariance to a screen projection, relative to a given point
+ */
+Eigen::Matrix<double, 3, 6> world_transform_of_point_jacobian(const WorldCoordinate& point,
+                                                              const WorldToCameraMatrix& w2c);
+
+/**
+ * \brief jacobian of the pose covariance to a 2D screen projection, relative to a given point
+ */
+Eigen::Matrix<double, 2, 6> world_transform_of_2d_point_jacobian(const WorldCoordinate& point,
+                                                                 const WorldToCameraMatrix& w2c);
+
 } // namespace rgbd_slam::utils
 
 #endif

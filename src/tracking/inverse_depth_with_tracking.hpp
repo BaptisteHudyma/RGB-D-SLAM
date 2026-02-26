@@ -61,12 +61,14 @@ struct PointInverseDepth
     /**
      * \brief Add an new measurment to the tracking
      * \param[in] observation The new observation
+     * \param[in] observationCovariance Covariance matrix of the observation
      * \param[in] c2w The cam to world matrix
      * \param[in] stateCovariance The covariance of the observer position
      * \param[in] descriptor The descriptor of this point
      * \return True if the tracking succeeded, false if something is wrong
      */
     [[nodiscard]] bool track_3D(const ScreenCoordinate& observation,
+                                const matrix33& observationCovariance,
                                 const CameraToWorldMatrix& c2w,
                                 const matrix66& stateCovariance,
                                 const cv::Mat& descriptor) noexcept;
@@ -123,6 +125,7 @@ struct PointInverseDepth
 
     // shared kalman filter, between all points
     inline static std::unique_ptr<tracking::ExtendedKalmanFilter<6, 2>> _extendedKalmanFilter = nullptr;
+    inline static std::unique_ptr<tracking::ExtendedKalmanFilter<6, 3>> _extendedKalmanFilter3d = nullptr;
 
   private:
     bool _isMoving = false;

@@ -248,19 +248,17 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
     if (is_depth_valid(matchedFeature._coordinates.z()))
     {
         // use the real observation, it will most likely override the covariance inside the inverse depth point
-        return track_3D(matchedFeature._coordinates, cameraToWorld, poseCovariance, matchedFeature._descriptor);
+        return track_3D(matchedFeature._coordinates,
+                        matchedFeature._coordinates.get_covariance(),
+                        cameraToWorld,
+                        poseCovariance,
+                        matchedFeature._descriptor);
     }
     */
 
-    // TODO: replace this with a model that takes the pose uncertainty
-    const matrix22 screenPointCovariance = matrix22::Identity() * SQR(5); // pixels
-
     // use a 2D observation, that will be merged with the current one
-    return track_2D(matchedFeature._coordinates.get_2D(),
-                    screenPointCovariance,
-                    cameraToWorld,
-                    poseCovariance,
-                    matchedFeature._descriptor);
+    const auto& feature2d = matchedFeature._coordinates.get_2D();
+    return track_2D(feature2d, feature2d.get_covariance(), cameraToWorld, poseCovariance, matchedFeature._descriptor);
 }
 
 void MapPoint2D::update_no_match() noexcept

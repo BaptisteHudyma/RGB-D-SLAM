@@ -44,9 +44,11 @@ template<int N, int M> class StateEstimator
     /**
      * \brief Special innovation covariance computation
      */
-    virtual inline Eigen::Matrix<double, M, M> h_innovation(const Eigen::Matrix<double, N, N>& estimateErrorCovariance,
+    virtual inline Eigen::Matrix<double, M, M> h_innovation(const Eigen::Vector<double, N>& state,
+                                                            const Eigen::Matrix<double, N, N>& estimateErrorCovariance,
                                                             const Eigen::Matrix<double, M, N>& hJacobian) const noexcept
     {
+        std::ignore = state;
         return utils::propagate_covariance(estimateErrorCovariance, hJacobian);
     }
 
@@ -121,7 +123,8 @@ template<int N, int M> class ExtendedKalmanFilter
 
         // compute inovation covariance
         const Eigen::Matrix<double, M, M>& inovation =
-                estimator->template h_innovation(estimateErrorCovariance, hJacobian) + measurementNoiseCovariance;
+                estimator->template h_innovation(newStateEstimate, estimateErrorCovariance, hJacobian) +
+                measurementNoiseCovariance;
 
         const Eigen::Matrix<double, M, M>& inovationInverted = pseudoInverse(inovation);
 
