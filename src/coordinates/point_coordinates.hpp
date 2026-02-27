@@ -206,8 +206,8 @@ struct WorldCoordinate : public vector3
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \return The 3D signed distance in world space
      */
-    [[nodiscard]] vector3 get_signed_distance_mm(const ScreenCoordinate& screenPoint,
-                                                 const CameraToWorldMatrix& cameraToWorld) const;
+    [[nodiscard]] vector3 get_signed_distance(const ScreenCoordinate& screenPoint,
+                                              const CameraToWorldMatrix& cameraToWorld) const;
     /**
      * \brief Compute a distance between a world point and a 3D point in screen space, by projecting the screen point to
      * world space
@@ -215,18 +215,18 @@ struct WorldCoordinate : public vector3
      * \param[in] cameraToWorld A matrix to convert from camera to world space
      * \return The unsigned distance in world space
      */
-    [[nodiscard]] double get_distance_mm(const ScreenCoordinate& screenPoint,
-                                         const CameraToWorldMatrix& cameraToWorld) const;
+    [[nodiscard]] double get_distance(const ScreenCoordinate& screenPoint,
+                                      const CameraToWorldMatrix& cameraToWorld) const;
     /**
      * \brief Compute a signed distance with another world point
      */
-    [[nodiscard]] vector3 get_signed_distance_mm(const WorldCoordinate& worldPoint) const
+    [[nodiscard]] vector3 get_signed_distance(const WorldCoordinate& worldPoint) const
     {
         return this->base() - worldPoint;
     };
-    [[nodiscard]] double get_distance_mm(const WorldCoordinate& worldPoint) const
+    [[nodiscard]] double get_distance(const WorldCoordinate& worldPoint) const
     {
-        return get_signed_distance_mm(worldPoint).lpNorm<1>();
+        return get_signed_distance(worldPoint).lpNorm<1>();
     };
 };
 

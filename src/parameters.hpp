@@ -24,8 +24,8 @@ constexpr float maximumRetroprojectionErrorForPoint2DInliers_px =
         3.0; // Max retroprojection error between the line of two inverse depth points to reject match (pixels)
 constexpr float maximumRetroprojectionErrorForPointInliers_px =
         3.0; // Max retroprojection error between two screen points before rejecting the match (pixels);
-constexpr float maximumRetroprojectionErrorForPlaneInliers_mm =
-        50.0; // Max retroprojection error between two screen planes, in millimeters, before rejecting the match
+constexpr float maximumRetroprojectionErrorForPlaneInliers_m =
+        0.05; // Max retroprojection error between two screen planes, in meters, before rejecting the match
 constexpr float maximumRetroprojectionErrorForPlaneInliersNormal =
         0.2; // Max retroprojection error between two screen planes normals, before rejecting the match
 constexpr double minimumInliersProportionForEarlyStop =
@@ -74,8 +74,8 @@ constexpr float minimumZeroDepthProportion =
 
 constexpr float maximumPlaneAngleForMerge_d =
         18.0; // plane patches can be merged if their normals angle is below this angle (degrees)
-constexpr float maximumPlaneDistanceForMerge_mm =
-        50.0; // plane patched can be merged if their distances is below this distance (millimeters)
+constexpr float maximumPlaneDistanceForMerge_m =
+        0.050; // plane patched can be merged if their distances is below this distance (meters)
 constexpr uint depthMapPatchSize_px =
         20; // Divide the depth image in patches of this size (pixels) to detect primitives
 
@@ -91,8 +91,8 @@ constexpr float minimumPlaneOverlapToConsiderMatch =
         0.4f; // // Inter over area of the two primitive masks, to consider a primitive match
 constexpr double maximumAngleForPlaneMatch_d =
         20.0; // Maximum angle between two primitives to consider a match (degrees)
-constexpr double maximumDistanceForPlaneMatch_mm =
-        100; // Maximum distance between two plane d component to consider a match (millimeters)
+constexpr double maximumDistanceForPlaneMatch_m =
+        0.1; // Maximum distance between two plane d component to consider a match (meters)
 
 constexpr double matchSearchRadius_px = 30;  // Radius of the space around a point to search match points in pixels
 constexpr double maximumMatchDistance = 0.7; // Maximum distance between a point and his mach before refusing the

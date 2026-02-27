@@ -18,7 +18,7 @@ InverseDepthWorldPoint::InverseDepthWorldPoint(const WorldCoordinate& firstPose,
                                                const double inverseDepth_m,
                                                const double theta,
                                                const double phi) :
-    _firstObservation(firstPose / 1000.0),
+    _firstObservation(firstPose),
     _inverseDepth_m(inverseDepth_m),
     _theta_rad(theta),
     _phi_rad(phi)
@@ -49,7 +49,7 @@ void InverseDepthWorldPoint::recompute_bearing_vector() noexcept
 InverseDepthWorldPoint::InverseDepthWorldPoint(const ScreenCoordinate2D& observation, const CameraToWorldMatrix& c2w) :
     // use a baseline to project a ray from start point to observed point
     InverseDepthWorldPoint(
-            observation.to_camera_coordinates_baseline(1000.0 / parameters::detection::inverseDepthBaseline_m), c2w)
+            observation.to_camera_coordinates_baseline(1.0 / parameters::detection::inverseDepthBaseline_m), c2w)
 {
     // no known depth, so set the baseline
     _inverseDepth_m = parameters::detection::inverseDepthBaseline_m;
@@ -104,7 +104,7 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
 {
     const vector3 directionalVector(point - origin);
 
-    const Spherical& s = Spherical::from(Cartesian(directionalVector / 1000.0));
+    const Spherical& s = Spherical::from(Cartesian(directionalVector));
     return InverseDepthWorldPoint(origin, 1.0 / s.p, s.polar_rad, s.azimuth_rad);
 }
 
@@ -122,7 +122,7 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
     const vector3 directionalVector(point - origin);
 
     matrix33 toCartesianJacobian;
-    const auto& s = Spherical::from(Cartesian(directionalVector / 1000.0), toCartesianJacobian);
+    const auto& s = Spherical::from(Cartesian(directionalVector), toCartesianJacobian);
 
     matrix33 toIDepthJacobian;
     // add the derivative of 1/d part to have -1/pow(d, 3/2) instead of 1/pow(d, 1/2)
@@ -140,7 +140,7 @@ WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(const double addedS
     assert(_inverseDepth_m != 0.0);
     // limit the projection to infinity
     const double addedDepth = std::max(1.0 / maximumAllowedDepth_m, _inverseDepth_m + addedStandardDev_m);
-    return WorldCoordinate(1000.0 * (_firstObservation + _bearingVector / addedDepth));
+    return _firstObservation + 1.0 / addedDepth * _bearingVector;
 }
 
 Eigen::Matrix<double, 3, 6> to_world_coordinates_jacobian(const double inverseDepth,
@@ -164,7 +164,7 @@ Eigen::Matrix<double, 3, 6> to_world_coordinates_jacobian(const double inverseDe
     jacobian.block<3, 3>(0, InverseDepthWorldPoint::firstPoseIndex) = matrix33::Identity();
     jacobian.block<3, 3>(0, InverseDepthWorldPoint::firstPoseIndex + 3) = iDeptJacobian;
 
-    return 1000.0 * jacobian;
+    return jacobian;
 }
 
 WorldCoordinate InverseDepthWorldPoint::to_world_coordinates(Eigen::Matrix<double, 3, 6>& jacobian,

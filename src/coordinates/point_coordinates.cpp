@@ -13,8 +13,8 @@
 namespace rgbd_slam {
 
 // TODO set in parameters
-const double MIN_DEPTH_DISTANCE = 40;   // (millimeters) is the depth camera minimum reliable distance
-const double MAX_DEPTH_DISTANCE = 6000; // (millimeters) is the depth camera maximum reliable distance
+const double MIN_DEPTH_DISTANCE = 0.04; // (meters) is the depth camera minimum reliable distance
+const double MAX_DEPTH_DISTANCE = 6.0;  // (meters) is the depth camera maximum reliable distance
 
 bool is_depth_valid(const double depth) noexcept
 {
@@ -300,16 +300,16 @@ double WorldCoordinate::get_distance_px(const ScreenCoordinate2D& screenPoint,
     return distance;
 }
 
-vector3 WorldCoordinate::get_signed_distance_mm(const ScreenCoordinate& screenPoint,
-                                                const CameraToWorldMatrix& cameraToWorld) const
+vector3 WorldCoordinate::get_signed_distance(const ScreenCoordinate& screenPoint,
+                                             const CameraToWorldMatrix& cameraToWorld) const
 {
     return this->base() - screenPoint.to_world_coordinates(cameraToWorld);
 }
 
-double WorldCoordinate::get_distance_mm(const ScreenCoordinate& screenPoint,
-                                        const CameraToWorldMatrix& cameraToWorld) const
+double WorldCoordinate::get_distance(const ScreenCoordinate& screenPoint,
+                                     const CameraToWorldMatrix& cameraToWorld) const
 {
-    return get_signed_distance_mm(screenPoint, cameraToWorld).lpNorm<1>();
+    return get_signed_distance(screenPoint, cameraToWorld).lpNorm<1>();
 }
 
 CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const noexcept

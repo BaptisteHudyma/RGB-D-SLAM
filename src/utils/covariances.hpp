@@ -72,10 +72,10 @@ template<int N, int M> Eigen::Matrix<double, M, M> propagate_covariance(const Ei
 
 /**
  * \brief Return the expected depth quantization at this depth value.
- * \param[in] depht The measured depth value, in millimeters
- * \return The smallest possible measure in millimeters (caped at 0.5 mm)
+ * \param[in] depht The measured depth value, in meters
+ * \return The smallest possible measure in meters
  */
-[[nodiscard]] double get_depth_quantization(const double depht) noexcept;
+[[nodiscard]] double get_depth_quantization(const double depth_m) noexcept;
 
 /**
  * \brief Compute a camera to 2D screen jacobian

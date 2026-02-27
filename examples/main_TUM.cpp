@@ -99,7 +99,7 @@ rgbd_slam::utils::Pose get_ground_truth(const std::string& groundTruthLine)
     inputGroundTruth >> timestamp >> groundTruthPosition.x() >> groundTruthPosition.y() >> groundTruthPosition.z() >>
             groundTruthRotation.x() >> groundTruthRotation.y() >> groundTruthRotation.z() >> groundTruthRotation.w();
 
-    return rgbd_slam::utils::Pose(groundTruthPosition * 1000.0, groundTruthRotation);
+    return rgbd_slam::utils::Pose(groundTruthPosition, groundTruthRotation);
 }
 
 std::vector<Data> get_data_association(const std::string& dataPath)
@@ -236,8 +236,8 @@ int main(int argc, char* argv[])
         assert(static_cast<uint>(rgbImage.cols) == width and static_cast<uint>(rgbImage.rows) == height);
         assert(static_cast<uint>(depthImage.cols) == width and static_cast<uint>(depthImage.rows) == height);
 
-        // convert to mm & float 32
-        depthImage.convertTo(depthImage, CV_32FC1, 1.0 / 5.0);
+        // convert to m & float 32
+        depthImage.convertTo(depthImage, CV_32FC1, 1.0 / 5000.0);
 
         // clean warp artefacts
 #if 0
@@ -301,7 +301,7 @@ int main(int argc, char* argv[])
 
     std::cout << std::endl;
     if (isGroundTruthAvailable)
-        std::cout << "Pose error: " << positionError / 10.0 << " cm | " << rotationError << " °" << std::endl;
+        std::cout << "Pose error: " << positionError * 100.0 << " cm | " << rotationError << " °" << std::endl;
     std::cout << "End pose : " << pose << std::endl;
     std::cout << "Process terminated at frame " << frameIndex << std::endl;
     std::cout << std::endl;

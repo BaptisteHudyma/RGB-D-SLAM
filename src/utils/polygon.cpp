@@ -575,13 +575,13 @@ double Polygon::union_area(const Polygon& other) const
     return areaSum;
 }
 
-void Polygon::simplify(const double distanceThreshold) noexcept
+void Polygon::simplify(const double distanceThreshold_m) noexcept
 {
     // pre compute the area
     _area = area();
     // compute a simplification distance threshold: it depends on the area.
-    // the bigger the area, the higer the threshold. A lower limit is fixed by the distanceThreshold parameter
-    const double distanceThres = std::max(_area / 1e5, distanceThreshold);
+    // the bigger the area, the higher the threshold. A lower limit is fixed by the distanceThreshold_m parameter
+    const double distanceThres = std::max(_area / 1e5, distanceThreshold_m);
 
     // use temporary object to prevent segfault
     polygon out;

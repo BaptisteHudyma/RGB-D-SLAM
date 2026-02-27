@@ -81,7 +81,7 @@ bool Plane::is_distance_similar(const Plane& plane) const noexcept
 
 bool Plane::is_distance_similar(const PlaneCameraCoordinates& planeParametrization) const noexcept
 {
-    constexpr double maximumPlaneMatchDistance = parameters::matching::maximumDistanceForPlaneMatch_mm;
+    constexpr double maximumPlaneMatchDistance = parameters::matching::maximumDistanceForPlaneMatch_m;
     return abs(_parametrization.get_d() - planeParametrization.get_d()) < maximumPlaneMatchDistance;
 }
 

@@ -58,8 +58,8 @@ utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose, cons
     matrix66 poseError = matrix66::Zero();
     if (shouldIncreaseVariance)
     {
-        // add some variance to the new covariance (mm, radians)
-        const vector6& stdToAdd = vector6(10, 10, 10, 0.1, 0.1, 0.1);
+        // add some variance to the new covariance (m, radians)
+        const vector6& stdToAdd = vector6(0.01, 0.01, 0.01, 0.1, 0.1, 0.1);
         poseError.diagonal() = stdToAdd.cwiseProduct(stdToAdd);
     }
 

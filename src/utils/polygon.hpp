@@ -181,9 +181,9 @@ class Polygon
 
     /**
      * \brief Simplify the boundary of the current polygon
-     * \param[in] distanceThreshold max lateral distance between points to simplify (mm)
+     * \param[in] distanceThreshold_m max lateral distance between points to simplify (m)
      */
-    void simplify(const double distanceThreshold = 10) noexcept;
+    void simplify(const double distanceThreshold_m = 0.01) noexcept;
 
     /**
      * \brief compute and return the polygon boundary, in the unprojected space

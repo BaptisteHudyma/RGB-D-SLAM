@@ -174,6 +174,17 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
     // prevent a display out of the screen (visual bug)
     if (startPoint.is_in_screen_boundaries() and endPoint.is_in_screen_boundaries())
     {
+        const auto centerProj = _coordinates.get_projected_screen_estimation(worldToCamMatrix);
+        if (not is_matched())
+        {
+            cv::circle(debugImage,
+                       cv::Point(static_cast<int>(centerProj.x()), static_cast<int>(centerProj.y())),
+                       4,
+                       cv::Scalar(255, 255, 255),
+                       -1);
+            return;
+        }
+
         const cv::Point p1(static_cast<int>(startPoint.x()), static_cast<int>(startPoint.y()));
         const cv::Point p2(static_cast<int>(endPoint.x()), static_cast<int>(endPoint.y()));
 
@@ -181,6 +192,16 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
         cv::line(debugImage, p1, p2, is_matched() ? cv::Scalar(255, 0, 0) : cv::Scalar(0, 0, 255), 5);
 
         cv::line(debugImage, p1, p2, color, 3);
+
+        // do not display points behind the camera
+        if (centerProj.is_in_screen_boundaries())
+        {
+            cv::circle(debugImage,
+                       cv::Point(static_cast<int>(centerProj.x()), static_cast<int>(centerProj.y())),
+                       4,
+                       cv::Scalar(15, 15, 15),
+                       -1);
+        }
     }
     else
     {
