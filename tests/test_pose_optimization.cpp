@@ -22,12 +22,12 @@
 namespace rgbd_slam {
 
 const uint NUMBER_OF_POINTS_IN_CUBE = pow(4, 3);
-const double CUBE_SIDE_SIZE = 20; // Millimeters
-const double CUBE_START_X = 100;
-const double CUBE_START_Y = 100;
-const double CUBE_START_Z = 100;
+const double CUBE_SIDE_SIZE = 0.020; // meters
+const double CUBE_START_X = 0.1;
+const double CUBE_START_Y = 0.1;
+const double CUBE_START_Z = 0.1;
 
-const double END_POSITION = 10;
+const double END_POSITION = 0.010;
 const double END_ROTATION_YAW = 45 * EulerToRadian;    // [-180, 180] degrees
 const double END_ROTATION_PITCH = -45 * EulerToRadian; // [-90, 90] degrees
 const double END_ROTATION_ROLL = 20 * EulerToRadian;   // [-180, 180] degrees
@@ -37,8 +37,8 @@ const double MEDIUM_GUESS = 0.5;
 const double BAD_GUESS = 0.1;
 
 // Error associated with each points of the cube
-const double POINTS_ERROR = 5;
-const double PLANE_ERROR = 5;
+const double POINTS_ERROR = 0.005;
+const double PLANE_ERROR = 0.005;
 
 struct Point_
 {
@@ -227,8 +227,8 @@ void run_test_optimization(const matches_containers::match_container& matchedFea
     if (not isPoseValid)
         FAIL();
 
-    const double approxPositionError = 1 + POINTS_ERROR;    // mm
-    const double approxRotationError = 0.1 * EulerToRadian; // 0.1 degree
+    const double approxPositionError = 0.001 + POINTS_ERROR; // m
+    const double approxRotationError = 0.1 * EulerToRadian;  // 0.1 degree
     EXPECT_NEAR(trueEndPose.get_position().x(), endPose.get_position().x(), approxPositionError);
     EXPECT_NEAR(trueEndPose.get_position().y(), endPose.get_position().y(), approxPositionError);
     EXPECT_NEAR(trueEndPose.get_position().z(), endPose.get_position().z(), approxPositionError);

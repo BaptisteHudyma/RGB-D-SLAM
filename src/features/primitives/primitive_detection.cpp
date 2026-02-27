@@ -188,7 +188,7 @@ void Primitive_Detection::init_planar_cell_fitting(const matrixf& depthCloudArra
 {
     const static float sinAngleForMerge =
             sinf(static_cast<float>(parameters::detection::maximumPlaneAngleForMerge_d * M_PI / 180.0));
-    constexpr float planeMergeDistanceThreshold = parameters::detection::maximumPlaneDistanceForMerge_mm;
+    constexpr float planeMergeDistanceThreshold = parameters::detection::maximumPlaneDistanceForMerge_m;
 
     // for each planeGrid cell
     const size_t planeGridSize = _planeGrid.size();
@@ -535,7 +535,7 @@ Primitive_Detection::uint_vector Primitive_Detection::merge_planes() noexcept
                 continue;
 
             // normals are close enough, distance is small enough
-            if (planeToExpand.can_be_merged(mergePlane, parameters::detection::maximumPlaneDistanceForMerge_mm))
+            if (planeToExpand.can_be_merged(mergePlane, parameters::detection::maximumPlaneDistanceForMerge_m))
             {
                 // merge plane segments
                 planeToExpand.expand_segment(mergePlane);

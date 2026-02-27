@@ -123,11 +123,11 @@ PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
     _covariance.setZero();
 
     // new mesurment always as the same uncertainty in depth (and another one in position)
-    _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance.block<3, 3>(0, 0) / SQR(1000.0);
+    _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance.block<3, 3>(0, 0);
 
     // span from variance from 0 to 1:
-    const double pMin = 1.0 / 0.1;
-    const double pMax = 1.0 / 1000.0;
+    const double pMin = 1.0 / 0.1;    // 10cm
+    const double pMax = 1.0 / 1000.0; // 1000m
     const double standardDevSpan = (pMin - pMax) / 2.0;
     _covariance(inverseDepthIndex, inverseDepthIndex) = SQR(standardDevSpan);
 
@@ -316,7 +316,7 @@ double PointInverseDepth::compute_linearity_score(const CameraToWorldMatrix& cam
     // "Inverse Depth Parametrization for Monocular SLAM"
     const WorldCoordinate& cartesian = _coordinates.to_world_coordinates();
 
-    const vector3 hc((cartesian - cameraToWorld.translation()) / 1000.0);
+    const vector3 hc(cartesian - cameraToWorld.translation());
     const double cosAlpha = static_cast<double>(_coordinates.get_bearing_vector().transpose() * hc) / hc.norm();
     const double thetad_meters =
             sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) / SQR(_coordinates.get_inverse_depth());

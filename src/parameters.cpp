@@ -126,7 +126,7 @@ void Parameters::check_parameters_validity() noexcept
                   "The RANSAC maximum retroprojection distance for points must be positive");
     static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPoint2DInliers_px > 0,
                   "The RANSAC maximum retroprojection distance for 2D points must be positive");
-    static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm > 0,
+    static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_m > 0,
                   "The RANSAC maximum retroprojection distance for planes must be positive");
     static_assert(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliersNormal > 0,
                   "The RANSAC maximum retroprojection normal distance for planes must be positive");
@@ -175,7 +175,7 @@ void Parameters::check_parameters_validity() noexcept
     static_assert(parameters::detection::maximumPlaneAngleForMerge_d >= 0 and
                           parameters::detection::maximumPlaneAngleForMerge_d <= 180,
                   "Maximum plane patch merge angle must be between 0 and 180");
-    static_assert(parameters::detection::maximumPlaneDistanceForMerge_mm >= 0,
+    static_assert(parameters::detection::maximumPlaneDistanceForMerge_m >= 0,
                   "Maximum plane patch merge distance must be between positive");
     static_assert(parameters::detection::minimumCellActivatedProportion >= 0 and
                           parameters::detection::minimumCellActivatedProportion <= 100,
@@ -194,7 +194,7 @@ void Parameters::check_parameters_validity() noexcept
     static_assert(parameters::matching::maximumAngleForPlaneMatch_d >= 0 and
                           parameters::matching::maximumAngleForPlaneMatch_d <= 90,
                   "Maximum plane match angle must be between 0 and 90 degrees");
-    static_assert(parameters::matching::maximumDistanceForPlaneMatch_mm >= 0,
+    static_assert(parameters::matching::maximumDistanceForPlaneMatch_m >= 0,
                   "Maximum plane match distance must be greater than zero");
 
     static_assert(parameters::matching::matchSearchRadius_px > 0, "Match search radius must be > 0");

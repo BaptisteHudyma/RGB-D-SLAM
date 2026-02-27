@@ -57,6 +57,8 @@ bool load_images(const std::stringstream& dataPath, const uint imageIndex, cv::M
         rgbImage = cv::imread(rgbImgPath.str(), cv::IMREAD_COLOR);
         depthImage = cv::imread(depthImagePath.str(), cv::IMREAD_ANYDEPTH);
         depthImage.convertTo(depthImage, CV_32F);
+        // convert to meters
+        depthImage *= 0.001;
 
         // check if images exists
         return depthImage.data and rgbImage.data;

@@ -44,7 +44,7 @@ bool PlaneOptimizationFeature::is_inlier(const WorldToCameraMatrix& worldToCamer
     static const vector4 thresholds(parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliersNormal,
                                     parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliersNormal,
                                     parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliersNormal,
-                                    parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_mm);
+                                    parameters::optimization::ransac::maximumRetroprojectionErrorForPlaneInliers_m);
     return (planeProjectionError.array() <= thresholds.array()).all();
 }
 

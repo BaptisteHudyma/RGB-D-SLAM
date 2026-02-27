@@ -152,7 +152,7 @@ struct InverseDepthWorldPoint
      * GETTERS
      */
 
-    [[nodiscard]] WorldCoordinate get_first_observation() const noexcept { return _firstObservation * 1000.0; };
+    [[nodiscard]] WorldCoordinate get_first_observation() const noexcept { return _firstObservation; };
     [[nodiscard]] double get_inverse_depth() const noexcept { return _inverseDepth_m; };
     [[nodiscard]] double get_theta() const noexcept { return _theta_rad; };
     [[nodiscard]] double get_phi() const noexcept { return _phi_rad; };
@@ -193,10 +193,10 @@ struct InverseDepthWorldPoint
                                                      const double addedStandardDev = 0.0) const noexcept;
 
   private:
-    vector3 _firstObservation;    // position of the camera for the first observation, in meters
-    double _inverseDepth_m = 0.0; // inverse of the depth (>= 0)
-    double _theta_rad = 0.0;      // elevation angle of the first observation, in world space
-    double _phi_rad = 0.0;        // heading angle of the first observation, in world space
+    WorldCoordinate _firstObservation; // position of the camera for the first observation
+    double _inverseDepth_m = 0.0;      // inverse of the depth (>= 0)
+    double _theta_rad = 0.0;           // elevation angle of the first observation, in world space
+    double _phi_rad = 0.0;             // heading angle of the first observation, in world space
 
     vector3 _bearingVector; // get the bearing vector that point from _firstObservation to the point
 };

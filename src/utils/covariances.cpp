@@ -9,13 +9,14 @@
 
 namespace rgbd_slam::utils {
 
-double get_depth_quantization(const double depth) noexcept
+double get_depth_quantization(const double depth_m) noexcept
 {
     // minimum depth diparity at z is the quadratic function  a + b z + c z^2
-    const static double depthSigmaError = parameters::depthSigmaError * SQR(1.0 / 1000.0);
-    constexpr double depthSigmaMultiplier = parameters::depthSigmaMultiplier / 1000.0;
+    const static double depthSigmaError = parameters::depthSigmaError;
+    constexpr double depthSigmaMultiplier = parameters::depthSigmaMultiplier;
     constexpr double depthSigmaMargin = parameters::depthSigmaMargin;
-    return std::max(depthSigmaMargin + depthSigmaMultiplier * depth + depthSigmaError * SQR(depth), 0.5);
+    const double quantization_mm = depthSigmaMargin + depthSigmaMultiplier * depth_m + depthSigmaError * SQR(depth_m);
+    return quantization_mm / 1000.0;
 }
 
 matrix23 get_camera_to_screen2d_jacobian(const CameraCoordinate& point)
@@ -155,9 +156,12 @@ matrix44 compute_plane_covariance(const PlaneCoordinates& planeParameters, const
             {-a / divider, -b / divider, -c / divider},
     });
 
-    const matrix44& planeParameterCovariance =
-            // add a little bit of variance on the diagonal to counter floatting points errors
-            propagate_covariance(pointCloudCovariance, jacobian, 0.01);
+    matrix44 planeParameterCovariance = propagate_covariance(pointCloudCovariance, jacobian);
+    // add a little bit of variance on the diagonal to counter floatting points errors
+    planeParameterCovariance.diagonal()(0) += SQR(0.01); // meters
+    planeParameterCovariance.diagonal()(1) += SQR(0.3);
+    planeParameterCovariance.diagonal()(2) += SQR(0.3);
+    planeParameterCovariance.diagonal()(3) += SQR(0.3);
 
     std::string failureReason;
     if (not is_covariance_valid(planeParameterCovariance, failureReason))

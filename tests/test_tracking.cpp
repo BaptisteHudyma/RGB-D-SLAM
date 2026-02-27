@@ -13,6 +13,7 @@
 #include "coordinates/point_coordinates.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <gtest/gtest.h>
+#include <iostream>
 #include <opencv2/line_descriptor/descriptor.hpp>
 #include "covariances.hpp"
 #include "inverse_depth_with_tracking.hpp"
@@ -44,7 +45,7 @@ TEST(PointFusion3d, centerPointFusion)
 
     cv::Mat desc = cv::Mat_<int>::ones(1, 1);
     Point trackPoint(
-            WorldCoordinate(0.0, 0.0, 1000.0), WorldCoordinateCovariance {matrix33::Identity() * SQR(0.1)}, desc);
+            WorldCoordinate(0.0, 0.0, 1.0), WorldCoordinateCovariance {matrix33::Identity() * SQR(0.0001)}, desc);
 
     ScreenCoordinate sc;
     EXPECT_TRUE(trackPoint._coordinates.to_screen_coordinates(w2c, sc));
@@ -52,7 +53,7 @@ TEST(PointFusion3d, centerPointFusion)
     // observe point head on, so center of screen
     EXPECT_NEAR(sc.x(), observation.x(), 0.01);
     EXPECT_NEAR(sc.y(), observation.y(), 0.01);
-    EXPECT_NEAR(sc.z(), 1000.0, 0.01);
+    EXPECT_NEAR(sc.z(), 1.0, 0.001);
 
     // track the same observed point, result is still close
     EXPECT_TRUE(trackPoint.track_2d(observation, w2c, matrix66::Zero()));
@@ -60,7 +61,7 @@ TEST(PointFusion3d, centerPointFusion)
     EXPECT_TRUE(trackPoint._coordinates.to_screen_coordinates(w2c, sc));
     EXPECT_NEAR(sc.x(), observation.x(), 0.01);
     EXPECT_NEAR(sc.y(), observation.y(), 0.01);
-    EXPECT_NEAR(sc.z(), 1000.0, 0.01);
+    EXPECT_NEAR(sc.z(), 1.0, 0.001);
 
     auto pointScreenCovariance3d = utils::propagate_covariance(
             trackPoint._covariance, trackPoint._coordinates.to_screen_coordinates_jacobian(w2c));
@@ -73,14 +74,14 @@ TEST(PointFusion3d, centerPointFusion)
     const WorldToCameraMatrix& w2cSideA =
             utils::compute_world_to_camera_transform(utils::compute_camera_to_world_transform_no_correction(
                     utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 90 * EulerToRadian, 0.0)),
-                    vector3(-1000.0, 0.0, 1000.0)));
+                    vector3(-1.0, 0.0, 1.0)));
 
     EXPECT_TRUE(trackPoint.track_2d(observation, w2cSideA, matrix66::Zero()));
     // values did not move
     EXPECT_TRUE(trackPoint._coordinates.to_screen_coordinates(w2cSideA, sc));
     EXPECT_NEAR(sc.x(), observation.x(), 0.01);
     EXPECT_NEAR(sc.y(), observation.y(), 0.01);
-    EXPECT_NEAR(sc.z(), 1000.0, 0.01);
+    EXPECT_NEAR(sc.z(), 1.0, 0.001);
 
     pointScreenCovariance3d = utils::propagate_covariance(
             trackPoint._covariance, trackPoint._coordinates.to_screen_coordinates_jacobian(w2cSideA));
@@ -93,14 +94,14 @@ TEST(PointFusion3d, centerPointFusion)
     const WorldToCameraMatrix& w2cSideB =
             utils::compute_world_to_camera_transform(utils::compute_camera_to_world_transform_no_correction(
                     utils::get_quaternion_from_euler_angles(EulerAngles(0.0, -90 * EulerToRadian, 0.0)),
-                    vector3(1000.0, 0.0, 1000.0)));
+                    vector3(1.0, 0.0, 1.0)));
 
     EXPECT_TRUE(trackPoint.track_2d(observation, w2cSideB, matrix66::Zero()));
     // values did not move
     EXPECT_TRUE(trackPoint._coordinates.to_screen_coordinates(w2cSideB, sc));
     EXPECT_NEAR(sc.x(), observation.x(), 0.01);
     EXPECT_NEAR(sc.y(), observation.y(), 0.01);
-    EXPECT_NEAR(sc.z(), 1000.0, 0.01);
+    EXPECT_NEAR(sc.z(), 1.0, 0.001);
 
     pointScreenCovariance3d = utils::propagate_covariance(
             trackPoint._covariance, trackPoint._coordinates.to_screen_coordinates_jacobian(w2cSideB));
@@ -153,8 +154,7 @@ void assert_inverse_point_back_proj(const CameraToWorldMatrix& c2w, const Screen
     EXPECT_NEAR(screenProj3dNoMovs.z(), screenCoordinates3d.z(), 0.5);
 
     // sanity check: baseline is restored
-    EXPECT_NEAR(
-            (wc.to_camera_coordinates(w2c)).norm(), 1.0 / parameters::detection::inverseDepthBaseline_m * 1000.0, 0.01);
+    EXPECT_NEAR((wc.to_camera_coordinates(w2c)).norm(), 1.0 / parameters::detection::inverseDepthBaseline_m, 0.01);
 }
 
 TEST(InverseDepthPointFusion, centerPointParallelFusion)
@@ -169,7 +169,7 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -182,7 +182,7 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
 
     // fuse the two points
-    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2w, matrix66::Identity(), cv::Mat()));
+    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2w, matrix66::Zero(), cv::Mat()));
 }
 
 TEST(InverseDepthPointFusion, centerPointForwardParallelFusion)
@@ -197,7 +197,7 @@ TEST(InverseDepthPointFusion, centerPointForwardParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -208,12 +208,12 @@ TEST(InverseDepthPointFusion, centerPointForwardParallelFusion)
      */
 
     const CameraToWorldMatrix& c2wForward = utils::compute_camera_to_world_transform(
-            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, 0.0)), vector3(1000, 0.0, 0.0));
+            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, 0.0)), vector3(1.0, 0.0, 0.0));
     assert_inverse_point_back_proj(c2wForward, observation);
 
     // fuse the two points
-    EXPECT_TRUE(inverseDepth.track_2D(
-            observation, observation.get_covariance(), c2wForward, matrix66::Identity(), cv::Mat()));
+    EXPECT_TRUE(
+            inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero(), cv::Mat()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -234,7 +234,7 @@ TEST(InverseDepthPointFusion, centerPointBackwardParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -245,12 +245,12 @@ TEST(InverseDepthPointFusion, centerPointBackwardParallelFusion)
      */
 
     const CameraToWorldMatrix& c2wForward = utils::compute_camera_to_world_transform(
-            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, 0.0)), vector3(-1000, 0.0, 0.0));
+            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, 0.0)), vector3(-1.0, 0.0, 0.0));
     assert_inverse_point_back_proj(c2wForward, observation);
 
     // fuse the two points
-    EXPECT_TRUE(inverseDepth.track_2D(
-            observation, observation.get_covariance(), c2wForward, matrix66::Identity(), cv::Mat()));
+    EXPECT_TRUE(
+            inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero(), cv::Mat()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -271,7 +271,7 @@ TEST(InverseDepthPointFusion, topLeftPointForwardParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -282,12 +282,12 @@ TEST(InverseDepthPointFusion, topLeftPointForwardParallelFusion)
      */
 
     const CameraToWorldMatrix& c2wForward = utils::compute_camera_to_world_transform(
-            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, 0.0)), vector3(1000, 0.0, 0.0));
+            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, 0.0)), vector3(1.0, 0.0, 0.0));
     assert_inverse_point_back_proj(c2wForward, observation);
 
     // fuse the two points
-    EXPECT_TRUE(inverseDepth.track_2D(
-            observation, observation.get_covariance(), c2wForward, matrix66::Identity(), cv::Mat()));
+    EXPECT_TRUE(
+            inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero(), cv::Mat()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -308,7 +308,7 @@ TEST(InverseDepthPointFusion, topLeftPointBackwardParallelFusion)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity(), cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -319,12 +319,12 @@ TEST(InverseDepthPointFusion, topLeftPointBackwardParallelFusion)
      */
 
     const CameraToWorldMatrix& c2wForward = utils::compute_camera_to_world_transform(
-            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, 0.0)), vector3(-1000, 0.0, 0.0));
+            utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 0.0, 0.0)), vector3(-1.0, 0.0, 0.0));
     assert_inverse_point_back_proj(c2wForward, observation);
 
     // fuse the two points
-    EXPECT_TRUE(inverseDepth.track_2D(
-            observation, observation.get_covariance(), c2wForward, matrix66::Identity(), cv::Mat()));
+    EXPECT_TRUE(
+            inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero(), cv::Mat()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -345,7 +345,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity() * 0.01, cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -363,7 +363,8 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
 
     Eigen::Matrix<double, 3, 6> toWorldJacobian;
     auto worldProj = inverseDepth._coordinates.to_world_coordinates(toWorldJacobian);
-    auto worldCov = inverseDepth.compute_cartesian_covariance(inverseDepth._covariance, toWorldJacobian);
+    auto worldCov =
+            tracking::PointInverseDepth::compute_cartesian_covariance(inverseDepth._covariance, toWorldJacobian);
 
     // check world covariance projection
     // high on X, fairly ok in Y Z
@@ -379,17 +380,17 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
     EXPECT_NEAR(worldCov(2, 1), 0.0, 1e-4);
 
     // check that the projection is indeed at the baseline
-    EXPECT_NEAR(worldProj.x(), 1.0 / parameters::detection::inverseDepthBaseline_m * 1000.0, 1e-5);
+    EXPECT_NEAR(worldProj.x(), 1.0 / parameters::detection::inverseDepthBaseline_m, 1e-5);
     EXPECT_NEAR(worldProj.y(), 0.0, 1e-5);
     EXPECT_NEAR(worldProj.z(), 0.0, 1e-5);
 
     /**
      ** add a new measurment at 90° from the position, further on the trajectory
      */
-    const double observedZ = 10000.0;
+    const double observedZ = 10.0;
     const CameraToWorldMatrix& c2wSide90 = utils::compute_camera_to_world_transform(
             utils::get_quaternion_from_euler_angles(EulerAngles(0.0, -90 * EulerToRadian, 0.0)),
-            vector3(1000.0, 0.0, observedZ));
+            vector3(1.0, 0.0, observedZ));
 
     utils::Segment<2> screenSegment;
     EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2wSide90), screenSegment));
@@ -410,8 +411,6 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
         EXPECT_TRUE(inverseDepth.track_2D(
                 observation, observation.get_covariance(), c2wSide90, matrix66::Identity(), cv::Mat()));
 
-        // EXPECT_NEAR(inverseDepth._coordinates.get_first_observation())
-
         EXPECT_TRUE(
                 inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2wSide90), screenSegment));
 
@@ -434,7 +433,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
 
         // x has too much uncertainty during opti process, do not check it
         EXPECT_NEAR(sc.y(), observation.y(), 1);
-        EXPECT_NEAR(sc.z(), 1000, 10);
+        EXPECT_NEAR(sc.z(), 1.0, 0.01);
     }
 
     // check that the final projection line is close around the target
@@ -450,7 +449,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
     EXPECT_TRUE(utils::is_covariance_valid(finalPointCovariance));
 
     // final pose is triangulated
-    EXPECT_NEAR(inverseDepth._coordinates.get_inverse_depth(), 1.0 / (observedZ / 1000.0), 0.0001);
+    EXPECT_NEAR(inverseDepth._coordinates.get_inverse_depth(), 1.0 / observedZ, 0.0001);
 
     EXPECT_NEAR(finalPoint.x(), observedZ, 10);
     // 1cm tolerance
@@ -460,6 +459,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
     // linearity should be pretty good
     EXPECT_LT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
 }
+
 TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
 {
     if (not Parameters::is_valid())
@@ -472,7 +472,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
     const CameraToWorldMatrix& c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity() * 0.01, cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -490,7 +490,8 @@ TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
 
     Eigen::Matrix<double, 3, 6> toWorldJacobian;
     auto worldProj = inverseDepth._coordinates.to_world_coordinates(toWorldJacobian);
-    auto worldCov = inverseDepth.compute_cartesian_covariance(inverseDepth._covariance, toWorldJacobian);
+    auto worldCov =
+            tracking::PointInverseDepth::compute_cartesian_covariance(inverseDepth._covariance, toWorldJacobian);
 
     // check world covariance projection
     // high on X, fairly ok in Y Z
@@ -506,17 +507,17 @@ TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
     EXPECT_NEAR(worldCov(2, 1), 0.0, 1e-4);
 
     // check that the projection is indeed at the baseline
-    EXPECT_NEAR(worldProj.x(), 1.0 / parameters::detection::inverseDepthBaseline_m * 1000.0, 1e-5);
+    EXPECT_NEAR(worldProj.x(), 1.0 / parameters::detection::inverseDepthBaseline_m, 1e-5);
     EXPECT_NEAR(worldProj.y(), 0.0, 1e-5);
     EXPECT_NEAR(worldProj.z(), 0.0, 1e-5);
 
     /**
      ** add a new measurment at 90° from the position, further on the trajectory
      */
-    const double observedZ = 10000.0;
+    const double observedZ = 10.0;
     const CameraToWorldMatrix& c2wSide90 = utils::compute_camera_to_world_transform(
             utils::get_quaternion_from_euler_angles(EulerAngles(0.0, 90 * EulerToRadian, 0.0)),
-            vector3(-1000.0, 0.0, observedZ));
+            vector3(-1.0, 0.0, observedZ));
 
     utils::Segment<2> screenSegment;
     EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2wSide90), screenSegment));
@@ -535,9 +536,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
         assert_inverse_point_back_proj(c2wSide90, observation);
 
         EXPECT_TRUE(inverseDepth.track_2D(
-                observation, observation.get_covariance(), c2wSide90, matrix66::Identity(), cv::Mat()));
-
-        // EXPECT_NEAR(inverseDepth._coordinates.get_first_observation())
+                observation, observation.get_covariance(), c2wSide90, matrix66::Zero(), cv::Mat()));
 
         EXPECT_TRUE(
                 inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2wSide90), screenSegment));
@@ -561,7 +560,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
 
         // x has too much uncertainty during opti process, do not check it
         EXPECT_NEAR(sc.y(), observation.y(), 1);
-        EXPECT_NEAR(sc.z(), 1000, 10);
+        EXPECT_NEAR(sc.z(), 1.0, 0.01);
     }
 
     // check that the final projection line is close around the target
@@ -577,7 +576,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
     EXPECT_TRUE(utils::is_covariance_valid(finalPointCovariance));
 
     // final pose is triangulated
-    EXPECT_NEAR(inverseDepth._coordinates.get_inverse_depth(), 1.0 / (observedZ / 1000.0), 0.0001);
+    EXPECT_NEAR(inverseDepth._coordinates.get_inverse_depth(), 1.0 / observedZ, 0.0001);
 
     EXPECT_NEAR(finalPoint.x(), observedZ, 10);
     // 1cm tolerance
@@ -595,7 +594,7 @@ TEST(InverseDepthPointFusion, fusePointObservationXAxis)
         Parameters::load_defaut();
     }
 
-    const WorldCoordinate pointToTrack(1000.0, 200.0, 500.0);
+    const WorldCoordinate pointToTrack(1.0, 0.2, 0.5);
 
     // observe the center of the camera
     CameraToWorldMatrix c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
@@ -604,7 +603,7 @@ TEST(InverseDepthPointFusion, fusePointObservationXAxis)
     ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation));
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity() * 0.01, cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -626,7 +625,7 @@ TEST(InverseDepthPointFusion, fusePointObservationXAxis)
     double lastThreshold = inverseDepth.compute_linearity_score(c2w);
     EXPECT_GT(lastThreshold, linearityThreshold);
 
-    for (double i = 100.0; i < 300.0; i += 20.0)
+    for (double i = 0.1; i < 0.5; i += 0.02)
     {
         c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(i, 0.0, 0.0));
         w2c = utils::compute_world_to_camera_transform(c2w);
@@ -685,7 +684,7 @@ TEST(InverseDepthPointFusion, fusePointObservationYAxis)
         Parameters::load_defaut();
     }
 
-    const WorldCoordinate pointToTrack(1000.0, 200.0, 500.0);
+    const WorldCoordinate pointToTrack(1.0, 0.2, 0.5);
 
     // observe the center of the camera
     CameraToWorldMatrix c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
@@ -694,7 +693,7 @@ TEST(InverseDepthPointFusion, fusePointObservationYAxis)
     ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation));
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity() * 0.01, cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -716,7 +715,7 @@ TEST(InverseDepthPointFusion, fusePointObservationYAxis)
     double lastThreshold = inverseDepth.compute_linearity_score(c2w);
     EXPECT_GT(lastThreshold, linearityThreshold);
 
-    for (double i = 100.0; i < 300.0; i += 20.0)
+    for (double i = 0.1; i < 0.5; i += 0.02)
     {
         c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(0.0, -i, 0.0));
         w2c = utils::compute_world_to_camera_transform(c2w);
@@ -776,7 +775,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxis)
         Parameters::load_defaut();
     }
 
-    const WorldCoordinate pointToTrack(1000.0, 200.0, 500.0);
+    const WorldCoordinate pointToTrack(1.0, 0.2, 0.5);
 
     // observe the center of the camera
     CameraToWorldMatrix c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
@@ -785,7 +784,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxis)
     ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation));
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity() * 0.01, cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -807,7 +806,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxis)
     double lastThreshold = inverseDepth.compute_linearity_score(c2w);
     EXPECT_GT(lastThreshold, linearityThreshold);
 
-    for (double i = 100.0; i < 500.0; i += 20.0)
+    for (double i = 0.1; i < 0.5; i += 0.02)
     {
         c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(0.0, 0.0, i));
         w2c = utils::compute_world_to_camera_transform(c2w);
@@ -866,7 +865,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxisFarAway)
         Parameters::load_defaut();
     }
 
-    const WorldCoordinate pointToTrack(100000.0, 200.0, 500.0);
+    const WorldCoordinate pointToTrack(100.0, 0.2, 0.5);
 
     // observe the center of the camera
     CameraToWorldMatrix c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
@@ -875,7 +874,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxisFarAway)
     ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation));
 
     // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Identity() * 0.01, cv::Mat());
+    tracking::PointInverseDepth inverseDepth(observation, c2w, matrix66::Zero(), cv::Mat());
 
     // check projection/backprojection
     assert_inverse_point_back_proj(c2w, observation);
@@ -897,7 +896,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxisFarAway)
     double lastThreshold = inverseDepth.compute_linearity_score(c2w);
     EXPECT_GT(lastThreshold, linearityThreshold);
 
-    for (double i = 100.0; i < 500.0; i += 20.0)
+    for (double i = 0.1; i < 0.5; i += 0.02)
     {
         c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(0.0, 0.0, i));
         w2c = utils::compute_world_to_camera_transform(c2w);
@@ -914,261 +913,6 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxisFarAway)
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
     // in fact, unlinearity got bigger
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), lastThreshold);
-}
-
-/**
- * Inverse depth point fusion with 3D coordinates
- */
-
-TEST(InverseDepthPointFusion3d, fusePointObservationXAxis)
-{
-    if (not Parameters::is_valid())
-    {
-        Parameters::load_defaut();
-    }
-
-    const WorldCoordinate pointToTrack(1000.0, 200.0, 500.0);
-
-    // observe the center of the camera
-    CameraToWorldMatrix c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
-    WorldToCameraMatrix w2c = utils::compute_world_to_camera_transform(c2w);
-    ScreenCoordinate observation;
-    ScreenCoordinate2D observation2d;
-    ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation2d));
-
-    // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation2d, c2w, matrix66::Identity() * 0.01, cv::Mat());
-
-    // check projection/backprojection
-    assert_inverse_point_back_proj(c2w, observation2d);
-    assert_inverse_point_back_proj(c2w, observation.get_2D());
-
-    // check that the projected segment is in fact a point
-    utils::Segment<2> originalSegment;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), originalSegment));
-    EXPECT_NEAR(originalSegment.get_start_point().x(), observation2d.x(), 1);
-    EXPECT_NEAR(originalSegment.get_start_point().y(), observation2d.y(), 1);
-    EXPECT_NEAR(originalSegment.get_end_point().x(), observation2d.x(), 1);
-    EXPECT_NEAR(originalSegment.get_end_point().y(), observation2d.y(), 1);
-
-    EXPECT_NEAR(originalSegment.get_end_point().x(), originalSegment.get_start_point().x(), 1);
-    EXPECT_NEAR(originalSegment.get_end_point().y(), originalSegment.get_start_point().y(), 1);
-
-    /**
-     ** add a new measurment at another point in space
-     */
-    double lastThreshold = inverseDepth.compute_linearity_score(c2w);
-    EXPECT_GT(lastThreshold, linearityThreshold);
-
-    for (double i = 100.0; i < 300.0; i += 20.0)
-    {
-        c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(i, 0, 0.0));
-        w2c = utils::compute_world_to_camera_transform(c2w);
-
-        // make new observation
-        ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation));
-        // std::cout << observation.transpose() << std::endl;
-
-        assert_inverse_point_back_proj_3D(c2w, observation);
-
-        EXPECT_TRUE(inverseDepth.track_3D(observation, observation.get_covariance(), c2w, matrix66::Zero(), cv::Mat()));
-
-        const double newThreshold = inverseDepth.compute_linearity_score(c2w);
-        EXPECT_LT(newThreshold, lastThreshold); // still less than
-        lastThreshold = newThreshold;
-
-        // check that the projection line is close around the target
-        utils::Segment<2> screenSegment;
-        EXPECT_TRUE(inverseDepth.to_screen_coordinates(w2c, screenSegment));
-        /*EXPECT_LE(screenSegment.get_start_point().x() - 1e-3, observation.x());
-        EXPECT_GE(screenSegment.get_end_point().x() + 1e-3, observation.x());
-        EXPECT_LE(screenSegment.get_start_point().y() - 1e-3, observation.y());
-        EXPECT_GE(screenSegment.get_end_point().y() + 1e-3, observation.y());
-        */
-    }
-
-    // this projection gives back the depth in screen space, check that it is close to expected
-    auto finalPoint = inverseDepth._coordinates.to_world_coordinates();
-
-    finalPoint = inverseDepth._coordinates.to_world_coordinates();
-    const auto finalPointCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-            inverseDepth._coordinates, inverseDepth._covariance);
-    EXPECT_TRUE(utils::is_covariance_valid(finalPointCovariance));
-
-    // final pose is triangulated (1cm tolerance)
-    EXPECT_NEAR(finalPoint.x(), pointToTrack.x(), 10);
-    EXPECT_NEAR(finalPoint.y(), pointToTrack.y(), 10);
-    EXPECT_NEAR(finalPoint.z(), pointToTrack.z(), 10);
-
-    // linearity should be pretty good
-    EXPECT_LT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
-}
-
-TEST(InverseDepthPointFusion3d, fusePointObservationYAxis)
-{
-    if (not Parameters::is_valid())
-    {
-        Parameters::load_defaut();
-    }
-
-    const WorldCoordinate pointToTrack(1000.0, 200.0, 500.0);
-
-    // observe the center of the camera
-    CameraToWorldMatrix c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
-    WorldToCameraMatrix w2c = utils::compute_world_to_camera_transform(c2w);
-    ScreenCoordinate observation;
-    ScreenCoordinate2D observation2d;
-    ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation2d));
-
-    // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation2d, c2w, matrix66::Identity() * 0.01, cv::Mat());
-
-    // check projection/backprojection
-    assert_inverse_point_back_proj(c2w, observation2d);
-    assert_inverse_point_back_proj_3D(c2w, observation);
-
-    // check that the projected segment is in fact a point
-    utils::Segment<2> originalSegment;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), originalSegment));
-    EXPECT_NEAR(originalSegment.get_start_point().x(), observation2d.x(), 1);
-    EXPECT_NEAR(originalSegment.get_start_point().y(), observation2d.y(), 1);
-    EXPECT_NEAR(originalSegment.get_end_point().x(), observation2d.x(), 1);
-    EXPECT_NEAR(originalSegment.get_end_point().y(), observation2d.y(), 1);
-
-    EXPECT_NEAR(originalSegment.get_end_point().x(), originalSegment.get_start_point().x(), 1);
-    EXPECT_NEAR(originalSegment.get_end_point().y(), originalSegment.get_start_point().y(), 1);
-
-    /**
-     ** add a new measurment at another point in space
-     */
-    double lastThreshold = inverseDepth.compute_linearity_score(c2w);
-    EXPECT_GT(lastThreshold, linearityThreshold);
-
-    for (double i = 100.0; i < 300.0; i += 20.0)
-    {
-        c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(0, i, 0.0));
-        w2c = utils::compute_world_to_camera_transform(c2w);
-
-        // make new observation
-        ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation));
-        // std::cout << observation.transpose() << std::endl;
-
-        assert_inverse_point_back_proj_3D(c2w, observation);
-
-        EXPECT_TRUE(inverseDepth.track_3D(observation, observation.get_covariance(), c2w, matrix66::Zero(), cv::Mat()));
-
-        const double newThreshold = inverseDepth.compute_linearity_score(c2w);
-        EXPECT_LT(newThreshold, lastThreshold); // still less than
-        lastThreshold = newThreshold;
-
-        // check that the projection line is close around the target
-        utils::Segment<2> screenSegment;
-        EXPECT_TRUE(inverseDepth.to_screen_coordinates(w2c, screenSegment));
-        /*EXPECT_LE(screenSegment.get_start_point().x() - 1e-3, observation.x());
-        EXPECT_GE(screenSegment.get_end_point().x() + 1e-3, observation.x());
-        EXPECT_LE(screenSegment.get_start_point().y() - 1e-3, observation.y());
-        EXPECT_GE(screenSegment.get_end_point().y() + 1e-3, observation.y());
-        */
-    }
-
-    // this projection gives back the depth in screen space, check that it is close to expected
-    auto finalPoint = inverseDepth._coordinates.to_world_coordinates();
-
-    finalPoint = inverseDepth._coordinates.to_world_coordinates();
-    const auto finalPointCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-            inverseDepth._coordinates, inverseDepth._covariance);
-    EXPECT_TRUE(utils::is_covariance_valid(finalPointCovariance));
-
-    // final pose is triangulated (1cm tolerance)
-    EXPECT_NEAR(finalPoint.x(), pointToTrack.x(), 10);
-    EXPECT_NEAR(finalPoint.y(), pointToTrack.y(), 10);
-    EXPECT_NEAR(finalPoint.z(), pointToTrack.z(), 10);
-
-    // linearity should be pretty good
-    EXPECT_LT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
-}
-
-TEST(InverseDepthPointFusion3d, fusePointObservationZAxis)
-{
-    if (not Parameters::is_valid())
-    {
-        Parameters::load_defaut();
-    }
-
-    const WorldCoordinate pointToTrack(1000.0, 200.0, 500.0);
-
-    // observe the center of the camera
-    CameraToWorldMatrix c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3::Zero());
-    WorldToCameraMatrix w2c = utils::compute_world_to_camera_transform(c2w);
-    ScreenCoordinate observation;
-    ScreenCoordinate2D observation2d;
-    ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation2d));
-
-    // convert to inverse
-    tracking::PointInverseDepth inverseDepth(observation2d, c2w, matrix66::Identity() * 0.01, cv::Mat());
-
-    // check projection/backprojection
-    assert_inverse_point_back_proj(c2w, observation2d);
-    assert_inverse_point_back_proj_3D(c2w, observation);
-
-    // check that the projected segment is in fact a point
-    utils::Segment<2> originalSegment;
-    EXPECT_TRUE(inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2w), originalSegment));
-    EXPECT_NEAR(originalSegment.get_start_point().x(), observation2d.x(), 1);
-    EXPECT_NEAR(originalSegment.get_start_point().y(), observation2d.y(), 1);
-    EXPECT_NEAR(originalSegment.get_end_point().x(), observation2d.x(), 1);
-    EXPECT_NEAR(originalSegment.get_end_point().y(), observation2d.y(), 1);
-
-    EXPECT_NEAR(originalSegment.get_end_point().x(), originalSegment.get_start_point().x(), 1);
-    EXPECT_NEAR(originalSegment.get_end_point().y(), originalSegment.get_start_point().y(), 1);
-
-    /**
-     ** add a new measurment at another point in space
-     */
-    double lastThreshold = inverseDepth.compute_linearity_score(c2w);
-    EXPECT_GT(lastThreshold, linearityThreshold);
-
-    for (double i = 100.0; i < 300.0; i += 20.0)
-    {
-        c2w = utils::compute_camera_to_world_transform(quaternion::Identity(), vector3(0, 0, i));
-        w2c = utils::compute_world_to_camera_transform(c2w);
-
-        // make new observation
-        ASSERT_TRUE(pointToTrack.to_screen_coordinates(w2c, observation));
-
-        assert_inverse_point_back_proj_3D(c2w, observation);
-
-        EXPECT_TRUE(inverseDepth.track_3D(observation, observation.get_covariance(), c2w, matrix66::Zero(), cv::Mat()));
-
-        const double newThreshold = inverseDepth.compute_linearity_score(c2w);
-        EXPECT_LT(newThreshold, lastThreshold); // still less than
-        lastThreshold = newThreshold;
-
-        // check that the projection line is close around the target
-        utils::Segment<2> screenSegment;
-        EXPECT_TRUE(inverseDepth.to_screen_coordinates(w2c, screenSegment));
-        /*EXPECT_LE(screenSegment.get_start_point().x() - 1e-3, observation.x());
-        EXPECT_GE(screenSegment.get_end_point().x() + 1e-3, observation.x());
-        EXPECT_LE(screenSegment.get_start_point().y() - 1e-3, observation.y());
-        EXPECT_GE(screenSegment.get_end_point().y() + 1e-3, observation.y());
-        */
-    }
-
-    // this projection gives back the depth in screen space, check that it is close to expected
-    auto finalPoint = inverseDepth._coordinates.to_world_coordinates();
-
-    finalPoint = inverseDepth._coordinates.to_world_coordinates();
-    const auto finalPointCovariance = tracking::PointInverseDepth::compute_cartesian_covariance(
-            inverseDepth._coordinates, inverseDepth._covariance);
-    EXPECT_TRUE(utils::is_covariance_valid(finalPointCovariance));
-
-    // final pose is triangulated (1cm tolerance)
-    EXPECT_NEAR(finalPoint.x(), pointToTrack.x(), 10);
-    EXPECT_NEAR(finalPoint.y(), pointToTrack.y(), 10);
-    EXPECT_NEAR(finalPoint.z(), pointToTrack.z(), 10);
-
-    // linearity should be pretty good
-    EXPECT_LT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
 }
 
 } // namespace rgbd_slam::tracking
