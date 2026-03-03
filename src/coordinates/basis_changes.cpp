@@ -18,11 +18,11 @@ Cartesian Cartesian::from(const Spherical& coord, matrix33& jacobian)
     const double cosPhi = cos(coord.azimuth_rad);
     const double d = coord.p;
 
-    // X   Y  Z -> radius
+    // dX/dp   dY/dp  dZ/dp
     jacobian.col(Spherical::RadiusIndex) = vector3 {sinTheta * cosPhi, sinTheta * sinPhi, cosTheta};
-    // X   Y  Z -> polar
+    // dX/dtheta dY/dtheta  Z/dtheta
     jacobian.col(Spherical::PolarIndex) = vector3 {d * cosTheta * cosPhi, d * cosTheta * sinPhi, -d * sinTheta};
-    // X   Y  Z -> azimuth
+    // dX/dphi   dY/dphi  Z/dphi
     jacobian.col(Spherical::AzimuthIndex) = vector3 {-d * sinTheta * sinPhi, d * sinTheta * cosPhi, 0};
 
     return from(coord);
@@ -48,12 +48,12 @@ Spherical Spherical::from(const Cartesian& coord, matrix33& jacobian)
     const double SqrtTheta2 = sqrt(theta2);
     const double inverseTheta1Theta2 = 1.0 / (SqrtTheta2 * radiusSqr);
 
-    // radius -> X Y Z
+    // dp/dx dp/dy dp/dz
     jacobian.row(Spherical::RadiusIndex) = vector3 {x / radius, y / radius, z / radius};
-    // polar -> X Y Z
+    // dtheta/dx dtheta/dy dtheta/dz
     jacobian.row(Spherical::PolarIndex) =
             vector3 {x * z * inverseTheta1Theta2, y * z * inverseTheta1Theta2, -theta2 * inverseTheta1Theta2};
-    // azimuth -> X Y Z
+    // dphi/dx dphi/dy dphi/dz
     jacobian.row(Spherical::AzimuthIndex) = vector3 {-y / theta2, x / theta2, 0};
 
     return from(coord);

@@ -16,7 +16,7 @@ double get_depth_quantization(const double depth_m) noexcept
     constexpr double depthSigmaMultiplier = parameters::depthSigmaMultiplier;
     constexpr double depthSigmaMargin = parameters::depthSigmaMargin;
     const double quantization_mm = depthSigmaMargin + depthSigmaMultiplier * depth_m + depthSigmaError * SQR(depth_m);
-    return quantization_mm / 1000.0;
+    return std::max(0.5, quantization_mm) / 1000.0;
 }
 
 matrix23 get_camera_to_screen2d_jacobian(const CameraCoordinate& point)

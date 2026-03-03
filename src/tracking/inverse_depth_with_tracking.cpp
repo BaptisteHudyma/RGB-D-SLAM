@@ -57,50 +57,6 @@ template<int N = 6, int M = 2> class InverseDepthEstimator : public StateEstimat
     const matrix66 _poseCovariance;
 };
 
-template<int N = 6, int M = 3> class InverseDepthEstimator3d : public StateEstimator<N, M>
-{
-  public:
-    virtual ~InverseDepthEstimator3d() = default;
-
-    Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        return InverseDepthWorldPoint(state).get_projected_screen3d_estimation(_w2c);
-    }
-
-    Eigen::Matrix<double, M, N> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        return InverseDepthWorldPoint(state).get_projected_screen3d_estimation_jacobian(_w2c);
-    }
-
-    InverseDepthEstimator3d(const Eigen::Vector<double, N>& feature,
-                            const Eigen::Matrix<double, N, N>& featureCovariance,
-                            const Eigen::Vector<double, M>& measurment,
-                            const Eigen::Matrix<double, M, M>& measurmentCovariance,
-                            const WorldToCameraMatrix& w2c,
-                            const matrix66& poseCovariance) :
-        StateEstimator<N, M>(feature, featureCovariance, measurment, measurmentCovariance),
-        _w2c(w2c),
-        _poseCovariance(poseCovariance)
-    {
-    }
-
-    inline Eigen::Matrix<double, M, M> h_innovation(
-            const Eigen::Vector<double, N>& state,
-            const Eigen::Matrix<double, N, N>& estimateErrorCovariance,
-            const Eigen::Matrix<double, M, N>& hJacobian) const noexcept override
-    {
-        const Eigen::Matrix<double, 3, 6>& hPoseJacobian =
-                utils::world_transform_of_point_jacobian(InverseDepthWorldPoint(state).to_world_coordinates(), _w2c);
-
-        return utils::propagate_covariance(estimateErrorCovariance, hJacobian) +
-               utils::propagate_covariance(_poseCovariance, hPoseJacobian);
-    }
-
-  private:
-    const WorldToCameraMatrix _w2c;
-    const matrix66 _poseCovariance;
-};
-
 /**
  * Point Inverse Depth
  */
@@ -146,7 +102,7 @@ PointInverseDepth::PointInverseDepth(const PointInverseDepth& other) :
     _covariance(other._covariance),
     _descriptor(other._descriptor)
 {
-    if (_extendedKalmanFilter == nullptr or _extendedKalmanFilter3d == nullptr)
+    if (_extendedKalmanFilter == nullptr)
         build_kalman_filter();
 
     if (not utils::is_covariance_valid(_covariance))
@@ -212,15 +168,16 @@ bool PointInverseDepth::track_3D(const ScreenCoordinate& observation,
 
     try
     {
-        const auto& w2c = utils::compute_world_to_camera_transform(c2w);
+        // HACK: too much problems with the 3D tracking mathematically, juste replace this point
 
-        // build the estimator
-        InverseDepthEstimator3d estimator(
-                _coordinates.get_vector(), _covariance, observation, observationCovariance, w2c, stateCovariance);
+        const auto& worldCovariance = utils::get_world_point_covariance(observation, c2w, stateCovariance);
 
-        const auto& [newState, newCovariance] = _extendedKalmanFilter3d->get_new_state(&estimator);
+        Eigen::Matrix<double, 6, 3> worldToIDepthJacobian;
+        const auto& state = InverseDepthWorldPoint::from_cartesian(
+                observation.to_world_coordinates(c2w), c2w.translation(), worldToIDepthJacobian);
+        const auto& statecovariance = utils::propagate_covariance(worldCovariance, worldToIDepthJacobian);
 
-        if (not utils::is_covariance_valid(newCovariance))
+        if (not utils::is_covariance_valid(statecovariance))
         {
             outputs::log_error("Inverse depth point covariance is invalid after merge");
             return false;
@@ -233,8 +190,8 @@ bool PointInverseDepth::track_3D(const ScreenCoordinate& observation,
             return false;
         }*/
 
-        _coordinates.set_vector(newState);
-        _covariance = newCovariance;
+        _coordinates = state;
+        _covariance = statecovariance;
 
         if (not descriptor.empty())
             _descriptor = descriptor;
@@ -329,7 +286,6 @@ void PointInverseDepth::build_kalman_filter() noexcept
 {
     // TODO: all process noises should be crafted with care, those values are just handwaved
     _extendedKalmanFilter = std::make_unique<tracking::ExtendedKalmanFilter<6, 2>>(matrix66::Zero());
-    _extendedKalmanFilter3d = std::make_unique<tracking::ExtendedKalmanFilter<6, 3>>(matrix66::Zero());
 }
 
 bool PointInverseDepth::to_screen_coordinates(const WorldToCameraMatrix& w2c,

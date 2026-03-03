@@ -14,6 +14,11 @@ static constexpr double maximumAllowedDepth_m = 100;
  *      INVERSE DEPTH COORDINATES
  */
 
+static constexpr auto firstPoseIndex = InverseDepthWorldPoint::firstPoseIndex;
+static constexpr auto inverseDepthIndex = InverseDepthWorldPoint::inverseDepthIndex;
+static constexpr auto thetaIndex = InverseDepthWorldPoint::thetaIndex;
+static constexpr auto phiIndex = InverseDepthWorldPoint::phiIndex;
+
 InverseDepthWorldPoint::InverseDepthWorldPoint(const WorldCoordinate& firstPose,
                                                const double inverseDepth_m,
                                                const double theta,
@@ -126,10 +131,9 @@ InverseDepthWorldPoint InverseDepthWorldPoint::from_cartesian(const WorldCoordin
 
     matrix33 toIDepthJacobian;
     // add the derivative of 1/d part to have -1/pow(d, 3/2) instead of 1/pow(d, 1/2)
-    toIDepthJacobian.row(InverseDepthWorldPoint::inverseDepthIndex - 3) =
-            -1.0 / SQR(s.p) * toCartesianJacobian.row(Spherical::RadiusIndex);
-    toIDepthJacobian.row(InverseDepthWorldPoint::thetaIndex - 3) = toCartesianJacobian.row(Spherical::PolarIndex);
-    toIDepthJacobian.row(InverseDepthWorldPoint::phiIndex - 3) = toCartesianJacobian.row(Spherical::AzimuthIndex);
+    toIDepthJacobian.row(inverseDepthIndex - 3) = -1.0 / SQR(s.p) * toCartesianJacobian.row(Spherical::RadiusIndex);
+    toIDepthJacobian.row(thetaIndex - 3) = toCartesianJacobian.row(Spherical::PolarIndex);
+    toIDepthJacobian.row(phiIndex - 3) = toCartesianJacobian.row(Spherical::AzimuthIndex);
 
     jacobian.block<3, 3>(firstPoseIndex + 3, 0) = toIDepthJacobian;
     return from_cartesian(point, origin);
@@ -153,16 +157,14 @@ Eigen::Matrix<double, 3, 6> to_world_coordinates_jacobian(const double inverseDe
     Cartesian::from(Spherical(1.0, theta, phi), bearingJacobian);
 
     matrix33 iDeptJacobian;
-    iDeptJacobian.col(InverseDepthWorldPoint::inverseDepthIndex - 3) =
-            -1.0 / SQR(inverseDepth) * bearingJacobian.col(Spherical::RadiusIndex);
-    iDeptJacobian.col(InverseDepthWorldPoint::thetaIndex - 3) =
-            1.0 / inverseDepth * bearingJacobian.col(Spherical::PolarIndex);
-    iDeptJacobian.col(InverseDepthWorldPoint::phiIndex - 3) =
-            1.0 / inverseDepth * bearingJacobian.col(Spherical::AzimuthIndex);
+    const double depth = 1.0 / inverseDepth;
+    iDeptJacobian.col(inverseDepthIndex - 3) = -SQR(depth) * bearingJacobian.col(Spherical::RadiusIndex);
+    iDeptJacobian.col(thetaIndex - 3) = depth * bearingJacobian.col(Spherical::PolarIndex);
+    iDeptJacobian.col(phiIndex - 3) = depth * bearingJacobian.col(Spherical::AzimuthIndex);
 
     Eigen::Matrix<double, 3, 6> jacobian;
-    jacobian.block<3, 3>(0, InverseDepthWorldPoint::firstPoseIndex) = matrix33::Identity();
-    jacobian.block<3, 3>(0, InverseDepthWorldPoint::firstPoseIndex + 3) = iDeptJacobian;
+    jacobian.block<3, 3>(0, firstPoseIndex) = matrix33::Identity();
+    jacobian.block<3, 3>(0, firstPoseIndex + 3) = iDeptJacobian;
 
     return jacobian;
 }

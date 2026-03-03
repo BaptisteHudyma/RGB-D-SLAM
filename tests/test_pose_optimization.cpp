@@ -163,14 +163,15 @@ matches_containers::match_container get_matched_planes(const utils::Pose& endPos
 
     matches_containers::match_container matchedPlanes;
 
-    std::vector<PlaneWorldCoordinates> planes = {PlaneWorldCoordinates(vector3(0.452271, -0.419436, -0.787099), 10),
-                                                 PlaneWorldCoordinates(vector3(-0.585607, -0.43009, 0.687085), 30),
-                                                 PlaneWorldCoordinates(vector3(-0.498271, 0.767552, -0.403223), -20),
-                                                 PlaneWorldCoordinates(vector3(0.706067, -0.0741267, -0.704255), 150)};
+    std::vector<PlaneWorldCoordinates> planes = {
+            PlaneWorldCoordinates(vector3(0.452271, -0.419436, -0.787099), 0.010),
+            PlaneWorldCoordinates(vector3(-0.585607, -0.43009, 0.687085), 0.030),
+            PlaneWorldCoordinates(vector3(-0.498271, 0.767552, -0.403223), -0.020),
+            PlaneWorldCoordinates(vector3(0.706067, -0.0741267, -0.704255), 0.150)};
 
     // good confidence for map features
     constexpr double normalVariance = SQR(0.01);
-    constexpr double dVariance = SQR(1);
+    constexpr double dVariance = SQR(0.001);
 
     matrix44 worldFeatureCovariance(matrix44::Identity());
     worldFeatureCovariance.diagonal() = vector4(normalVariance, normalVariance, normalVariance, dVariance);
