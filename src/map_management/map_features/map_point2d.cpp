@@ -107,10 +107,7 @@ matchIndexSet MapPoint2D::find_matches(const DetectedKeypointsObject& detectedFe
         if (_coordinates.to_screen_coordinates(
                     worldToCamera, _covariance.get_inverse_depth_variance(), screenCoordinates))
         {
-            utils::Segment<2> screenCoordinatesClamped;
-            assert(utils::clamp_to_screen(screenCoordinates, screenCoordinatesClamped));
-
-            matchIndexRes = detectedFeatures.get_match_index(screenCoordinatesClamped, _descriptor, searchRadius);
+            matchIndexRes = detectedFeatures.get_match_index(screenCoordinates, _descriptor, searchRadius);
         }
     }
 
@@ -239,7 +236,7 @@ bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
             const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
 
             const WorldCoordinateCovariance& cartCov = compute_cartesian_covariance(_covariance, jacobian);
-            if ((cartCov.diagonal().array() > 1e6).any())
+            if ((cartCov.diagonal().array() > SQR(1.0)).any())
                 return false;
 
             upgradedFeature = std::make_shared<UpgradedPoint2D>(worldCoords, cartCov, _descriptor, _matchIndexes);
@@ -268,11 +265,14 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
     if (is_depth_valid(matchedFeature._coordinates.z()))
     {
         // use the real observation, it will most likely override the covariance inside the inverse depth point
-        return track_3D(matchedFeature._coordinates,
-                        matchedFeature._coordinates.get_covariance(),
-                        cameraToWorld,
-                        poseCovariance,
-                        matchedFeature._descriptor);
+        const bool isSuccess = track_3D(matchedFeature._coordinates,
+                                        matchedFeature._coordinates.get_covariance(),
+                                        cameraToWorld,
+                                        poseCovariance,
+                                        matchedFeature._descriptor);
+        if (isSuccess)
+            return true;
+        // else: try 2D fusion
     }
 
     // use a 2D observation, that will be merged with the current one
@@ -301,13 +301,14 @@ bool StagedMapPoint2D::should_remove_from_staged() const noexcept { return get_c
 bool StagedMapPoint2D::should_add_to_local_map() const noexcept
 {
     constexpr double minimumConfidenceForLocalMap = parameters::mapping::pointMinimumConfidenceForMap;
+    // TODO: check if this point should convert to linear
     return (get_confidence() > minimumConfidenceForLocalMap);
 }
 
 double StagedMapPoint2D::get_confidence() const noexcept
 {
     constexpr double oneOverStagedPointconfidence =
-            1.0 / static_cast<double>(parameters::mapping::pointStagedAgeConfidence);
+            1.0 / static_cast<double>(parameters::mapping::point2dStagedAgeConfidence);
     const double confidence = static_cast<double>(_successivMatchedCount) * oneOverStagedPointconfidence;
     return std::clamp(confidence, -1.0, 1.0);
 }
@@ -327,7 +328,7 @@ LocalMapPoint2D::LocalMapPoint2D(const StagedMapPoint2D& stagedPoint) : MapPoint
 
 bool LocalMapPoint2D::is_lost() const noexcept
 {
-    return (_failedTrackingCount > parameters::mapping::pointUnmatchedCountToLoose);
+    return (_failedTrackingCount > parameters::mapping::point2dUnmatchedCountToLoose);
 }
 
 } // namespace rgbd_slam::map_management

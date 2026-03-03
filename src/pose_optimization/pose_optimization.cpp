@@ -485,8 +485,10 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
     matches_containers::match_container variatedSet;
     for (const auto& feature: matchedFeatures)
     {
-        // add to the new match set
-        variatedSet.emplace_back(feature->compute_random_variation());
+        try
+        {
+            // add to the new match set
+            variatedSet.emplace_back(feature->compute_random_variation());
 #if 0 // this check gets expensive, activate it only if needed
         const auto& variated = variatedSet.back();
         if (not variated->is_valid())
@@ -494,6 +496,12 @@ bool Pose_Optimization::compute_random_variation_of_pose(const utils::PoseBase& 
             outputs::log_error("a variated coordinate became invalid: " + to_string(feature->get_feature_type()));
         }
 #endif
+        }
+        catch (const std::exception& e)
+        {
+            outputs::log_error("a variated coordinate throw on creation: " + to_string(feature->get_feature_type()) +
+                               ": err : " + e.what());
+        }
     }
 
     return compute_optimized_global_pose(currentPose, variatedSet, optimizedPose);

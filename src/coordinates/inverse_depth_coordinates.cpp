@@ -222,6 +222,21 @@ ScreenCoordinate InverseDepthWorldPoint::get_projected_screen3d_estimation(
     return resCoords;
 }
 
+ScreenCoordinate2D InverseDepthWorldPoint::get_projected_screen_estimation(const WorldToCameraMatrix& w2c,
+                                                                           Eigen::Matrix<double, 2, 6>& jacobian,
+                                                                           const double addedStandardDev) const noexcept
+{
+    jacobian = get_projected_screen_estimation_jacobian(w2c, addedStandardDev);
+    return get_projected_screen_estimation(w2c, addedStandardDev);
+}
+ScreenCoordinate InverseDepthWorldPoint::get_projected_screen3d_estimation(const WorldToCameraMatrix& w2c,
+                                                                           Eigen::Matrix<double, 3, 6>& jacobian,
+                                                                           const double addedStandardDev) const noexcept
+{
+    jacobian = get_projected_screen3d_estimation_jacobian(w2c, addedStandardDev);
+    return get_projected_screen3d_estimation(w2c, addedStandardDev);
+}
+
 // 2 standard dev, 95% confidence interval
 // 3 standard dev, 99% confidence interval
 constexpr double standardDevIntervals = 2;

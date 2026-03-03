@@ -596,9 +596,13 @@ class Feature_Map
     [[nodiscard]] std::vector<UpgradedFeature_ptr> get_upgraded_features(const CameraToWorldMatrix& cameraToWorld)
     {
         auto upgradedMapFeatures = get_upgraded_map_features(cameraToWorld);
+
+// TODO: do we want to upgrade staged features ?
+#if 0
         auto upgradedStagedFeatures = get_upgraded_staged_features(cameraToWorld);
         upgradedMapFeatures.insert(
                 upgradedMapFeatures.end(), upgradedStagedFeatures.begin(), upgradedStagedFeatures.end());
+#endif
         return upgradedMapFeatures;
     }
 

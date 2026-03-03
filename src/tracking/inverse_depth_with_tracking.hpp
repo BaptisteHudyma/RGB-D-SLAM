@@ -40,6 +40,7 @@ struct PointInverseDepth
                       const cv::Mat& descriptor = cv::Mat());
 
     PointInverseDepth(const PointInverseDepth& other);
+    PointInverseDepth(const InverseDepthWorldPoint& coordinates, const Covariance& covariance);
 
     [[nodiscard]] matrix33 get_covariance_of_observed_pose() const noexcept { return _covariance.block<3, 3>(0, 0); }
 
@@ -116,6 +117,11 @@ struct PointInverseDepth
     [[nodiscard]] double compute_linearity_score(const CameraToWorldMatrix& cameraToWorld) const noexcept;
 
     [[nodiscard]] bool is_moving() const noexcept { return _isMoving; }
+
+    /**
+     * \brief Check if a new depth is in the actual tolerances
+     */
+    bool is_new_inverse_depth_valid(const double inverseDepth) const;
 
   protected:
     /**

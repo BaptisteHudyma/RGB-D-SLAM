@@ -103,9 +103,11 @@ namespace mapping {
 // local map management
 constexpr uint pointUnmatchedCountToLoose =
         10; // consecutive unmatched frames before removing from local map (high is good, but consumes more perfs);
+constexpr uint point2dUnmatchedCountToLoose = 1; // consecutive unmatched frames before removing from local map
 constexpr uint planeUnmatchedCountToLoose =
         10; // consecutive unmatched frames before removing from local map (high is good, but consumes more perfs);
 constexpr uint pointStagedAgeConfidence = 3;         // Minimum age of a point in staged map to consider it good
+constexpr uint point2dStagedAgeConfidence = 1;       // Minimum age of a 2D point in staged map to consider it good
 constexpr double pointMinimumConfidenceForMap = 0.9; // Minimum confidence of a staged point to add it to local map
 } // namespace mapping
 

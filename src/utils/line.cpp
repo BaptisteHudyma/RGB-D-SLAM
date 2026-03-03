@@ -42,15 +42,20 @@ namespace rgbd_slam::utils {
             case 1:
                 {
                     // find the point in the screen boundary
-                    const ScreenCoordinate2D startPoint(output[0].x(), output[0].y());
-                    const ScreenCoordinate2D endPoint(output[0].x(), output[0].y());
+                    const ScreenCoordinate2D startPoint(line.get_start_point());
+                    const ScreenCoordinate2D endPoint(line.get_end_point());
                     if (startPoint.is_in_screen_boundaries())
                     {
                         out.set_points(startPoint, vector2(output[0].x(), output[0].y()));
                     }
-                    else
+                    else if (endPoint.is_in_screen_boundaries())
                     {
                         out.set_points(vector2(output[0].x(), output[0].y()), endPoint);
+                    }
+                    else
+                    {
+                        outputs::log_error(std::format("Failure case for segment intersections"));
+                        return false;
                     }
                     break;
                 }
