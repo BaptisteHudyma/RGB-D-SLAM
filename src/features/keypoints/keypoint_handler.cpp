@@ -150,9 +150,9 @@ cv::Mat_<uchar> Keypoint_Handler::compute_key_point_mask(const ScreenCoordinate2
 
     // set a mask of the size of the keypoints, with everything at zero (nothing can be matched)
     cv::Mat_<uchar> keyPointMask = cv::Mat_<float>::zeros(1, _descriptors.rows);
-    for (uint i = startY; i < endY; ++i)
+    for (uint j = startX; j < endX; ++j)
     {
-        for (uint j = startX; j < endX; ++j)
+        for (uint i = startY; i < endY; ++i)
         {
             const size_t searchSpaceIndex = get_search_space_index(j, i);
             assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
@@ -190,10 +190,11 @@ void Keypoint_Handler::fill_keypoint_mask(const ScreenCoordinate2D& pointToSearc
 
 void Keypoint_Handler::fill_keypoint_mask(const utils::Segment<2>& pointToSearch,
                                           const index_container& keypointIndexContainer,
+                                          double maximumDistance,
                                           cv::Mat_<uchar>& keyPointMask) const noexcept
 {
     // Squared search diameter, to compare distance without sqrt
-    constexpr float squaredSearchDiameter = static_cast<float>(SQR(parameters::matching::matchSearchRadius_px));
+    const float squaredSearchDiameter = static_cast<float>(SQR(maximumDistance));
     for (const uint keypointIndex: keypointIndexContainer)
     {
         const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
@@ -305,9 +306,21 @@ Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_index(const utils::S
     assert(_featuresMatcher != nullptr);
     Keypoint_Handler::matchIndexSet matchSet;
 
+    utils::Segment<2> constraintLine;
+    if (not utils::clamp_to_screen(projectedMapPoint, constraintLine))
+        return matchSet;
+
     // cannot compute matches without a match or descriptors
     if (_keypoints.empty() or _descriptors.empty())
         return matchSet;
+
+    const auto& startPoint = get_search_space_coordinates(constraintLine.get_start_point());
+    const auto& endPoint = get_search_space_coordinates(constraintLine.get_end_point());
+
+    const uint minX = std::min(startPoint.first, endPoint.first);
+    const uint maxX = std::max(startPoint.first, endPoint.first);
+    const uint minY = std::min(startPoint.second, endPoint.second);
+    const uint maxY = std::max(startPoint.second, endPoint.second);
 
     constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
     static_assert(cellSize > 0);
@@ -317,18 +330,24 @@ Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_index(const utils::S
     assert(!mapPointDescriptor.empty());
     assert(mapPointDescriptor.cols == _descriptors.cols);
 
+    const uint startY = std::max(0U, minY - searchSpaceCellRadius);
+    const uint startX = std::max(0U, minX - searchSpaceCellRadius);
+
+    const uint endY = std::min(_cellCountY, maxY + searchSpaceCellRadius + 1);
+    const uint endX = std::min(_cellCountX, maxX + searchSpaceCellRadius + 1);
+
     // set a mask of the size of the keypoints, with everything at zero (nothing can be matched)
     cv::Mat_<uchar> keyPointMask = cv::Mat_<float>::zeros(1, _descriptors.rows);
-    for (uint i = 0; i < _cellCountX; ++i)
+    for (uint j = startX; j < endX; ++j)
     {
-        for (uint j = 0; j < _cellCountY; ++j)
+        for (uint i = startY; i < endY; ++i)
         {
             const size_t searchSpaceIndex = get_search_space_index(j, i);
             assert(searchSpaceIndex < _searchSpaceIndexContainer.size());
 
             // get all keypoints in this area
             const index_container& keypointIndexContainer = _searchSpaceIndexContainer[searchSpaceIndex];
-            fill_keypoint_mask(projectedMapPoint, keypointIndexContainer, keyPointMask);
+            fill_keypoint_mask(constraintLine, keypointIndexContainer, searchSpaceRadius, keyPointMask);
         }
     }
     std::vector<std::vector<cv::DMatch>> knnMatches;
@@ -339,9 +358,18 @@ Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_index(const utils::S
 
     // check the neighbors
     const std::vector<cv::DMatch>& firstMatch = knnMatches[0];
-    for (const auto& match: firstMatch)
+    if (firstMatch.size() > 1)
     {
-        int id = match.trainIdx;
+        // check if point is a good match by checking it's distance to the second best matched point
+        if (firstMatch[0].distance < _maxMatchDistance * firstMatch[1].distance)
+        {
+            int id = firstMatch[0].trainIdx;
+            matchSet.emplace(id);
+        }
+    }
+    else if (firstMatch.size() == 1)
+    {
+        int id = firstMatch[0].trainIdx;
         matchSet.emplace(id);
     }
     return matchSet;

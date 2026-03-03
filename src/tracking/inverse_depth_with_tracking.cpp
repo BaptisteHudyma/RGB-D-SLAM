@@ -109,6 +109,19 @@ PointInverseDepth::PointInverseDepth(const PointInverseDepth& other) :
         throw std::invalid_argument("PointInverseDepth constructor: the given covariance is invalid");
 }
 
+PointInverseDepth::PointInverseDepth(const InverseDepthWorldPoint& coordinates, const Covariance& covariance) :
+    _coordinates(coordinates),
+    _covariance(covariance)
+{
+    if (_extendedKalmanFilter == nullptr)
+        build_kalman_filter();
+
+    if (not utils::is_covariance_valid(_covariance))
+        throw std::invalid_argument("PointInverseDepth constructor: the given covariance is invalid");
+
+    outputs::log_error("You are using a constructor dedicated for testing");
+}
+
 bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
                                  const matrix22& observationCovariance,
                                  const CameraToWorldMatrix& c2w,
@@ -138,6 +151,30 @@ bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
             outputs::log_error("new covariance is worse !");
             return false;
         }*/
+
+        if (not is_new_inverse_depth_valid(newState(inverseDepthIndex)))
+        {
+            // outputs::log(std::format("inverse depth is outside bounds after merge"));
+            return false;
+        }
+
+        if (newState(inverseDepthIndex) < 0)
+        {
+            /*
+            std::cout << _coordinates.get_vector().transpose() << std::endl;
+            std::cout << _covariance << std::endl;
+            std::cout << c2w << std::endl;
+            */
+            const vector2& screenProjection = _coordinates.get_projected_screen_estimation(w2c);
+            outputs::log_error(
+                    std::format("new state produced an inverse depth behind the camera with observation [{:.1f}; "
+                                "{:.1f}]. Projection [{:.1f}; {:.1f}]",
+                                observation.x(),
+                                observation.y(),
+                                screenProjection.x(),
+                                screenProjection.y()));
+            return false;
+        }
 
         _coordinates.set_vector(newState);
         _covariance = newCovariance;
@@ -206,6 +243,7 @@ bool PointInverseDepth::track_3D(const ScreenCoordinate& observation,
 
 CameraCoordinateCovariance PointInverseDepth::get_camera_coordinate_variance(const WorldToCameraMatrix& w2c) const
 {
+    // TODO: handle pose covariance
     matrix66 cov = matrix66::Zero();
     cov.block<3, 3>(0, 0) = get_covariance_of_observed_pose();
 
@@ -274,12 +312,19 @@ double PointInverseDepth::compute_linearity_score(const CameraToWorldMatrix& cam
     const WorldCoordinate& cartesian = _coordinates.to_world_coordinates();
 
     const vector3 hc(cartesian - cameraToWorld.translation());
-    const double cosAlpha = static_cast<double>(_coordinates.get_bearing_vector().transpose() * hc) / hc.norm();
+    const double cosAlpha = _coordinates.get_bearing_vector().dot(hc) / hc.norm();
     const double thetad_meters =
             sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) / SQR(_coordinates.get_inverse_depth());
     const double d1_meters = hc.norm();
 
     return 4.0 * thetad_meters / d1_meters * abs(cosAlpha);
+}
+
+bool PointInverseDepth::is_new_inverse_depth_valid(const double inverseDepth) const
+{
+    const double iDepthStandardDev = sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex));
+    return inverseDepth >= std::max(0.0, _coordinates.get_inverse_depth() - 2.0 * iDepthStandardDev) and
+           inverseDepth <= _coordinates.get_inverse_depth() + 2.0 * iDepthStandardDev;
 }
 
 void PointInverseDepth::build_kalman_filter() noexcept

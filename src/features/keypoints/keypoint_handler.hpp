@@ -211,6 +211,7 @@ class Keypoint_Handler
                             cv::Mat_<uchar>& keyPointMask) const noexcept;
     void fill_keypoint_mask(const utils::Segment<2>& pointToSearch,
                             const index_container& keypointIndexContainer,
+                            double maximumDistance,
                             cv::Mat_<uchar>& keyPointMask) const noexcept;
 
     using uint_pair = std::pair<uint, uint>;

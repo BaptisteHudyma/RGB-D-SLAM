@@ -95,7 +95,6 @@ matchIndexSet MapPoint::find_matches(const DetectedKeypointsObject& detectedFeat
         const bool isScreenCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamera, projectedMapPoint);
         if (isScreenCoordinatesValid)
         {
-            // TODO: add multiple match support
             matchIndexRes = detectedFeatures.get_match_indexes(
                     projectedMapPoint, _descriptor, isDetectedFeatureMatched, searchRadius);
         }

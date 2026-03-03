@@ -107,7 +107,33 @@ struct InverseDepthWorldPoint
      */
     ScreenCoordinate2D get_projected_screen_estimation(const WorldToCameraMatrix& w2c,
                                                        const double addedStandardDev = 0.0) const noexcept;
+
+    /**
+     * \brief Compute the projection of this inverse depth point to screen space with depth, with the given variance
+     * \param[in] w2c Matrix to go from world to camera space
+     * \param[in] addedStandardDev The value to add to the estimated depth, to variate the screen point
+     */
     ScreenCoordinate get_projected_screen3d_estimation(const WorldToCameraMatrix& w2c,
+                                                       const double addedStandardDev = 0.0) const noexcept;
+
+    /**
+     * \brief Compute a projection of this inverse point to screen space, with the given variance
+     * \param[in] w2c Matrix to go from world to camera space
+     * \param[out] jacobian Jacobian of this transformation
+     * \param[in] addedStandardDev The value to add to the estimated depth, to variate the screen point
+     */
+    ScreenCoordinate2D get_projected_screen_estimation(const WorldToCameraMatrix& w2c,
+                                                       Eigen::Matrix<double, 2, 6>& jacobian,
+                                                       const double addedStandardDev = 0.0) const noexcept;
+
+    /**
+     * \brief Compute the projection of this inverse depth point to screen space with depth, with the given variance
+     * \param[in] w2c Matrix to go from world to camera space
+     * \param[out] jacobian Jacobian of this transformation
+     * \param[in] addedStandardDev The value to add to the estimated depth, to variate the screen point
+     */
+    ScreenCoordinate get_projected_screen3d_estimation(const WorldToCameraMatrix& w2c,
+                                                       Eigen::Matrix<double, 3, 6>& jacobian,
                                                        const double addedStandardDev = 0.0) const noexcept;
 
     /**

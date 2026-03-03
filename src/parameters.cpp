@@ -202,7 +202,10 @@ void Parameters::check_parameters_validity() noexcept
 
     static_assert(parameters::mapping::pointUnmatchedCountToLoose > 0,
                   "Unmatched points to loose tracking must be > 0");
+    static_assert(parameters::mapping::point2dUnmatchedCountToLoose > 0,
+                  "Unmatched points to loose tracking must be > 0");
     static_assert(parameters::mapping::pointStagedAgeConfidence > 0, "Staged point confidence must be > 0");
+    static_assert(parameters::mapping::point2dStagedAgeConfidence > 0, "Staged point confidence must be > 0");
     static_assert(parameters::mapping::pointMinimumConfidenceForMap > 0,
                   "Minimum confidence to add staged point to map  must be > 0");
 }

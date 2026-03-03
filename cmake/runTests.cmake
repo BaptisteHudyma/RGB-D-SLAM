@@ -4,6 +4,9 @@
 add_executable(test_coordinate_systems
     ${TESTS}/test_coordinate_systems.cpp
     )
+add_executable(test_failure_cases
+    ${TESTS}/test_failure_cases.cpp
+    )
 add_executable(test_kalman_filtering
     ${TESTS}/test_kalman_filtering.cpp
     )
@@ -19,8 +22,15 @@ add_executable(test_pose_optimization
 add_executable(test_tracking
     ${TESTS}/test_tracking.cpp
     )
+add_executable(test_utils
+    ${TESTS}/test_utils.cpp
+    )
 
 target_link_libraries(test_coordinate_systems
+    gtest_main
+    ${PROJECT_NAME}
+    )
+target_link_libraries(test_failure_cases
     gtest_main
     ${PROJECT_NAME}
     )
@@ -44,12 +54,17 @@ target_link_libraries(test_tracking
     gtest_main
     ${PROJECT_NAME}
     )
-
+target_link_libraries(test_utils
+    gtest_main
+    ${PROJECT_NAME}
+    )
 
 include(GoogleTest)
 gtest_discover_tests(test_coordinate_systems)
+gtest_discover_tests(test_failure_cases)
 gtest_discover_tests(test_kalman_filtering)
 gtest_discover_tests(test_motion_model)
 gtest_discover_tests(test_polygons)
 gtest_discover_tests(test_pose_optimization)
 gtest_discover_tests(test_tracking)
+gtest_discover_tests(test_utils)
