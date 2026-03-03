@@ -264,8 +264,7 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
         return false;
     }
 
-    // TODO use the correct function when it will exist
-    /*
+    // use the correct function when it will exist
     if (is_depth_valid(matchedFeature._coordinates.z()))
     {
         // use the real observation, it will most likely override the covariance inside the inverse depth point
@@ -275,7 +274,6 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
                         poseCovariance,
                         matchedFeature._descriptor);
     }
-    */
 
     // use a 2D observation, that will be merged with the current one
     const auto& feature2d = matchedFeature._coordinates.get_2D();

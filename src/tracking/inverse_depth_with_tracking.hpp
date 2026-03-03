@@ -125,7 +125,6 @@ struct PointInverseDepth
 
     // shared kalman filter, between all points
     inline static std::unique_ptr<tracking::ExtendedKalmanFilter<6, 2>> _extendedKalmanFilter = nullptr;
-    inline static std::unique_ptr<tracking::ExtendedKalmanFilter<6, 3>> _extendedKalmanFilter3d = nullptr;
 
   private:
     bool _isMoving = false;
