@@ -11,10 +11,10 @@ void compare_pose(const utils::Pose& toTest, const utils::Pose& reference, const
     EXPECT_NEAR(toTest.get_position().y(), reference.get_position().y(), delta);
     EXPECT_NEAR(toTest.get_position().z(), reference.get_position().z(), delta);
 
-    EXPECT_NEAR(abs(toTest.get_orientation_quaternion().x()), abs(reference.get_orientation_quaternion().x()), delta);
-    EXPECT_NEAR(abs(toTest.get_orientation_quaternion().y()), abs(reference.get_orientation_quaternion().y()), delta);
-    EXPECT_NEAR(abs(toTest.get_orientation_quaternion().z()), abs(reference.get_orientation_quaternion().z()), delta);
-    EXPECT_NEAR(abs(toTest.get_orientation_quaternion().w()), abs(reference.get_orientation_quaternion().w()), delta);
+    EXPECT_NEAR(abs(toTest.get_rotation_quaternion().x()), abs(reference.get_rotation_quaternion().x()), delta);
+    EXPECT_NEAR(abs(toTest.get_rotation_quaternion().y()), abs(reference.get_rotation_quaternion().y()), delta);
+    EXPECT_NEAR(abs(toTest.get_rotation_quaternion().z()), abs(reference.get_rotation_quaternion().z()), delta);
+    EXPECT_NEAR(abs(toTest.get_rotation_quaternion().w()), abs(reference.get_rotation_quaternion().w()), delta);
 }
 
 TEST(MotionModelTests, EmptyPoseTest)
@@ -35,7 +35,7 @@ TEST(MotionModelTests, ConstantPosePositionUpdateTest)
 {
     Motion_Model mm;
     utils::Pose pose(vector3::Random(), quaternion::Identity());
-    mm.reset(pose.get_position(), pose.get_orientation_quaternion());
+    mm.reset(pose.get_position(), pose.get_rotation_quaternion());
 
     utils::Pose predictedPose;
     for (uint i = 0; i < 10; ++i)
@@ -50,7 +50,7 @@ TEST(MotionModelTests, ConstantPoseOrientationTest)
 {
     Motion_Model mm;
     utils::Pose pose(vector3::Zero(), quaternion::UnitRandom());
-    mm.reset(pose.get_position(), pose.get_orientation_quaternion());
+    mm.reset(pose.get_position(), pose.get_rotation_quaternion());
 
     utils::Pose predictedPose;
     for (uint i = 0; i < 10; ++i)
@@ -65,7 +65,7 @@ TEST(MotionModelTests, TrackEmptyPoseTest)
 {
     Motion_Model mm;
     utils::Pose pose(vector3::Random(), quaternion::UnitRandom());
-    mm.reset(pose.get_position(), pose.get_orientation_quaternion());
+    mm.reset(pose.get_position(), pose.get_rotation_quaternion());
 
     // track a pose
     utils::Pose predictedPose;
@@ -88,7 +88,7 @@ TEST(MotionModelTests, DecayingModelTest)
 {
     Motion_Model mm;
     utils::Pose pose(vector3::Random(), quaternion::UnitRandom());
-    mm.reset(pose.get_position(), pose.get_orientation_quaternion());
+    mm.reset(pose.get_position(), pose.get_rotation_quaternion());
 
     // decay model: give initial prediction and update with
     utils::Pose predictedPose = pose;

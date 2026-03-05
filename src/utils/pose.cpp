@@ -10,26 +10,26 @@ namespace rgbd_slam::utils {
 PoseBase::PoseBase()
 {
     _position.setZero();
-    _orientation.setIdentity();
+    _rotation.setIdentity();
 }
 
-PoseBase::PoseBase(const vector3& position, const quaternion& orientation) { set_parameters(position, orientation); }
+PoseBase::PoseBase(const vector3& position, const quaternion& rotation) { set_parameters(position, rotation); }
 
-void PoseBase::set_parameters(const vector3& position, const quaternion& orientation) noexcept
+void PoseBase::set_parameters(const vector3& position, const quaternion& rotation) noexcept
 {
-    _orientation = orientation.normalized();
+    _rotation = rotation.normalized();
     _position = position;
 }
 
-void PoseBase::update(const vector3& position, const quaternion& orientation) noexcept
+void PoseBase::update(const vector3& position, const quaternion& rotation) noexcept
 {
-    _orientation *= orientation;
+    _rotation *= rotation;
     _position += position;
 }
 
 void PoseBase::display(std::ostream& os) const noexcept
 {
-    const EulerAngles displayAngles = get_euler_angles_from_quaternion(_orientation);
+    const EulerAngles displayAngles = get_euler_angles_from_quaternion(_rotation);
     os << "position: (" << _position.transpose() << ") millimeters | rotation: (" << displayAngles.yaw / EulerToRadian
        << ", " << displayAngles.pitch / EulerToRadian << ", " << displayAngles.roll / EulerToRadian << ") degrees";
 }
@@ -43,7 +43,7 @@ std::ostream& operator<<(std::ostream& os, const PoseBase& pose)
 vector3 PoseBase::get_rotation_lie_error() const
 {
     // compute error in lie space
-    const vector3 rotPart(_orientation.x(), _orientation.y(), _orientation.z());
+    const vector3 rotPart(_rotation.x(), _rotation.y(), _rotation.z());
     vector3 lieSpaceError;
     const double norm = rotPart.norm();
     if (norm < 1e-6)
@@ -52,7 +52,7 @@ vector3 PoseBase::get_rotation_lie_error() const
     }
     else
     {
-        lieSpaceError = (2.0 * atan2(norm, _orientation.w())) * (rotPart / norm);
+        lieSpaceError = (2.0 * atan2(norm, _rotation.w())) * (rotPart / norm);
     }
     return lieSpaceError;
 }
@@ -71,7 +71,7 @@ double PoseBase::get_position_error(const PoseBase& pose) const noexcept
 
 double PoseBase::get_rotation_error(const PoseBase& pose) const noexcept
 {
-    const double distanceRadian = _orientation.angularDistance(pose.get_orientation_quaternion());
+    const double distanceRadian = _rotation.angularDistance(pose.get_rotation_quaternion());
     return distanceRadian / EulerToRadian;
 }
 
@@ -81,14 +81,14 @@ double PoseBase::get_rotation_error(const PoseBase& pose) const noexcept
 
 Pose::Pose() : PoseBase(), _poseVariance(matrix66::Zero()) {}
 
-Pose::Pose(const vector3& position, const quaternion& orientation) :
-    PoseBase(position, orientation),
+Pose::Pose(const vector3& position, const quaternion& rotation) :
+    PoseBase(position, rotation),
     _poseVariance(matrix66::Zero())
 {
 }
 
-Pose::Pose(const vector3& position, const quaternion& orientation, const matrix66& poseVariance) :
-    PoseBase(position, orientation),
+Pose::Pose(const vector3& position, const quaternion& rotation, const matrix66& poseVariance) :
+    PoseBase(position, rotation),
     _poseVariance(poseVariance)
 {
 }

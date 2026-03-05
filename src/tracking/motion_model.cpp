@@ -29,7 +29,7 @@ void Motion_Model::reset(const vector3& lastPosition, const quaternion& lastRota
 utils::Pose Motion_Model::predict_next_pose(const utils::Pose& currentPose, const bool shouldIncreaseVariance) noexcept
 {
     const vector3& currentPosition = currentPose.get_position();
-    const quaternion& currentRotation = currentPose.get_orientation_quaternion();
+    const quaternion& currentRotation = currentPose.get_rotation_quaternion();
 
     // last not set
     if (!_isLastPositionSet)

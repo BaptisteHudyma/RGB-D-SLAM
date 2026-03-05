@@ -283,7 +283,7 @@ int main(int argc, char* argv[])
         if (shouldSavePoses)
         {
             const rgbd_slam::vector3& position = pose.get_position();
-            const rgbd_slam::quaternion& rotation = pose.get_orientation_quaternion();
+            const rgbd_slam::quaternion& rotation = pose.get_rotation_quaternion();
             const rgbd_slam::EulerAngles& rotationEuler = rgbd_slam::utils::get_euler_angles_from_quaternion(rotation);
             trajectoryFile << position.x() << "," << position.y() << "," << position.z() << ",";
             trajectoryFile << rotationEuler.yaw << "," << rotationEuler.pitch << "," << rotationEuler.roll << std::endl;
