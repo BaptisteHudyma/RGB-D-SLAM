@@ -12,26 +12,26 @@ class PoseBase
 {
   public:
     PoseBase();
-    PoseBase(const vector3& position, const quaternion& orientation);
+    PoseBase(const vector3& position, const quaternion& rotation);
 
     virtual ~PoseBase() = default;
 
     // setters
-    void set_parameters(const vector3& position, const quaternion& orientation) noexcept;
+    void set_parameters(const vector3& position, const quaternion& rotation) noexcept;
 
-    void update(const vector3& position, const quaternion& orientation) noexcept;
+    void update(const vector3& position, const quaternion& rotation) noexcept;
 
     // getters
     [[nodiscard]] vector3 get_position() const noexcept { return _position; }
-    [[nodiscard]] matrix33 get_orientation_matrix() const noexcept { return _orientation.toRotationMatrix(); }
-    [[nodiscard]] quaternion get_orientation_quaternion() const noexcept { return _orientation; }
+    [[nodiscard]] matrix33 get_rotation_matrix() const noexcept { return _rotation.toRotationMatrix(); }
+    [[nodiscard]] quaternion get_rotation_quaternion() const noexcept { return _rotation; }
     /**
      * \return a 6 element vector of the position followed by the rotation in radians
      */
     [[nodiscard]] vector6 get_vector_euler() const noexcept
     {
         vector6 t;
-        t << _position, _orientation.toRotationMatrix().eulerAngles(0, 1, 2);
+        t << _position, _rotation.toRotationMatrix().eulerAngles(0, 1, 2);
         return t;
     }
 
@@ -53,7 +53,7 @@ class PoseBase
     virtual void display(std::ostream& os) const noexcept;
 
   private:
-    quaternion _orientation;
+    quaternion _rotation;
     vector3 _position;
 };
 
@@ -64,8 +64,8 @@ class Pose : public PoseBase
 {
   public:
     Pose();
-    Pose(const vector3& position, const quaternion& orientation);
-    Pose(const vector3& position, const quaternion& orientation, const matrix66& poseVariance);
+    Pose(const vector3& position, const quaternion& rotation);
+    Pose(const vector3& position, const quaternion& rotation, const matrix66& poseVariance);
 
     void set_position_variance(const matrix66& variance) noexcept { _poseVariance = variance; };
     [[nodiscard]] matrix66 get_pose_variance() const noexcept { return _poseVariance; };

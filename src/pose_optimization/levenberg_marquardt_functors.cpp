@@ -14,7 +14,7 @@ namespace rgbd_slam::pose_optimization {
 vector3 get_optimization_coefficients_from_quaternion(const quaternion& quat)
 {
     ///
-    /// Ref: On quaternion based parameterization of orientation in computer vision and robotics
+    /// Ref: On quaternion based parameterization of rotation in computer vision and robotics
     ///
     /// by: G. Terzakis, P. Culverhouse, G. Bugmann, S. Sharma and R. Sutton
     ///
@@ -75,7 +75,7 @@ vector6 get_optimization_coefficient_from_pose(const utils::PoseBase& pose)
 {
     vector6 coeffs;
     coeffs.head<3>() = pose.get_position();
-    coeffs.tail<3>() = get_optimization_coefficients_from_quaternion(pose.get_orientation_quaternion());
+    coeffs.tail<3>() = get_optimization_coefficients_from_quaternion(pose.get_rotation_quaternion());
     return coeffs;
 }
 
@@ -147,7 +147,7 @@ int Global_Pose_Estimator::operator()(const Eigen::Vector<double, 6>& optimizedP
 
     // convert to optimization matrix
     const WorldToCameraMatrix& transformationMatrix =
-            utils::compute_world_to_camera_transform(pose.get_orientation_quaternion(), pose.get_position());
+            utils::compute_world_to_camera_transform(pose.get_rotation_quaternion(), pose.get_position());
 
     // Compute projection distances
     int featureScoreIndex = 0; // index of the match being treated

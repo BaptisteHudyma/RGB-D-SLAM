@@ -59,8 +59,8 @@ template<class... Maps> class Local_Map
         // TODO: check the efficiency gain of those reserve calls
         trackedFeatures.trackedPoints->reserve(numberOfFeaturesToTrack);
 
-        const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
-                lastPose.get_orientation_quaternion(), lastPose.get_position());
+        const WorldToCameraMatrix& worldToCamera =
+                utils::compute_world_to_camera_transform(lastPose.get_rotation_quaternion(), lastPose.get_position());
 
         foreach_map([&worldToCamera, &trackedFeatures](const auto& map) {
             constexpr uint refreshFrequency = parameters::detection::keypointRefreshFrequency * 2;
@@ -83,7 +83,7 @@ template<class... Maps> class Local_Map
 
         // get transformation matrix from estimated pose
         const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
-                currentPose.get_orientation_quaternion(), currentPose.get_position());
+                currentPose.get_rotation_quaternion(), currentPose.get_position());
 
         matches_containers::match_container matchSets;
 
@@ -122,7 +122,7 @@ template<class... Maps> class Local_Map
         mark_outliers_as_unmatched(outlierMatched);
 
         const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
-                optimizedPose.get_orientation_quaternion(), optimizedPose.get_position());
+                optimizedPose.get_rotation_quaternion(), optimizedPose.get_position());
 
         // update all local maps
         foreach_map([this, &cameraToWorld, &poseCovariance, &detectedFeatures](auto& map) {
@@ -223,7 +223,7 @@ template<class... Maps> class Local_Map
         draw_image_head_band(debugImage);
 
         const WorldToCameraMatrix& worldToCamMatrix =
-                utils::compute_world_to_camera_transform(camPose.get_orientation_quaternion(), camPose.get_position());
+                utils::compute_world_to_camera_transform(camPose.get_rotation_quaternion(), camPose.get_position());
 
         // draw all map features
         foreach_map([&worldToCamMatrix, &debugImage, &shouldDisplayStaged](const auto& map) {

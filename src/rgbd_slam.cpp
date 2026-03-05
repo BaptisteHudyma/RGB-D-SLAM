@@ -233,7 +233,7 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         if (_isTrackingLost and utils::is_covariance_valid(poseCovariance))
         {
             const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
-                    predictedPose.get_orientation_quaternion(), predictedPose.get_position());
+                    predictedPose.get_rotation_quaternion(), predictedPose.get_position());
 
             // TODO: clear map ?
             // add all detected features

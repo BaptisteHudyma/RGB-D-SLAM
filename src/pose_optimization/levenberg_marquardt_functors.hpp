@@ -60,7 +60,7 @@ utils::PoseBase get_pose_from_optimization_coefficients(const vector6& optimizat
                                                         Eigen::Matrix<double, 7, 6>& jacobian);
 
 /**
- * \brief Implementation of the main pose and orientation optimisation, to be used by the Levenberg Marquard
+ * \brief Implementation of the main position and rotation optimisation, to be used by the Levenberg Marquard
  * optimisator.
  */
 struct Global_Pose_Estimator : Levenberg_Marquardt_Functor<double>

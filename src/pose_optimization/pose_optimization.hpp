@@ -51,7 +51,7 @@ class Pose_Optimization
 
   private:
     /**
-     * \brief Optimize a global pose (orientation/translation) of the observer, given a match set
+     * \brief Optimize a global pose (rotation/translation) of the observer, given a match set
      *
      * \param[in] currentPose Last observer optimized pose
      * \param[in] matchedFeatures Object containing the match between observed screen features and reliable map features

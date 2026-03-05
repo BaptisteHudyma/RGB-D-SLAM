@@ -38,7 +38,7 @@ namespace rgbd_slam::pose_optimization {
 
     // get a world to camera transform to evaluate the retroprojection score
     const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
-            transformationPose.get_orientation_quaternion(), transformationPose.get_position());
+            transformationPose.get_rotation_quaternion(), transformationPose.get_position());
 
     double featureScore = 0.0;
     for (const auto& match: featuresToEvaluate)
@@ -354,7 +354,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
         return false;
     }
     // Update refined pose with optimized pose
-    optimizedPose.set_parameters(outputPose.get_position(), outputPose.get_orientation_quaternion());
+    optimizedPose.set_parameters(outputPose.get_position(), outputPose.get_rotation_quaternion());
     return true;
 }
 
