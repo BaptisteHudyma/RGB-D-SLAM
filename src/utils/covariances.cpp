@@ -286,4 +286,26 @@ Eigen::Matrix<double, 2, 6> world_transform_of_2d_point_jacobian(const WorldCoor
     return jacobian;
 }
 
+Eigen::Matrix<double, 3, 4> get_quaternion_to_euler_jacobian(const Eigen::Quaterniond& quat)
+{
+    const double q1 = quat.w();
+    const double q2 = quat.x();
+    const double q3 = quat.y();
+    const double q4 = quat.z();
+
+    const double denomA = SQR(q3 + q2) + SQR(q4 + q1);
+    const double denomB = SQR(q3 - q2) + SQR(q4 - q1);
+
+    const double denomC = sqrt(1.0 - 4.0 * SQR(q2 * q3 + q1 * q4));
+
+    Eigen::Matrix<double, 3, 4> jac;
+    // clang-format off
+    jac << 
+    -(q3+q2)/denomA + (q3-q2)/denomB, (q4+q1)/denomA - (q4-q1)/denomB, (q4+q1)/denomA + (q4-q1)/denomB, -(q3+q2)/denomA - (q3-q2)/denomB,
+    2.0 * q4 / denomC, 2.0 * q3 / denomC, 2.0 * q2 / denomC, 2.0 * q1 / denomC, 
+    -(q3+q2)/denomA - (q3-q2)/denomB, (q4+q1)/denomA + (q4-q1)/denomB, (q4+q1)/denomA - (q4-q1)/denomB, -(q3+q2)/denomA + (q3-q2)/denomB;
+    // clang-format on
+    return jac;
+}
+
 } // namespace rgbd_slam::utils

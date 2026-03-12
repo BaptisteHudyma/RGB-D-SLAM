@@ -11,6 +11,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/highgui.hpp>
+#include <stdexcept>
 
 namespace rgbd_slam {
 
@@ -96,7 +97,9 @@ void RGBD_SLAM::rectify_depth(cv::Mat_<float>& depthImage) noexcept
     }
 }
 
-utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat_<float>& inputDepthImage) noexcept
+utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage,
+                             const cv::Mat_<float>& inputDepthImage,
+                             const double time_s) noexcept
 {
     assert(static_cast<size_t>(inputDepthImage.rows) == _height);
     assert(static_cast<size_t>(inputDepthImage.cols) == _width);
@@ -118,7 +121,7 @@ utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage, const cv::Mat_<float>
     cv::cvtColor(inputRgbImage, grayImage, cv::COLOR_BGR2GRAY);
 
     // this frame points and  assoc
-    const utils::Pose& refinedPose = this->compute_new_pose(grayImage, inputDepthImage, cloudArrayOrganized);
+    const utils::Pose& refinedPose = this->compute_new_pose(grayImage, inputDepthImage, cloudArrayOrganized, time_s);
 
     _totalFrameTreated += 1;
     return refinedPose;
@@ -162,7 +165,8 @@ cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
 
 utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
                                         const cv::Mat_<float>& depthImage,
-                                        const matrixf& cloudArrayOrganized) noexcept
+                                        const matrixf& cloudArrayOrganized,
+                                        const double time_s) noexcept
 {
     if (not utils::is_covariance_valid(_currentPose.get_pose_variance()))
     {
@@ -172,12 +176,8 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     // every now and then, restart the search of points even if we have enough features
     _computeKeypointCount = (_computeKeypointCount % parameters::detection::keypointRefreshFrequency) + 1;
 
-// get a pose with the decaying motion model (do not add uncertainty if it's the first call)
-#if 0 // TODO : put back when the motion model as been debugged
-    const utils::Pose& predictedPose = _motionModel.predict_next_pose(_currentPose, not _isFirstTrackingCall);
-#else
-    const utils::Pose& predictedPose = _currentPose;
-#endif
+    // get a pose with the decaying motion model (do not add uncertainty if it's the first call)
+    const utils::Pose& predictedPose = _currentPose.predict(time_s);
 
     // detect the features from the inputs
     const auto& detectedFeatures = detect_features(predictedPose, grayImage, depthImage, cloudArrayOrganized);
@@ -200,14 +200,20 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
 
     if (isPoseValid)
     {
-        // Update current pose if tracking is ongoing
-        newPose = optimizedPose;
-        _currentPose = optimizedPose;
-
         // Update local map if a valid transformation was found
         try
         {
-            _localMap.update(optimizedPose, detectedFeatures, matchSets._outliers);
+            const bool isSuccess = _currentPose.update_with_new_pose(
+                    optimizedPose, optimizedPose.get_pose_variance_quaternion(), time_s);
+            if (not isSuccess)
+            {
+                throw std::invalid_argument("Pose update failed");
+            }
+
+            // Update current pose if tracking is ongoing
+            newPose = _currentPose;
+
+            _localMap.update(_currentPose, detectedFeatures, matchSets._outliers);
             _isTrackingLost = false;
             _failedTrackingCount = 0;
         }
@@ -219,7 +225,6 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             _localMap.update_no_pose();
 
             _isTrackingLost = (++_failedTrackingCount) > 3;
-            _motionModel.reset();
         }
     }
     // else the refined pose will follow the motion model
@@ -245,8 +250,6 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             // tracking is lost after some consecutive fails
             // TODO add to parameters
             _isTrackingLost = (++_failedTrackingCount) > 3;
-
-            _motionModel.reset();
 
             outputs::log_error("Could not find an optimized pose");
         }

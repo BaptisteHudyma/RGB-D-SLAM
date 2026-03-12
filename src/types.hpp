@@ -90,6 +90,7 @@ struct EulerAngles
 
 // define an optimized squared
 template<class T> T constexpr SQR(const T x) { return (x * x); }
+template<class T> T constexpr CUBE(const T x) { return (x * x * x); }
 
 using vector3_vector = std::vector<vector3, Eigen::aligned_allocator<vector3>>;
 

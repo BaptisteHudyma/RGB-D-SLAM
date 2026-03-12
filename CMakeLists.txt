@@ -147,7 +147,6 @@ add_library(poseOptimization SHARED
 
 add_library(tracking SHARED
 ${TRACKING}/inverse_depth_with_tracking.cpp
-    ${TRACKING}/motion_model.cpp
     ${TRACKING}/plane_with_tracking.cpp
     ${TRACKING}/point_with_tracking.cpp
 )

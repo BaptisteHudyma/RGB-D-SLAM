@@ -12,7 +12,7 @@ namespace rgbd_slam::tracking {
 /**
  * Define the estimator for the inverse depth fuse/tracker
  */
-template<int N = 3, int M = 2> class Point2dEstimator : public StateEstimator<N, M>
+template<int N = 3, int M = 2, int NE = N, int ME = M> class Point2dEstimator : public StateEstimator<N, M, NE, ME>
 {
   public:
     virtual ~Point2dEstimator() = default;
@@ -27,15 +27,15 @@ template<int N = 3, int M = 2> class Point2dEstimator : public StateEstimator<N,
         return sc;
     }
 
-    Eigen::Matrix<double, M, N> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
+    Eigen::Matrix<double, ME, NE> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
     {
         return WorldCoordinate(state).to_screen2d_coordinates_jacobian(_w2c);
     }
 
-    inline Eigen::Matrix<double, M, M> h_innovation(
+    inline Eigen::Matrix<double, ME, ME> h_innovation(
             const Eigen::Vector<double, N>& state,
-            const Eigen::Matrix<double, N, N>& estimateErrorCovariance,
-            const Eigen::Matrix<double, M, N>& hJacobian) const noexcept override
+            const Eigen::Matrix<double, NE, NE>& estimateErrorCovariance,
+            const Eigen::Matrix<double, ME, NE>& hJacobian) const noexcept override
     {
         const Eigen::Matrix<double, 2, 6>& hPoseJacobian =
                 utils::world_transform_of_2d_point_jacobian(WorldCoordinate(state), _w2c);
@@ -47,13 +47,13 @@ template<int N = 3, int M = 2> class Point2dEstimator : public StateEstimator<N,
     }
 
     Point2dEstimator(const Eigen::Vector<double, N>& feature,
-                     const Eigen::Matrix<double, N, N>& featureCovariance,
+                     const Eigen::Matrix<double, NE, NE>& featureCovariance,
                      const Eigen::Vector<double, M>& measurment,
-                     const Eigen::Matrix<double, M, M>& measurmentCovariance,
+                     const Eigen::Matrix<double, ME, ME>& measurmentCovariance,
                      const WorldToCameraMatrix& w2c,
                      const matrix66& poseCovariance) :
 
-        StateEstimator<N, M>(feature, featureCovariance, measurment, measurmentCovariance),
+        StateEstimator<N, M, NE, ME>(feature, featureCovariance, measurment, measurmentCovariance),
         _w2c(w2c),
         _poseCovariance(poseCovariance)
     {
@@ -65,7 +65,7 @@ template<int N = 3, int M = 2> class Point2dEstimator : public StateEstimator<N,
     const matrix66 _poseCovariance;
 };
 
-template<int N = 3, int M = 3> class Point3dEstimator : public StateEstimator<N, M>
+template<int N = 3, int M = 3, int NE = N, int ME = M> class Point3dEstimator : public StateEstimator<N, M, NE, ME>
 {
   public:
     virtual ~Point3dEstimator() = default;
@@ -80,15 +80,15 @@ template<int N = 3, int M = 3> class Point3dEstimator : public StateEstimator<N,
         return sc;
     }
 
-    Eigen::Matrix<double, M, N> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
+    Eigen::Matrix<double, ME, NE> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
     {
         return WorldCoordinate(state).to_screen_coordinates_jacobian(_w2c);
     }
 
-    inline Eigen::Matrix<double, M, M> h_innovation(
+    inline Eigen::Matrix<double, ME, ME> h_innovation(
             const Eigen::Vector<double, N>& state,
-            const Eigen::Matrix<double, N, N>& estimateErrorCovariance,
-            const Eigen::Matrix<double, M, N>& hJacobian) const noexcept override
+            const Eigen::Matrix<double, NE, NE>& estimateErrorCovariance,
+            const Eigen::Matrix<double, ME, NE>& hJacobian) const noexcept override
     {
         const Eigen::Matrix<double, 3, 6>& hPoseJacobian =
                 utils::world_transform_of_point_jacobian(WorldCoordinate(state), _w2c);
@@ -99,13 +99,13 @@ template<int N = 3, int M = 3> class Point3dEstimator : public StateEstimator<N,
     }
 
     Point3dEstimator(const Eigen::Vector<double, N>& feature,
-                     const Eigen::Matrix<double, N, N>& featureCovariance,
+                     const Eigen::Matrix<double, NE, NE>& featureCovariance,
                      const Eigen::Vector<double, M>& measurment,
-                     const Eigen::Matrix<double, M, M>& measurmentCovariance,
+                     const Eigen::Matrix<double, ME, ME>& measurmentCovariance,
                      const WorldToCameraMatrix& w2c,
                      const matrix66& poseCovariance) :
 
-        StateEstimator<N, M>(feature, featureCovariance, measurment, measurmentCovariance),
+        StateEstimator<N, M, NE, ME>(feature, featureCovariance, measurment, measurmentCovariance),
         _w2c(w2c),
         _poseCovariance(poseCovariance)
     {
