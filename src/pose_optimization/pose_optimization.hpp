@@ -42,7 +42,7 @@ class Pose_Optimization
      */
     [[nodiscard]] static bool compute_pose_variance(const utils::PoseBase& optimizedPose,
                                                     const matches_containers::match_container& matchedFeatures,
-                                                    matrix66& poseCovariance,
+                                                    matrix77& poseCovariance,
                                                     const uint iterations = 100) noexcept;
 
     static void show_statistics(const double meanFrameTreatmentDuration,

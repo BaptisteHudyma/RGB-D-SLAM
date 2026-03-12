@@ -77,10 +77,6 @@ matchIndexSet MapPoint::find_matches(const DetectedKeypointsObject& detectedFeat
                                      const bool shouldAddToMatches,
                                      const bool useAdvancedSearch) const noexcept
 {
-    constexpr double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
-    constexpr double advancedSearchSpaceRadius = parameters::matching::matchSearchRadius_px * 2;
-    const double searchRadius = useAdvancedSearch ? advancedSearchSpaceRadius : searchSpaceRadius;
-
     // try to match with tracking
     matchIndexSet matchIndexRes;
     int matchIndex = detectedFeatures.get_tracking_match_index(_id);
@@ -95,6 +91,12 @@ matchIndexSet MapPoint::find_matches(const DetectedKeypointsObject& detectedFeat
         const bool isScreenCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamera, projectedMapPoint);
         if (isScreenCoordinatesValid)
         {
+            const vector3 sreenSpaceCovariance =
+                    utils::get_screen_point_covariance(_coordinates, _covariance, worldToCamera).diagonal();
+
+            const double searchSpaceRadius = sqrt(std::max(sreenSpaceCovariance.x(), sreenSpaceCovariance.y()));
+            const double searchRadius = useAdvancedSearch ? searchSpaceRadius * 3.0 : searchSpaceRadius * 2.0;
+
             matchIndexRes = detectedFeatures.get_match_indexes(
                     projectedMapPoint, _descriptor, isDetectedFeatureMatched, searchRadius);
         }
@@ -199,13 +201,12 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
 
     const ScreenCoordinate& matchedScreenPoint = matchedFeature._coordinates;
     const WorldToCameraMatrix& w2c = utils::compute_world_to_camera_transform(cameraToWorld);
-    if (is_depth_valid(matchedScreenPoint.z()))
+    // depth is valid, merge using the 3D model (more precise)
+    if (is_depth_valid(matchedScreenPoint.z()) and track_3d(matchedScreenPoint, w2c, poseCovariance))
     {
-        // depth is valid, merge using the 3D model (more precise)
-        if (not track_3d(matchedScreenPoint, w2c, poseCovariance))
-            return false;
+        // ok, passthrough, if this fails, track in 2D
     }
-    // depth is invalid, merge using the 2D model (slightly faster)
+    // depth is invalid or track 3D failed, merge using the 2D model (slightly faster)
     else if (not track_2d(matchedScreenPoint.get_2D(), w2c, poseCovariance))
         return false;
 

@@ -6,11 +6,6 @@
 namespace rgbd_slam::utils {
 
 /**
- * \brief Compute the jacobian of the transformation of a quaternion to euler angles
- */
-matrix34 get_quaternion_to_euler_jacobian(const quaternion& quat);
-
-/**
  * \brief Compute the jacobian of the transformation of a pose matrix composed of a position and a quaternion to a
  * pose matrix composed of a position and euler angles
  */

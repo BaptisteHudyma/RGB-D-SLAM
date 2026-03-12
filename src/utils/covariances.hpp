@@ -8,6 +8,8 @@
 #include <Eigen/src/Core/Matrix.h>
 #include <bits/ranges_algo.h>
 
+#include "covariances.hpp"
+
 namespace rgbd_slam::utils {
 
 template<int N>
@@ -191,6 +193,11 @@ Eigen::Matrix<double, 3, 6> world_transform_of_point_jacobian(const WorldCoordin
  */
 Eigen::Matrix<double, 2, 6> world_transform_of_2d_point_jacobian(const WorldCoordinate& point,
                                                                  const WorldToCameraMatrix& w2c);
+
+/**
+ * \brief Get the jacobian to transform a quaternion covariance to a euler form
+ */
+Eigen::Matrix<double, 3, 4> get_quaternion_to_euler_jacobian(const Eigen::Quaterniond& quat);
 
 } // namespace rgbd_slam::utils
 

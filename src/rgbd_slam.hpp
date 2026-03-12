@@ -12,7 +12,6 @@
 #include "map_features/map_point.hpp"
 #include "map_features/map_primitive.hpp"
 
-#include "tracking/motion_model.hpp"
 #include "utils/pose.hpp"
 #include <memory>
 #include <opencv2/line_descriptor.hpp>
@@ -44,10 +43,13 @@ class RGBD_SLAM
      *
      * \param[in] inputRgbImage Raw RGB image
      * \param[in] inputDepthImage Raw depth Image, in millimeters
+     * \param[in] time_s time of the measurment, in seconds
      *
      * \return The new estimated pose
      */
-    [[nodiscard]] utils::Pose track(const cv::Mat& inputRgbImage, const cv::Mat_<float>& inputDepthImage) noexcept;
+    [[nodiscard]] utils::Pose track(const cv::Mat& inputRgbImage,
+                                    const cv::Mat_<float>& inputDepthImage,
+                                    const double time_s) noexcept;
 
     /**
      * \brief Compute a debug image
@@ -85,7 +87,8 @@ class RGBD_SLAM
      */
     [[nodiscard]] utils::Pose compute_new_pose(const cv::Mat& grayImage,
                                                const cv::Mat_<float>& depthImage,
-                                               const matrixf& cloudArrayOrganized) noexcept;
+                                               const matrixf& cloudArrayOrganized,
+                                               const double time_s) noexcept;
 
     void compute_lines(const cv::Mat& grayImage, const cv::Mat_<float>& depthImage, cv::Mat& outImage) noexcept;
 
@@ -109,7 +112,6 @@ class RGBD_SLAM
     std::unique_ptr<features::lines::Line_Detection> _lineDetector = nullptr;
 
     utils::Pose _currentPose;
-    tracking::Motion_Model _motionModel;
 
     bool _isTrackingLost;      // True is the tracking of last frame failed
     uint _failedTrackingCount; // number of consecutive lost tracking

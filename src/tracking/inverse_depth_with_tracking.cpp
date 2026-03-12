@@ -13,7 +13,7 @@ namespace rgbd_slam::tracking {
 /**
  * Define the estimator for the inverse depth fuse/tracker
  */
-template<int N = 6, int M = 2> class InverseDepthEstimator : public StateEstimator<N, M>
+template<int N = 6, int M = 2, int NE = N, int ME = M> class InverseDepthEstimator : public StateEstimator<N, M, NE, ME>
 {
   public:
     virtual ~InverseDepthEstimator() = default;
@@ -23,27 +23,27 @@ template<int N = 6, int M = 2> class InverseDepthEstimator : public StateEstimat
         return InverseDepthWorldPoint(state).get_projected_screen_estimation(_w2c);
     }
 
-    Eigen::Matrix<double, M, N> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
+    Eigen::Matrix<double, ME, NE> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
     {
         return InverseDepthWorldPoint(state).get_projected_screen_estimation_jacobian(_w2c);
     }
 
     InverseDepthEstimator(const Eigen::Vector<double, N>& feature,
-                          const Eigen::Matrix<double, N, N>& featureCovariance,
+                          const Eigen::Matrix<double, NE, NE>& featureCovariance,
                           const Eigen::Vector<double, M>& measurment,
-                          const Eigen::Matrix<double, M, M>& measurmentCovariance,
+                          const Eigen::Matrix<double, ME, ME>& measurmentCovariance,
                           const WorldToCameraMatrix& w2c,
                           const matrix66& poseCovariance) :
-        StateEstimator<N, M>(feature, featureCovariance, measurment, measurmentCovariance),
+        StateEstimator<N, M, NE, ME>(feature, featureCovariance, measurment, measurmentCovariance),
         _w2c(w2c),
         _poseCovariance(poseCovariance)
     {
     }
 
-    inline Eigen::Matrix<double, M, M> h_innovation(
+    inline Eigen::Matrix<double, ME, ME> h_innovation(
             const Eigen::Vector<double, N>& state,
-            const Eigen::Matrix<double, N, N>& estimateErrorCovariance,
-            const Eigen::Matrix<double, M, N>& hJacobian) const noexcept override
+            const Eigen::Matrix<double, NE, NE>& estimateErrorCovariance,
+            const Eigen::Matrix<double, ME, NE>& hJacobian) const noexcept override
     {
         const Eigen::Matrix<double, 2, 6>& hPoseJacobian =
                 utils::world_transform_of_2d_point_jacobian(InverseDepthWorldPoint(state).to_world_coordinates(), _w2c);

@@ -183,7 +183,8 @@ int main(int argc, char* argv[])
 
         // get optimized pose
         const double trackingStartTime = static_cast<double>(cv::getTickCount());
-        pose = RGBD_Slam.track(rgbImage, depthImage);
+        // 30 FPS normally
+        pose = RGBD_Slam.track(rgbImage, depthImage, frameIndex / 30.0);
         const double trackingDuration =
                 (static_cast<double>(cv::getTickCount()) - trackingStartTime) / cv::getTickFrequency();
         meanTreatmentDuration += trackingDuration;

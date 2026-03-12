@@ -285,7 +285,7 @@ bool Pose_Optimization::compute_optimized_pose(const utils::PoseBase& currentPos
     if (compute_pose_with_ransac(currentPose, matchedFeatures, optimizedPose, featureSets))
     {
         // Compute pose variance
-        if (matrix66 estimatedPoseCovariance;
+        if (matrix77 estimatedPoseCovariance;
             compute_pose_variance(optimizedPose, featureSets._inliers, estimatedPoseCovariance))
         {
             optimizedPose.set_position_variance(estimatedPoseCovariance);
@@ -360,7 +360,7 @@ bool Pose_Optimization::compute_optimized_global_pose(const utils::PoseBase& cur
 
 bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPose,
                                               const matches_containers::match_container& matchedFeatures,
-                                              matrix66& poseCovariance,
+                                              matrix77& poseCovariance,
                                               const uint iterations) noexcept
 {
     const double computePoseVarianceStartTime = static_cast<double>(cv::getTickCount());
@@ -372,9 +372,9 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
     }
     poseCovariance.setZero();
 
-    std::vector<vector6> posesError;
+    std::vector<vector7> posesError;
     posesError.reserve(iterations);
-    vector6 poseMedium = vector6::Zero();
+    vector7 poseMedium = vector7::Zero();
 
 #ifndef MAKE_DETERMINISTIC
     std::mutex mut;
@@ -389,7 +389,7 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
                           utils::PoseBase newPose;
                           if (compute_random_variation_of_pose(optimizedPose, matchedFeatures, newPose))
                           {
-                              const vector6& pose6dof = newPose.get_error_vector();
+                              const vector7& pose6dof = newPose.get_vector();
 #ifndef MAKE_DETERMINISTIC
                               std::scoped_lock<std::mutex> lock(mut);
 #endif
@@ -415,7 +415,7 @@ bool Pose_Optimization::compute_pose_variance(const utils::PoseBase& optimizedPo
 
     poseMedium /= static_cast<double>(posesError.size());
 
-    for (const vector6& poseErrs: posesError)
+    for (const auto& poseErrs: posesError)
     {
         const auto& d = poseErrs - poseMedium;
         poseCovariance += d * d.transpose();
