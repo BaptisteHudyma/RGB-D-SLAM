@@ -143,10 +143,17 @@ bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                 TrackedPointsObject& trackedFeatures,
                                 const uint dropChance) const noexcept
 {
-    std::ignore = worldToCamera;
-    std::ignore = trackedFeatures;
-    std::ignore = dropChance;
-    // do not track inverse depth points, it gives incorrect triangulation
+    const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
+
+    if (shouldNotDropPoint and latestMatchedFeature.has_value())
+    {
+        const ScreenCoordinate2D& screenCoordinates = latestMatchedFeature.value();
+
+        // use previously known screen coordinates
+        trackedFeatures.add(_id, screenCoordinates.x(), screenCoordinates.y());
+        return true;
+    }
+    // point was not added
     return false;
 }
 
@@ -297,12 +304,14 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
         return false;
     }
 
+    latestMatchedFeature = matchCoordinates.get_2D();
     return true;
 }
 
 void MapPoint2D::update_no_match() noexcept
 {
     // do nothing
+    latestMatchedFeature.reset();
 }
 
 /**

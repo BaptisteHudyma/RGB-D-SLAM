@@ -120,27 +120,19 @@ bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPointsObject& trackedFeatures,
                               const uint dropChance) const noexcept
 {
-    // tracking cannot exist has is with the motion model
-    return false;
-
-#if 0
     const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
     assert(not _coordinates.hasNaN());
-    if (shouldNotDropPoint)
+    if (shouldNotDropPoint and latestMatchedFeature.has_value())
     {
-        ScreenCoordinate2D screenCoordinates;
-        if (_coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
-        {
-            // use previously known screen coordinates
-            trackedFeatures.add(_id, screenCoordinates.x(), screenCoordinates.y());
+        const ScreenCoordinate2D& screenCoordinates = latestMatchedFeature.value();
 
-            return true;
-        }
+        // use previously known screen coordinates
+        trackedFeatures.add(_id, screenCoordinates.x(), screenCoordinates.y());
+        return true;
     }
     // point was not added
     return false;
-#endif
 }
 
 void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix,
@@ -233,12 +225,14 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     if (const cv::Mat& descriptor = matchedFeature._descriptor; not descriptor.empty())
         _descriptor = descriptor;
 
+    latestMatchedFeature = matchedScreenPoint.get_2D();
     return true;
 }
 
 void MapPoint::update_no_match() noexcept
 {
     // do nothing
+    latestMatchedFeature.reset();
 }
 
 /**
