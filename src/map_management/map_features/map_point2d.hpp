@@ -106,6 +106,8 @@ class MapPoint2D :
 
   protected:
     void update_no_match() noexcept override;
+
+    std::optional<ScreenCoordinate2D> latestMatchedFeature;
 };
 
 /**

@@ -1,10 +1,12 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT_HPP
 
+#include "coordinates/point_coordinates.hpp"
 #include "feature_map.hpp"
 #include "features/keypoints/keypoint_handler.hpp"
 #include "tracking/point_with_tracking.hpp"
 #include "matches_containers.hpp"
+#include <optional>
 
 namespace rgbd_slam::map_management {
 
@@ -111,6 +113,8 @@ class MapPoint :
 
   protected:
     void update_no_match() noexcept override;
+
+    std::optional<ScreenCoordinate2D> latestMatchedFeature;
 };
 
 /**
