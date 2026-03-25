@@ -7,6 +7,7 @@
 #include "types.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <bits/ranges_algo.h>
+#include <opencv2/core/types.hpp>
 
 #include "covariances.hpp"
 
@@ -198,6 +199,11 @@ Eigen::Matrix<double, 2, 6> world_transform_of_2d_point_jacobian(const WorldCoor
  * \brief Get the jacobian to transform a quaternion covariance to a euler form
  */
 Eigen::Matrix<double, 3, 4> get_quaternion_to_euler_jacobian(const Eigen::Quaterniond& quat);
+
+/**
+ * \brief Return a rotated rect opencv strucure corresponding to the corresponding covariance
+ */
+cv::RotatedRect get_rotated_rect_screen_covariance(const vector2& center, const matrix22& screenCovariance);
 
 } // namespace rgbd_slam::utils
 

@@ -19,11 +19,11 @@ vector3 get_optimization_coefficients_from_quaternion(const quaternion& quat)
     /// by: G. Terzakis, P. Culverhouse, G. Bugmann, S. Sharma and R. Sutton
     ///
 
-    // The max is an addition on my part to resolve the occasional case where we have a pure rotation that gives quat.z
-    // at -1
-    const double divider = 1.0 / std::max(1.0 + quat.z(), 0.001);
+    if (abs(quat.w()) < 1e-8)
+        return vector3::Zero();
 
-    return vector3(quat.w() * divider, quat.x() * divider, quat.y() * divider);
+    const double divider = 1.0 / (1.0 + quat.w());
+    return vector3(quat.x() * divider, quat.y() * divider, quat.z() * divider);
 }
 
 quaternion get_quaternion_from_optimization_coefficients(const vector3& optimizationCoefficients)
@@ -31,10 +31,10 @@ quaternion get_quaternion_from_optimization_coefficients(const vector3& optimiza
     const double alpha =
             SQR(optimizationCoefficients.x()) + SQR(optimizationCoefficients.y()) + SQR(optimizationCoefficients.z());
     const double divider = 1.0 / (alpha + 1);
-    return quaternion(2.0 * optimizationCoefficients.x() * divider,
+    return quaternion((1 - alpha) * divider,
+                      2.0 * optimizationCoefficients.x() * divider,
                       2.0 * optimizationCoefficients.y() * divider,
-                      2.0 * optimizationCoefficients.z() * divider,
-                      (1 - alpha) * divider);
+                      2.0 * optimizationCoefficients.z() * divider);
 }
 
 Eigen::Matrix<double, 4, 3> get_quaternion_from_optimization_coefficients_jacobian(const vector3& optCoeff)
@@ -51,18 +51,19 @@ Eigen::Matrix<double, 4, 3> get_quaternion_from_optimization_coefficients_jacobi
 
     const double multiplierDiag = -4.0 / SQR(theta5);
 
+    // storage order : x
     jacobian(0, 0) = 2.0 / theta5 - SQR(optCoeff.x()) * multiplierDiag;
     jacobian(0, 1) = theta4;
     jacobian(0, 2) = theta3;
-
+    // storage order : y
     jacobian(1, 0) = theta4;
     jacobian(1, 1) = 2.0 / theta5 - SQR(optCoeff.y()) * multiplierDiag;
     jacobian(1, 2) = theta2;
-
+    // storage order : z
     jacobian(2, 0) = theta3;
     jacobian(2, 1) = theta2;
     jacobian(2, 2) = 2.0 / theta5 - SQR(optCoeff.z()) * multiplierDiag;
-
+    // storage order : w
     const double multiA = 2.0 * theta1 / SQR(theta5);
     const double multiB = -2.0 / theta5;
     jacobian(3, 0) = optCoeff.x() * multiA + optCoeff.x() * multiB;

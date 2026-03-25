@@ -7,6 +7,8 @@
 #include <cmath>
 #include <stdexcept>
 
+#include <boost/math/distributions/chi_squared.hpp>
+
 namespace rgbd_slam::utils {
 
 double get_depth_quantization(const double depth_m) noexcept
@@ -306,6 +308,26 @@ Eigen::Matrix<double, 3, 4> get_quaternion_to_euler_jacobian(const Eigen::Quater
     -(q3+q2)/denomA - (q3-q2)/denomB, (q4+q1)/denomA + (q4-q1)/denomB, (q4+q1)/denomA - (q4-q1)/denomB, -(q3+q2)/denomA + (q3-q2)/denomB;
     // clang-format on
     return jac;
+}
+
+cv::RotatedRect get_rotated_rect_screen_covariance(const vector2& center, const matrix22& screenCovariance)
+{
+    // 95% inclusion range;
+    static const double chiTest = sqrt(boost::math::quantile(boost::math::chi_squared(2.0), 0.95));
+
+    Eigen::SelfAdjointEigenSolver<matrix22> eigenSolver(screenCovariance);
+    // ascending order
+    const vector2& eigenValues = eigenSolver.eigenvalues();
+    const matrix22& eigenVector = eigenSolver.eigenvectors();
+
+    double angle = atan2(eigenVector.col(1).y(), eigenVector.col(1).x());
+    if (angle < 0.0)
+        angle += 2.0 * M_PI;
+    angle *= 180.0 / M_PI;
+
+    return cv::RotatedRect(cv::Point(static_cast<int>(center.x()), static_cast<int>(center.y())),
+                           cv::Size2f(chiTest * sqrt(eigenValues(1)), chiTest * sqrt(eigenValues(0))),
+                           -angle);
 }
 
 } // namespace rgbd_slam::utils

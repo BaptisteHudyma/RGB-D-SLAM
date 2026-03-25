@@ -91,10 +91,10 @@ matchIndexSet MapPoint::find_matches(const DetectedKeypointsObject& detectedFeat
         const bool isScreenCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamera, projectedMapPoint);
         if (isScreenCoordinatesValid)
         {
-            const vector3 sreenSpaceCovariance =
+            const vector3 screenSpaceCovariance =
                     utils::get_screen_point_covariance(_coordinates, _covariance, worldToCamera).diagonal();
 
-            const double searchSpaceRadius = sqrt(std::max(sreenSpaceCovariance.x(), sreenSpaceCovariance.y()));
+            const double searchSpaceRadius = sqrt(std::max(screenSpaceCovariance.x(), screenSpaceCovariance.y()));
             const double searchRadius = useAdvancedSearch ? searchSpaceRadius * 3.0 : searchSpaceRadius * 2.0;
 
             matchIndexRes = detectedFeatures.get_match_indexes(
@@ -120,6 +120,10 @@ bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                               TrackedPointsObject& trackedFeatures,
                               const uint dropChance) const noexcept
 {
+    // tracking cannot exist has is with the motion model
+    return false;
+
+#if 0
     const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
     assert(not _coordinates.hasNaN());
@@ -136,6 +140,7 @@ bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
     }
     // point was not added
     return false;
+#endif
 }
 
 void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix,
@@ -162,6 +167,20 @@ void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix,
                        1,
                        cv::Scalar(0, 0, 255),
                        -1);
+        }
+
+        const bool shouldDisplayErrorEllipse = true;
+        if (shouldDisplayErrorEllipse)
+        {
+            // get covariance of the point in 2d
+            const auto& screenPointCovariance =
+                    utils::get_screen_point_covariance(_coordinates, _covariance, worldToCamMatrix);
+
+            cv::ellipse(debugImage,
+                        utils::get_rotated_rect_screen_covariance(screenPoint.get_2D(),
+                                                                  screenPointCovariance.block<2, 2>(0, 0)),
+                        color,
+                        1);
         }
     }
 }

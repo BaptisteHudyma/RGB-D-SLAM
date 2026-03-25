@@ -199,6 +199,22 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
                        cv::Scalar(15, 15, 15),
                        -1);
         }
+
+        const bool shouldDisplayErrorEllipse = true;
+        if (shouldDisplayErrorEllipse)
+        {
+            Eigen::Matrix<double, 3, 6> jacobian;
+            const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
+            const WorldCoordinateCovariance& cartCov = compute_cartesian_covariance(_covariance, jacobian);
+            // get covariance of the point in 2d
+            const auto& screenPointCovariance =
+                    utils::get_screen_point_covariance(worldCoords, cartCov, worldToCamMatrix);
+
+            cv::ellipse(debugImage,
+                        utils::get_rotated_rect_screen_covariance(centerProj, screenPointCovariance.block<2, 2>(0, 0)),
+                        color,
+                        1);
+        }
     }
     else
     {
@@ -261,23 +277,27 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
         return false;
     }
 
-    // use the correct function when it will exist
-    if (is_depth_valid(matchedFeature._coordinates.z()))
+    const auto& matchCoordinates = matchedFeature._coordinates;
+    // use the real observation, it will most likely override the covariance inside the inverse depth point
+    if (is_depth_valid(matchCoordinates.z()) and track_3D(matchCoordinates,
+                                                          matchCoordinates.get_covariance(),
+                                                          cameraToWorld,
+                                                          poseCovariance,
+                                                          matchedFeature._descriptor))
     {
-        // use the real observation, it will most likely override the covariance inside the inverse depth point
-        const bool isSuccess = track_3D(matchedFeature._coordinates,
-                                        matchedFeature._coordinates.get_covariance(),
-                                        cameraToWorld,
-                                        poseCovariance,
-                                        matchedFeature._descriptor);
-        if (isSuccess)
-            return true;
-        // else: try 2D fusion
+        // success ! passthrough
+    }
+    // else: try 2D fusion
+    else if (not track_2D(matchCoordinates.get_2D(),
+                          matchCoordinates.get_2D().get_covariance(),
+                          cameraToWorld,
+                          poseCovariance,
+                          matchedFeature._descriptor))
+    {
+        return false;
     }
 
-    // use a 2D observation, that will be merged with the current one
-    const auto& feature2d = matchedFeature._coordinates.get_2D();
-    return track_2D(feature2d, feature2d.get_covariance(), cameraToWorld, poseCovariance, matchedFeature._descriptor);
+    return true;
 }
 
 void MapPoint2D::update_no_match() noexcept

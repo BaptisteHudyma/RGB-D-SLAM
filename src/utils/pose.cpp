@@ -426,7 +426,6 @@ bool Pose::update_with_new_pose(const PoseBase& measurment,
     if (_latestUpdateTime_s <= 0)
     {
         // init
-        outputs::log(std::format("First update call"));
         _latestUpdateTime_s = measurmentTime_s;
         return true;
     }
