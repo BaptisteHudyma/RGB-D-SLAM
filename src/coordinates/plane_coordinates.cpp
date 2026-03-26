@@ -53,6 +53,8 @@ vector3 PlaneWorldCoordinates::get_reduced_signed_distance(const PlaneCameraCoor
 
     return cameraPlane.get_d() * cameraPlane.get_normal() -
            projectedWorldPlane.get_d() * projectedWorldPlane.get_normal();
+    // alternative representation
+    // return get_plane_transformation(cameraPlane) - get_plane_transformation(projectedWorldPlane);
 }
 
 matrix34 PlaneWorldCoordinates::get_reduced_signed_distance_jacobian(

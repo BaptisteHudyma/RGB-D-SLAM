@@ -368,13 +368,21 @@ std::ostream& operator<<(std::ostream& os, const Pose& pose)
 
 Pose Pose::predict(const double measurmentTime_s) const noexcept
 {
-    if (_latestUpdateTime_s <= 0)
+    // invalid timestamp
+    if (_latestUpdateTime_s < 0)
     {
         outputs::log(std::format("First prediction call"));
 
         // init
         Pose result = *this;
-        // result._poseVariance += get_Q(1.0 / 30.0);
+        result._latestUpdateTime_s = measurmentTime_s;
+        return result;
+    }
+
+    // same time, return same prediction
+    if (abs(measurmentTime_s - _latestUpdateTime_s) < 0.001)
+    {
+        Pose result = *this;
         result._latestUpdateTime_s = measurmentTime_s;
         return result;
     }
@@ -383,7 +391,6 @@ Pose Pose::predict(const double measurmentTime_s) const noexcept
         outputs::log_error(std::format(
                 "time must advance in the future: {:.4f} -> {:.4f}", _latestUpdateTime_s, measurmentTime_s));
         Pose result = *this;
-        // result._poseVariance += get_Q(1.0 / 30.0);
         result._latestUpdateTime_s = measurmentTime_s;
         return result;
     }
