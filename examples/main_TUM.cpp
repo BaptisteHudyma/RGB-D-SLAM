@@ -161,6 +161,7 @@ int main(int argc, char* argv[])
         rgbd_slam::utils::PoseBase groundTruthPose(initialGroundTruth.position, initialGroundTruth.rotation);
         positionError = pose.get_position_error(groundTruthPose);
         rotationError = pose.get_rotation_error(groundTruthPose);
+        pose.reset_new_world(initialGroundTruth.timeStamp);
     }
 
     // Load a default set of parameters

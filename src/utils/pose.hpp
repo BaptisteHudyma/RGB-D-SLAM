@@ -137,10 +137,13 @@ class Pose : public PoseBaseWithSpeed
     /**
      * \reset this pose, as if starting from a new world
      */
-    void reset_new_world()
+    void reset_new_world(const double updateTime_s = 0.0)
     {
         _poseVariance.setZero();
         _latestUpdateTime_s = 0.0;
+        _latestUpdateTime_s = updateTime_s;
+        update_position_speed(vector3::Zero());
+        update_rotation_speed(vector3::Zero());
     }
 
     /**

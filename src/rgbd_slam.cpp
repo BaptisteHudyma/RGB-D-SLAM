@@ -246,10 +246,14 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
         // add unmatched features if not tracking could be done last calls
         if (_isTrackingLost)
         {
-            outputs::log("Resetting the map and pose");
+            // if not starting call, reset the map and
+            if (not _isFirstTrackingCall)
+            {
+                outputs::log("Resetting the map and pose");
+            }
 
             // reset the pose covariance
-            _currentPose.reset_new_world();
+            _currentPose.reset_new_world(time_s);
             _failedTrackingCount = 0;
 
             // clear local map
