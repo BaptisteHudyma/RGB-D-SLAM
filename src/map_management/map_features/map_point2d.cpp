@@ -308,6 +308,13 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
     return true;
 }
 
+bool MapPoint2D::merge(const MapPoint2D& other) noexcept
+{
+    // TODO: merge
+    std::ignore = other;
+    return false;
+}
+
 void MapPoint2D::update_no_match() noexcept
 {
     // do nothing

@@ -237,6 +237,36 @@ bool MapPlane::update_with_match(const DetectedPlaneType& matchedFeature,
     }
 }
 
+bool MapPlane::merge(const MapPlane& other) noexcept
+{
+    // safety
+    if (_id == other._id)
+    {
+        outputs::log_error("Tried to merge a map element to itself");
+        return false;
+    }
+
+    // if distance between planes is too great
+    static const double minimumNormalDotDiff =
+            abs(cos(parameters::matching::maximumAngleForPlaneMatch_d * M_PI / 180.0));
+    if (abs(_parametrization.get_cos_angle(other._parametrization)) < minimumNormalDotDiff)
+    {
+        return false;
+    }
+    // angle between normals is further than a threshold
+    constexpr double maximumPlaneMatchDistance = parameters::matching::maximumDistanceForPlaneMatch_m;
+    if (abs(_parametrization.get_d() - other._parametrization.get_d()) > maximumPlaneMatchDistance)
+    {
+        return false;
+    }
+
+    // TODO: merge parameters
+
+    // merge the boundary polygon with the other polygon
+    _boundaryPolygon.merge(other._boundaryPolygon);
+    return true;
+}
+
 void MapPlane::update_no_match() noexcept
 {
     // do nothing

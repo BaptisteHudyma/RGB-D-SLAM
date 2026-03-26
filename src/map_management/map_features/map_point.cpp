@@ -229,6 +229,18 @@ bool MapPoint::update_with_match(const DetectedPointType& matchedFeature,
     return true;
 }
 
+bool MapPoint::merge(const MapPoint& other) noexcept
+{
+    if ((this->_coordinates - other._coordinates).norm() > 0.1)
+    {
+        // too far refuse match
+        return false;
+    }
+
+    // TODO: true merge
+    return true;
+}
+
 void MapPoint::update_no_match() noexcept
 {
     // do nothing

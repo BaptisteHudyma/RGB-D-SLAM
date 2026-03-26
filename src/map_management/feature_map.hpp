@@ -10,6 +10,7 @@
 
 #include "types.hpp"
 
+#include <algorithm>
 #include <memory>
 
 #include <opencv2/core/matx.hpp>
@@ -363,6 +364,8 @@ class Feature_Map
      * \param[in] poseCovariance Covariance of the pose after tracking
      * \param[in] detectedFeatures The object containing the detected features used for the tracking
      * \param[in] mapWriter A pointer to the map writer object
+     *
+     * \return The set of detection indexes used in a successful fusion fusion
      */
     matchIndexSet update_map(const CameraToWorldMatrix& cameraToWorld,
                              const matrix66& poseCovariance,
@@ -702,6 +705,61 @@ class Feature_Map
         }
     }
 
+    /**
+     * \brief Trye to merge map features that are matched to the same detected features
+     * \param[in] detectedFeatureIdToMapId Association of a detection id to the merged map ids
+     * \param[in, out] map The map to uodate
+     */
+    template<class MapType>
+    void merge_map_features_with_detection_ids(const std::map<size_t, std::vector<size_t>>& detectedFeatureIdToMapId,
+                                               MapType& map)
+    {
+        // try to merge map feature that were fused to the same detected features
+        for (const auto& [matchIndex, mapFeatures]: detectedFeatureIdToMapId)
+        {
+            if (mapFeatures.size() <= 1)
+            {
+                // less or one duplicated map feature, ignore merge
+                continue;
+            }
+
+            const auto& smallestElementIterator = std::min_element(mapFeatures.begin(), mapFeatures.end());
+            if (smallestElementIterator == mapFeatures.cend())
+            {
+                // failed the smallest element test
+                continue;
+            }
+
+            typename MapType::iterator firstElementIterator = map.find(*smallestElementIterator);
+            if (firstElementIterator == map.cend())
+            {
+                // TODO: fallback to another start index while there is more than 1 left
+                continue;
+            }
+
+            // get first map feature
+            MapFeatureType& mergeInto = firstElementIterator->second;
+            for (const auto& element: mapFeatures)
+            {
+                // do not merge an id to itself
+                if (firstElementIterator->second._id == element)
+                    continue;
+
+                typename MapType::iterator elementIterator = map.find(element);
+                // not exist anymore
+                if (elementIterator == map.cend())
+                    continue;
+
+                // merge other features
+                if (mergeInto.merge(elementIterator->second))
+                {
+                    // remove the merged other map feature
+                    map.erase(elementIterator);
+                }
+            }
+        }
+    }
+
     matchIndexSet update_local_map(const CameraToWorldMatrix& cameraToWorld,
                                    const matrix66& poseCovariance,
                                    const DetectedFeaturesObject& detectedFeatureObject,
@@ -720,22 +778,25 @@ class Feature_Map
             MapFeatureType& mapFeature = featureMapIterator->second;
             assert(featureMapIterator->first == mapFeature._id);
 
+            // try to merge every successfully matched features
             bool hasSuccess = false;
             for (const auto i: mapFeature._matchIndexes)
             {
                 assert(i < detectedFeatureObject.size());
 
+                // try to update with this match
                 const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(i);
-                const bool res = mapFeature.update_with_match(detectedFeature, poseCovariance, cameraToWorld);
-                if (res)
+                if (mapFeature.update_with_match(detectedFeature, poseCovariance, cameraToWorld))
                 {
                     hasSuccess = true;
                     usedIndices.emplace(i);
 
+                    // if detected id is already used in a map feature update, update it
                     if (detectedIdToMapId.contains(i))
                     {
                         detectedIdToMapId[i].push_back(mapFeature._id);
                     }
+                    // if detected id is NOT already used in a map feature update, add it
                     else
                     {
                         detectedIdToMapId.emplace(i, std::vector<size_t>());
@@ -744,11 +805,13 @@ class Feature_Map
                 }
             }
 
+            // at least one sucessful update
             if (hasSuccess)
                 mapFeature.update_matched();
             else
                 mapFeature.update_unmatched();
 
+            // feature is lost, remove it
             if (mapFeature.is_lost())
             {
                 if (not mapFeature.is_moving())
@@ -765,6 +828,10 @@ class Feature_Map
                 ++featureMapIterator;
             }
         }
+
+        // try to merge the features
+        merge_map_features_with_detection_ids(detectedIdToMapId, _localMap);
+
         return usedIndices;
     }
 
@@ -791,8 +858,7 @@ class Feature_Map
 
                 const DetectedFeatureType& detectedFeature = detectedFeatureObject.at(i);
 
-                const bool res = stagedFeature.update_with_match(detectedFeature, poseCovariance, cameraToWorld);
-                if (res)
+                if (stagedFeature.update_with_match(detectedFeature, poseCovariance, cameraToWorld))
                 {
                     hasSuccess = true;
                     usedIndices.emplace(i);
