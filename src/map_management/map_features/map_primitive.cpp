@@ -108,25 +108,19 @@ matchIndexSet MapPlane::find_matches(const DetectedPlaneObject& detectedFeatures
     static double planeMinimalOverlap = parameters::matching::minimumPlaneOverlapToConsiderMatch;
     const double areaSimilarityThreshold = (useAdvancedSearch ? planeMinimalOverlap / 2 : planeMinimalOverlap);
 
-    double greatestSimilarity = 0.0;
-
     if (projectedArea <= 0.0)
         return matchIndexes;
 
-    int selectedIndex = -1;
     // search best match score
     const int detectedPlaneSize = static_cast<int>(detectedFeatures.size());
     for (int planeIndex = 0; planeIndex < detectedPlaneSize; ++planeIndex)
     {
-        if (isDetectedFeatureMatched[planeIndex])
-            // Does not allow multiple removal of a single match
-            // TODO: change this
-            continue;
-
         const features::primitives::Plane& shapePlane = detectedFeatures[planeIndex];
 
         // if distance between planes is too great or angle between normals is further than a threshold, reject
-        if (not shapePlane.is_distance_similar(projectedPlane) or not shapePlane.is_normal_similar(projectedPlane))
+        if (not shapePlane.is_normal_similar(projectedPlane))
+            continue;
+        if (not shapePlane.is_distance_similar(projectedPlane))
             continue;
 
         // compute a similarity score: compute the inter area of the map plane and the detected plane, divide it by
@@ -135,28 +129,21 @@ matchIndexSet MapPlane::find_matches(const DetectedPlaneObject& detectedFeatures
         // TODO: this metric fails as the plane becomes bigger
         const double newPlaneArea = detectedPolygon.get_area(); // max area of the two potential planes
         const double interArea = detectedPolygon.inter_area(projectedPolygon);
-        // similarity is greater than the greatest similarity, and overlap is greater than threshold
-        if (interArea > greatestSimilarity and interArea / newPlaneArea >= areaSimilarityThreshold)
+        // overlap is greater than threshold
+        if (interArea / newPlaneArea >= areaSimilarityThreshold)
         {
-            selectedIndex = planeIndex;
-            greatestSimilarity = interArea;
+            if (shouldAddToMatches)
+            {
+                matches.push_back(
+                        std::make_shared<PlaneOptimizationFeature>(detectedFeatures[planeIndex].get_parametrization(),
+                                                                   get_parametrization(),
+                                                                   get_covariance().diagonal().cwiseSqrt(),
+                                                                   _id,
+                                                                   planeIndex));
+            }
+            matchIndexes.emplace(planeIndex);
         }
     }
-
-    if (selectedIndex <= 0)
-        return matchIndexes;
-
-    if (shouldAddToMatches)
-    {
-        matches.push_back(
-                std::make_shared<PlaneOptimizationFeature>(detectedFeatures[selectedIndex].get_parametrization(),
-                                                           get_parametrization(),
-                                                           get_covariance().diagonal().cwiseSqrt(),
-                                                           _id,
-                                                           selectedIndex));
-    }
-
-    matchIndexes.emplace(selectedIndex);
     return matchIndexes;
 }
 
