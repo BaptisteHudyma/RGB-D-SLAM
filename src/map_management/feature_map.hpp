@@ -1,13 +1,13 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_FEATUREMAP_HPP
 #define RGBDSLAM_MAPMANAGEMENT_FEATUREMAP_HPP
 
-#include "covariances.hpp"
 #include "outputs/map_writer.hpp"
 #include "outputs/logger.hpp"
 
-#include "matches_containers.hpp"
 #include "utils/random.hpp"
+#include "utils/covariances.hpp"
 
+#include "matches_containers.hpp"
 #include "types.hpp"
 
 #include <algorithm>
@@ -314,12 +314,19 @@ class Feature_Map
         const auto& detected = get_detected_feature(detectedFeatures);
 
         matches_containers::match_container testMatches;
-        get_matches(detected, worldToCamera, false, minimumFeaturesForOptimization, testMatches);
+
+        get_map_feature_matches(
+                detected, worldToCamera, false, minimumFeaturesForOptimization, _isDetectedFeatureMatched, testMatches);
         if (testMatches.size() < minimumFeaturesForOptimization)
         // What is the use of this metric ? TODO: document
         // or testMatches.size() < std::min(detectedFeatures.size(), get_local_map_size()) / 2)
         {
-            get_matches(detected, worldToCamera, true, minimumFeaturesForOptimization, testMatches);
+            get_map_feature_matches(detected,
+                                    worldToCamera,
+                                    true,
+                                    minimumFeaturesForOptimization,
+                                    _isDetectedFeatureMatched,
+                                    testMatches);
         }
 
         // merge the two
@@ -382,6 +389,7 @@ class Feature_Map
 
         const auto& detected = get_detected_feature(detectedFeatures);
 
+        // update with matches
         usedIndexSet.merge(update_local_map(cameraToWorld, poseCovariance, detected, mapWriter));
         usedIndexSet.merge(update_staged_map(cameraToWorld, poseCovariance, detected));
         return usedIndexSet;
@@ -505,6 +513,36 @@ class Feature_Map
 
     /**
      * \brief Mark the map feature with the given id as unmatched
+     * \param[in, out] map Map to update
+     * \param[in] featureId The id of the feature to mark as unmatched
+     * \param[in] detectedFeatureId The id of the matched detected feature
+     * \param[in,out] isDetectedFeatureMatched container to flag if a feature is already matched
+     * \return True if the feature was found, or false
+     */
+    template<class MapType>
+    [[nodiscard]] static bool mark_feature_with_id_as_unmatched(MapType& map,
+                                                                const size_t featureId,
+                                                                const size_t detectedFeatureId,
+                                                                vectorb& isDetectedFeatureMatched) noexcept
+    {
+        typename MapType::iterator featureMapIterator = map.find(featureId);
+        if (featureMapIterator != map.end())
+        {
+            auto& mapFeature = featureMapIterator->second;
+            assert(mapFeature._id == featureId);
+
+            if (mapFeature.is_matched())
+            {
+                isDetectedFeatureMatched[detectedFeatureId] = false;
+                mapFeature.mark_unmatched(detectedFeatureId);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * \brief Mark the map feature with the given id as unmatched
      * \param[in] featureId The id of the feature to mark as unmatched
      * \param[in] detectedFeatureId The id of the matched detected feature
      * \return True if the feature was found, or false
@@ -520,35 +558,14 @@ class Feature_Map
             outputs::log_error(get_display_name() + ": Cannot match a feature with invalid id");
             return false;
         }
-        // Check if id is in local map
-        typename localMapType::iterator featureMapIterator = _localMap.find(featureId);
-        if (featureMapIterator != _localMap.end())
-        {
-            MapFeatureType& mapFeature = featureMapIterator->second;
-            assert(mapFeature._id == featureId);
 
-            if (mapFeature.is_matched())
-            {
-                _isDetectedFeatureMatched[detectedFeatureId] = false;
-                mapFeature.mark_unmatched(detectedFeatureId);
-            }
+        // Check if id is in local map
+        if (mark_feature_with_id_as_unmatched(_localMap, featureId, detectedFeatureId, _isDetectedFeatureMatched))
             return true;
-        }
 
         // Check if it is in staged map
-        typename stagedMapType::iterator stagedMapIterator = _stagedMap.find(featureId);
-        if (stagedMapIterator != _stagedMap.end())
-        {
-            StagedFeatureType& mapFeature = stagedMapIterator->second;
-            assert(mapFeature._id == featureId);
-
-            if (mapFeature.is_matched())
-            {
-                _isDetectedFeatureMatched[detectedFeatureId] = false;
-                mapFeature.mark_unmatched(detectedFeatureId);
-            }
+        if (mark_feature_with_id_as_unmatched(_stagedMap, featureId, detectedFeatureId, _isDetectedFeatureMatched))
             return true;
-        }
 
         // feature associated with id was not found
         return false;
@@ -598,11 +615,11 @@ class Feature_Map
      */
     [[nodiscard]] std::vector<UpgradedFeature_ptr> get_upgraded_features(const CameraToWorldMatrix& cameraToWorld)
     {
-        auto upgradedMapFeatures = get_upgraded_map_features(cameraToWorld);
+        auto upgradedMapFeatures = get_upgraded_features(cameraToWorld, _localMap);
 
 // TODO: do we want to upgrade staged features ?
 #if 0
-        auto upgradedStagedFeatures = get_upgraded_staged_features(cameraToWorld);
+        auto upgradedStagedFeatures = get_upgraded_features(cameraToWorld, _stagedMap);
         upgradedMapFeatures.insert(
                 upgradedMapFeatures.end(), upgradedStagedFeatures.begin(), upgradedStagedFeatures.end());
 #endif
@@ -635,53 +652,25 @@ class Feature_Map
     /**
      * \brief return the object thta contains the matches between detected and map feature. Set the
      * _isDetectedFeatureMatched flags
+     * \param[in,out] map Map to find the matches in
      * \param[in] detectedFeatures The object of detected features to match
      * \param[in] worldToCamera A matrix to convert from world to camera space
      * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if
      * True. Also less precise
-     * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
-     * \param[out] matches An object of matches between map object and detected features
+     * \param[in] shouldAddToMatches If false, the matches will be registered, but not added to the matches object
+     * \param[in] isDetectedFeatureMatched container to flag if a feature is already matched
+     * \param[in,out] minimumFeaturesForOptimization The minimum feature count for a pose optimization
+     * \param[in,out] matches An object of matches between map object and detected features
      */
-    void get_matches(const DetectedFeaturesObject& detectedFeatures,
-                     const WorldToCameraMatrix& worldToCamera,
-                     const bool useAdvancedMatch,
-                     const uint minimumFeaturesForOptimization,
-                     matches_containers::match_container& matches) noexcept
+    template<class MapType> static void get_map_feature_matches(MapType& map,
+                                                                const DetectedFeaturesObject& detectedFeatures,
+                                                                const WorldToCameraMatrix& worldToCamera,
+                                                                const bool useAdvancedMatch,
+                                                                const bool shouldAddToMatches,
+                                                                vectorb& isDetectedFeatureMatched,
+                                                                matches_containers::match_container& matches)
     {
-        if (not _isActivated)
-            return;
-
-        // reset match status
-        _isDetectedFeatureMatched = vectorb::Zero(detectedFeatures.size());
-        matches.clear();
-
-        // search matches in local map first
-        for (auto& [mapId, mapFeature]: _localMap)
-        {
-            assert(mapId == mapFeature._id);
-            // start by reseting this feature
-            mapFeature.mark_unmatched();
-
-            if (mapFeature.is_moving() or not mapFeature.is_visible(worldToCamera))
-                continue;
-
-            const matchIndexSet& matchIndexes = mapFeature.find_matches(
-                    detectedFeatures, worldToCamera, _isDetectedFeatureMatched, matches, true, useAdvancedMatch);
-            if (not matchIndexes.empty())
-            {
-                mapFeature.mark_matched(matchIndexes);
-                for (const auto matchIndex: matchIndexes)
-                    _isDetectedFeatureMatched[matchIndex] = true;
-            }
-        }
-
-        // if we have enough features from local map to run the optimization, no need to add the staged features
-        // Still, we need to try and match them to insure tracking and new map features
-        // TODO: Why 3 ? seems about right to be sure to have enough features for the optimization process...
-        const bool shouldUseStagedFeatures = matches.size() < minimumFeaturesForOptimization * 3;
-
-        // search matches in staged map second
-        for (auto& [mapId, mapFeature]: _stagedMap)
+        for (auto& [mapId, mapFeature]: map)
         {
             assert(mapId == mapFeature._id);
             // start by reseting this feature
@@ -692,17 +681,61 @@ class Feature_Map
 
             const matchIndexSet& matchIndexes = mapFeature.find_matches(detectedFeatures,
                                                                         worldToCamera,
-                                                                        _isDetectedFeatureMatched,
+                                                                        isDetectedFeatureMatched,
                                                                         matches,
-                                                                        shouldUseStagedFeatures,
+                                                                        shouldAddToMatches,
                                                                         useAdvancedMatch);
             if (not matchIndexes.empty())
             {
                 mapFeature.mark_matched(matchIndexes);
                 for (const auto matchIndex: matchIndexes)
-                    _isDetectedFeatureMatched[matchIndex] = true;
+                    isDetectedFeatureMatched[matchIndex] = true;
             }
         }
+    }
+
+    /**
+     * \brief Compute the object that contains the matches between detected and map feature. Set the
+     * isDetectedFeatureMatched flags. it will modify the map match/unmatch state
+     * \param[in] detectedFeatures The object of detected features to match
+     * \param[in] worldToCamera A matrix to convert from world to camera space
+     * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if
+     * True. Also less precise
+     * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
+     * \param[in,out] isDetectedFeatureMatched container to flag if a feature is already matched
+     * \param[out] matches An object of matches between map object and detected features
+     */
+    void get_map_feature_matches(const DetectedFeaturesObject& detectedFeatures,
+                                 const WorldToCameraMatrix& worldToCamera,
+                                 const bool useAdvancedMatch,
+                                 const uint minimumFeaturesForOptimization,
+                                 vectorb& isDetectedFeatureMatched,
+                                 matches_containers::match_container& matches) noexcept
+    {
+        if (not _isActivated)
+            return;
+
+        // reset match status
+        isDetectedFeatureMatched = vectorb::Zero(detectedFeatures.size());
+        matches.clear();
+
+        // search matches in local map first
+        get_map_feature_matches(
+                _localMap, detectedFeatures, worldToCamera, useAdvancedMatch, true, isDetectedFeatureMatched, matches);
+
+        // if we have enough features from local map to run the optimization, no need to add the staged features
+        // Still, we need to try and match them to insure tracking and new map features
+        // TODO: Why 3 ? seems about right to be sure to have enough features for the optimization process...
+        const bool shouldUseStagedFeatures = matches.size() < minimumFeaturesForOptimization * 3;
+
+        // search matches in staged map second
+        get_map_feature_matches(_stagedMap,
+                                detectedFeatures,
+                                worldToCamera,
+                                useAdvancedMatch,
+                                shouldUseStagedFeatures,
+                                isDetectedFeatureMatched,
+                                matches);
     }
 
     /**
@@ -710,9 +743,8 @@ class Feature_Map
      * \param[in] detectedFeatureIdToMapId Association of a detection id to the merged map ids
      * \param[in, out] map The map to uodate
      */
-    template<class MapType>
-    void merge_map_features_with_detection_ids(const std::map<size_t, std::vector<size_t>>& detectedFeatureIdToMapId,
-                                               MapType& map)
+    template<class MapType> static void merge_map_features_with_detection_ids(
+            const std::map<size_t, std::vector<size_t>>& detectedFeatureIdToMapId, MapType& map)
     {
         // try to merge map feature that were fused to the same detected features
         for (const auto& [matchIndex, mapFeatures]: detectedFeatureIdToMapId)
@@ -950,15 +982,22 @@ class Feature_Map
         }
     }
 
-    [[nodiscard]] std::vector<UpgradedFeature_ptr> get_upgraded_map_features(
-            const CameraToWorldMatrix& cameraToWorld) noexcept
+    /**
+     * \brief Compute upgraded features if possible. The updraded features are features that can change feature type
+     * \param[in] cameraToWorld
+     * \param[in,out] mapType The map to search upgrade features in. The upgraded features are deleted from the map
+     *
+     * \return A container with upgraded feature. Their original features will be removed from the map !
+     */
+    template<class MapType> [[nodiscard]] static std::vector<UpgradedFeature_ptr> get_upgraded_features(
+            const CameraToWorldMatrix& cameraToWorld, MapType& map) noexcept
     {
         std::vector<UpgradedFeature_ptr> upgradedFeatures;
 
-        typename localMapType::iterator mapFeatureIterator = _localMap.begin();
-        while (mapFeatureIterator != _localMap.end())
+        typename MapType::iterator mapFeatureIterator = map.begin();
+        while (mapFeatureIterator != map.end())
         {
-            MapFeatureType& mapFeature = mapFeatureIterator->second;
+            auto& mapFeature = mapFeatureIterator->second;
             assert(mapFeatureIterator->first == mapFeature._id);
 
             UpgradedFeature_ptr upgraded;
@@ -966,13 +1005,13 @@ class Feature_Map
             {
                 if (upgraded == nullptr)
                 {
-                    outputs::log_error(get_display_name() + ": compute_upgraded returned null");
+                    outputs::log_error("Compute_upgraded returned null");
                     ++mapFeatureIterator;
                     continue;
                 }
                 upgradedFeatures.push_back(upgraded);
                 // Remove the upgraded feature
-                mapFeatureIterator = _localMap.erase(mapFeatureIterator);
+                mapFeatureIterator = map.erase(mapFeatureIterator);
             }
             else
             {
@@ -982,39 +1021,10 @@ class Feature_Map
         return upgradedFeatures;
     }
 
-    [[nodiscard]] std::vector<UpgradedFeature_ptr> get_upgraded_staged_features(
-            const CameraToWorldMatrix& cameraToWorld) noexcept
-    {
-        std::vector<UpgradedFeature_ptr> upgradedFeatures;
-
-        typename stagedMapType::iterator stagedFeatureIterator = _stagedMap.begin();
-        while (stagedFeatureIterator != _stagedMap.end())
-        {
-            StagedFeatureType& stagedFeature = stagedFeatureIterator->second;
-            assert(stagedFeatureIterator->first == stagedFeature._id);
-
-            UpgradedFeature_ptr upgraded;
-            if (stagedFeature.compute_upgraded(cameraToWorld, upgraded))
-            {
-                if (upgraded == nullptr)
-                {
-                    outputs::log_error(get_display_name() + ": compute_upgraded returned null");
-                    ++stagedFeatureIterator;
-                    continue;
-                }
-
-                upgradedFeatures.push_back(upgraded);
-                // Remove the upgraded feature
-                stagedFeatureIterator = _stagedMap.erase(stagedFeatureIterator);
-            }
-            else
-            {
-                ++stagedFeatureIterator;
-            }
-        }
-        return upgradedFeatures;
-    }
-
+    /**
+     * \brief Shortcut function to add a map feature directly
+     * \param[in] newFeature The feature to add
+     */
     void add_to_local_map(const MapFeatureType& newFeature)
     {
         // check that no feature with the same id exists

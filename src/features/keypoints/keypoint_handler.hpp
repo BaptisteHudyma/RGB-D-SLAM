@@ -144,6 +144,7 @@ class Keypoint_Handler
                                                   const double searchSpaceRadius) const noexcept;
     [[nodiscard]] matchIndexSet get_match_index(const utils::Segment<2>& projectedMapPoint,
                                                 const cv::Mat& mapPointDescriptor,
+                                                const vectorb& isKeyPointMatchedContainer,
                                                 const double searchSpaceRadius) const noexcept;
 
     /**
@@ -212,6 +213,7 @@ class Keypoint_Handler
     void fill_keypoint_mask(const utils::Segment<2>& pointToSearch,
                             const index_container& keypointIndexContainer,
                             double maximumDistance,
+                            const vectorb& isKeyPointMatchedContainer,
                             cv::Mat_<uchar>& keyPointMask) const noexcept;
 
     using uint_pair = std::pair<uint, uint>;

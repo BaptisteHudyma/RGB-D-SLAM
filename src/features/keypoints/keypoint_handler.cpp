@@ -176,27 +176,31 @@ void Keypoint_Handler::fill_keypoint_mask(const ScreenCoordinate2D& pointToSearc
     for (const uint keypointIndex: keypointIndexContainer)
     {
         // ignore this point if it is already matched (prevent multiple matches of one point)
-        if (not isKeyPointMatchedContainer[keypointIndex])
-        {
-            const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
-            const double squarredDistance = (keypoint - pointToSearch).squaredNorm();
+        if (isKeyPointMatchedContainer[keypointIndex])
+            continue;
 
-            // keypoint is in a circle around the target keypoints, allow a potential match
-            if (squarredDistance <= squaredSearchDiameter)
-                keyPointMask(0, static_cast<int>(keypointIndex)) = 1;
-        }
+        const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
+        const double squarredDistance = (keypoint - pointToSearch).squaredNorm();
+
+        // keypoint is in a circle around the target keypoints, allow a potential match
+        if (squarredDistance <= squaredSearchDiameter)
+            keyPointMask(0, static_cast<int>(keypointIndex)) = 1;
     }
 }
 
 void Keypoint_Handler::fill_keypoint_mask(const utils::Segment<2>& pointToSearch,
                                           const index_container& keypointIndexContainer,
                                           double maximumDistance,
+                                          const vectorb& isKeyPointMatchedContainer,
                                           cv::Mat_<uchar>& keyPointMask) const noexcept
 {
     // Squared search diameter, to compare distance without sqrt
     const float squaredSearchDiameter = static_cast<float>(SQR(maximumDistance));
     for (const uint keypointIndex: keypointIndexContainer)
     {
+        if (isKeyPointMatchedContainer[keypointIndex])
+            continue;
+
         const ScreenCoordinate2D& keypoint = get_keypoint(keypointIndex).get_2D();
         const double squarredDistance = pointToSearch.distance(keypoint).squaredNorm();
 
@@ -301,6 +305,7 @@ Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_indexes(const Screen
 
 Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_index(const utils::Segment<2>& projectedMapPoint,
                                                                   const cv::Mat& mapPointDescriptor,
+                                                                  const vectorb& isKeyPointMatchedContainer,
                                                                   const double searchSpaceRadius) const noexcept
 {
     assert(_featuresMatcher != nullptr);
@@ -347,7 +352,11 @@ Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_index(const utils::S
 
             // get all keypoints in this area
             const index_container& keypointIndexContainer = _searchSpaceIndexContainer[searchSpaceIndex];
-            fill_keypoint_mask(constraintLine, keypointIndexContainer, searchSpaceRadius, keyPointMask);
+            fill_keypoint_mask(constraintLine,
+                               keypointIndexContainer,
+                               searchSpaceRadius,
+                               isKeyPointMatchedContainer,
+                               keyPointMask);
         }
     }
     std::vector<std::vector<cv::DMatch>> knnMatches;
