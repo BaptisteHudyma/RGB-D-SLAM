@@ -135,6 +135,15 @@ class Pose : public PoseBaseWithSpeed
     Pose(const Eigen::Vector<double, 13>& vector);
 
     /**
+     * \reset this pose, as if starting from a new world
+     */
+    void reset_new_world()
+    {
+        _poseVariance.setZero();
+        _latestUpdateTime_s = 0.0;
+    }
+
+    /**
      * \brief Return the pose variance for position and rotation
      */
     [[nodiscard]] matrix66 get_pose_variance() const noexcept;

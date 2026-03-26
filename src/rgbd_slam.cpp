@@ -5,6 +5,7 @@
 #include "parameters.hpp"
 #include "pose_optimization/pose_optimization.hpp"
 #include "matches_containers.hpp"
+#include "types.hpp"
 #include "utils/random.hpp"
 #include <future>
 #include <memory>
@@ -189,6 +190,9 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     // The new pose, after optimization
     utils::Pose newPose = predictedPose;
 
+    // flag to say if the update is valid
+    bool isPoseUpdateValid = false;
+
     // Optimize refined pose
     utils::Pose optimizedPose;
     matches_containers::match_sets matchSets;
@@ -197,7 +201,6 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     const bool isPoseValid =
             (not _isFirstTrackingCall) and pose_optimization::Pose_Optimization::compute_optimized_pose(
                                                    predictedPose, matchedFeatures, optimizedPose, matchSets);
-
     if (isPoseValid)
     {
         // Update local map if a valid transformation was found
@@ -216,42 +219,47 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
             _localMap.update(_currentPose, detectedFeatures, matchSets._outliers);
             _isTrackingLost = false;
             _failedTrackingCount = 0;
+            isPoseUpdateValid = true;
         }
         catch (const std::exception& ex)
         {
             outputs::log_error("Caught exception while updating map: " + std::string(ex.what()));
-
-            // no valid transformation
-            _localMap.update_no_pose();
-
-            _isTrackingLost = (++_failedTrackingCount) > 3;
         }
     }
+
     // else the refined pose will follow the motion model
-    else
+    if (not isPoseUpdateValid)
     {
         // no valid transformation
         _localMap.update_no_pose();
 
-        // add unmatched features if not tracking could be done last call
-        const matrix66& poseCovariance = predictedPose.get_pose_variance();
-        if (_isTrackingLost and utils::is_covariance_valid(poseCovariance))
-        {
-            const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
-                    predictedPose.get_rotation_quaternion(), predictedPose.get_position());
-
-            // TODO: clear map ?
-            // add all detected features
-            _localMap.add_all_features_to_map(poseCovariance, cameraToWorld, detectedFeatures);
-        }
-
         if (not _isFirstTrackingCall)
         {
+            _failedTrackingCount += 1;
             // tracking is lost after some consecutive fails
             // TODO add to parameters
-            _isTrackingLost = (++_failedTrackingCount) > 3;
+            _isTrackingLost = _failedTrackingCount > 3;
 
             outputs::log_error("Could not find an optimized pose");
+        }
+
+        // add unmatched features if not tracking could be done last calls
+        if (_isTrackingLost)
+        {
+            outputs::log("Resetting the map and pose");
+
+            // reset the pose covariance
+            _currentPose.reset_new_world();
+            _failedTrackingCount = 0;
+
+            // clear local map
+            _localMap.reset();
+
+            const CameraToWorldMatrix& cameraToWorld = utils::compute_camera_to_world_transform(
+                    _currentPose.get_rotation_quaternion(), _currentPose.get_position());
+
+            // add all detected features
+            _localMap.add_all_features_to_map(_currentPose.get_pose_variance(), cameraToWorld, detectedFeatures);
         }
     }
 
