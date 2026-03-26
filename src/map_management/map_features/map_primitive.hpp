@@ -101,6 +101,14 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
                                          const matrix66& poseCovariance,
                                          const CameraToWorldMatrix& cameraToWorld) noexcept override;
 
+    /**
+     * \brief merge this feature with another
+     * \param[in] other The feature to merge with
+     *
+     * \return True if the merge suceeded.
+     */
+    [[nodiscard]] bool merge(const MapPlane& other) noexcept;
+
   protected:
     void update_no_match() noexcept override;
 };
