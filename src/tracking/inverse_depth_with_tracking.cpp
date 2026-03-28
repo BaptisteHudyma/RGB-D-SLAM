@@ -20,12 +20,12 @@ template<int N = 6, int M = 2, int NE = N, int ME = M> class InverseDepthEstimat
 
     Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept override
     {
-        return InverseDepthWorldPoint(state).get_projected_screen_estimation(_w2c);
+        return InverseDepthWorldPoint(state).get_observation_model(_w2c);
     }
 
     Eigen::Matrix<double, ME, NE> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
     {
-        return InverseDepthWorldPoint(state).get_projected_screen_estimation_jacobian(_w2c);
+        return InverseDepthWorldPoint(state).get_observation_model_jacobian(_w2c);
     }
 
     InverseDepthEstimator(const Eigen::Vector<double, N>& feature,
@@ -40,17 +40,21 @@ template<int N = 6, int M = 2, int NE = N, int ME = M> class InverseDepthEstimat
     {
     }
 
-    inline Eigen::Matrix<double, ME, ME> h_innovation(
-            const Eigen::Vector<double, N>& state,
-            const Eigen::Matrix<double, NE, NE>& estimateErrorCovariance,
-            const Eigen::Matrix<double, ME, NE>& hJacobian) const noexcept override
-    {
-        const Eigen::Matrix<double, 2, 6>& hPoseJacobian =
-                utils::world_transform_of_2d_point_jacobian(InverseDepthWorldPoint(state).to_world_coordinates(), _w2c);
+    /// TODO: debug : the additional pose noise breaks the estimator
+#if 0
+        inline Eigen::Matrix<double, ME, ME> h_innovation(
+                const Eigen::Vector<double, N>& state,
+                const Eigen::Matrix<double, NE, NE>& estimateErrorCovariance,
+                const Eigen::Matrix<double, ME, NE>& hJacobian) const noexcept override
+        {
+            const Eigen::Matrix<double, 2, 6>& hPoseJacobian =
+                    utils::world_transform_of_2d_point_jacobian(InverseDepthWorldPoint(state).to_world_coordinates(),
+       _w2c);
 
-        return utils::propagate_covariance(estimateErrorCovariance, hJacobian) +
-               utils::propagate_covariance(_poseCovariance, hPoseJacobian);
-    }
+            return utils::propagate_covariance(estimateErrorCovariance, hJacobian) +
+                   utils::propagate_covariance(_poseCovariance, hPoseJacobian);
+        }
+#endif
 
   private:
     const WorldToCameraMatrix _w2c;
@@ -125,8 +129,7 @@ PointInverseDepth::PointInverseDepth(const InverseDepthWorldPoint& coordinates, 
 bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
                                  const matrix22& observationCovariance,
                                  const CameraToWorldMatrix& c2w,
-                                 const matrix66& stateCovariance,
-                                 const cv::Mat& descriptor) noexcept
+                                 const matrix66& stateCovariance) noexcept
 {
     assert(_extendedKalmanFilter != nullptr);
     try
@@ -152,15 +155,11 @@ bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
         newStateCorrection(inverseDepthIndex) = threshold;
 
         if (newState(inverseDepthIndex) < 0.0)
-            newStateCorrection(inverseDepthIndex) = threshold - newState(inverseDepthIndex);
-        const vector6 newStateCorrected = newState + newStateCorrection;
-
-        if (not is_new_inverse_depth_valid(newState(inverseDepthIndex)))
         {
-            outputs::log(std::format("inverse depth is outside bounds after merge"));
-            return false;
+            newStateCorrection(inverseDepthIndex) = threshold - newState(inverseDepthIndex);
         }
 
+        const vector6 newStateCorrected = newState + newStateCorrection;
         const Covariance& newCovarianceCorrected = newCovariance + newStateCorrection * newStateCorrection.transpose();
         if (not utils::is_covariance_valid(newCovarianceCorrected))
         {
@@ -170,10 +169,6 @@ bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
 
         _coordinates.set_vector(newStateCorrected);
         _covariance = newCovarianceCorrected;
-
-        if (not descriptor.empty())
-            _descriptor = descriptor;
-
         return true;
     }
     catch (const std::exception& ex)
@@ -186,8 +181,7 @@ bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
 bool PointInverseDepth::track_3D(const ScreenCoordinate& observation,
                                  const matrix33& observationCovariance,
                                  const CameraToWorldMatrix& c2w,
-                                 const matrix66& stateCovariance,
-                                 const cv::Mat& descriptor) noexcept
+                                 const matrix66& stateCovariance) noexcept
 {
     if (not is_depth_valid(observation.z()))
     {
@@ -221,9 +215,6 @@ bool PointInverseDepth::track_3D(const ScreenCoordinate& observation,
 
         _coordinates = state;
         _covariance = statecovariance;
-
-        if (not descriptor.empty())
-            _descriptor = descriptor;
         return true;
     }
     catch (const std::exception& ex)

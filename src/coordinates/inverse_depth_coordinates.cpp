@@ -199,6 +199,46 @@ ScreenCoordinate2D InverseDepthWorldPoint::get_projected_screen_estimation(
     return resCoords;
 }
 
+CameraCoordinate InverseDepthWorldPoint::get_camera_observation_projection(
+        const WorldToCameraMatrix& w2c) const noexcept
+{
+    const auto& c2w = utils::compute_camera_to_world_transform(w2c);
+    return CameraCoordinate(w2c.rotation() *
+                            (_inverseDepth_m * (_firstObservation - c2w.translation()) + _bearingVector));
+}
+
+ScreenCoordinate2D InverseDepthWorldPoint::get_observation_model(const WorldToCameraMatrix& w2c) const noexcept
+{
+    ScreenCoordinate2D s2d;
+    assert(get_camera_observation_projection(w2c).to_screen_coordinates(s2d));
+    return s2d;
+}
+
+Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_observation_model_jacobian(
+        const WorldToCameraMatrix& w2c) const noexcept
+{
+    const auto& c2w = utils::compute_camera_to_world_transform(w2c);
+
+    matrix33 bearingJacobian;
+    Cartesian::from(Spherical(1.0, _theta_rad, _phi_rad), bearingJacobian);
+
+    const vector3& trVec = _firstObservation - c2w.translation();
+
+    matrix33 paramJacobians;
+    paramJacobians.col(inverseDepthIndex - 3) = trVec;
+    paramJacobians.col(thetaIndex - 3) = bearingJacobian.col(Spherical::PolarIndex);
+    paramJacobians.col(phiIndex - 3) = bearingJacobian.col(Spherical::AzimuthIndex);
+
+    matrix33 poseJacobian = vector3::Constant(_inverseDepth_m).asDiagonal();
+
+    Eigen::Matrix<double, 3, 6> jacobian;
+    jacobian.block<3, 3>(0, firstPoseIndex) = poseJacobian;
+    jacobian.block<3, 3>(0, firstPoseIndex + 3) = paramJacobians;
+
+    // convert to screen
+    return get_camera_observation_projection(w2c).to_screen2d_coordinates_jacobian() * w2c.rotation() * jacobian;
+}
+
 Eigen::Matrix<double, 3, 6> InverseDepthWorldPoint::get_projected_screen3d_estimation_jacobian(
         const WorldToCameraMatrix& w2c, const double addedStandardDev) const noexcept
 {

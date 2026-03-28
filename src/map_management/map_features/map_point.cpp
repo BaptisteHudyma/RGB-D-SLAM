@@ -258,6 +258,7 @@ StagedMapPoint::StagedMapPoint(const matrix66& poseCovariance,
              utils::get_world_point_covariance(detectedFeature._coordinates, cameraToWorld, poseCovariance),
              detectedFeature._descriptor)
 {
+    latestMatchedFeature = detectedFeature._coordinates.get_2D();
 }
 
 bool StagedMapPoint::should_remove_from_staged() const noexcept { return get_confidence() <= 0; }
@@ -285,6 +286,8 @@ LocalMapPoint::LocalMapPoint(const StagedMapPoint& stagedPoint) :
 {
     // new map point, new color
     set_color();
+
+    latestMatchedFeature = stagedPoint.latestMatchedFeature;
 
     _matchIndexes = stagedPoint._matchIndexes;
     _successivMatchedCount = stagedPoint._successivMatchedCount;

@@ -50,14 +50,12 @@ struct PointInverseDepth
      * \param[in] observationCovariance
      * \param[in] c2w The cam to world matrix
      * \param[in] stateCovariance The covariance of the observer position
-     * \param[in] descriptor The descriptor of this point
      * \return True if the tracking succeeded, false if something is wrong
      */
     [[nodiscard]] bool track_2D(const ScreenCoordinate2D& observation,
                                 const matrix22& observationCovariance,
                                 const CameraToWorldMatrix& c2w,
-                                const matrix66& stateCovariance,
-                                const cv::Mat& descriptor) noexcept;
+                                const matrix66& stateCovariance) noexcept;
 
     /**
      * \brief Add an new measurment to the tracking
@@ -65,14 +63,12 @@ struct PointInverseDepth
      * \param[in] observationCovariance Covariance matrix of the observation
      * \param[in] c2w The cam to world matrix
      * \param[in] stateCovariance The covariance of the observer position
-     * \param[in] descriptor The descriptor of this point
      * \return True if the tracking succeeded, false if something is wrong
      */
     [[nodiscard]] bool track_3D(const ScreenCoordinate& observation,
                                 const matrix33& observationCovariance,
                                 const CameraToWorldMatrix& c2w,
-                                const matrix66& stateCovariance,
-                                const cv::Mat& descriptor) noexcept;
+                                const matrix66& stateCovariance) noexcept;
 
     /**
      * \brief Compute a line that represent the potential position of the inverse depth point, taking into account the

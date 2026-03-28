@@ -112,10 +112,11 @@ class MapPoint2D :
      */
     [[nodiscard]] bool merge(const MapPoint2D& other) noexcept;
 
+    // optional set to the latest detected point in image space
+    std::optional<ScreenCoordinate2D> latestMatchedFeature;
+
   protected:
     void update_no_match() noexcept override;
-
-    std::optional<ScreenCoordinate2D> latestMatchedFeature;
 };
 
 /**
