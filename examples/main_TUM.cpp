@@ -20,6 +20,13 @@
 #include "types.hpp"
 #include "TUM_parser.hpp"
 
+// if defined, the optimization step will be skipped and only the given ground truth will be used.
+// This should give a perfect tracking
+// #define DEBUG_WITH_GROUND_TRUTH
+
+// if defined, the tracking process will use the depth image with the RGB
+#define USE_DEPTH_IMAGES
+
 void check_user_inputs(bool& shouldStop)
 {
     switch (cv::waitKey(1))
@@ -234,6 +241,11 @@ int main(int argc, char* argv[])
 
             depthImage = cv::Mat(height, width, CV_16UC1, cv::Scalar(0.0));
         }
+
+#ifndef USE_DEPTH_IMAGES
+        depthImage = cv::Mat(height, width, CV_16UC1, cv::Scalar(0.0));
+#endif
+
         assert(static_cast<uint>(rgbImage.cols) == width and static_cast<uint>(rgbImage.rows) == height);
         assert(static_cast<uint>(depthImage.cols) == width and static_cast<uint>(depthImage.rows) == height);
 
@@ -249,11 +261,25 @@ int main(int argc, char* argv[])
         cv::bilateralFilter(newMat, depthImage,  7, 31, 15);
 #endif
 
-        // rectify the depth image before next step (already rectified in TU%M datasets)
+        // rectify the depth image before next step (already rectified in TUM datasets)
         // RGBD_Slam.rectify_depth(depthImage);
 
         // get optimized pose
         const double trackingStartTime = static_cast<double>(cv::getTickCount());
+
+#ifdef DEBUG_WITH_GROUND_TRUTH
+        // set ground truth (TEST ONLY)
+        if (imageData.groundTruth.isValid)
+        {
+            rgbd_slam::utils::PoseBase groundTruthPose(imageData.groundTruth.position, imageData.groundTruth.rotation);
+            RGBD_Slam.set_ground_truth(groundTruthPose);
+        }
+        else
+        {
+            rgbd_slam::outputs::log_error("DEBUG_WITH_GROUND_TRUTH option requires a ground truth");
+        }
+#endif
+
         pose = RGBD_Slam.track(rgbImage, depthImage, imageData.rgbImage.imageTimeStamp);
         const double trackingDuration =
                 (static_cast<double>(cv::getTickCount()) - trackingStartTime) / (double)cv::getTickFrequency();

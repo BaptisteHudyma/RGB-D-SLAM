@@ -13,8 +13,10 @@
 #include "map_features/map_primitive.hpp"
 
 #include "utils/pose.hpp"
+
 #include <memory>
 #include <opencv2/line_descriptor.hpp>
+#include <optional>
 
 namespace rgbd_slam {
 
@@ -50,6 +52,10 @@ class RGBD_SLAM
     [[nodiscard]] utils::Pose track(const cv::Mat& inputRgbImage,
                                     const cv::Mat_<float>& inputDepthImage,
                                     const double time_s) noexcept;
+    /**
+     * \brief FOR DEBUG ONLY: set the ground truth of the transform, skipping the optimization phase
+     */
+    void set_ground_truth(const utils::PoseBase& groundTruthPose);
 
     /**
      * \brief Compute a debug image
@@ -94,9 +100,26 @@ class RGBD_SLAM
 
     void set_color_vector() noexcept;
 
+    /**
+     * \brief internal handler to compute a new pose and match set
+     * \param[in] predictedPose The pose to use as a base guess for the estimation
+     * \param[in] matchedFeatures A container with potential feature matches
+     * \param[out] optimizedPose The optimized pose from the feature set
+     * \param[out] matchSets A container with the inlier and outlier matches
+     *
+     * \return True if the process succeeded, so optimizedPose and matchSets are valid
+     */
+    bool internal_compute_new_pose(const utils::Pose& predictedPose,
+                                   const matches_containers::match_container& matchedFeatures,
+                                   utils::Pose& optimizedPose,
+                                   matches_containers::match_sets& matchSets);
+
   private:
     const uint _width;
     const uint _height;
+
+    // FOR DEBUG ONLY: Store the ground truth pose, this will completly skip the optimization phase.
+    std::optional<utils::PoseBase> _groundTruthPose;
 
     std::unique_ptr<features::primitives::Depth_Map_Transformation> _depthOps = nullptr;
 

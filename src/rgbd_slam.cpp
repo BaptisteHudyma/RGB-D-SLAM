@@ -1,12 +1,18 @@
 #include "rgbd_slam.hpp"
-#include "camera_transformation.hpp"
-#include "covariances.hpp"
-#include "outputs/logger.hpp"
-#include "parameters.hpp"
-#include "pose_optimization/pose_optimization.hpp"
+
 #include "matches_containers.hpp"
+#include "parameters.hpp"
 #include "types.hpp"
+
+#include "outputs/logger.hpp"
+
+#include "utils/camera_transformation.hpp"
+#include "utils/covariances.hpp"
 #include "utils/random.hpp"
+#include "utils/pose.hpp"
+
+#include "pose_optimization/pose_optimization.hpp"
+
 #include <future>
 #include <memory>
 #include <opencv2/core.hpp>
@@ -98,6 +104,12 @@ void RGBD_SLAM::rectify_depth(cv::Mat_<float>& depthImage) noexcept
     }
 }
 
+void RGBD_SLAM::set_ground_truth(const utils::PoseBase& groundTruthPose)
+{
+    // This is used to debug the pose otpimization only
+    _groundTruthPose = groundTruthPose;
+}
+
 utils::Pose RGBD_SLAM::track(const cv::Mat& inputRgbImage,
                              const cv::Mat_<float>& inputDepthImage,
                              const double time_s) noexcept
@@ -164,6 +176,26 @@ cv::Mat RGBD_SLAM::get_debug_image(const utils::Pose& camPose,
     return debugImage;
 }
 
+bool RGBD_SLAM::internal_compute_new_pose(const utils::Pose& predictedPose,
+                                          const matches_containers::match_container& matchedFeatures,
+                                          utils::Pose& optimizedPose,
+                                          matches_containers::match_sets& matchSets)
+{
+    if (_groundTruthPose.has_value())
+    {
+        optimizedPose.set_parameters(_groundTruthPose->get_position(), _groundTruthPose->get_rotation_quaternion());
+        optimizedPose.set_position_variance(
+                vector7(SQR(1e-3), SQR(1e-3), SQR(1e-3), SQR(1e-3), SQR(1e-3), SQR(1e-3), SQR(1e-3)).asDiagonal());
+        matchSets._inliers = matchedFeatures;
+
+        // ground truth works only once
+        _groundTruthPose.reset();
+        return true;
+    }
+    return pose_optimization::Pose_Optimization::compute_optimized_pose(
+            predictedPose, matchedFeatures, optimizedPose, matchSets);
+}
+
 utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
                                         const cv::Mat_<float>& depthImage,
                                         const matrixf& cloudArrayOrganized,
@@ -198,9 +230,8 @@ utils::Pose RGBD_SLAM::compute_new_pose(const cv::Mat& grayImage,
     matches_containers::match_sets matchSets;
 
     // optimize the pose, but not if it is the first call (no pose to compute)
-    const bool isPoseValid =
-            (not _isFirstTrackingCall) and pose_optimization::Pose_Optimization::compute_optimized_pose(
-                                                   predictedPose, matchedFeatures, optimizedPose, matchSets);
+    const bool isPoseValid = (not _isFirstTrackingCall) and
+                             internal_compute_new_pose(predictedPose, matchedFeatures, optimizedPose, matchSets);
     if (isPoseValid)
     {
         // Update local map if a valid transformation was found

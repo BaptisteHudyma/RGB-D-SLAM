@@ -7,6 +7,11 @@
 
 namespace rgbd_slam {
 
+// if this is defined, 2D points will be used as staged points in all cases (no 3D points staged map)
+// #define USE_2D_POINTS_AS_STAGED
+// if defined, will prevent the 3D infos of a point to be merged to a 2D point
+// #define BLOCK_2D_TO_3D_MERGE_2DPOINTS
+
 namespace parameters {
 constexpr uint coreNumber = 8; // number of available cores on the computer (1 for no threads)
 

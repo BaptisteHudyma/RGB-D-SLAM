@@ -145,39 +145,31 @@ bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
             return false;
         }
 
-        /*if ((newCovariance.diagonal().array() > _covariance.diagonal().array()).any())
-        {
-            std::cout << (newCovariance.diagonal() - _covariance.diagonal()).transpose() << std::endl;
-            outputs::log_error("new covariance is worse !");
-            return false;
-        }*/
+        // enforce inverse depth positiveness
+        static constexpr double threshold = 1e-6;
+        vector6 newStateCorrection;
+        newStateCorrection.setZero();
+        newStateCorrection(inverseDepthIndex) = threshold;
+
+        if (newState(inverseDepthIndex) < 0.0)
+            newStateCorrection(inverseDepthIndex) = threshold - newState(inverseDepthIndex);
+        const vector6 newStateCorrected = newState + newStateCorrection;
 
         if (not is_new_inverse_depth_valid(newState(inverseDepthIndex)))
         {
-            // outputs::log(std::format("inverse depth is outside bounds after merge"));
+            outputs::log(std::format("inverse depth is outside bounds after merge"));
             return false;
         }
 
-        if (newState(inverseDepthIndex) < 0)
+        const Covariance& newCovarianceCorrected = newCovariance + newStateCorrection * newStateCorrection.transpose();
+        if (not utils::is_covariance_valid(newCovarianceCorrected))
         {
-            /*
-            std::cout << _coordinates.get_vector().transpose() << std::endl;
-            std::cout << _covariance << std::endl;
-            std::cout << c2w << std::endl;
-            */
-            const vector2& screenProjection = _coordinates.get_projected_screen_estimation(w2c);
-            outputs::log_error(
-                    std::format("new state produced an inverse depth behind the camera with observation [{:.1f}; "
-                                "{:.1f}]. Projection [{:.1f}; {:.1f}]",
-                                observation.x(),
-                                observation.y(),
-                                screenProjection.x(),
-                                screenProjection.y()));
+            outputs::log_error("Inverse depth point covariance is invalid after factor correction");
             return false;
         }
 
-        _coordinates.set_vector(newState);
-        _covariance = newCovariance;
+        _coordinates.set_vector(newStateCorrected);
+        _covariance = newCovarianceCorrected;
 
         if (not descriptor.empty())
             _descriptor = descriptor;

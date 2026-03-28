@@ -208,7 +208,7 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
                        -1);
         }
 
-        const bool shouldDisplayErrorEllipse = true;
+        const bool shouldDisplayErrorEllipse = false;
         if (shouldDisplayErrorEllipse)
         {
             Eigen::Matrix<double, 3, 6> jacobian;
@@ -286,6 +286,8 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
     }
 
     const auto& matchCoordinates = matchedFeature._coordinates;
+
+#ifndef BLOCK_2D_TO_3D_MERGE_2DPOINTS
     // use the real observation, it will most likely override the covariance inside the inverse depth point
     if (is_depth_valid(matchCoordinates.z()) and track_3D(matchCoordinates,
                                                           matchCoordinates.get_covariance(),
@@ -296,11 +298,13 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
         // success ! passthrough
     }
     // else: try 2D fusion
-    else if (not track_2D(matchCoordinates.get_2D(),
-                          matchCoordinates.get_2D().get_covariance(),
-                          cameraToWorld,
-                          poseCovariance,
-                          matchedFeature._descriptor))
+    else
+#endif
+            if (not track_2D(matchCoordinates.get_2D(),
+                             matchCoordinates.get_2D().get_covariance(),
+                             cameraToWorld,
+                             poseCovariance,
+                             matchedFeature._descriptor))
     {
         return false;
     }
