@@ -134,7 +134,11 @@ class StagedMapPoint2D : public MapPoint2D, public IStagedMapFeature<DetectedPoi
 
     [[nodiscard]] static bool can_add_to_map(const DetectedPoint2DType& detectedPoint) noexcept
     {
+#ifdef USE_2D_POINTS_AS_STAGED
+        return not detectedPoint._descriptor.empty();
+#else
         return not detectedPoint._descriptor.empty() and not is_depth_valid(detectedPoint._coordinates.z());
+#endif
     }
 
   protected:

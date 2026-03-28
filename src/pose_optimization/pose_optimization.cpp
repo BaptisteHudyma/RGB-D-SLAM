@@ -261,6 +261,8 @@ bool Pose_Optimization::compute_pose_with_ransac(const utils::PoseBase& currentP
     return false;
 }
 
+/// TODO: optimizedPose Should only contain the optimized parameters, has of now, it contains also an unset linear and
+/// rotational speed
 bool Pose_Optimization::compute_optimized_pose(const utils::PoseBase& currentPose,
                                                const matches_containers::match_container& matchedFeatures,
                                                utils::Pose& optimizedPose,

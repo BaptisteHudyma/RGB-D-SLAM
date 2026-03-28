@@ -428,7 +428,7 @@ matrix77 Pose::get_pose_variance_quaternion() const noexcept
 
 bool Pose::update_with_new_pose(const PoseBase& measurment,
                                 const matrix77& measurmentCovariance,
-                                const double measurmentTime_s)
+                                double measurmentTime_s)
 {
     if (_latestUpdateTime_s <= 0)
     {
@@ -438,9 +438,9 @@ bool Pose::update_with_new_pose(const PoseBase& measurment,
     }
     if (measurmentTime_s <= _latestUpdateTime_s)
     {
-        outputs::log_error(std::format(
+        outputs::log_warning(std::format(
                 "time must advance in the future: {:.4f} -> {:.4f}", _latestUpdateTime_s, measurmentTime_s));
-        return false;
+        measurmentTime_s = _latestUpdateTime_s;
     }
     const double deltaT = measurmentTime_s - _latestUpdateTime_s;
 
