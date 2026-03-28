@@ -87,11 +87,14 @@ FeatureType Point2dOptimizationFeature::get_feature_type() const noexcept { retu
 
 matchIndexSet MapPoint2D::find_matches(const DetectedKeypointsObject& detectedFeatures,
                                        const WorldToCameraMatrix& worldToCamera,
+                                       const matrix66& worldToCameraCovariance,
                                        const vectorb& isDetectedFeatureMatched,
                                        matches_containers::match_container& matches,
                                        const bool shouldAddToMatches,
                                        const bool useAdvancedSearch) const noexcept
 {
+    std::ignore = worldToCameraCovariance;
+
     matchIndexSet matchIndexRes;
 
     assert(not _descriptor.empty());
@@ -99,9 +102,28 @@ matchIndexSet MapPoint2D::find_matches(const DetectedKeypointsObject& detectedFe
     // try to match with tracking
     int matchIndex = detectedFeatures.get_tracking_match_index(_id, isDetectedFeatureMatched);
     if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
+#if 0
+    // use line matching
     {
         // No match: try to find match in a window around the point
-        const auto projectedMapPoint = _coordinates.get_projected_screen_estimation(worldToCamera);
+        utils::Segment<2> seg;
+        if (not _coordinates.to_screen_coordinates(worldToCamera, _covariance.get_inverse_depth_variance(), seg))
+        {
+            return matchIndexRes;
+        }
+        utils::Segment<2> projection;
+        if (not utils::clamp_to_screen(seg, projection))
+        {
+            return matchIndexRes;
+        }
+        matchIndexRes = detectedFeatures.get_match_index(
+                projection, _descriptor, isDetectedFeatureMatched, useAdvancedSearch ? 20.0 : 10.0);
+    }
+#else
+    // use center point projection matching
+    {
+        // No match: try to find match in a window around the point
+        const ScreenCoordinate2D& projectedMapPoint = _coordinates.get_projected_screen_estimation(worldToCamera);
 
         double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
         try
@@ -126,6 +148,7 @@ matchIndexSet MapPoint2D::find_matches(const DetectedKeypointsObject& detectedFe
         matchIndexRes = detectedFeatures.get_match_indexes(
                 projectedMapPoint, _descriptor, isDetectedFeatureMatched, searchRadius);
     }
+#endif
 
     if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
     {
@@ -159,17 +182,10 @@ bool MapPoint2D::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
                                 TrackedPointsObject& trackedFeatures,
                                 const uint dropChance) const noexcept
 {
-    const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
-
-    if (shouldNotDropPoint and latestMatchedFeature.has_value())
-    {
-        const ScreenCoordinate2D& screenCoordinates = latestMatchedFeature.value();
-
-        // use previously known screen coordinates
-        trackedFeatures.add(_id, screenCoordinates.x(), screenCoordinates.y());
-        return true;
-    }
-    // point was not added
+    std::ignore = worldToCamera;
+    std::ignore = trackedFeatures;
+    std::ignore = dropChance;
+    // DO NOT TRACK inverse depth points, this produce weird match results and wrong triangulation
     return false;
 }
 
@@ -188,42 +204,38 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
         return;
     }
 
-    const ScreenCoordinate2D startPoint(screenCoordinates.get_start_point());
-    const ScreenCoordinate2D endPoint(screenCoordinates.get_end_point());
-
-    // prevent a display out of the screen (visual bug)
-    if (startPoint.is_in_screen_boundaries() and endPoint.is_in_screen_boundaries())
+    if (is_matched())
     {
-        const auto centerProj = _coordinates.get_projected_screen_estimation(worldToCamMatrix);
-        if (not is_matched())
+        const ScreenCoordinate2D startPoint(screenCoordinates.get_start_point());
+        const ScreenCoordinate2D endPoint(screenCoordinates.get_end_point());
+
+        // prevent a display out of the screen (visual bug)
+        if (startPoint.is_in_screen_boundaries() and endPoint.is_in_screen_boundaries())
         {
-            cv::circle(debugImage,
-                       cv::Point(static_cast<int>(centerProj.x()), static_cast<int>(centerProj.y())),
-                       4,
-                       cv::Scalar(255, 255, 255),
-                       -1);
-            return;
+            const cv::Point p1(static_cast<int>(startPoint.x()), static_cast<int>(startPoint.y()));
+            const cv::Point p2(static_cast<int>(endPoint.x()), static_cast<int>(endPoint.y()));
+
+            // if it's matched, display blue around it, else display red
+            cv::line(debugImage, p1, p2, is_matched() ? cv::Scalar(255, 0, 0) : cv::Scalar(0, 0, 255), 3);
+            cv::line(debugImage, p1, p2, color, 1);
         }
-
-        const cv::Point p1(static_cast<int>(startPoint.x()), static_cast<int>(startPoint.y()));
-        const cv::Point p2(static_cast<int>(endPoint.x()), static_cast<int>(endPoint.y()));
-
-        // if it's matched, display blue around it, else display red
-        cv::line(debugImage, p1, p2, is_matched() ? cv::Scalar(255, 0, 0) : cv::Scalar(0, 0, 255), 5);
-
-        cv::line(debugImage, p1, p2, color, 3);
-
-        // do not display points behind the camera
-        if (centerProj.is_in_screen_boundaries())
+        else
         {
-            cv::circle(debugImage,
-                       cv::Point(static_cast<int>(centerProj.x()), static_cast<int>(centerProj.y())),
-                       4,
-                       cv::Scalar(15, 15, 15),
-                       -1);
+            outputs::log_error("Cannot draw a line out of screen boundaries");
         }
+    }
 
-        const bool shouldDisplayErrorEllipse = false;
+    // do not display points behind the camera
+    const auto centerProj = _coordinates.get_projected_screen_estimation(worldToCamMatrix);
+    if (centerProj.is_in_screen_boundaries())
+    {
+        cv::circle(debugImage,
+                   cv::Point(static_cast<int>(centerProj.x()), static_cast<int>(centerProj.y())),
+                   2,
+                   is_matched() ? color : cv::Scalar(255, 255, 255),
+                   -1);
+
+        const bool shouldDisplayErrorEllipse = true;
         if (shouldDisplayErrorEllipse)
         {
             Eigen::Matrix<double, 3, 6> jacobian;
@@ -238,10 +250,6 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
                         color,
                         1);
         }
-    }
-    else
-    {
-        outputs::log_error("Cannot draw a line out of screen boundaries");
     }
 }
 

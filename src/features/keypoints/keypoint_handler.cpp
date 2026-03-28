@@ -319,13 +319,13 @@ Keypoint_Handler::matchIndexSet Keypoint_Handler::get_match_index(const utils::S
     if (_keypoints.empty() or _descriptors.empty())
         return matchSet;
 
-    const auto& startPoint = get_search_space_coordinates(constraintLine.get_start_point());
-    const auto& endPoint = get_search_space_coordinates(constraintLine.get_end_point());
+    const auto [startPointY, startPointX] = get_search_space_coordinates(constraintLine.get_start_point());
+    const auto [endPointY, endPointX] = get_search_space_coordinates(constraintLine.get_end_point());
 
-    const uint minX = std::min(startPoint.first, endPoint.first);
-    const uint maxX = std::max(startPoint.first, endPoint.first);
-    const uint minY = std::min(startPoint.second, endPoint.second);
-    const uint maxY = std::max(startPoint.second, endPoint.second);
+    const uint minX = std::min(startPointX, endPointX);
+    const uint maxX = std::max(startPointX, endPointX);
+    const uint minY = std::min(startPointY, endPointY);
+    const uint maxY = std::max(startPointY, endPointY);
 
     constexpr double cellSize = parameters::matching::matchSearchRadius_px + 1.0;
     static_assert(cellSize > 0);

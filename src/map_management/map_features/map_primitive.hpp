@@ -66,6 +66,7 @@ class MapPlane : public tracking::Plane, public IMapFeature<DetectedPlaneObject,
 
     [[nodiscard]] matchIndexSet find_matches(const DetectedPlaneObject& detectedFeatures,
                                              const WorldToCameraMatrix& worldToCamera,
+                                             const matrix66& worldToCameraCovariance,
                                              const vectorb& isDetectedFeatureMatched,
                                              matches_containers::match_container& matches,
                                              const bool shouldAddToMatches = true,

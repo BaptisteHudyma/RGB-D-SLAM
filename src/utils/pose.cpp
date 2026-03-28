@@ -312,23 +312,23 @@ Pose::PoseVarianceT Pose::get_Q(double deltaTime) const
     return Q;
 }
 
-Pose::Pose() : PoseBaseWithSpeed(), _latestUpdateTime_s(0.0), _poseVariance(PoseVarianceT::Zero())
+Pose::Pose() : PoseBaseWithSpeed()
 {
     _poseVariance.block<6, 6>(linearSpeedErrorIndex, linearSpeedErrorIndex).diagonal().setConstant(1e2);
+    reset_new_world(0.0);
 
+    // if needed, build the shared kalman
     if (_poseKalman == nullptr)
     {
         build_pose_tracker();
     }
 }
 
-Pose::Pose(const vector3& position, const quaternion& rotation) :
-    PoseBaseWithSpeed(position, rotation),
-    _latestUpdateTime_s(0.0),
-    _poseVariance(PoseVarianceT::Zero())
+Pose::Pose(const vector3& position, const quaternion& rotation) : PoseBaseWithSpeed(position, rotation)
 {
-    _poseVariance.block<6, 6>(linearSpeedErrorIndex, linearSpeedErrorIndex).diagonal().setConstant(1e2);
+    reset_new_world(0.0);
 
+    // if needed, build the shared kalman
     if (_poseKalman == nullptr)
     {
         build_pose_tracker();
@@ -340,15 +340,23 @@ Pose::Pose(const vector3& position, const quaternion& rotation, const PoseVarian
     _latestUpdateTime_s(0.0),
     _poseVariance(poseVariance)
 {
+    // if needed, build the shared kalman
     if (_poseKalman == nullptr)
     {
         build_pose_tracker();
     }
 }
 
-Pose::Pose(const Eigen::Vector<double, 13>& vector) : _latestUpdateTime_s(0.0), _poseVariance(PoseVarianceT::Zero())
+Pose::Pose(const Eigen::Vector<double, 13>& vector)
 {
     PoseBaseWithSpeed::set_from_vector(vector);
+    reset_new_world(0.0);
+
+    // if needed, build the shared kalman
+    if (_poseKalman == nullptr)
+    {
+        build_pose_tracker();
+    }
 }
 
 void Pose::display(std::ostream& os) const noexcept
@@ -405,6 +413,17 @@ Pose Pose::predict(const double measurmentTime_s) const noexcept
     result._poseVariance = predictedCovariance;
     result._latestUpdateTime_s = measurmentTime_s;
     return result;
+}
+
+void Pose::reset_new_world(const double updateTime_s)
+{
+    _latestUpdateTime_s = updateTime_s;
+    update_position_speed(vector3::Zero());
+    update_rotation_speed(vector3::Zero());
+
+    _poseVariance.setZero();
+    _poseVariance.diagonal().segment<positionSpeedSize>(positionSpeedIndex).setConstant(SQR(1e2));
+    _poseVariance.diagonal().segment<rotationSpeedSize>(rotationSpeedIndex).setConstant(SQR(1e2));
 }
 
 matrix66 Pose::get_pose_variance() const noexcept

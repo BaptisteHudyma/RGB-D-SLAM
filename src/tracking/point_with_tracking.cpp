@@ -42,7 +42,6 @@ template<int N = 3, int M = 2, int NE = N, int ME = M> class Point2dEstimator : 
 
         const matrix22& cov = utils::propagate_covariance(estimateErrorCovariance, hJacobian) +
                               utils::propagate_covariance(_poseCovariance, hPoseJacobian);
-        // std::cout << cov.diagonal().cwiseSqrt().transpose() << std::endl;
         return cov;
     }
 
@@ -94,7 +93,6 @@ template<int N = 3, int M = 3, int NE = N, int ME = M> class Point3dEstimator : 
                 utils::world_transform_of_point_jacobian(WorldCoordinate(state), _w2c);
         const matrix33& cov = utils::propagate_covariance(estimateErrorCovariance, hJacobian) +
                               utils::propagate_covariance(_poseCovariance, hPoseJacobian);
-        // std::cout << cov.diagonal().cwiseSqrt().transpose() << std::endl;
         return cov;
     }
 

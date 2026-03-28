@@ -326,7 +326,7 @@ cv::RotatedRect get_rotated_rect_screen_covariance(const vector2& center, const 
     angle *= 180.0 / M_PI;
 
     return cv::RotatedRect(cv::Point(static_cast<int>(center.x()), static_cast<int>(center.y())),
-                           cv::Size2f(chiTest * sqrt(eigenValues(1)), chiTest * sqrt(eigenValues(0))),
+                           cv::Size2d(chiTest * sqrt(eigenValues(1)), chiTest * sqrt(eigenValues(0))),
                            -angle);
 }
 

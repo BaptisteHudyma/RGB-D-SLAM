@@ -1,6 +1,7 @@
 #include "inverse_depth_with_tracking.hpp"
 
 #include "camera_transformation.hpp"
+#include "coordinates/inverse_depth_coordinates.hpp"
 #include "coordinates/point_coordinates.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
@@ -40,21 +41,17 @@ template<int N = 6, int M = 2, int NE = N, int ME = M> class InverseDepthEstimat
     {
     }
 
-    /// TODO: debug : the additional pose noise breaks the estimator
-#if 0
-        inline Eigen::Matrix<double, ME, ME> h_innovation(
-                const Eigen::Vector<double, N>& state,
-                const Eigen::Matrix<double, NE, NE>& estimateErrorCovariance,
-                const Eigen::Matrix<double, ME, NE>& hJacobian) const noexcept override
-        {
-            const Eigen::Matrix<double, 2, 6>& hPoseJacobian =
-                    utils::world_transform_of_2d_point_jacobian(InverseDepthWorldPoint(state).to_world_coordinates(),
-       _w2c);
+    inline Eigen::Matrix<double, ME, ME> h_innovation(
+            const Eigen::Vector<double, N>& state,
+            const Eigen::Matrix<double, NE, NE>& estimateErrorCovariance,
+            const Eigen::Matrix<double, ME, NE>& hJacobian) const noexcept override
+    {
+        const Eigen::Matrix<double, 2, 6>& hPoseJacobian =
+                utils::world_transform_of_2d_point_jacobian(InverseDepthWorldPoint(state).to_world_coordinates(), _w2c);
 
-            return utils::propagate_covariance(estimateErrorCovariance, hJacobian) +
-                   utils::propagate_covariance(_poseCovariance, hPoseJacobian);
-        }
-#endif
+        return utils::propagate_covariance(estimateErrorCovariance, hJacobian) +
+               utils::propagate_covariance(_poseCovariance, hPoseJacobian);
+    }
 
   private:
     const WorldToCameraMatrix _w2c;
@@ -82,6 +79,8 @@ PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
 
     _covariance.setZero();
 
+    // TODO: this covariance is wrong: it omits the image noise and rotation error
+
     // new mesurment always as the same uncertainty in depth (and another one in position)
     _covariance.block<3, 3>(firstPoseIndex, firstPoseIndex) = stateCovariance.block<3, 3>(0, 0);
 
@@ -93,9 +92,9 @@ PointInverseDepth::PointInverseDepth(const ScreenCoordinate2D& observation,
 
     // TODO: integrate pose rotation variance here
     constexpr double anglevariance =
-            SQR(parameters::detection::inverseDepthAngleBaseline * EulerToRadian); // angle uncertainty
-    _covariance(thetaIndex, thetaIndex) = anglevariance;                           // theta angle covariance
-    _covariance(phiIndex, phiIndex) = anglevariance;                               // phi angle covariance
+            SQR(parameters::detection::inverseDepthAngleBaseline_deg * EulerToRadian); // angle uncertainty
+    _covariance(thetaIndex, thetaIndex) = anglevariance;                               // theta angle covariance
+    _covariance(phiIndex, phiIndex) = anglevariance;                                   // phi angle covariance
 
     if (not utils::is_covariance_valid(_covariance))
         throw std::invalid_argument("PointInverseDepth constructor: the builded covariance is invalid");
@@ -142,33 +141,20 @@ bool PointInverseDepth::track_2D(const ScreenCoordinate2D& observation,
 
         const auto& [newState, newCovariance] = _extendedKalmanFilter->get_new_state(&estimator);
 
+        if (newState(inverseDepthIndex) < 0.0)
+        {
+            // invalid merge OR valid merge with degenerate case (point estimation at infinity)
+            // This indicates a wrong association
+            return false;
+        }
         if (not utils::is_covariance_valid(newCovariance))
         {
             outputs::log_error("Inverse depth point covariance is invalid after merge");
             return false;
         }
 
-        // enforce inverse depth positiveness
-        static constexpr double threshold = 1e-6;
-        vector6 newStateCorrection;
-        newStateCorrection.setZero();
-        newStateCorrection(inverseDepthIndex) = threshold;
-
-        if (newState(inverseDepthIndex) < 0.0)
-        {
-            newStateCorrection(inverseDepthIndex) = threshold - newState(inverseDepthIndex);
-        }
-
-        const vector6 newStateCorrected = newState + newStateCorrection;
-        const Covariance& newCovarianceCorrected = newCovariance + newStateCorrection * newStateCorrection.transpose();
-        if (not utils::is_covariance_valid(newCovarianceCorrected))
-        {
-            outputs::log_error("Inverse depth point covariance is invalid after factor correction");
-            return false;
-        }
-
-        _coordinates.set_vector(newStateCorrected);
-        _covariance = newCovarianceCorrected;
+        _coordinates.set_vector(newState);
+        _covariance = newCovariance;
         return true;
     }
     catch (const std::exception& ex)
@@ -295,10 +281,11 @@ double PointInverseDepth::compute_linearity_score(const CameraToWorldMatrix& cam
     const WorldCoordinate& cartesian = _coordinates.to_world_coordinates();
 
     const vector3 hc(cartesian - cameraToWorld.translation());
-    const double cosAlpha = _coordinates.get_bearing_vector().dot(hc) / hc.norm();
+    const double norm = hc.norm();
+    const double cosAlpha = _coordinates.get_bearing_vector().dot(hc / norm);
     const double thetad_meters =
             sqrt(_covariance.diagonal()(PointInverseDepth::inverseDepthIndex)) / SQR(_coordinates.get_inverse_depth());
-    const double d1_meters = hc.norm();
+    const double d1_meters = norm;
 
     return 4.0 * thetad_meters / d1_meters * abs(cosAlpha);
 }

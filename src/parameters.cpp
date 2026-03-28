@@ -163,7 +163,10 @@ void Parameters::check_parameters_validity() noexcept
                   "Pyramid window count horizontal size must be > 0");
 
     static_assert(parameters::detection::inverseDepthBaseline_m > 0, "inverseDepthBaseline_m should be > 0");
-    static_assert(parameters::detection::inverseDepthAngleBaseline > 0, "inverseDepthAngleBaseline should be > 0");
+    static_assert(parameters::detection::inverseDepthAngleBaseline_deg > 0,
+                  "inverseDepthAngleBaseline_deg should be > 0");
+    static_assert(parameters::detection::minParallaxForInverseDepthUpdate_deg >= 0,
+                  "minParallaxForInverseDepthUpdate_deg should be >= 0");
 
     static_assert(parameters::detection::minimumPlaneSeedProportion >= 0 and
                           parameters::detection::minimumPlaneSeedProportion <= 100,

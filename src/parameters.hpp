@@ -55,7 +55,7 @@ constexpr double trackedMaskRadius_px =
         15; // Radius of the space around a tracked point where we will not detect other points
 constexpr uint keypointCellDetectionHeightCount = 3; // the number of the keypoint detection windows in height
 constexpr uint keypointCellDetectionWidthCount = 3;  // the number of the keypoint detection windows in width
-constexpr uint maximumPointPerFrame = 100; // maximum points per frame, over which we do not want to detect more points
+constexpr uint maximumPointPerFrame = 150; // maximum points per frame, over which we do not want to detect more points
 constexpr uint keypointRefreshFrequency = 5; // force update the keypoint list every N calls (opti)
 
 // point tracking
@@ -67,7 +67,9 @@ constexpr uint opticalFlowPyramidWindowSizeWidthCount =
 
 // inverse depth
 constexpr double inverseDepthBaseline_m = 1.0 / 10.0; // baseline of the inverse depth, in 1/meters
-constexpr double inverseDepthAngleBaseline = 0.5;     // baseline of the inverse depth measurment angles, in degrees
+constexpr double inverseDepthAngleBaseline_deg = 0.5; // baseline of the inverse depth measurment angles, in degrees
+constexpr double minParallaxForInverseDepthUpdate_deg =
+        1.0; // inverse depth points wont be update below this parallax, to avoid numerical issues
 
 // plane detection
 constexpr double minimumPlaneSeedProportion =

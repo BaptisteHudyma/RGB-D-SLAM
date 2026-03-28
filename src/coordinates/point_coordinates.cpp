@@ -105,7 +105,7 @@ CameraCoordinate ScreenCoordinate2D::to_camera_coordinates_baseline(const double
 matrix22 ScreenCoordinate2D::get_covariance() const
 {
     // TODO xy variance should also depend on the placement of the pixel in x and y
-    const double xyVariance = SQR(0.5);
+    const double xyVariance = SQR(1.0);
     matrix22 cov({{xyVariance, 0.0}, {0.0, xyVariance}});
 
     if (not utils::is_covariance_valid(cov))
