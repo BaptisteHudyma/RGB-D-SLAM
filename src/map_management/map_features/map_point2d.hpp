@@ -78,6 +78,7 @@ class MapPoint2D :
 
     [[nodiscard]] matchIndexSet find_matches(const DetectedKeypointsObject& detectedFeatures,
                                              const WorldToCameraMatrix& worldToCamera,
+                                             const matrix66& worldToCameraCovariance,
                                              const vectorb& isDetectedFeatureMatched,
                                              matches_containers::match_container& matches,
                                              const bool shouldAddToMatches = true,

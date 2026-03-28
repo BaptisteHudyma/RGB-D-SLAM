@@ -299,6 +299,9 @@ void Key_Point_Extraction::get_keypoints_from_optical_flow(const std::vector<cv:
     keypointIndexContainer.reserve(previousKeyPointCount);
     newKeypoints.reserve(previousKeyPointCount);
 
+    assert(statusContainer.size() == previousKeyPointCount);
+    assert(forwardPoints.size() == previousKeyPointCount);
+
     // Remove outliers from current waypoint list by creating a new one
     for (size_t keypointIndex = 0; keypointIndex < previousKeyPointCount; ++keypointIndex)
     {

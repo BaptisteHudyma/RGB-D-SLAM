@@ -56,6 +56,10 @@ class RGBD_SLAM
      * \brief FOR DEBUG ONLY: set the ground truth of the transform, skipping the optimization phase
      */
     void set_ground_truth(const utils::PoseBase& groundTruthPose);
+    /**
+     * \brief FOR DEBUG: set the pose stored in memory
+     */
+    void set_state_pose(const utils::Pose& startPose);
 
     /**
      * \brief Compute a debug image

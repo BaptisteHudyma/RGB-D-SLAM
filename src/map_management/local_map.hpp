@@ -84,14 +84,16 @@ template<class... Maps> class Local_Map
         // get transformation matrix from estimated pose
         const WorldToCameraMatrix& worldToCamera = utils::compute_world_to_camera_transform(
                 currentPose.get_rotation_quaternion(), currentPose.get_position());
+        const matrix66& poseCovariance = currentPose.get_pose_variance();
 
         matches_containers::match_container matchSets;
 
         // find point matches
         const double findMatchesStartTime = static_cast<double>(cv::getTickCount());
 
-        foreach_map([&detectedFeatures, &worldToCamera, &matchSets](auto& map) {
-            map.get_matches(detectedFeatures, worldToCamera, map.minimum_features_for_opti(), matchSets);
+        foreach_map([&detectedFeatures, &worldToCamera, &poseCovariance, &matchSets](auto& map) {
+            map.get_matches(
+                    detectedFeatures, worldToCamera, poseCovariance, map.minimum_features_for_opti(), matchSets);
         });
 
         findMatchDuration += (static_cast<double>(cv::getTickCount()) - findMatchesStartTime) / cv::getTickFrequency();

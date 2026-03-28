@@ -11,6 +11,7 @@
 #include "types.hpp"
 
 #include <algorithm>
+#include <exception>
 #include <memory>
 
 #include <opencv2/core/matx.hpp>
@@ -53,6 +54,7 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
      * \param[in] detectedFeatures The object that contains the detected features for this frame
      * \param[in] worldToCamera The matrix to convert from map space to camera space. This should be an estimate of the
      * position from which detectedFeatures were observed
+     * \param[in] worldToCameraCovariance covariance of the pose of the camera
      * \param[in, out] isDetectedFeatureMatched A vector of booleans indicating which detected features are already
      * matched. should be updated if a match is found
      * \param[in, out] matches The object that contains the feature matches
@@ -62,6 +64,7 @@ template<class DetectedFeaturesObject, class DetectedFeatureType, class TrackedF
      */
     [[nodiscard]] virtual matchIndexSet find_matches(const DetectedFeaturesObject& detectedFeatures,
                                                      const WorldToCameraMatrix& worldToCamera,
+                                                     const matrix66& worldToCameraCovariance,
                                                      const vectorb& isDetectedFeatureMatched,
                                                      matches_containers::match_container& matches,
                                                      const bool shouldAddToMatches = true,
@@ -308,6 +311,7 @@ class Feature_Map
      */
     void get_matches(const DetectedFeatureContainer& detectedFeatures,
                      const WorldToCameraMatrix& worldToCamera,
+                     const matrix66& worldToCameraCovariance,
                      const uint minimumFeaturesForOptimization,
                      matches_containers::match_container& matches) noexcept
     {
@@ -315,14 +319,20 @@ class Feature_Map
 
         matches_containers::match_container testMatches;
 
-        get_map_feature_matches(
-                detected, worldToCamera, false, minimumFeaturesForOptimization, _isDetectedFeatureMatched, testMatches);
+        get_map_feature_matches(detected,
+                                worldToCamera,
+                                worldToCameraCovariance,
+                                false,
+                                minimumFeaturesForOptimization,
+                                _isDetectedFeatureMatched,
+                                testMatches);
         if (testMatches.size() < minimumFeaturesForOptimization)
         // What is the use of this metric ? TODO: document
         // or testMatches.size() < std::min(detectedFeatures.size(), get_local_map_size()) / 2)
         {
             get_map_feature_matches(detected,
                                     worldToCamera,
+                                    worldToCameraCovariance,
                                     true,
                                     minimumFeaturesForOptimization,
                                     _isDetectedFeatureMatched,
@@ -588,16 +598,31 @@ class Feature_Map
         {
             for (const auto& [id, mapFeature]: _stagedMap)
             {
-                // macthed staged features are orange, unmatched are red
-                const cv::Scalar stagedColor =
-                        (mapFeature.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 0, 255);
-                mapFeature.draw(worldToCamMatrix, debugImage, stagedColor);
+                try
+                {
+                    // matched staged features are orange, unmatched are red
+                    const cv::Scalar stagedColor =
+                            (mapFeature.is_matched()) ? cv::Scalar(0, 200, 255) : cv::Scalar(0, 0, 255);
+                    mapFeature.draw(worldToCamMatrix, debugImage, stagedColor);
+                }
+                catch (const std::exception& e)
+                {
+                    outputs::log_error(
+                            std::format("{} -> Could not draw feature: error {}", get_display_name(), e.what()));
+                }
             }
         }
 
         for (const auto& [id, mapFeature]: _localMap)
         {
-            mapFeature.draw(worldToCamMatrix, debugImage, mapFeature._color);
+            try
+            {
+                mapFeature.draw(worldToCamMatrix, debugImage, mapFeature._color);
+            }
+            catch (const std::exception& e)
+            {
+                outputs::log_error(std::format("{} -> Could not draw feature: error {}", get_display_name(), e.what()));
+            }
         }
     }
 
@@ -655,6 +680,7 @@ class Feature_Map
      * \param[in,out] map Map to find the matches in
      * \param[in] detectedFeatures The object of detected features to match
      * \param[in] worldToCamera A matrix to convert from world to camera space
+     * \param[in] worldToCameraCovariance covariance of the world to camera pose
      * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if
      * True. Also less precise
      * \param[in] shouldAddToMatches If false, the matches will be registered, but not added to the matches object
@@ -665,6 +691,7 @@ class Feature_Map
     template<class MapType> static void get_map_feature_matches(MapType& map,
                                                                 const DetectedFeaturesObject& detectedFeatures,
                                                                 const WorldToCameraMatrix& worldToCamera,
+                                                                const matrix66& worldToCameraCovariance,
                                                                 const bool useAdvancedMatch,
                                                                 const bool shouldAddToMatches,
                                                                 vectorb& isDetectedFeatureMatched,
@@ -681,6 +708,7 @@ class Feature_Map
 
             const matchIndexSet& matchIndexes = mapFeature.find_matches(detectedFeatures,
                                                                         worldToCamera,
+                                                                        worldToCameraCovariance,
                                                                         isDetectedFeatureMatched,
                                                                         matches,
                                                                         shouldAddToMatches,
@@ -699,6 +727,7 @@ class Feature_Map
      * isDetectedFeatureMatched flags. it will modify the map match/unmatch state
      * \param[in] detectedFeatures The object of detected features to match
      * \param[in] worldToCamera A matrix to convert from world to camera space
+     * \param[in] worldToCameraCovariance covariance of the world to camera transform
      * \param[in] useAdvancedMatch If true, will restart the matching process to detected features further than if
      * True. Also less precise
      * \param[in] minimumFeaturesForOptimization The minimum feature count for a pose optimization
@@ -707,6 +736,7 @@ class Feature_Map
      */
     void get_map_feature_matches(const DetectedFeaturesObject& detectedFeatures,
                                  const WorldToCameraMatrix& worldToCamera,
+                                 const matrix66& worldToCameraCovariance,
                                  const bool useAdvancedMatch,
                                  const uint minimumFeaturesForOptimization,
                                  vectorb& isDetectedFeatureMatched,
@@ -720,8 +750,14 @@ class Feature_Map
         matches.clear();
 
         // search matches in local map first
-        get_map_feature_matches(
-                _localMap, detectedFeatures, worldToCamera, useAdvancedMatch, true, isDetectedFeatureMatched, matches);
+        get_map_feature_matches(_localMap,
+                                detectedFeatures,
+                                worldToCamera,
+                                worldToCameraCovariance,
+                                useAdvancedMatch,
+                                true,
+                                isDetectedFeatureMatched,
+                                matches);
 
         // if we have enough features from local map to run the optimization, no need to add the staged features
         // Still, we need to try and match them to insure tracking and new map features
@@ -732,6 +768,7 @@ class Feature_Map
         get_map_feature_matches(_stagedMap,
                                 detectedFeatures,
                                 worldToCamera,
+                                worldToCameraCovariance,
                                 useAdvancedMatch,
                                 shouldUseStagedFeatures,
                                 isDetectedFeatureMatched,
@@ -755,7 +792,7 @@ class Feature_Map
                 continue;
             }
 
-            const auto& smallestElementIterator = std::min_element(mapFeatures.begin(), mapFeatures.end());
+            const auto& smallestElementIterator = std::ranges::min_element(mapFeatures);
             if (smallestElementIterator == mapFeatures.cend())
             {
                 // failed the smallest element test
@@ -792,6 +829,15 @@ class Feature_Map
         }
     }
 
+    /**
+     * \brief Update the local map with the feature used in the optimization process
+     * \param[in] cameraToWorld Camera to world pose after optimization
+     * \param[in] poseCovariance Covariance of the camera to world pose after optimization
+     * \param[in] detectedFeatureObject Handler to access the detected features
+     * \param[in] mapWriter Handler to send a feature to the map
+     *
+     * \return A container of all detected feature index that have been effectively used in the map update.
+     */
     matchIndexSet update_local_map(const CameraToWorldMatrix& cameraToWorld,
                                    const matrix66& poseCovariance,
                                    const DetectedFeaturesObject& detectedFeatureObject,
@@ -867,6 +913,14 @@ class Feature_Map
         return usedIndices;
     }
 
+    /**
+     * \brief Update the staged map with the feature used in the optimization process
+     * \param[in] cameraToWorld Camera to world pose after optimization
+     * \param[in] poseCovariance Covariance of the camera to world pose after optimization
+     * \param[in] detectedFeatureObject Handler to access the detected features
+     *
+     * \return A container of all detected feature index that have been effectively used in the map update.
+     */
     matchIndexSet update_staged_map(const CameraToWorldMatrix& cameraToWorld,
                                     const matrix66& poseCovariance,
                                     const DetectedFeaturesObject& detectedFeatureObject)
@@ -1001,7 +1055,9 @@ class Feature_Map
             assert(mapFeatureIterator->first == mapFeature._id);
 
             UpgradedFeature_ptr upgraded;
-            if (mapFeature.compute_upgraded(cameraToWorld, upgraded))
+            // only upgrade matched features, or strange edge cases may appear:
+            // eg: ghost 3D points due to the fake parralax of a lost 2D point
+            if (mapFeature.is_matched() and mapFeature.compute_upgraded(cameraToWorld, upgraded))
             {
                 if (upgraded == nullptr)
                 {

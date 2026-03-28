@@ -90,11 +90,15 @@ FeatureType PlaneOptimizationFeature::get_feature_type() const noexcept { return
 
 matchIndexSet MapPlane::find_matches(const DetectedPlaneObject& detectedFeatures,
                                      const WorldToCameraMatrix& worldToCamera,
+                                     const matrix66& worldToCameraCovariance,
                                      const vectorb& isDetectedFeatureMatched,
                                      matches_containers::match_container& matches,
                                      const bool shouldAddToMatches,
                                      const bool useAdvancedSearch) const noexcept
 {
+    std::ignore = worldToCameraCovariance;
+    std::ignore = isDetectedFeatureMatched;
+
     matchIndexSet matchIndexes;
 
     const PlaneWorldToCameraMatrix& planeCameraToWorld = utils::compute_plane_world_to_camera_matrix(worldToCamera);

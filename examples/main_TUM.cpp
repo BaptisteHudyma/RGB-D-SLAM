@@ -161,6 +161,7 @@ int main(int argc, char* argv[])
     double rotationError = 0;
 
     rgbd_slam::utils::Pose pose;
+    bool isFirstPoseSet = false;
     if (const GroundTruth& initialGroundTruth = datasetContainer[0].groundTruth; initialGroundTruth.isValid)
     {
         pose.set_parameters(initialGroundTruth.position, initialGroundTruth.rotation);
@@ -169,6 +170,11 @@ int main(int argc, char* argv[])
         positionError = pose.get_position_error(groundTruthPose);
         rotationError = pose.get_rotation_error(groundTruthPose);
         pose.reset_new_world(initialGroundTruth.timeStamp);
+        isFirstPoseSet = true;
+    }
+    else
+    {
+        rgbd_slam::outputs::log_warning("Start pose not available");
     }
 
     // Load a default set of parameters
@@ -186,7 +192,7 @@ int main(int argc, char* argv[])
 
     // frame counters
     unsigned int totalFrameTreated = 0;
-    unsigned int frameIndex = startIndex; // current frame index count
+    unsigned int frameIndex = 0; // current frame index count
 
     double meanTreatmentDuration = 0;
 
@@ -211,6 +217,12 @@ int main(int argc, char* argv[])
         // out condition
         if (not shouldStop)
             break;
+        // ski pall frames before this one
+        if (frameIndex < static_cast<uint>(startIndex))
+        {
+            ++frameIndex;
+            continue;
+        }
 
         if (jumpFrames > 0 and frameIndex % jumpFrames != 0)
         {
@@ -271,13 +283,27 @@ int main(int argc, char* argv[])
         // set ground truth (TEST ONLY)
         if (imageData.groundTruth.isValid)
         {
+            if (not isFirstPoseSet)
+            {
+                pose.set_parameters(imageData.groundTruth.position, imageData.groundTruth.rotation);
+                rgbd_slam::utils::PoseBase groundTruthPose(imageData.groundTruth.position,
+                                                           imageData.groundTruth.rotation);
+                pose.reset_new_world(imageData.groundTruth.timeStamp);
+                RGBD_Slam.set_state_pose(pose);
+                isFirstPoseSet = true;
+            }
+
             rgbd_slam::utils::PoseBase groundTruthPose(imageData.groundTruth.position, imageData.groundTruth.rotation);
             RGBD_Slam.set_ground_truth(groundTruthPose);
         }
         else
         {
             rgbd_slam::outputs::log_error("DEBUG_WITH_GROUND_TRUTH option requires a ground truth");
+            continue;
         }
+
+        if (not isFirstPoseSet)
+            continue;
 #endif
 
         pose = RGBD_Slam.track(rgbImage, depthImage, imageData.rgbImage.imageTimeStamp);
@@ -327,7 +353,7 @@ int main(int argc, char* argv[])
         trajectoryFile.close();
 
     std::cout << std::endl;
-    if (isGroundTruthAvailable)
+    if (isFirstPoseSet and isGroundTruthAvailable)
         std::cout << "Pose error: " << positionError * 100.0 << " cm | " << rotationError << " °" << std::endl;
     std::cout << "End pose : " << pose << std::endl;
     std::cout << "Process terminated at frame " << frameIndex << std::endl;
