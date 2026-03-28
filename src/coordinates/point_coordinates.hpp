@@ -146,6 +146,12 @@ struct CameraCoordinate : public vector3
      */
     [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate& screenPoint) const noexcept;
     [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept;
+
+    /**
+     * \brief Get the transformation to screen jacobian
+     */
+    [[nodiscard]] matrix23 to_screen2d_coordinates_jacobian() const noexcept;
+    [[nodiscard]] matrix33 to_screen_coordinates_jacobian() const noexcept;
 };
 
 /**

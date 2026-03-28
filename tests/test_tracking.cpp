@@ -183,7 +183,7 @@ TEST(InverseDepthPointFusion, centerPointParallelFusion)
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
 
     // fuse the two points
-    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2w, matrix66::Zero(), cv::Mat()));
+    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2w, matrix66::Zero()));
 }
 
 TEST(InverseDepthPointFusion, centerPointForwardParallelFusion)
@@ -213,8 +213,7 @@ TEST(InverseDepthPointFusion, centerPointForwardParallelFusion)
     assert_inverse_point_back_proj(c2wForward, observation);
 
     // fuse the two points
-    EXPECT_TRUE(
-            inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero(), cv::Mat()));
+    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -250,8 +249,7 @@ TEST(InverseDepthPointFusion, centerPointBackwardParallelFusion)
     assert_inverse_point_back_proj(c2wForward, observation);
 
     // fuse the two points
-    EXPECT_TRUE(
-            inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero(), cv::Mat()));
+    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -287,8 +285,7 @@ TEST(InverseDepthPointFusion, topLeftPointForwardParallelFusion)
     assert_inverse_point_back_proj(c2wForward, observation);
 
     // fuse the two points
-    EXPECT_TRUE(
-            inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero(), cv::Mat()));
+    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -324,8 +321,7 @@ TEST(InverseDepthPointFusion, topLeftPointBackwardParallelFusion)
     assert_inverse_point_back_proj(c2wForward, observation);
 
     // fuse the two points
-    EXPECT_TRUE(
-            inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero(), cv::Mat()));
+    EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2wForward, matrix66::Zero()));
 
     // linearity should be bad
     EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
@@ -410,8 +406,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromSide)
     {
         assert_inverse_point_back_proj(c2wSide90, observation);
 
-        EXPECT_TRUE(inverseDepth.track_2D(
-                observation, observation.get_covariance(), c2wSide90, matrix66::Identity(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2wSide90, matrix66::Identity()));
 
         EXPECT_TRUE(
                 inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2wSide90), screenSegment));
@@ -538,8 +533,7 @@ TEST(InverseDepthPointFusion, centerPointFusionFromOtherSide)
     {
         assert_inverse_point_back_proj(c2wSide90, observation);
 
-        EXPECT_TRUE(inverseDepth.track_2D(
-                observation, observation.get_covariance(), c2wSide90, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, observation.get_covariance(), c2wSide90, matrix66::Zero()));
 
         EXPECT_TRUE(
                 inverseDepth.to_screen_coordinates(utils::compute_world_to_camera_transform(c2wSide90), screenSegment));
@@ -638,7 +632,7 @@ TEST(InverseDepthPointFusion, fusePointObservationXAxis)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         const double newThreshold = inverseDepth.compute_linearity_score(c2w);
         EXPECT_LT(newThreshold, lastThreshold); // still less than
@@ -728,7 +722,7 @@ TEST(InverseDepthPointFusion, fusePointObservationYAxis)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         const double newThreshold = inverseDepth.compute_linearity_score(c2w);
         EXPECT_LT(newThreshold, lastThreshold); // still less than
@@ -819,7 +813,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxis)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         const double newThreshold = inverseDepth.compute_linearity_score(c2w);
         EXPECT_LT(newThreshold, lastThreshold); // still less than
@@ -910,7 +904,7 @@ TEST(InverseDepthPointFusion, fusePointObservationXAxisAway)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         const double newThreshold = inverseDepth.compute_linearity_score(c2w);
         EXPECT_LT(newThreshold, lastThreshold); // still less than
@@ -1001,7 +995,7 @@ TEST(InverseDepthPointFusion, fusePointObservationYAxisAway)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         const double newThreshold = inverseDepth.compute_linearity_score(c2w);
         EXPECT_LT(newThreshold, lastThreshold); // still less than
@@ -1092,7 +1086,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxisAway)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         const double newThreshold = inverseDepth.compute_linearity_score(c2w);
         EXPECT_LT(newThreshold, lastThreshold); // still less than
@@ -1175,7 +1169,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxisFarAway)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         EXPECT_GT(inverseDepth.compute_linearity_score(c2w), linearityThreshold);
     }
@@ -1245,7 +1239,7 @@ TEST(InverseDepthPointFusion, fusePointObservationXAxisAwayRotation)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         const double newThreshold = inverseDepth.compute_linearity_score(c2w);
         EXPECT_LT(newThreshold, lastThreshold); // still less than
@@ -1348,7 +1342,7 @@ TEST(InverseDepthPointFusion, fusePointObservationYAxisAwayRotation)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         const double newThreshold = inverseDepth.compute_linearity_score(c2w);
         EXPECT_LT(newThreshold, lastThreshold); // still less than
@@ -1451,7 +1445,7 @@ TEST(InverseDepthPointFusion, fusePointObservationZAxisAwayRotation)
         assert_inverse_point_back_proj(c2w, observation);
 
         matrix22 cov = vector2::Constant(SQR(2.0)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_2D(observation, cov, c2w, matrix66::Zero()));
 
         const double newThreshold = inverseDepth.compute_linearity_score(c2w);
         EXPECT_LT(newThreshold, lastThreshold); // still less than
@@ -1541,7 +1535,7 @@ TEST(InverseDepthPointFusion3d, fusePointObservationXAxis)
         assert_inverse_point_back_proj(c2w, observation.get_2D());
 
         matrix33 covariance = vector3(1, 1, SQR(0.1)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_3D(observation, covariance, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_3D(observation, covariance, c2w, matrix66::Zero()));
 
         // check that the projection line is close around the target
         utils::Segment<2> screenSegment;
@@ -1620,7 +1614,7 @@ TEST(InverseDepthPointFusion3d, fusePointObservationYAxis)
         assert_inverse_point_back_proj(c2w, observation.get_2D());
 
         matrix33 covariance = vector3(1, 1, SQR(0.1)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_3D(observation, covariance, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_3D(observation, covariance, c2w, matrix66::Zero()));
 
         // check that the projection line is close around the target
         utils::Segment<2> screenSegment;
@@ -1699,7 +1693,7 @@ TEST(InverseDepthPointFusion3d, fusePointObservationZAxis)
         assert_inverse_point_back_proj(c2w, observation.get_2D());
 
         matrix33 covariance = vector3(1, 1, SQR(0.1)).asDiagonal();
-        EXPECT_TRUE(inverseDepth.track_3D(observation, covariance, c2w, matrix66::Zero(), cv::Mat()));
+        EXPECT_TRUE(inverseDepth.track_3D(observation, covariance, c2w, matrix66::Zero()));
 
         // check that the projection line is close around the target
         utils::Segment<2> screenSegment;

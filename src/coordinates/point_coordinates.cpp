@@ -222,6 +222,18 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint) co
     return false;
 }
 
+matrix23 CameraCoordinate::to_screen2d_coordinates_jacobian() const noexcept
+{
+    // jacobian of a camera to screen 2D
+    return utils::get_camera_to_screen2d_jacobian(*this);
+}
+
+matrix33 CameraCoordinate::to_screen_coordinates_jacobian() const noexcept
+{
+    // jacobian of a camera to screen
+    return utils::get_camera_to_screen_jacobian(*this);
+}
+
 /**
  *      WORLD COORDINATES
  */
@@ -246,23 +258,22 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
 
 matrix23 WorldCoordinate::to_screen2d_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const matrix33& toCameraJacobian = to_camera_coordinates_jacobian(worldToCamera);
+    const matrix33& worldToCameraJacobian = to_camera_coordinates_jacobian(worldToCamera);
 
     // jacobian of a camera to screen 2D
-    const matrix23& cameraToScreenJacobian =
-            utils::get_camera_to_screen2d_jacobian(to_camera_coordinates(worldToCamera));
+    const matrix23& cameraToScreenJacobian = to_camera_coordinates(worldToCamera).to_screen2d_coordinates_jacobian();
 
-    return cameraToScreenJacobian * toCameraJacobian;
+    return cameraToScreenJacobian * worldToCameraJacobian;
 }
 
 matrix33 WorldCoordinate::to_screen_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
 {
-    const matrix33& toCameraJacobian = to_camera_coordinates_jacobian(worldToCamera);
+    const matrix33& worldToCameraJacobian = to_camera_coordinates_jacobian(worldToCamera);
 
     // jacobian of a camera to screen
-    const matrix33& cameraToScreenJacobian = utils::get_camera_to_screen_jacobian(to_camera_coordinates(worldToCamera));
+    const matrix33& cameraToScreenJacobian = to_camera_coordinates(worldToCamera).to_screen_coordinates_jacobian();
 
-    return cameraToScreenJacobian * toCameraJacobian;
+    return cameraToScreenJacobian * worldToCameraJacobian;
 }
 
 vector2 WorldCoordinate::get_signed_distance_2D_px(const ScreenCoordinate2D& screenPoint,

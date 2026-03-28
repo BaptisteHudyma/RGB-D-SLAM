@@ -5,6 +5,7 @@
 #include "logger.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
+#include <exception>
 
 namespace rgbd_slam::map_management {
 
@@ -94,22 +95,36 @@ matchIndexSet MapPoint2D::find_matches(const DetectedKeypointsObject& detectedFe
     matchIndexSet matchIndexRes;
 
     assert(not _descriptor.empty());
-    constexpr double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
-    constexpr double advancedSearchSpaceRadius = parameters::matching::matchSearchRadius_px * 2;
-    const double searchRadius = useAdvancedSearch ? advancedSearchSpaceRadius : searchSpaceRadius;
 
     // try to match with tracking
     int matchIndex = detectedFeatures.get_tracking_match_index(_id, isDetectedFeatureMatched);
     if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
     {
         // No match: try to find match in a window around the point
-        utils::Segment<2> screenCoordinates;
-        if (_coordinates.to_screen_coordinates(
-                    worldToCamera, _covariance.get_inverse_depth_variance(), screenCoordinates))
+        const auto projectedMapPoint = _coordinates.get_projected_screen_estimation(worldToCamera);
+
+        double searchSpaceRadius = parameters::matching::matchSearchRadius_px;
+        try
         {
-            matchIndexRes = detectedFeatures.get_match_index(
-                    screenCoordinates, _descriptor, isDetectedFeatureMatched, searchRadius);
+            Eigen::Matrix<double, 3, 6> jacobian;
+            const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
+            const WorldCoordinateCovariance& cartCov = compute_cartesian_covariance(_covariance, jacobian);
+            // get covariance of the point in 2d
+            const vector2& screenPointCovariance =
+                    utils::get_screen_point_covariance(worldCoords, cartCov, worldToCamera).diagonal().head<2>();
+
+            searchSpaceRadius = sqrt(std::max(screenPointCovariance.x(), screenPointCovariance.y()));
         }
+        catch (const std::exception& e)
+        {
+            /// TODO: debug this case: it happens when the inverse depth goes negative
+            // outputs::log_warning(std::format("Could not compute 2D point screen covariance : %s", e.what()));
+        }
+
+        const double searchRadius = useAdvancedSearch ? searchSpaceRadius * 3.0 : searchSpaceRadius * 2.0;
+
+        matchIndexRes = detectedFeatures.get_match_indexes(
+                projectedMapPoint, _descriptor, isDetectedFeatureMatched, searchRadius);
     }
 
     if (matchIndex == features::keypoints::INVALID_MATCH_INDEX)
@@ -254,7 +269,11 @@ bool MapPoint2D::compute_upgraded(const CameraToWorldMatrix& cameraToWorld,
 {
     try
     {
-        if (compute_linearity_score(cameraToWorld) < 0.1) // linearity index (percentage) (TODO: add to parameters)
+        if (
+                // sanity check
+                _coordinates.get_inverse_depth() > 0.0 and
+                // linearity index (percentage) (TODO: add to parameters)
+                compute_linearity_score(cameraToWorld) < 0.1)
         {
             Eigen::Matrix<double, 3, 6> jacobian;
             const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
@@ -289,11 +308,8 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
 
 #ifndef BLOCK_2D_TO_3D_MERGE_2DPOINTS
     // use the real observation, it will most likely override the covariance inside the inverse depth point
-    if (is_depth_valid(matchCoordinates.z()) and track_3D(matchCoordinates,
-                                                          matchCoordinates.get_covariance(),
-                                                          cameraToWorld,
-                                                          poseCovariance,
-                                                          matchedFeature._descriptor))
+    if (is_depth_valid(matchCoordinates.z()) and
+        track_3D(matchCoordinates, matchCoordinates.get_covariance(), cameraToWorld, poseCovariance))
     {
         // success ! passthrough
     }
@@ -303,11 +319,13 @@ bool MapPoint2D::update_with_match(const DetectedPoint2DType& matchedFeature,
             if (not track_2D(matchCoordinates.get_2D(),
                              matchCoordinates.get_2D().get_covariance(),
                              cameraToWorld,
-                             poseCovariance,
-                             matchedFeature._descriptor))
+                             poseCovariance))
     {
         return false;
     }
+
+    if (not matchedFeature._descriptor.empty())
+        _descriptor = matchedFeature._descriptor;
 
     latestMatchedFeature = matchCoordinates.get_2D();
     return true;
@@ -335,6 +353,8 @@ StagedMapPoint2D::StagedMapPoint2D(const matrix66& poseCovariance,
                                    const DetectedPoint2DType& detectedFeature) :
     MapPoint2D(detectedFeature._coordinates.get_2D(), cameraToWorld, poseCovariance, detectedFeature._descriptor)
 {
+    // staged point start with tracking
+    latestMatchedFeature = detectedFeature._coordinates.get_2D();
 }
 
 bool StagedMapPoint2D::should_remove_from_staged() const noexcept { return get_confidence() <= 0; }
@@ -362,6 +382,8 @@ LocalMapPoint2D::LocalMapPoint2D(const StagedMapPoint2D& stagedPoint) : MapPoint
 {
     // new map point, new color
     set_color();
+
+    latestMatchedFeature = stagedPoint.latestMatchedFeature;
 
     _matchIndexes = stagedPoint._matchIndexes;
     _successivMatchedCount = stagedPoint._successivMatchedCount;

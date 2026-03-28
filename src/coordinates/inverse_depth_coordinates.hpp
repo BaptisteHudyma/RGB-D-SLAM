@@ -109,6 +109,13 @@ struct InverseDepthWorldPoint
                                                        const double addedStandardDev = 0.0) const noexcept;
 
     /**
+     * \brief Observation model for an inverse depth feature
+     */
+    CameraCoordinate get_camera_observation_projection(const WorldToCameraMatrix& w2c) const noexcept;
+    ScreenCoordinate2D get_observation_model(const WorldToCameraMatrix& w2c) const noexcept;
+    Eigen::Matrix<double, 2, 6> get_observation_model_jacobian(const WorldToCameraMatrix& w2c) const noexcept;
+
+    /**
      * \brief Compute the projection of this inverse depth point to screen space with depth, with the given variance
      * \param[in] w2c Matrix to go from world to camera space
      * \param[in] addedStandardDev The value to add to the estimated depth, to variate the screen point
