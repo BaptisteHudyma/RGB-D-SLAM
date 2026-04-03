@@ -187,7 +187,7 @@ bool RGBD_SLAM::internal_compute_new_pose(const utils::Pose& predictedPose,
     {
         optimizedPose.set_parameters(_groundTruthPose->get_position(), _groundTruthPose->get_rotation_quaternion());
         optimizedPose.set_position_variance(
-                vector7(SQR(1e-2), SQR(1e-2), SQR(1e-2), SQR(1e-4), SQR(1e-4), SQR(1e-4), SQR(1e-4)).asDiagonal());
+                vector7(SQR(1e-3), SQR(1e-3), SQR(1e-3), SQR(1e-4), SQR(1e-4), SQR(1e-4), SQR(1e-4)).asDiagonal());
         matchSets._inliers = matchedFeatures;
 
         // ground truth works only once

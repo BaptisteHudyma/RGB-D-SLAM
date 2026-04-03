@@ -53,6 +53,15 @@ struct ScreenCoordinate2D : public vector2
     [[nodiscard]] CameraCoordinate to_camera_coordinates_baseline(const double baseline = 1.0) const;
 
     /**
+     * \brief Transform a screen point with a depth value to a 3D camera point
+     * \param[out] jacobian Jacobian of the transformation
+     * \return A 3D point in camera coordinates
+     */
+    [[nodiscard]] CameraCoordinate2D to_camera_coordinates(Eigen::Matrix<double, 2, 2>& jacobian) const;
+    [[nodiscard]] CameraCoordinate to_camera_coordinates_baseline(Eigen::Matrix<double, 3, 3>& jacobian,
+                                                                  const double baseline = 1.0) const;
+
+    /**
      * \brief Compute a covariance in screen space
      */
     [[nodiscard]] matrix22 get_covariance() const;
@@ -74,17 +83,47 @@ struct ScreenCoordinate : public vector3
     ScreenCoordinate() : vector3(vector3::Zero()) {};
 
     /**
+     * \brief Compute the screen covariance to world covariance
+     * \param[in] screenPoint
+     * \param[in] screenCovariance
+     * \param[in] cameraToWorld
+     * \param[in] poseCovariance
+     * \return The estimated world covariance
+     */
+    static WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
+                                                                const matrix33& screenCovariance,
+                                                                const CameraToWorldMatrix& cameraToWorld,
+                                                                const matrix66& poseCovariance) noexcept;
+    static WorldCoordinateCovariance get_world_point_covariance(const matrix33& screenCovariance,
+                                                                const matrix66& poseCovariance,
+                                                                const matrix33& screenToWorldJacobian) noexcept;
+
+    /**
      * \brief Transform a screen point with a depth value to a 3D world point
      * \param[in] cameraToWorld Matrix to transform local to world coordinates
      * \return A 3D point in world coordinates
      */
     [[nodiscard]] WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const;
+    /**
+     * \brief Transform a screen point with a depth value to a 3D world point
+     * \param[in] cameraToWorld Matrix to transform local to world coordinates
+     * \param[out] jacobian Jacobian of the transformation
+     * \return A 3D point in world coordinates
+     */
+    [[nodiscard]] WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld,
+                                                       Eigen::Matrix<double, 3, 3>& jacobian) const;
 
     /**
      * \brief Transform a screen point with a depth value to a 3D camera point
      * \return A 3D point in camera coordinates
      */
     [[nodiscard]] CameraCoordinate to_camera_coordinates() const;
+    /**
+     * \brief Transform a screen point with a depth value to a 3D camera point
+     * \param[out] jacobian Jacobian of the transformation
+     * \return A 3D point in camera coordinates
+     */
+    [[nodiscard]] CameraCoordinate to_camera_coordinates(Eigen::Matrix<double, 3, 3>& jacobian) const;
 
     /**
      * \brief Compute a covariance in screen space
@@ -115,6 +154,8 @@ struct CameraCoordinate2D : public vector2
      * \return True if the screen position is valid
      */
     [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept;
+    [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate2D& screenPoint,
+                                             Eigen::Matrix<double, 2, 2>& jacobian) const noexcept;
 };
 
 /**
@@ -138,6 +179,8 @@ struct CameraCoordinate : public vector3
      * \return A 3D point in world coordinates
      */
     [[nodiscard]] WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const noexcept;
+    [[nodiscard]] WorldCoordinate to_world_coordinates(const CameraToWorldMatrix& cameraToWorld,
+                                                       Eigen::Matrix<double, 3, 3>& jacobian) const noexcept;
 
     /**
      * \brief Transform a point from camera to screen coordinate system
@@ -148,10 +191,15 @@ struct CameraCoordinate : public vector3
     [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate2D& screenPoint) const noexcept;
 
     /**
-     * \brief Get the transformation to screen jacobian
+     * \brief Transform a point from camera to screen coordinate system
+     * \param[out] screenPoint The point screen coordinates, if the function returned true
+     * \param[out] jacobian Jacobian of this transformation
+     * \return True if the screen position is valid
      */
-    [[nodiscard]] matrix23 to_screen2d_coordinates_jacobian() const noexcept;
-    [[nodiscard]] matrix33 to_screen_coordinates_jacobian() const noexcept;
+    [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate& screenPoint,
+                                             Eigen::Matrix<double, 3, 3>& jacobian) const noexcept;
+    [[nodiscard]] bool to_screen_coordinates(ScreenCoordinate2D& screenPoint,
+                                             Eigen::Matrix<double, 2, 3>& jacobian) const noexcept;
 };
 
 /**
@@ -175,8 +223,19 @@ struct WorldCoordinate : public vector3
     [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
                                              ScreenCoordinate2D& screenPoint) const noexcept;
 
-    [[nodiscard]] matrix23 to_screen2d_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
-    [[nodiscard]] matrix33 to_screen_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
+    /**
+     * \brief Transform a point from world to screen coordinate system
+     * \param[in] worldToCamera Matrix to transform the world to a local coordinate system
+     * \param[out] screenPoint The point screen coordinates, if the function returned true
+     * \param[out] jacobian Jacobian of this transformation
+     * \return True if the screen position is valid
+     */
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
+                                             ScreenCoordinate& screenPoint,
+                                             Eigen::Matrix<double, 3, 3>& jacobian) const noexcept;
+    [[nodiscard]] bool to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
+                                             ScreenCoordinate2D& screenPoint,
+                                             Eigen::Matrix<double, 2, 3>& jacobian) const noexcept;
 
     /**
      * \brief Transform a vector in world space to a vector in camera space
@@ -184,8 +243,14 @@ struct WorldCoordinate : public vector3
      * \return The input vector transformed to camera space
      */
     [[nodiscard]] CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& worldToCamera) const noexcept;
-
-    [[nodiscard]] matrix33 to_camera_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept;
+    /**
+     * \brief Transform a vector in world space to a vector in camera space
+     * \param[in] worldToCamera Matrix to transform the world to a local coordinate system
+     * \param[out] jacobian Jacobian of the transformation
+     * \return The input vector transformed to camera space
+     */
+    [[nodiscard]] CameraCoordinate to_camera_coordinates(const WorldToCameraMatrix& worldToCamera,
+                                                         Eigen::Matrix<double, 3, 3>& jacobian) const noexcept;
 
     /**
      * \brief Compute a signed 2D distance between this world point and a screen point, by retroprojecting the world

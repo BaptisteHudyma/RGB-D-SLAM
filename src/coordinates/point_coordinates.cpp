@@ -102,6 +102,36 @@ CameraCoordinate ScreenCoordinate2D::to_camera_coordinates_baseline(const double
     return sc.to_camera_coordinates();
 }
 
+CameraCoordinate2D ScreenCoordinate2D::to_camera_coordinates(Eigen::Matrix<double, 2, 2>& jacobian) const
+{
+    static const vector2 cameraF = Parameters::get_camera_1_focal();
+
+    // Jacobian of the screen to camera function
+    // clang-format off
+    jacobian <<
+            1.0 / cameraF.x(), 0.0,
+            0.0,               1.0 / cameraF.y();
+    // clang-format on
+
+    return to_camera_coordinates();
+}
+CameraCoordinate ScreenCoordinate2D::to_camera_coordinates_baseline(Eigen::Matrix<double, 3, 3>& jacobian,
+                                                                    const double baseline) const
+{
+    static const vector2 cameraF = Parameters::get_camera_1_focal();
+    static const vector2 cameraC = Parameters::get_camera_1_center();
+
+    // Jacobian of the screen to camera function
+    // clang-format off
+    jacobian <<
+            baseline / cameraF.x(), 0.0,                    (this->x() - cameraC.x()) / cameraF.x(),
+            0.0,                    baseline / cameraF.y(), (this->y() - cameraC.y()) / cameraF.y(),
+            0.0,                    0.0,                    1.0;
+    // clang-format on
+
+    return to_camera_coordinates_baseline(baseline);
+}
+
 matrix22 ScreenCoordinate2D::get_covariance() const
 {
     // TODO xy variance should also depend on the placement of the pixel in x and y
@@ -152,9 +182,44 @@ ScreenCoordinateCovariance ScreenCoordinate::get_covariance() const
     return cov;
 }
 
+WorldCoordinateCovariance ScreenCoordinate::get_world_point_covariance(const ScreenCoordinate& screenPoint,
+                                                                       const matrix33& screenCovariance,
+                                                                       const CameraToWorldMatrix& cameraToWorld,
+                                                                       const matrix66& poseCovariance) noexcept
+{
+    matrix33 screenToWorldJacobian;
+    std::ignore = screenPoint.to_world_coordinates(cameraToWorld, screenToWorldJacobian);
+
+    return ScreenCoordinate::get_world_point_covariance(screenCovariance, poseCovariance, screenToWorldJacobian);
+}
+
+WorldCoordinateCovariance ScreenCoordinate::get_world_point_covariance(const matrix33& screenCovariance,
+                                                                       const matrix66& poseCovariance,
+                                                                       const matrix33& screenToWorldJacobian) noexcept
+{
+    // TODO: Add pose rotation covariance
+    const matrix33& positionCovariance = poseCovariance.block<3, 3>(0, 0);
+
+    return WorldCoordinateCovariance {utils::propagate_covariance(screenCovariance, screenToWorldJacobian) +
+                                      positionCovariance};
+}
+
 WorldCoordinate ScreenCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const
 {
     return this->to_camera_coordinates().to_world_coordinates(cameraToWorld);
+}
+
+WorldCoordinate ScreenCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld,
+                                                       Eigen::Matrix<double, 3, 3>& jacobian) const
+{
+    Eigen::Matrix<double, 3, 3> screenToCameraJacobian;
+    const CameraCoordinate& camProjection = this->to_camera_coordinates(screenToCameraJacobian);
+
+    Eigen::Matrix<double, 3, 3> cameraToWorldJacobian;
+    const WorldCoordinate& worldProjection = camProjection.to_world_coordinates(cameraToWorld, cameraToWorldJacobian);
+
+    jacobian = cameraToWorldJacobian * screenToCameraJacobian;
+    return worldProjection;
 }
 
 CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
@@ -166,6 +231,20 @@ CameraCoordinate ScreenCoordinate::to_camera_coordinates() const
 
     const vector2 cameraPoint = this->z() * transform_screen_to_camera(this->head<2>());
     return CameraCoordinate(cameraPoint.x(), cameraPoint.y(), z());
+}
+
+CameraCoordinate ScreenCoordinate::to_camera_coordinates(Eigen::Matrix<double, 3, 3>& jacobian) const
+{
+    static const vector2 cameraF = Parameters::get_camera_1_focal();
+    static const vector2 cameraC = Parameters::get_camera_1_center();
+
+    // clang-format off
+    jacobian <<
+            this->z() / cameraF.x(),    0.0,                        (this->x() - cameraC.x()) / cameraF.x(),
+            0.0,                        this->z() / cameraF.y(),    (this->y() - cameraC.y()) / cameraF.y(),
+            0.0,                        0.0,                        1.0;
+    // clang-format on
+    return to_camera_coordinates();
 }
 
 bool ScreenCoordinate::is_in_screen_boundaries() const noexcept
@@ -195,9 +274,32 @@ bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint) 
     return false;
 }
 
+bool CameraCoordinate2D::to_screen_coordinates(ScreenCoordinate2D& screenPoint,
+                                               Eigen::Matrix<double, 2, 2>& jacobian) const noexcept
+{
+    static const vector2 cameraF = Parameters::get_camera_1_focal();
+
+    // clang-format off
+    jacobian <<
+            cameraF.x(),    0.0,
+            0.0,            cameraF.y();
+    // clang-format on
+
+    return to_screen_coordinates(screenPoint);
+}
+
 WorldCoordinate CameraCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld) const noexcept
 {
     return WorldCoordinate((cameraToWorld * this->homogeneous()).head<3>());
+}
+
+WorldCoordinate CameraCoordinate::to_world_coordinates(const CameraToWorldMatrix& cameraToWorld,
+                                                       Eigen::Matrix<double, 3, 3>& jacobian) const noexcept
+{
+    // jacobian of a point transformation is just the rotation
+    jacobian = cameraToWorld.rotation();
+
+    return to_world_coordinates(cameraToWorld);
 }
 
 bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint) const noexcept
@@ -222,16 +324,33 @@ bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint) co
     return false;
 }
 
-matrix23 CameraCoordinate::to_screen2d_coordinates_jacobian() const noexcept
+bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate& screenPoint,
+                                             Eigen::Matrix<double, 3, 3>& jacobian) const noexcept
 {
-    // jacobian of a camera to screen 2D
-    return utils::get_camera_to_screen2d_jacobian(*this);
+    const static vector2 cameraF = Parameters::get_camera_1_focal();
+
+    // clang-format off
+    jacobian <<
+        cameraF.x() / this->z(),    0.0,                        -cameraF.x() * this->x() / SQR(this->z()),
+        0.0,                        cameraF.y() / this->z(),    -cameraF.y() * this->y() / SQR(this->z()),
+        0.0,                        0.0,                        1.0;
+    // clang-format on
+
+    return to_screen_coordinates(screenPoint);
 }
 
-matrix33 CameraCoordinate::to_screen_coordinates_jacobian() const noexcept
+bool CameraCoordinate::to_screen_coordinates(ScreenCoordinate2D& screenPoint,
+                                             Eigen::Matrix<double, 2, 3>& jacobian) const noexcept
 {
-    // jacobian of a camera to screen
-    return utils::get_camera_to_screen_jacobian(*this);
+    const static vector2 cameraF = Parameters::get_camera_1_focal();
+
+    // clang-format off
+    jacobian <<
+        cameraF.x() / this->z(),    0.0,                        -cameraF.x() * this->x() / SQR(this->z()),
+        0.0,                        cameraF.y() / this->z(),    -cameraF.y() * this->y() / SQR(this->z());
+    // clang-format on
+
+    return to_screen_coordinates(screenPoint);
 }
 
 /**
@@ -256,24 +375,40 @@ bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCa
     return false;
 }
 
-matrix23 WorldCoordinate::to_screen2d_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
+                                            ScreenCoordinate& screenPoint,
+                                            Eigen::Matrix<double, 3, 3>& jacobian) const noexcept
 {
-    const matrix33& worldToCameraJacobian = to_camera_coordinates_jacobian(worldToCamera);
+    Eigen::Matrix<double, 3, 3> toCameraJacobian;
+    const CameraCoordinate& cameraProjection = this->to_camera_coordinates(worldToCamera, toCameraJacobian);
 
-    // jacobian of a camera to screen 2D
-    const matrix23& cameraToScreenJacobian = to_camera_coordinates(worldToCamera).to_screen2d_coordinates_jacobian();
-
-    return cameraToScreenJacobian * worldToCameraJacobian;
+    Eigen::Matrix<double, 3, 3> toScreenJacobian;
+    ScreenCoordinate screenProjection;
+    if (cameraProjection.to_screen_coordinates(screenProjection, toScreenJacobian))
+    {
+        screenPoint = screenProjection;
+        jacobian = toScreenJacobian * toCameraJacobian;
+        return true;
+    }
+    return false;
 }
 
-matrix33 WorldCoordinate::to_screen_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+bool WorldCoordinate::to_screen_coordinates(const WorldToCameraMatrix& worldToCamera,
+                                            ScreenCoordinate2D& screenPoint,
+                                            Eigen::Matrix<double, 2, 3>& jacobian) const noexcept
 {
-    const matrix33& worldToCameraJacobian = to_camera_coordinates_jacobian(worldToCamera);
+    Eigen::Matrix<double, 3, 3> toCameraJacobian;
+    const CameraCoordinate& cameraProjection = this->to_camera_coordinates(worldToCamera, toCameraJacobian);
 
-    // jacobian of a camera to screen
-    const matrix33& cameraToScreenJacobian = to_camera_coordinates(worldToCamera).to_screen_coordinates_jacobian();
-
-    return cameraToScreenJacobian * worldToCameraJacobian;
+    Eigen::Matrix<double, 2, 3> toScreenJacobian;
+    ScreenCoordinate2D screenProjection;
+    if (cameraProjection.to_screen_coordinates(screenProjection, toScreenJacobian))
+    {
+        screenPoint = screenProjection;
+        jacobian = toScreenJacobian * toCameraJacobian;
+        return true;
+    }
+    return false;
 }
 
 vector2 WorldCoordinate::get_signed_distance_2D_px(const ScreenCoordinate2D& screenPoint,
@@ -330,11 +465,12 @@ CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatri
     return CameraCoordinate(cameraHomogenousCoordinates);
 }
 
-matrix33 WorldCoordinate::to_camera_coordinates_jacobian(const WorldToCameraMatrix& worldToCamera) const noexcept
+CameraCoordinate WorldCoordinate::to_camera_coordinates(const WorldToCameraMatrix& worldToCamera,
+                                                        Eigen::Matrix<double, 3, 3>& jacobian) const noexcept
 {
-    // jacobian of the rotation op (just a rotation)
-    const matrix33 rotationToTranslationJacobian = worldToCamera.rotation();
-    return rotationToTranslationJacobian;
+    jacobian = worldToCamera.rotation();
+
+    return to_camera_coordinates(worldToCamera);
 }
 
 } // namespace rgbd_slam

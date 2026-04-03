@@ -19,14 +19,11 @@ template<int N = 6, int M = 2, int NE = N, int ME = M> class InverseDepthEstimat
   public:
     virtual ~InverseDepthEstimator() = default;
 
-    Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept override
+    std::pair<Eigen::Vector<double, M>, Eigen::Matrix<double, ME, NE>> h(
+            const Eigen::Vector<double, N>& state) const noexcept override
     {
-        return InverseDepthWorldPoint(state).get_observation_model(_w2c);
-    }
-
-    Eigen::Matrix<double, ME, NE> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        return InverseDepthWorldPoint(state).get_observation_model_jacobian(_w2c);
+        InverseDepthWorldPoint idepthState(state);
+        return {idepthState.get_observation_model(_w2c), idepthState.get_observation_model_jacobian(_w2c)};
     }
 
     InverseDepthEstimator(const Eigen::Vector<double, N>& feature,
@@ -179,11 +176,13 @@ bool PointInverseDepth::track_3D(const ScreenCoordinate& observation,
     {
         // HACK: too much problems with the 3D tracking mathematically, juste replace this point
 
-        const auto& worldCovariance = utils::get_world_point_covariance(observation, c2w, stateCovariance);
+        matrix33 screenToWorldJacobian;
+        const WorldCoordinate& wc = observation.to_world_coordinates(c2w, screenToWorldJacobian);
+        const WorldCoordinateCovariance& worldCovariance = ScreenCoordinate::get_world_point_covariance(
+                observationCovariance, stateCovariance, screenToWorldJacobian);
 
         Eigen::Matrix<double, 6, 3> worldToIDepthJacobian;
-        const auto& state = InverseDepthWorldPoint::from_cartesian(
-                observation.to_world_coordinates(c2w), c2w.translation(), worldToIDepthJacobian);
+        const auto& state = InverseDepthWorldPoint::from_cartesian(wc, c2w.translation(), worldToIDepthJacobian);
         const auto& statecovariance = utils::propagate_covariance(worldCovariance, worldToIDepthJacobian);
 
         if (not utils::is_covariance_valid(statecovariance))
@@ -212,20 +211,30 @@ bool PointInverseDepth::track_3D(const ScreenCoordinate& observation,
 
 CameraCoordinateCovariance PointInverseDepth::get_camera_coordinate_variance(const WorldToCameraMatrix& w2c) const
 {
-    // TODO: handle pose covariance
-    matrix66 cov = matrix66::Zero();
-    cov.block<3, 3>(0, 0) = get_covariance_of_observed_pose();
+    matrix33 worldToCamerajacobian;
+    std::ignore = _coordinates.to_world_coordinates().to_camera_coordinates(w2c, worldToCamerajacobian);
 
     // get world coordinates covariance, transform it to camera
-    return utils::get_camera_point_covariance(
-            PointInverseDepth::compute_cartesian_covariance(_coordinates, _covariance), w2c, cov);
+    const matrix33& cameraCovariance =
+            utils::propagate_covariance(PointInverseDepth::compute_cartesian_covariance(_coordinates, _covariance),
+                                        worldToCamerajacobian) +
+            utils::propagate_covariance(this->get_covariance_of_observed_pose(), worldToCamerajacobian);
+    return CameraCoordinateCovariance {cameraCovariance};
 }
 
 ScreenCoordinateCovariance PointInverseDepth::get_screen_coordinate_variance(const WorldToCameraMatrix& w2c) const
 {
+    const CameraCoordinate& cameraProjection = _coordinates.to_world_coordinates().to_camera_coordinates(w2c);
+
+    // get camera covariance
+    const CameraCoordinateCovariance& cameraCovariance = get_camera_coordinate_variance(w2c);
+
+    matrix33 toScreenJacobian;
+    ScreenCoordinate sc;
+    std::ignore = cameraProjection.to_screen_coordinates(sc, toScreenJacobian);
+
     // this use of the projection to screen is ok as long as the inverse depth point uncertainty is fairly low
-    return utils::get_screen_point_covariance(_coordinates.to_world_coordinates().to_camera_coordinates(w2c),
-                                              get_camera_coordinate_variance(w2c));
+    return ScreenCoordinateCovariance {utils::propagate_covariance(cameraCovariance, toScreenJacobian)};
 }
 
 WorldCoordinateCovariance PointInverseDepth::compute_cartesian_covariance(const InverseDepthWorldPoint& coordinates,

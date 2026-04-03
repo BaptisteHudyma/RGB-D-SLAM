@@ -6,7 +6,6 @@
 #include "logger.hpp"
 #include "matches_containers.hpp"
 #include "parameters.hpp"
-#include "inverse_depth_with_tracking.hpp"
 #include <memory>
 
 namespace rgbd_slam::map_management {
@@ -89,11 +88,13 @@ matchIndexSet MapPoint::find_matches(const DetectedKeypointsObject& detectedFeat
     {
         // No match: try to find match in a window around the point
         ScreenCoordinate2D projectedMapPoint;
-        const bool isScreenCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamera, projectedMapPoint);
+        matrix23 worldToScreenJacobian;
+        const bool isScreenCoordinatesValid =
+                _coordinates.to_screen_coordinates(worldToCamera, projectedMapPoint, worldToScreenJacobian);
         if (isScreenCoordinatesValid)
         {
-            const vector3 screenSpaceCovariance =
-                    utils::get_screen_point_covariance(_coordinates, _covariance, worldToCamera).diagonal();
+            const vector2& screenSpaceCovariance =
+                    utils::propagate_covariance(_covariance, worldToScreenJacobian).diagonal();
 
             const double searchSpaceRadius = sqrt(std::max(screenSpaceCovariance.x(), screenSpaceCovariance.y()));
             const double searchRadius = useAdvancedSearch ? searchSpaceRadius * 3.0 : searchSpaceRadius * 2.0;
@@ -124,13 +125,26 @@ bool MapPoint::add_to_tracked(const WorldToCameraMatrix& worldToCamera,
     const bool shouldNotDropPoint = (dropChance == 0) or (utils::Random::get_random_uint(dropChance) != 0);
 
     assert(not _coordinates.hasNaN());
-    if (shouldNotDropPoint and latestMatchedFeature.has_value())
+    if (shouldNotDropPoint)
     {
-        const ScreenCoordinate2D& screenCoordinates = latestMatchedFeature.value();
+        if (latestMatchedFeature.has_value())
+        {
+            const ScreenCoordinate2D& screenCoordinates = latestMatchedFeature.value();
 
-        // use previously known screen coordinates
-        trackedFeatures.add(_id, screenCoordinates.x(), screenCoordinates.y());
-        return true;
+            // use previously known screen coordinates
+            trackedFeatures.add(_id, screenCoordinates.x(), screenCoordinates.y());
+            return true;
+        }
+        else
+        {
+            // try to project this point to screen
+            ScreenCoordinate2D screenCoordinates;
+            if (_coordinates.to_screen_coordinates(worldToCamera, screenCoordinates))
+            {
+                trackedFeatures.add(_id, screenCoordinates.x(), screenCoordinates.y());
+                return true;
+            }
+        }
     }
     // point was not added
     return false;
@@ -140,8 +154,10 @@ void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix,
                     cv::Mat& debugImage,
                     const cv::Scalar& color) const noexcept
 {
+    matrix33 worldToScreenJacobian;
     ScreenCoordinate screenPoint;
-    const bool isCoordinatesValid = _coordinates.to_screen_coordinates(worldToCamMatrix, screenPoint);
+    const bool isCoordinatesValid =
+            _coordinates.to_screen_coordinates(worldToCamMatrix, screenPoint, worldToScreenJacobian);
 
     // do not display points behind the camera
     if (isCoordinatesValid and screenPoint.z() > 0 and screenPoint.is_in_screen_boundaries())
@@ -165,9 +181,8 @@ void MapPoint::draw(const WorldToCameraMatrix& worldToCamMatrix,
         const bool shouldDisplayErrorEllipse = true;
         if (shouldDisplayErrorEllipse)
         {
-            // get covariance of the point in 2d
-            const auto& screenPointCovariance =
-                    utils::get_screen_point_covariance(_coordinates, _covariance, worldToCamMatrix);
+            // get covariance of the point in screen space
+            const matrix33& screenPointCovariance = utils::propagate_covariance(_covariance, worldToScreenJacobian);
 
             cv::ellipse(debugImage,
                         utils::get_rotated_rect_screen_covariance(screenPoint.get_2D(),
@@ -256,7 +271,10 @@ StagedMapPoint::StagedMapPoint(const matrix66& poseCovariance,
                                const CameraToWorldMatrix& cameraToWorld,
                                const DetectedPointType& detectedFeature) :
     MapPoint(detectedFeature._coordinates.to_world_coordinates(cameraToWorld),
-             utils::get_world_point_covariance(detectedFeature._coordinates, cameraToWorld, poseCovariance),
+             ScreenCoordinate::get_world_point_covariance(detectedFeature._coordinates,
+                                                          detectedFeature._coordinates.get_covariance(),
+                                                          cameraToWorld,
+                                                          poseCovariance),
              detectedFeature._descriptor)
 {
     latestMatchedFeature = detectedFeature._coordinates.get_2D();
