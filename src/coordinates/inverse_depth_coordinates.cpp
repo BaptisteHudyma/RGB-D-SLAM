@@ -1,10 +1,14 @@
 #include "inverse_depth_coordinates.hpp"
 
-#include "camera_transformation.hpp"
-#include "coordinates/basis_changes.hpp"
-
-#include "distance_utils.hpp"
 #include "parameters.hpp"
+
+#include "coordinates/basis_changes.hpp"
+#include "coordinates/point_coordinates.hpp"
+
+#include "utils/camera_transformation.hpp"
+#include "utils/distance_utils.hpp"
+
+#include "outputs/logger.hpp"
 
 namespace rgbd_slam {
 
@@ -182,7 +186,12 @@ Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_projected_screen_estimat
     Eigen::Matrix<double, 3, 6> inverseDepthToWorldJacobian;
     const WorldCoordinate& worldPoint = to_world_coordinates(inverseDepthToWorldJacobian, addedStandardDev);
 
-    const matrix23& toScreenJacobian = worldPoint.to_screen2d_coordinates_jacobian(w2c);
+    matrix23 toScreenJacobian;
+    ScreenCoordinate2D screenCoordinates;
+    if (not worldPoint.to_screen_coordinates(w2c, screenCoordinates, toScreenJacobian))
+    {
+        outputs::log_error("get_projected_screen_estimation_jacobian: Could not compute screen projection");
+    }
 
     return (toScreenJacobian * inverseDepthToWorldJacobian).eval();
 }
@@ -235,8 +244,15 @@ Eigen::Matrix<double, 2, 6> InverseDepthWorldPoint::get_observation_model_jacobi
     jacobian.block<3, 3>(0, firstPoseIndex) = poseJacobian;
     jacobian.block<3, 3>(0, firstPoseIndex + 3) = paramJacobians;
 
+    matrix23 toScreenJacobian;
+    ScreenCoordinate2D screenCoordinates;
+    if (not get_camera_observation_projection(w2c).to_screen_coordinates(screenCoordinates, toScreenJacobian))
+    {
+        outputs::log_error("get_observation_model_jacobian: Could not compute screen projection");
+    }
+
     // convert to screen
-    return get_camera_observation_projection(w2c).to_screen2d_coordinates_jacobian() * w2c.rotation() * jacobian;
+    return toScreenJacobian * w2c.rotation() * jacobian;
 }
 
 Eigen::Matrix<double, 3, 6> InverseDepthWorldPoint::get_projected_screen3d_estimation_jacobian(
@@ -245,7 +261,12 @@ Eigen::Matrix<double, 3, 6> InverseDepthWorldPoint::get_projected_screen3d_estim
     Eigen::Matrix<double, 3, 6> inverseDepthToWorldJacobian;
     const WorldCoordinate& worldPoint = to_world_coordinates(inverseDepthToWorldJacobian, addedStandardDev);
 
-    const matrix33& toScreenJacobian = worldPoint.to_screen_coordinates_jacobian(w2c);
+    matrix33 toScreenJacobian;
+    ScreenCoordinate screenCoordinates;
+    if (not worldPoint.to_screen_coordinates(w2c, screenCoordinates, toScreenJacobian))
+    {
+        outputs::log_error("get_projected_screen3d_estimation_jacobian: Could not compute screen projection");
+    }
 
     return (toScreenJacobian * inverseDepthToWorldJacobian).eval();
 }

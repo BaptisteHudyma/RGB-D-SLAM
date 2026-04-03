@@ -19,27 +19,22 @@ template<int N, int M, int NE, int ME> class StateEstimator
     Eigen::Matrix<double, ME, ME> measurment_covariance() const noexcept { return _measurmentCovariance; }
 
     /**
-     * Compute the new state estimate from the current state (default is no dynamics)
+     * \brief Compute the new state estimate from the current state (default is no dynamics)
+     * \return The new state and the jacobian of the state
      */
-    virtual Eigen::Vector<double, N> f(const Eigen::Vector<double, N>& state) const noexcept
+    virtual std::pair<Eigen::Vector<double, N>, Eigen::Matrix<double, NE, NE>> f(
+            const Eigen::Vector<double, N>& state) const noexcept
     {
         // no dynamics, just return the same state
-        return state;
-    }
-
-    virtual Eigen::Matrix<double, NE, NE> f_jacobian(const Eigen::Vector<double, N>& state) const noexcept
-    {
-        std::ignore = state;
-        // no dynamic jacobian
-        return Eigen::Matrix<double, NE, NE>::Identity();
+        return {state, Eigen::Matrix<double, NE, NE>::Identity()};
     }
 
     /**
      * Compute the measurment equation from the given state
+     * \return The state measurement and measurment jacobian
      */
-    virtual Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept = 0;
-
-    virtual Eigen::Matrix<double, ME, NE> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept = 0;
+    virtual std::pair<Eigen::Vector<double, M>, Eigen::Matrix<double, ME, NE>> h(
+            const Eigen::Vector<double, N>& state) const noexcept = 0;
 
     /**
      * \brief Special innovation covariance computation
@@ -51,22 +46,6 @@ template<int N, int M, int NE, int ME> class StateEstimator
     {
         std::ignore = state;
         return utils::propagate_covariance(estimateErrorCovariance, hJacobian);
-    }
-
-    virtual inline Eigen::Vector<double, N> get_new_state(
-            const Eigen::Vector<double, N>& predictedState,
-            const Eigen::Matrix<double, NE, ME>& kalmanGain) const noexcept
-    {
-        if constexpr (N == NE and M == ME)
-        {
-            return predictedState + kalmanGain * (measurment() - h(predictedState));
-        }
-        else
-        {
-#pragma message("measurment error is not the same as measurment size, you must overload this function")
-#pragma message("state error is not the same as state size, you must overload this function")
-            return Eigen::Vector<double, N>::Zero();
-        }
     }
 
     StateEstimator(const Eigen::Vector<double, N>& feature,
@@ -111,21 +90,20 @@ template<int N, int M, int NE = N, int ME = M> class ExtendedKalmanFilter
     {
         if (not utils::is_covariance_valid(processNoiseCovariance))
         {
-            throw std::invalid_argument("ExtendedKalmanFilter::get_new_state: process noise covariance is invalid");
+            throw std::invalid_argument("ExtendedKalmanFilter::predict_state: process noise covariance is invalid");
         }
 
         const auto& stateNoiseCovariance = estimator->template state_covariance();
         const auto& state = estimator->template state();
 
         // Get new raw estimate
-        const Eigen::Vector<double, N>& newStateEstimate = estimator->template f(state);
+        const auto& [newStateEstimate, predictionJacobian] = estimator->template f(state);
         const Eigen::Matrix<double, NE, NE>& estimateErrorCovariance =
-                utils::propagate_covariance(stateNoiseCovariance, estimator->template f_jacobian(state)) +
-                processNoiseCovariance;
+                utils::propagate_covariance(stateNoiseCovariance, predictionJacobian) + processNoiseCovariance;
 
         if (not utils::is_covariance_valid(estimateErrorCovariance))
         {
-            throw std::logic_error("ExtendedKalmanFilter::get_new_state: produced an invalid estimateErrorCovariance");
+            throw std::logic_error("ExtendedKalmanFilter::predict_state: produced an invalid estimateErrorCovariance");
         }
 
         // return the covariance and state estimation
@@ -151,11 +129,8 @@ template<int N, int M, int NE = N, int ME = M> class ExtendedKalmanFilter
         }
 
         // Get new raw estimate
-        const auto& predictedState = predict_state(estimator, _processNoiseCovariance);
-        const Eigen::Vector<double, N>& newStateEstimate = predictedState.first;
-        const Eigen::Matrix<double, NE, NE>& estimateErrorCovariance = predictedState.second;
-
-        const auto& hJacobian = estimator->template h_jacobian(newStateEstimate);
+        const auto& [newStateEstimate, estimateErrorCovariance] = predict_state(estimator, _processNoiseCovariance);
+        const auto& [h, hJacobian] = estimator->template h(newStateEstimate);
 
         // compute inovation covariance
         const Eigen::Matrix<double, ME, ME>& inovation =
@@ -170,7 +145,8 @@ template<int N, int M, int NE = N, int ME = M> class ExtendedKalmanFilter
                 inovationInverted;
 
         // get new state
-        const Eigen::Vector<double, N>& newState = estimator->template get_new_state(newStateEstimate, kalmanGain);
+        const Eigen::Vector<double, N>& newState =
+                newStateEstimate + kalmanGain * (estimator->template measurment() - h);
 
         // standard covariance update
         // Eigen::Matrix<double, N, N> newCovariance = (_identity - kalmanGain * hJacobian) * estimateErrorCovariance;

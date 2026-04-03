@@ -49,31 +49,19 @@ template<int N = 13, int M = 7, int NE = N, int ME = M> class PoseTrackingEstima
   public:
     virtual ~PoseTrackingEstimator() = default;
 
-    Eigen::Vector<double, N> f(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        return PoseBaseWithSpeed(state).predict(_deltaTime).get_vector();
-    }
-
-    Eigen::Matrix<double, NE, NE> f_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
+    std::pair<Eigen::Vector<double, N>, Eigen::Matrix<double, NE, NE>> f(
+            const Eigen::Vector<double, N>& state) const noexcept override
     {
         Eigen::Matrix<double, NE, NE> jacobian;
-        PoseBaseWithSpeed(state).predict(_deltaTime, jacobian);
-        return jacobian;
+        const auto& predicition = PoseBaseWithSpeed(state).predict(_deltaTime, jacobian);
+        return {predicition.get_vector(), jacobian};
     }
 
-    Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept override
+    std::pair<Eigen::Vector<double, M>, Eigen::Matrix<double, ME, NE>> h(
+            const Eigen::Vector<double, N>& state) const noexcept override
     {
         // measurment of position and rotation
         // WILL NOT BE USED
-        return state.template head<M>();
-    }
-
-    Eigen::Matrix<double, ME, NE> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        // measurment of position and rotation
-        // WILL NOT BE USED
-
-        std::ignore = state;
 
         Eigen::Matrix<double, ME, NE> H;
         H.setZero();
@@ -87,7 +75,8 @@ template<int N = 13, int M = 7, int NE = N, int ME = M> class PoseTrackingEstima
                                                                          PoseBase::rotationIndex)
                 .diagonal()
                 .setConstant(1.0);
-        return H;
+
+        return {state.template head<M>(), H};
     }
 
     PoseTrackingEstimator(const Pose& pose,

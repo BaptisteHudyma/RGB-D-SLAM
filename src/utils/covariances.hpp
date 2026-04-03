@@ -9,8 +9,6 @@
 #include <bits/ranges_algo.h>
 #include <opencv2/core/types.hpp>
 
-#include "covariances.hpp"
-
 namespace rgbd_slam::utils {
 
 template<int N>
@@ -79,76 +77,6 @@ template<int N, int M> Eigen::Matrix<double, M, M> propagate_covariance(const Ei
  * \return The smallest possible measure in meters
  */
 [[nodiscard]] double get_depth_quantization(const double depth_m) noexcept;
-
-/**
- * \brief Compute a camera to 2D screen jacobian
- */
-matrix23 get_camera_to_screen2d_jacobian(const CameraCoordinate& point);
-
-/**
- * \brief Compute a camera to 3D screen jacobian
- */
-matrix33 get_camera_to_screen_jacobian(const CameraCoordinate& point);
-/**
- * \brief Compute a screen point covariance from a given point
- *
- * \param[in] point The coordinates of this 3D point (world space)
- * \param[in] pointCovariance The covariance associated with this point (world space)
- */
-[[nodiscard]] ScreenCoordinateCovariance get_screen_point_covariance(const WorldCoordinate& point,
-                                                                     const WorldCoordinateCovariance& pointCovariance,
-                                                                     const WorldToCameraMatrix& worldToCamera) noexcept;
-
-/**
- * \brief Compute a screen point covariance from a given point
- *
- * \param[in] point The coordinates of this 3D point (camera space)
- * \param[in] pointCovariance The covariance associated with this point (camera space)
- */
-[[nodiscard]] ScreenCoordinateCovariance get_screen_point_covariance(
-        const CameraCoordinate& point, const CameraCoordinateCovariance& pointCovariance) noexcept;
-
-/**
- * \brief Compute the covariance of the camera point from the world coordinates
- * \param[in] worldPointCovariance The covariance of the world point to convert
- * \param[in] worldToCamera The matrix to convert world to camera coordinates
- * \param[in] poseCovariance The covariance of the pose
- */
-CameraCoordinateCovariance get_camera_point_covariance(const WorldCoordinateCovariance& worldPointCovariance,
-                                                       const WorldToCameraMatrix& worldToCamera,
-                                                       const matrix66& poseCovariance) noexcept;
-
-/**
- * \brief Compute the covariance of a world point
- */
-[[nodiscard]] WorldCoordinateCovariance get_world_point_covariance(
-        const CameraCoordinateCovariance& cameraPointCovariance,
-        const CameraToWorldMatrix& cameraToWorld,
-        const matrix66& poseCovariance) noexcept;
-
-/**
- * \brief Compute covariance of a screen point in world state
- */
-[[nodiscard]] WorldCoordinateCovariance get_world_point_covariance(const ScreenCoordinate& screenPoint,
-                                                                   const CameraToWorldMatrix& cameraToWorld,
-                                                                   const matrix66& poseCovariance) noexcept;
-
-/**
- * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point. This
- * function will internaly compute the covariance of the screen point.
- * \param[in] screenPoint The 2D point in screen coordinates
- * \return the covariance of the 3D camera point
- */
-[[nodiscard]] CameraCoordinateCovariance get_camera_point_covariance(const ScreenCoordinate& screenPoint) noexcept;
-
-/**
- * \brief Compute the associated Gaussian error of a screen point when it will be transformed to camera point
- * \param[in] screenPoint The 2D point in screen coordinates
- * \param[in] screenPointCovariance The covariance matrix associated with a point in screen space
- * \return the covariance of the 3D camera point
- */
-[[nodiscard]] CameraCoordinateCovariance get_camera_point_covariance(
-        const ScreenCoordinate& screenPoint, const ScreenCoordinateCovariance& screenPointCovariance) noexcept;
 
 /**
  * \brief Compute the covariance of a plane using it's point cloud covariance matrix

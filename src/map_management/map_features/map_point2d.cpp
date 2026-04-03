@@ -1,6 +1,7 @@
 #include "map_point2d.hpp"
 
 #include "coordinates/point_coordinates.hpp"
+#include "covariances.hpp"
 #include "line.hpp"
 #include "logger.hpp"
 #include "parameters.hpp"
@@ -131,9 +132,16 @@ matchIndexSet MapPoint2D::find_matches(const DetectedKeypointsObject& detectedFe
             Eigen::Matrix<double, 3, 6> jacobian;
             const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
             const WorldCoordinateCovariance& cartCov = compute_cartesian_covariance(_covariance, jacobian);
+
+            ScreenCoordinate2D sc;
+            matrix23 toScreenJacobian;
+            if (worldCoords.to_screen_coordinates(worldToCamera, sc, toScreenJacobian))
+            {
+                /// TODO: alert ?
+            }
             // get covariance of the point in 2d
             const vector2& screenPointCovariance =
-                    utils::get_screen_point_covariance(worldCoords, cartCov, worldToCamera).diagonal().head<2>();
+                    utils::propagate_covariance(cartCov, toScreenJacobian).diagonal().head<2>();
 
             searchSpaceRadius = sqrt(std::max(screenPointCovariance.x(), screenPointCovariance.y()));
         }
@@ -241,9 +249,15 @@ void MapPoint2D::draw(const WorldToCameraMatrix& worldToCamMatrix,
             Eigen::Matrix<double, 3, 6> jacobian;
             const auto& worldCoords = _coordinates.to_world_coordinates(jacobian);
             const WorldCoordinateCovariance& cartCov = compute_cartesian_covariance(_covariance, jacobian);
+
+            ScreenCoordinate2D sc;
+            matrix23 toScreenJacobian;
+            if (worldCoords.to_screen_coordinates(worldToCamMatrix, sc, toScreenJacobian))
+            {
+                /// TODO: alert ?
+            }
             // get covariance of the point in 2d
-            const auto& screenPointCovariance =
-                    utils::get_screen_point_covariance(worldCoords, cartCov, worldToCamMatrix);
+            const auto& screenPointCovariance = utils::propagate_covariance(cartCov, toScreenJacobian);
 
             cv::ellipse(debugImage,
                         utils::get_rotated_rect_screen_covariance(centerProj, screenPointCovariance.block<2, 2>(0, 0)),

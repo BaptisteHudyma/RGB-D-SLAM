@@ -17,19 +17,16 @@ template<int N = 3, int M = 2, int NE = N, int ME = M> class Point2dEstimator : 
   public:
     virtual ~Point2dEstimator() = default;
 
-    Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept override
+    std::pair<Eigen::Vector<double, M>, Eigen::Matrix<double, ME, NE>> h(
+            const Eigen::Vector<double, N>& state) const noexcept override
     {
         ScreenCoordinate2D sc;
-        if (!WorldCoordinate(state).to_screen_coordinates(_w2c, sc))
+        matrix23 toScreenJacobian;
+        if (!WorldCoordinate(state).to_screen_coordinates(_w2c, sc, toScreenJacobian))
         {
             outputs::log_error("screen projection failed");
         }
-        return sc;
-    }
-
-    Eigen::Matrix<double, ME, NE> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        return WorldCoordinate(state).to_screen2d_coordinates_jacobian(_w2c);
+        return {sc, toScreenJacobian};
     }
 
     inline Eigen::Matrix<double, ME, ME> h_innovation(
@@ -69,19 +66,16 @@ template<int N = 3, int M = 3, int NE = N, int ME = M> class Point3dEstimator : 
   public:
     virtual ~Point3dEstimator() = default;
 
-    Eigen::Vector<double, M> h(const Eigen::Vector<double, N>& state) const noexcept override
+    std::pair<Eigen::Vector<double, M>, Eigen::Matrix<double, ME, NE>> h(
+            const Eigen::Vector<double, N>& state) const noexcept override
     {
+        matrix33 toScreenJacobian;
         ScreenCoordinate sc;
-        if (!WorldCoordinate(state).to_screen_coordinates(_w2c, sc))
+        if (!WorldCoordinate(state).to_screen_coordinates(_w2c, sc, toScreenJacobian))
         {
             outputs::log_error("screen projection failed");
         }
-        return sc;
-    }
-
-    Eigen::Matrix<double, ME, NE> h_jacobian(const Eigen::Vector<double, N>& state) const noexcept override
-    {
-        return WorldCoordinate(state).to_screen_coordinates_jacobian(_w2c);
+        return {sc, toScreenJacobian};
     }
 
     inline Eigen::Matrix<double, ME, ME> h_innovation(
