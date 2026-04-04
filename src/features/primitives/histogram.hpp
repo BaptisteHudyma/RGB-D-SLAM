@@ -1,8 +1,9 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_HISTOGRAM_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_HISTOGRAM_HPP
 
-#include "../../types.hpp"
-#include "../../outputs/logger.hpp"
+#include "outputs/logger.hpp"
+#include "types.hpp"
+
 #include <format>
 #include <vector>
 

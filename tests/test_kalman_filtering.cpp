@@ -1,7 +1,9 @@
 #include "covariances.hpp"
 #include "tracking/kalman_filter.hpp"
-#include <Eigen/src/Core/Matrix.h>
+
 #include <gtest/gtest.h>
+
+#include <Eigen/Dense>
 #include <list>
 #include <random>
 

@@ -1,19 +1,18 @@
 // Dataset available from "Fast Cylinder and Plane Extraction from Depth Cameras for Visual Odometry"
 
-#include <iostream>
-#include <fstream>
 #include <ctime>
+#include <fstream>
+#include <iostream>
 // check file existence
+#include "parameters.hpp"
+#include "rgbd_slam.hpp"
+#include "utils/angle_utils.hpp"
+#include "utils/pose.hpp"
+
 #include <sys/stat.h>
 #include <unistd.h>
 
 #include <opencv2/opencv.hpp>
-
-#include "rgbd_slam.hpp"
-#include "pose.hpp"
-#include "parameters.hpp"
-
-#include "angle_utils.hpp"
 
 void check_user_inputs(bool& shouldStop)
 {

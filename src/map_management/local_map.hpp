@@ -1,14 +1,13 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_LOCALMAP_HPP
 #define RGBDSLAM_MAPMANAGEMENT_LOCALMAP_HPP
 
-#include "covariances.hpp"
-#include "outputs/map_writer.hpp"
 #include "matches_containers.hpp"
-#include "utils/pose.hpp"
-
-#include "camera_transformation.hpp"
 #include "outputs/logger.hpp"
+#include "outputs/map_writer.hpp"
 #include "parameters.hpp"
+#include "utils/camera_transformation.hpp"
+#include "utils/covariances.hpp"
+#include "utils/pose.hpp"
 
 namespace rgbd_slam::map_management {
 

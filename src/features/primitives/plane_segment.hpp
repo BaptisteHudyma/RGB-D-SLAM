@@ -1,12 +1,12 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_PLANESEGMENT_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_PLANESEGMENT_HPP
 
-#include <cmath>
-
-#include "../../parameters.hpp"
-#include "../../types.hpp"
-#include "coordinates/point_coordinates.hpp"
 #include "coordinates/plane_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
+#include "parameters.hpp"
+#include "types.hpp"
+
+#include <cmath>
 
 namespace rgbd_slam::features::primitives {
 

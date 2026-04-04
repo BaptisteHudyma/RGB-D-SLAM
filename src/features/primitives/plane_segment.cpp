@@ -1,8 +1,10 @@
 #include "plane_segment.hpp"
-#include "../../parameters.hpp"
-#include "covariances.hpp"
-#include "distance_utils.hpp"
+
+#include "parameters.hpp"
 #include "types.hpp"
+#include "utils/covariances.hpp"
+#include "utils/distance_utils.hpp"
+
 #include <cmath>
 #include <stdexcept>
 

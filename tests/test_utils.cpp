@@ -1,9 +1,10 @@
-#include <gtest/gtest.h>
-#include <random>
-
 #include "coordinates/point_coordinates.hpp"
-#include "line.hpp"
 #include "parameters.hpp"
+#include "utils/line.hpp"
+
+#include <gtest/gtest.h>
+
+#include <random>
 
 namespace rgbd_slam {
 

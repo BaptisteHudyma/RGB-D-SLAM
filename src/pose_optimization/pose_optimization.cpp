@@ -1,25 +1,24 @@
 #include "pose_optimization.hpp"
 
-#include "covariances.hpp"
-#include "distance_utils.hpp"
+#include "matches_containers.hpp"
 #include "outputs/logger.hpp"
 #include "parameters.hpp"
-#include "levenberg_marquardt_functors.hpp"
-#include "matches_containers.hpp"
-#include "ransac.hpp"
+#include "pose_optimization/levenberg_marquardt_functors.hpp"
+#include "pose_optimization/ransac.hpp"
 #include "types.hpp"
-
 #include "utils/camera_transformation.hpp"
+#include "utils/covariances.hpp"
+#include "utils/distance_utils.hpp"
+
+#include <tbb/parallel_for.h>
 
 #include <Eigen/StdVector>
 #include <cmath>
 #include <exception>
+#include <format>
 #include <opencv2/core/utility.hpp>
 #include <stdexcept>
 #include <string>
-#include <format>
-
-#include <tbb/parallel_for.h>
 
 namespace rgbd_slam::pose_optimization {
 

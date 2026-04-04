@@ -1,5 +1,7 @@
 #include "map_writer.hpp"
+
 #include "logger.hpp"
+
 #include <string>
 
 namespace rgbd_slam::outputs {

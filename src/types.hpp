@@ -2,9 +2,6 @@
 #define RGBDSLAM_TYPES_HPP
 
 #include <Eigen/Dense>
-#include <Eigen/src/Core/Matrix.h>
-#include <Eigen/src/Core/util/Macros.h>
-#include <Eigen/src/Core/util/XprHelper.h>
 #include <vector>
 
 namespace rgbd_slam {

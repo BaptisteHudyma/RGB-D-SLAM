@@ -2,7 +2,9 @@
 #define RGBDSLAM_PARAMETERS_HPP
 
 #include "types.hpp"
+
 #include <Eigen/src/Core/Matrix.h>
+
 #include <string>
 
 namespace rgbd_slam {

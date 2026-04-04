@@ -1,7 +1,8 @@
 #ifndef RGBDSLAM_UTILS_POLYGON_UTILS_HPP
 #define RGBDSLAM_UTILS_POLYGON_UTILS_HPP
 
-#include "../types.hpp"
+#include "types.hpp"
+
 #include <boost/geometry/geometry.hpp>
 #include <opencv2/core/mat.hpp>
 

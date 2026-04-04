@@ -1,9 +1,9 @@
 #ifndef RGBDSLAM_POSEOPTIMIZATION_LMFUNCTORS_HPP
 #define RGBDSLAM_POSEOPTIMIZATION_LMFUNCTORS_HPP
 
-#include "pose.hpp"
-#include "types.hpp"
 #include "matches_containers.hpp"
+#include "types.hpp"
+#include "utils/pose.hpp"
 
 // types
 #include <unsupported/Eigen/NonLinearOptimization>

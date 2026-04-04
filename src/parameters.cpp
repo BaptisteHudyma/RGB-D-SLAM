@@ -1,8 +1,10 @@
 #include "parameters.hpp"
-#include "angle_utils.hpp"
-#include "camera_transformation.hpp"
+
 #include "outputs/logger.hpp"
 #include "types.hpp"
+#include "utils/angle_utils.hpp"
+#include "utils/camera_transformation.hpp"
+
 #include <opencv2/core/core.hpp>
 
 namespace rgbd_slam {

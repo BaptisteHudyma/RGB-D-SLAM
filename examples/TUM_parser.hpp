@@ -1,11 +1,9 @@
 
 
-#include <Eigen/src/Core/Matrix.h>
-#include <Eigen/src/Geometry/Quaternion.h>
+#include <Eigen/Dense>
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <iterator>
 #include <map>
 #include <sstream>
 #include <string>

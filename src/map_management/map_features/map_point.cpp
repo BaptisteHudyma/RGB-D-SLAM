@@ -1,11 +1,12 @@
 #include "map_point.hpp"
 
-#include "camera_transformation.hpp"
 #include "coordinates/point_coordinates.hpp"
-#include "covariances.hpp"
-#include "logger.hpp"
 #include "matches_containers.hpp"
+#include "outputs/logger.hpp"
 #include "parameters.hpp"
+#include "utils/camera_transformation.hpp"
+#include "utils/covariances.hpp"
+
 #include <memory>
 
 namespace rgbd_slam::map_management {

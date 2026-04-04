@@ -5,13 +5,10 @@
 #include "features/lines/line_detection.hpp"
 #include "features/primitives/depth_map_transformation.hpp"
 #include "features/primitives/primitive_detection.hpp"
-
-#include "map_management/local_map.hpp"
-// local maps
-#include "map_features/map_point2d.hpp"
 #include "map_features/map_point.hpp"
+#include "map_features/map_point2d.hpp"
 #include "map_features/map_primitive.hpp"
-
+#include "map_management/local_map.hpp"
 #include "utils/pose.hpp"
 
 #include <memory>

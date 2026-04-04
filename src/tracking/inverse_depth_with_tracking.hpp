@@ -2,10 +2,10 @@
 #ifndef RGBDSLAM_TRACKING_INVERSE_DEPTH_WITH_TRACKING_HPP
 #define RGBDSLAM_TRACKING_INVERSE_DEPTH_WITH_TRACKING_HPP
 
-#include "types.hpp"
 #include "coordinates/inverse_depth_coordinates.hpp"
-#include "extended_kalman_filter.hpp"
-#include "../utils/line.hpp"
+#include "tracking/extended_kalman_filter.hpp"
+#include "types.hpp"
+#include "utils/line.hpp"
 
 #include <opencv2/opencv.hpp>
 

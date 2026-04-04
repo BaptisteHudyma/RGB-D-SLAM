@@ -1,10 +1,10 @@
 #include "map_primitive.hpp"
 
-#include "camera_transformation.hpp"
-#include "logger.hpp"
 #include "matches_containers.hpp"
+#include "outputs/logger.hpp"
 #include "parameters.hpp"
-#include "distance_utils.hpp"
+#include "utils/camera_transformation.hpp"
+#include "utils/distance_utils.hpp"
 
 namespace rgbd_slam::map_management {
 

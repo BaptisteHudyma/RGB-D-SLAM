@@ -1,19 +1,16 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_FEATUREMAP_HPP
 #define RGBDSLAM_MAPMANAGEMENT_FEATUREMAP_HPP
 
-#include "outputs/map_writer.hpp"
-#include "outputs/logger.hpp"
-
-#include "utils/random.hpp"
-#include "utils/covariances.hpp"
-
 #include "matches_containers.hpp"
+#include "outputs/logger.hpp"
+#include "outputs/map_writer.hpp"
 #include "types.hpp"
+#include "utils/covariances.hpp"
+#include "utils/random.hpp"
 
 #include <algorithm>
 #include <exception>
 #include <memory>
-
 #include <opencv2/core/matx.hpp>
 #include <opencv2/core/types.hpp>
 #include <stdexcept>

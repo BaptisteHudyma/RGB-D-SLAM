@@ -1,8 +1,9 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_CYLINDERSEGMENT_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_CYLINDERSEGMENT_HPP
 
-#include "../../types.hpp"
-#include "plane_segment.hpp"
+#include "features/primitives/plane_segment.hpp"
+#include "types.hpp"
+
 #include <vector>
 
 namespace rgbd_slam::features::primitives {

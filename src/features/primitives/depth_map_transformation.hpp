@@ -1,7 +1,8 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_DEPTHOPERATIONS_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_DEPTHOPERATIONS_HPP
 
-#include "../../types.hpp"
+#include "types.hpp"
+
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::features::primitives {

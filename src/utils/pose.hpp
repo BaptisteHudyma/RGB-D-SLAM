@@ -1,10 +1,12 @@
 #ifndef RGBDSLAM_UTILS_POSE_HPP
 #define RGBDSLAM_UTILS_POSE_HPP
 
-#include "../types.hpp"
+#include "tracking/extended_kalman_filter.hpp"
+#include "types.hpp"
+
 #include <Eigen/src/Core/Matrix.h>
+
 #include <memory>
-#include "extended_kalman_filter.hpp"
 
 namespace rgbd_slam::utils {
 

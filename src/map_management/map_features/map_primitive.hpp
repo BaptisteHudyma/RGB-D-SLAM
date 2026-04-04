@@ -1,10 +1,10 @@
 #ifndef RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 #define RGBDSLAM_MAPMANAGEMENT_MAPRIMITIVE_HPP
 
-#include "feature_map.hpp"
 #include "features/primitives/shape_primitives.hpp"
-#include "tracking/plane_with_tracking.hpp"
+#include "map_management/feature_map.hpp"
 #include "matches_containers.hpp"
+#include "tracking/plane_with_tracking.hpp"
 
 namespace rgbd_slam::map_management {
 

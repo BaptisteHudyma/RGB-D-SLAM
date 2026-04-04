@@ -1,17 +1,14 @@
 #include "rgbd_slam.hpp"
 
 #include "matches_containers.hpp"
-#include "parameters.hpp"
-#include "types.hpp"
-
 #include "outputs/logger.hpp"
-
+#include "parameters.hpp"
+#include "pose_optimization/pose_optimization.hpp"
+#include "types.hpp"
 #include "utils/camera_transformation.hpp"
 #include "utils/covariances.hpp"
-#include "utils/random.hpp"
 #include "utils/pose.hpp"
-
-#include "pose_optimization/pose_optimization.hpp"
+#include "utils/random.hpp"
 
 #include <future>
 #include <memory>

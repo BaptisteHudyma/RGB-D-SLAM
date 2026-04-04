@@ -1,23 +1,25 @@
 #include "polygon.hpp"
-#include "distance_utils.hpp"
+
+#include "../third_party/concave_fitting.hpp"
+#include "../third_party/correct_boost_polygon.hpp"
+#include "coordinates/point_coordinates.hpp"
+#include "outputs/logger.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
-#include <algorithm>
+#include "utils/distance_utils.hpp"
+
 #include <bits/ranges_algo.h>
+
+#include <algorithm>
 #include <boost/geometry/algorithms/area.hpp>
 #include <boost/geometry/algorithms/detail/convex_hull/interface.hpp>
 #include <boost/geometry/algorithms/union.hpp>
 #include <boost/qvm/mat_operations.hpp>
+#include <format>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>
 #include <stdexcept>
-#include "logger.hpp"
-#include "concave_fitting.hpp"
-#include "correct_boost_polygon.hpp"
-#include <format>
-
-#include "coordinates/point_coordinates.hpp"
 
 namespace rgbd_slam::utils {
 

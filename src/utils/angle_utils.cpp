@@ -1,5 +1,7 @@
 #include "angle_utils.hpp"
-#include "covariances.hpp"
+
+#include "utils/covariances.hpp"
+
 #include <unsupported/Eigen/EulerAngles>
 
 namespace rgbd_slam::utils {

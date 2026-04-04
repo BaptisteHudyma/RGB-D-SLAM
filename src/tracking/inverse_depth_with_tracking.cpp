@@ -1,12 +1,13 @@
 #include "inverse_depth_with_tracking.hpp"
 
-#include "camera_transformation.hpp"
 #include "coordinates/inverse_depth_coordinates.hpp"
 #include "coordinates/point_coordinates.hpp"
-#include "logger.hpp"
+#include "outputs/logger.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
+#include "utils/camera_transformation.hpp"
 #include "utils/covariances.hpp"
+
 #include <stdexcept>
 
 namespace rgbd_slam::tracking {

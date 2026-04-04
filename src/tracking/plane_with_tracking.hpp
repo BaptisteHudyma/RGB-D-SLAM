@@ -5,6 +5,7 @@
 #include "coordinates/polygon_coordinates.hpp"
 #include "features/primitives/shape_primitives.hpp"
 #include "tracking/kalman_filter.hpp"
+#include "types.hpp"
 
 namespace rgbd_slam::tracking {
 

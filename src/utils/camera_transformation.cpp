@@ -1,6 +1,6 @@
 #include "camera_transformation.hpp"
-#include "angle_utils.hpp"
-#include "logger.hpp"
+
+#include "outputs/logger.hpp"
 
 namespace rgbd_slam::utils {
 

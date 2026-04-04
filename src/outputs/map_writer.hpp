@@ -1,7 +1,8 @@
 #ifndef RGBDSLAM_OUTPUTS_MAP_WRITER_HPP
 #define RGBDSLAM_OUTPUTS_MAP_WRITER_HPP
 
-#include "../types.hpp"
+#include "types.hpp"
+
 #include <fstream>
 
 namespace rgbd_slam::outputs {

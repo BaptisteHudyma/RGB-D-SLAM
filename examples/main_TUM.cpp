@@ -1,24 +1,23 @@
 // The dataset can be found here:
 // https://vision.in.tum.de/data/datasets/rgbd-dataset
 
-#include <iostream>
-#include <fstream>
 #include <ctime>
+#include <fstream>
+#include <iostream>
 // check file existence
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgcodecs.hpp>
+#include "TUM_parser.hpp"
+#include "outputs/logger.hpp"
+#include "parameters.hpp"
+#include "rgbd_slam.hpp"
+#include "utils/angle_utils.hpp"
+#include "utils/pose.hpp"
+
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
-
-#include "logger.hpp"
-#include "rgbd_slam.hpp"
-#include "pose.hpp"
-#include "parameters.hpp"
-#include "angle_utils.hpp"
-#include "types.hpp"
-#include "TUM_parser.hpp"
 
 // if defined, the optimization step will be skipped and only the given ground truth will be used.
 // This should give a perfect tracking

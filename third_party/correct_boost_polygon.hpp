@@ -10,13 +10,13 @@
  * ----------------------------------------------------------------------------
  */
 
-#include <vector>
 #include <boost/geometry.hpp>
+#include <boost/geometry/geometries/multi_polygon.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/geometries/polygon.hpp>
-#include <boost/geometry/geometries/multi_polygon.hpp>
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/iterator/function_output_iterator.hpp>
+#include <vector>
 
 #define BOOST_MINOR_VERSION ((BOOST_VERSION / 100) % 1000)
 

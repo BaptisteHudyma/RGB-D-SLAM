@@ -3,21 +3,19 @@
 #include <cfloat>
 #include <iterator>
 #define _USE_MATH_DEFINES
-#include <cmath>
-#include <string>
-#include <vector>
 #include <algorithm>
-#include <fstream>
-#include <chrono>
 #include <cassert>
-#include <unordered_map>
+#include <cmath>
 #include <cstdint>
-
 #include <flann.hpp>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #if defined USE_OPENMP
 #    if !defined _OPENMP
-#        pragma message("You've chosen to want OpenMP usage but have not made it a compilation option. Compile with /openmp")
+#        pragma message( \
+                "You've chosen to want OpenMP usage but have not made it a compilation option. Compile with /openmp")
 #    endif
 #endif
 

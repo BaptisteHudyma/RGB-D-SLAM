@@ -7,7 +7,6 @@
 #ifndef CONCAVE_POLYGON_FITTING_HPP
 #define CONCAVE_POLYGON_FITTING_HPP
 
-#include <cstddef>
 #include <cstdint>
 #include <vector>
 

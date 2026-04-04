@@ -2,10 +2,10 @@
 #define RGBDSLAM_MAPMANAGEMENT_MAPPOINT2D_HPP
 
 #include "coordinates/point_coordinates.hpp"
-#include "feature_map.hpp"
 #include "features/keypoints/keypoint_handler.hpp"
-#include "tracking/inverse_depth_with_tracking.hpp"
+#include "map_management/feature_map.hpp"
 #include "matches_containers.hpp"
+#include "tracking/inverse_depth_with_tracking.hpp"
 
 namespace rgbd_slam::map_management {
 
