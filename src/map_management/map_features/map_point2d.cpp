@@ -2,10 +2,11 @@
 
 #include "coordinates/point_coordinates.hpp"
 #include "covariances.hpp"
-#include "line.hpp"
-#include "logger.hpp"
+#include "outputs/logger.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
+#include "utils/line.hpp"
+
 #include <exception>
 
 namespace rgbd_slam::map_management {

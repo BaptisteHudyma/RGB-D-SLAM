@@ -8,19 +8,20 @@
  * - Plane 3D merged with plane 3D
  */
 
-#include "angle_utils.hpp"
-#include "camera_transformation.hpp"
 #include "coordinates/inverse_depth_coordinates.hpp"
 #include "coordinates/point_coordinates.hpp"
-#include <Eigen/src/Core/Matrix.h>
-#include <gtest/gtest.h>
-#include <iostream>
-#include <opencv2/line_descriptor/descriptor.hpp>
-#include "covariances.hpp"
-#include "inverse_depth_with_tracking.hpp"
 #include "parameters.hpp"
-#include "point_with_tracking.hpp"
+#include "tracking/inverse_depth_with_tracking.hpp"
+#include "tracking/point_with_tracking.hpp"
 #include "types.hpp"
+#include "utils/angle_utils.hpp"
+#include "utils/camera_transformation.hpp"
+#include "utils/covariances.hpp"
+
+#include <gtest/gtest.h>
+
+#include <Eigen/Dense>
+#include <opencv2/line_descriptor/descriptor.hpp>
 
 namespace rgbd_slam::tracking {
 

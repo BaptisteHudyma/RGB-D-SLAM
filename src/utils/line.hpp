@@ -1,9 +1,11 @@
 #ifndef RGBDSLAM_UTILS_LINE_HPP
 #define RGBDSLAM_UTILS_LINE_HPP
 
-#include "covariances.hpp"
-#include <Eigen/Dense>
+#include "utils/covariances.hpp"
+
 #include <Eigen/src/Core/Matrix.h>
+
+#include <Eigen/Dense>
 
 namespace rgbd_slam::utils {
 

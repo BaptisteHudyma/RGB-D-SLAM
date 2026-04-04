@@ -1,7 +1,6 @@
 #include "plane_with_tracking.hpp"
 
 #include "outputs/logger.hpp"
-
 #include "utils/distance_utils.hpp"
 
 namespace rgbd_slam::tracking {

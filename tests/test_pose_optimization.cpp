@@ -1,21 +1,19 @@
+#include "coordinates/plane_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
+#include "map_management/map_features/map_point.hpp"
+#include "map_management/map_features/map_point2d.hpp"
+#include "map_management/map_features/map_primitive.hpp"
 #include "matches_containers.hpp"
 #include "outputs/logger.hpp"
 #include "parameters.hpp"
 #include "pose_optimization/pose_optimization.hpp"
 #include "types.hpp"
-
-#include "utils/pose.hpp"
 #include "utils/angle_utils.hpp"
 #include "utils/camera_transformation.hpp"
-
-#include "coordinates/point_coordinates.hpp"
-#include "coordinates/plane_coordinates.hpp"
-
-#include "map_management/map_features/map_point.hpp"
-#include "map_management/map_features/map_point2d.hpp"
-#include "map_management/map_features/map_primitive.hpp"
+#include "utils/pose.hpp"
 
 #include <gtest/gtest.h>
+
 #include <memory>
 #include <random>
 

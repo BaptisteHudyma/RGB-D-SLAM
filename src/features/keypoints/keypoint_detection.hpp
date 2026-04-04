@@ -1,8 +1,9 @@
 #ifndef RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_DETECTION_HPP
 #define RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_DETECTION_HPP
 
-#include "keypoint_handler.hpp"
+#include "features/keypoints/keypoint_handler.hpp"
 #include "parameters.hpp"
+
 #include <array>
 
 namespace rgbd_slam::features::keypoints {

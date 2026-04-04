@@ -1,11 +1,12 @@
 #ifndef RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVEDETECTION_HPP
 #define RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVEDETECTION_HPP
 
-#include "../../types.hpp"
-#include "cylinder_segment.hpp"
-#include "histogram.hpp"
-#include "plane_segment.hpp"
-#include "shape_primitives.hpp"
+#include "features/primitives/cylinder_segment.hpp"
+#include "features/primitives/histogram.hpp"
+#include "features/primitives/plane_segment.hpp"
+#include "features/primitives/shape_primitives.hpp"
+#include "types.hpp"
+
 #include <opencv2/opencv.hpp>
 #include <vector>
 

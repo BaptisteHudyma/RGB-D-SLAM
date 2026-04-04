@@ -2,7 +2,7 @@
 #define RGBDSLAM_FEATURES_LINES_LINE_DETECTION_HPP
 
 #include "../../../third_party/line_segment_detector.hpp"
-#include <memory>
+
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::features::lines {

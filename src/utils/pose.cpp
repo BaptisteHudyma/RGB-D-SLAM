@@ -1,15 +1,16 @@
 #include "pose.hpp"
-#include "angle_utils.hpp"
-#include "covariances.hpp"
-#include "logger.hpp"
+
+#include "outputs/logger.hpp"
+#include "tracking/extended_kalman_filter.hpp"
 #include "types.hpp"
+#include "utils/angle_utils.hpp"
+#include "utils/covariances.hpp"
+
 #include <Eigen/src/Core/Matrix.h>
+
 #include <cmath>
 #include <format>
 #include <iostream>
-#include <stdexcept>
-
-#include "extended_kalman_filter.hpp"
 
 namespace rgbd_slam::utils {
 

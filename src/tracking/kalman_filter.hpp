@@ -1,10 +1,11 @@
 #ifndef RGBDSLAM_UTILS_KALMAN_FILTER_HPP
 #define RGBDSLAM_UTILS_KALMAN_FILTER_HPP
 
-#include "covariances.hpp"
-#include "distance_utils.hpp"
 #include "types.hpp"
+#include "utils/covariances.hpp"
+
 #include <Eigen/src/Core/Matrix.h>
+
 #include <stdexcept>
 
 namespace rgbd_slam::tracking {

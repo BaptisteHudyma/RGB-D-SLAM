@@ -1,14 +1,15 @@
 #include "covariances.hpp"
 
-#include "../parameters.hpp"
 #include "coordinates/point_coordinates.hpp"
-#include "distance_utils.hpp"
+#include "parameters.hpp"
 #include "types.hpp"
+#include "utils/distance_utils.hpp"
+
 #include <Eigen/src/Core/util/Constants.h>
-#include <cmath>
-#include <stdexcept>
 
 #include <boost/math/distributions/chi_squared.hpp>
+#include <cmath>
+#include <stdexcept>
 
 namespace rgbd_slam::utils {
 

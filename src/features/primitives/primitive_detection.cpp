@@ -1,19 +1,22 @@
 #include "primitive_detection.hpp"
-#include "../../outputs/logger.hpp"
-#include "../../parameters.hpp"
+
 #include "cylinder_segment.hpp"
-#include "plane_segment.hpp"
-#include "shape_primitives.hpp"
+#include "features/primitives/plane_segment.hpp"
+#include "features/primitives/shape_primitives.hpp"
+#include "outputs/logger.hpp"
+#include "parameters.hpp"
 #include "types.hpp"
+
 #include <Eigen/src/Core/Array.h>
-#include <algorithm>
 #include <bits/ranges_algo.h>
+#include <opencv2/core/hal/interface.h>
+
+#include <algorithm>
 #include <cstddef>
 #include <limits>
 #include <mutex>
 #include <opencv2/core.hpp>
 #include <opencv2/core/base.hpp>
-#include <opencv2/core/hal/interface.h>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 

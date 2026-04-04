@@ -1,13 +1,14 @@
 #include "line.hpp"
-#include "coordinates/point_coordinates.hpp"
-#include "logger.hpp"
-#include "polygon.hpp"
 
+#include "coordinates/point_coordinates.hpp"
+#include "outputs/logger.hpp"
+#include "utils/polygon.hpp"
+
+#include <boost/geometry/algorithms/intersection.hpp>
 #include <boost/geometry/geometries/infinite_line.hpp>
 #include <boost/geometry/geometries/linestring.hpp>
 #include <boost/geometry/geometries/point_xyz.hpp>
 #include <boost/geometry/geometries/segment.hpp>
-#include <boost/geometry/algorithms/intersection.hpp>
 #include <format>
 
 namespace rgbd_slam::utils {

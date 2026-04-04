@@ -2,6 +2,7 @@
 #define RGBDSLAM_UTILS_RANDOM_HPP
 
 #include <Eigen/src/Core/Matrix.h>
+
 #include <cassert>
 #include <ctime>
 #include <random>

@@ -2,11 +2,11 @@
 #define RGBDSLAM_FEATURES_KEYPOINTS_KEYPOINTS_HANDLER_HPP
 
 #include "coordinates/point_coordinates.hpp"
+#include "utils/line.hpp"
+
 #include <opencv2/core/types.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include <unordered_set>
-
-#include "line.hpp"
 #include <utility>
 #include <vector>
 

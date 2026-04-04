@@ -3,10 +3,11 @@
 
 #include "coordinates/plane_coordinates.hpp"
 #include "coordinates/point_coordinates.hpp"
-#include "logger.hpp"
 #include "types.hpp"
+
 #include <Eigen/src/Core/Matrix.h>
 #include <bits/ranges_algo.h>
+
 #include <opencv2/core/types.hpp>
 
 namespace rgbd_slam::utils {

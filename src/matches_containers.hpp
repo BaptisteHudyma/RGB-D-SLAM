@@ -1,14 +1,14 @@
 #ifndef RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 #define RGBDSLAM_UTILS_MATCHESCONTAINERS_HPP
 
+#include "features/keypoints/keypoint_handler.hpp"
+#include "features/lines/line_detection.hpp"
+#include "features/primitives/shape_primitives.hpp"
 #include "types.hpp"
+
 #include <list>
 #include <memory>
 #include <unordered_set>
-
-#include "features/keypoints/keypoint_handler.hpp"
-#include "features/primitives/shape_primitives.hpp"
-#include "features/lines/line_detection.hpp"
 
 namespace rgbd_slam {
 

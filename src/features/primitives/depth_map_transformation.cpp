@@ -1,8 +1,11 @@
 #include "depth_map_transformation.hpp"
-#include "../../parameters.hpp"
+
 #include "coordinates/point_coordinates.hpp"
-#include <opencv2/core/eigen.hpp>
+#include "parameters.hpp"
+
 #include <tbb/parallel_for.h>
+
+#include <opencv2/core/eigen.hpp>
 
 namespace rgbd_slam::features::primitives {
 

@@ -1,14 +1,15 @@
 
 #include "angle_utils.hpp"
-#include "distance_utils.hpp"
-#include "line.hpp"
+#include "coordinates/basis_changes.hpp"
+#include "coordinates/inverse_depth_coordinates.hpp"
+#include "coordinates/plane_coordinates.hpp"
+#include "coordinates/point_coordinates.hpp"
 #include "parameters.hpp"
 #include "types.hpp"
 #include "utils/camera_transformation.hpp"
-#include "coordinates/inverse_depth_coordinates.hpp"
-#include "coordinates/point_coordinates.hpp"
-#include "coordinates/plane_coordinates.hpp"
-#include "coordinates/basis_changes.hpp"
+#include "utils/distance_utils.hpp"
+#include "utils/line.hpp"
+
 #include <gtest/gtest.h>
 
 namespace rgbd_slam {

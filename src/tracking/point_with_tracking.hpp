@@ -1,10 +1,9 @@
 #ifndef RGBDSLAM_TRACKING_POINT_WITH_TRACKING_HPP
 #define RGBDSLAM_TRACKING_POINT_WITH_TRACKING_HPP
 
-#include "types.hpp"
 #include "coordinates/point_coordinates.hpp"
-#include "kalman_filter.hpp"
 #include "extended_kalman_filter.hpp"
+#include "types.hpp"
 
 #include <opencv2/opencv.hpp>
 

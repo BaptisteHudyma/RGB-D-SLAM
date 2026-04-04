@@ -1,8 +1,10 @@
 #include "keypoint_handler.hpp"
-#include "../../outputs/logger.hpp"
-#include "../../parameters.hpp"
-#include "../../types.hpp"
+
 #include "coordinates/point_coordinates.hpp"
+#include "outputs/logger.hpp"
+#include "parameters.hpp"
+#include "types.hpp"
+
 #include <cstddef>
 
 namespace rgbd_slam::features::keypoints {

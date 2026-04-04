@@ -1,9 +1,11 @@
 #include "shape_primitives.hpp"
-#include "../../outputs/logger.hpp"
-#include "../../parameters.hpp"
-#include "covariances.hpp"
-#include "cylinder_segment.hpp"
-#include "distance_utils.hpp"
+
+#include "features/primitives/cylinder_segment.hpp"
+#include "outputs/logger.hpp"
+#include "parameters.hpp"
+#include "utils/covariances.hpp"
+#include "utils/distance_utils.hpp"
+
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/VectorBlock.h>
 

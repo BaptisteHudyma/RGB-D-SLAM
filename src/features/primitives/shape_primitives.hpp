@@ -2,11 +2,12 @@
 #define RGBDSLAM_FEATURES_PRIMITIVES_PRIMITIVES_HPP
 
 // cv:Mat
-#include "../../types.hpp"
 #include "coordinates/point_coordinates.hpp"
-#include "cylinder_segment.hpp"
-#include "plane_segment.hpp"
 #include "coordinates/polygon_coordinates.hpp"
+#include "features/primitives/cylinder_segment.hpp"
+#include "features/primitives/plane_segment.hpp"
+#include "types.hpp"
+
 #include <opencv2/opencv.hpp>
 
 namespace rgbd_slam::features::primitives {

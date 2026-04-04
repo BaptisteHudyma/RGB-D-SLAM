@@ -1,6 +1,7 @@
 #include "cylinder_segment.hpp"
-#include "../../parameters.hpp"
-#include "../../utils/random.hpp"
+
+#include "parameters.hpp"
+#include "utils/random.hpp"
 
 namespace rgbd_slam::features::primitives {
 

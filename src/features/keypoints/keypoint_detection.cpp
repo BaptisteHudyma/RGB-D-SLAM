@@ -1,16 +1,18 @@
 #include "keypoint_detection.hpp"
-#include "../../outputs/logger.hpp"
-#include "../../parameters.hpp"
+
+#include "outputs/logger.hpp"
+#include "parameters.hpp"
 
 // circle
+#include <tbb/parallel_for.h>
+
 #include <array>
 #include <cmath>
 #include <mutex>
-#include <tbb/parallel_for.h>
 #include <opencv2/features2d.hpp>
-#include <opencv2/xfeatures2d.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
+#include <opencv2/xfeatures2d.hpp>
 #include <vector>
 
 namespace rgbd_slam::features::keypoints {

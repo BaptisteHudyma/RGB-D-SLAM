@@ -1,11 +1,14 @@
 #include "levenberg_marquardt_functors.hpp"
-#include "logger.hpp"
+
 #include "matches_containers.hpp"
-#include "pose.hpp"
+#include "outputs/logger.hpp"
 #include "types.hpp"
 #include "utils/camera_transformation.hpp"
+#include "utils/pose.hpp"
+
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/util/Meta.h>
+
 #include <cmath>
 #include <stdexcept>
 

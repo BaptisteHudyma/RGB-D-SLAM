@@ -2,7 +2,6 @@
 #define RGBDSLAM_UTILS_DISTANCE_UTILS_HPP
 
 #include <Eigen/Dense>
-#include <Eigen/src/Core/Matrix.h>
 #include <limits>
 
 namespace rgbd_slam::utils {
